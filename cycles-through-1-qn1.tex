@@ -12,6 +12,9 @@
 \usepackage{lmodern}
 \usepackage{microtype}
 \usepackage{amsmath,amssymb,amsthm}
+\usepackage{amsopn}
+\usepackage{unicode-math}
+\usepackage{amstext}
 % Long inline formulas may break at a relation or a binary operator,
 % instead of stretching the spaces on that line.
 \relpenalty=100
@@ -44,11 +47,11 @@
 
 \begin{abstract}
 \noindent
-For odd $q \ge 3$, consider the map $n \mapsto (qn+1)/2^v$ on odd integers, where $2^v$ is the largest power of $2$ dividing $qn+1$.
-We prove that $1$ never lies on a cycle with exactly three distinct odd numbers, settling the three-step case of a conjecture of Santos that $1$ is periodic only for $q = 5$ and for Mersenne numbers $q = 2^e - 1$.
-The proof shows that $q$ and every element of such a cycle other than $1$, divided by suitable powers of $2$, are extremely close approximations to $2^{1/3}$ or $4^{1/3}$, and plays two of these near misses against an effective irrationality measure of Bauer and Bennett.
-Their exponent, about $1.6149$, lies just below the golden ratio, which is exactly the threshold the argument requires.
-The method also shows that for every fixed number $\ell \ge 2$ of odd steps only finitely many $q$ can have $1$ on a cycle with exactly $\ell$ distinct odd numbers (ineffectively), reduces an effective answer for each $\ell$ to restricted approximation exponents below the golden ratio, and settles four odd steps when the total number of halvings is $\equiv 2 \pmod{4}$.
+For the $qn+1$ map with $q$ an odd integer at least $3$, we prove that $1$ never lies on a cycle with exactly three distinct odd numbers.
+This settles the three-step case of a conjecture of Santos that $1$ is periodic only for $q = 5$ and for Mersenne numbers $q = 2^e - 1$.
+We found that for every such $q$ at least $2^{22003}$, a lower bound and an upper bound cannot hold at the same time.
+Bauer and Bennett (2018) give an irrationality measure whose exponent, about $1.6149$, lies just below the golden ratio, the threshold at which these bounds conflict.
+Every smaller $q$ is ruled out by a direct computation.
 \end{abstract}
 
 \section{Introduction}
@@ -62,7 +65,7 @@ C(n) = \frac{qn+1}{2^v}.
 \]
 
 The orbit of $n$ is the sequence $n$, $C(n)$, $C(C(n))$, \ldots.
-When $q = 3$, $C$ is the odd-to-odd form of the Collatz map, and the Collatz conjecture, posed by Lothar Collatz in 1937 and still open, asserts that every orbit eventually reaches $1$.
+When $q = 3$, $C$ is the odd-to-odd or accelerated form of the Collatz map, and the Collatz conjecture, posed by Lothar Collatz in 1937 and still open, asserts that every orbit eventually reaches $1$.
 For $q = 3$ the number $1$ is fixed, since $3 \cdot 1 + 1 = 4$.
 For larger $q$, heuristic arguments suggest that most orbits grow without bound and that cycles are rare, although no orbit has been proved to diverge.
 
@@ -81,10 +84,9 @@ So the conjecture holds for every cycle through $1$ of length at most $3$.
 For longer cycles we prove an exact criterion for an effective answer, and finiteness.
 
 \begin{named}{Theorem 2 (golden-ratio criterion, informal).}
-Fix $\ell \ge 2$.
-Suppose that each number $2^{r/\ell}$, for $0 < r < \ell$, has an effective approximation exponent below the golden ratio.
-The fractions in question have denominator $2^j$ or $\ell \cdot 2^j$.
-Then any $q$ with $1$ on a cycle of $C$ of length $\ell$ lies below a computable bound, and Santos's conjecture for cycles of that length reduces to a finite computation.
+Fix $\ell \ge 2$, and suppose the roots of $2$ that this length produces have an approximation exponent below the golden ratio.
+Then any $q$ with $1$ on a cycle of $C$ of length $\ell$ lies below a bound we can compute.
+Checking every candidate up to that bound finds every such $q$, or shows that none exist.
 The precise statement is Theorem~$2'$ in Section~\ref{sec:longer}.
 \end{named}
 
@@ -119,32 +121,39 @@ so $k_i = v_2(q \cdot x_{i-1} + 1)$.
 The total number of halvings is $h = k_1 + \cdots + k_\ell$, and $S_i = k_1 + \cdots + k_i$.
 
 \topic{The window.}
-Write $2^{h/\ell} = q + \delta$.
-Lemmas~\ref{lem:cube-window} and~\ref{lem:power-window} show that $0 < \delta < 1$, so $q = \lfloor 2^{h/\ell} \rfloor$, and ``the window'' refers to the estimates for $\delta - 1/\ell$ in Lemmas~\ref{lem:window} and~\ref{lem:power-window}.
+On an $\ell$-odd cycle through $1$ with $h$ halvings in all, write $2^{h/\ell} = q + \delta$, so $\delta$ is the fractional part of $2^{h/\ell}$.
+The window is a lower bound and an upper bound on $\delta$.
 
 \topic{Near misses.}
-For an element $x_i$ of an $\ell$-odd cycle through $1$, put $n_i = ih - \ell S_i$ and define $\rho_i$ by $x_i = 2^{n_i/\ell}(1 + \rho_i)$.
-We call $2^{n_i/\ell}$ the near miss of $x_i$.
-Lemma~\ref{lem:near-misses} shows that $|\rho_i| \le (\ell-1)/q$ for $q \ge \ell$, so $x_i/2^j$ is extremely close to $2^{r/\ell}$, where $n_i = \ell j + r$ with $0 \le r < \ell$.
-For $\ell = 3$, Lemma~\ref{lem:near-x} gives an explicit version for $x$.
+For an element $x_i$ other than $1$ on an $\ell$-odd cycle through $1$, set $n_i = ih - \ell S_i$.
+The near miss of $x_i$ is $2^{n_i/\ell}$.
+The relative error $\rho_i$ is defined by
+\[
+x_i = 2^{n_i/\ell}(1 + \rho_i).
+\]
 
 \topic{Approximation exponents.}
 Let $\theta$ be irrational and let $\mathcal{D}$ be a set of positive integers.
-We say that $\theta$ has effective approximation exponent $\mu$ with respect to $\mathcal{D}$ if there are explicit $c > 0$ and $d_0$ with $|\theta - p/d| > c \cdot d^{-\mu}$ for all $p \in \mathbb{Z}$ and all $d \in \mathcal{D}$ with $d \ge d_0$.
-When $\mathcal{D}$ contains all positive integers, Dirichlet's theorem forces $\mu \ge 2$.
-We use the restricted sets $\mathcal{D}_\ell = \{2^j : j \ge 0\} \cup \{\ell \cdot 2^j : j \ge 0\}$, for which exponents below $2$ are possible; Theorem~A concerns $\mathcal{D}_3$.
-The bound in Theorem~A has the form $c \cdot 2^{-\mu j}$ after collecting constants, and Theorem~$2'$ is stated in that form; since $d = s \cdot 2^j$ with $s \in \{1, \ell\}$, this changes only the constant $c$. $\varphi = (1 + \sqrt{5})/2$ denotes the golden ratio.
+Then $\theta$ has effective approximation exponent $\mu$ with respect to $\mathcal{D}$ when there are explicit constants $c > 0$ and $d_0$ such that
+\[
+\left|\theta - \frac{p}{d}\right| > c \cdot d^{-\mu}
+\]
+for every integer $p$ and every $d \in \mathcal{D}$ with $d \ge d_0$.
+Write $\mathcal{D}_\ell$ for the set of denominators $2^j$ and $\ell \cdot 2^j$, where $j$ is a nonnegative integer.
+
+\topic{The golden ratio.}
+$\varphi = (1 + \sqrt{5})/2$.
 
 \topic{Other conventions.}
-$j$ denotes the exponent of $2$ in the denominator of an approximating fraction.
-Implied constants in $O$, $\ll$, $\gg$ and $\asymp$ depend only on $\ell$.
-In heuristic remarks, $\lesssim$ and $\gtrsim$ mean at most or at least roughly, ignoring constants.
+An implied constant in $O$, $\ll$, $\gg$, or $\asymp$ depends only on $\ell$.
+In a heuristic remark, $\lesssim$ and $\gtrsim$ mean at most or at least roughly, ignoring constants.
 
-In Sections~\ref{sec:structure} to~\ref{sec:proof}, $\ell = 3$ and we write the cycle as $1 \to x \to y \to 1$, with $A = 2^{k_1}$, $B = 2^{k_2}$ and
+\topic{Three odd steps.}
+When $\ell = 3$, write the cycle as $1 \to x \to y \to 1$, and set $A = 2^{k_1}$ and $B = 2^{k_2}$.
+The three steps are
 \[
 q + 1 = Ax, \qquad qx + 1 = By, \qquad qy + 1 = 2^{k_3}.
 \]
-Since $x \ge 3$ we have $2 \le A \le (q+1)/3$, and $B \ge 2$ because $q$ and $x$ are odd.
 
 \section{The structure of a three-step cycle}
 \label{sec:structure}
@@ -154,8 +163,16 @@ $k_3 \ge k_1 + 3$, and $y \equiv 1 \pmod{A}$.
 \end{named}
 
 \begin{proof}
-Since $q \ge 3A - 1$ and $y \ge 3$, $2^{k_3} = qy + 1 \ge 9A - 2 \ge 8A$.
-As $q \equiv -1 \pmod{A}$, $0 \equiv qy + 1 \equiv 1 - y \pmod{A}$.
+The odd elements other than $1$ are at least $3$, so $x \ge 3$ and $y \ge 3$.
+The first step is $q + 1 = Ax$, and therefore $q + 1 \ge 3A$, that is $q \ge 3A - 1$.
+The third step is $2^{k_3} = qy + 1$, so
+\[
+2^{k_3} \ge (3A - 1) \cdot 3 + 1 = 9A - 2.
+\]
+Since $A = 2^{k_1} \ge 2$, we have $9A - 2 \ge 8A = 2^{k_1 + 3}$, and hence $k_3 \ge k_1 + 3$.
+From $q + 1 = Ax$ we also have $q \equiv -1 \pmod{A}$.
+Thus $qy + 1 \equiv 1 - y \pmod{A}$.
+But $qy + 1 = 2^{k_3}$ is divisible by $A$, because $k_3 \ge k_1$, so $1 - y \equiv 0 \pmod{A}$, that is $y \equiv 1 \pmod{A}$.
 \end{proof}
 
 \begin{named}{Lemma 2 (cycle equation).}
@@ -165,7 +182,22 @@ As $q \equiv -1 \pmod{A}$, $0 \equiv qy + 1 \equiv 1 - y \pmod{A}$.
 \end{named}
 
 \begin{proof}
-$2^h = AB \cdot 2^{k_3} = AB(qy + 1) = A(q \cdot By + B) = A(q(qx + 1) + B) = q^2(q + 1) + Aq + AB$.
+Since $h = k_1 + k_2 + k_3$, $A = 2^{k_1}$ and $B = 2^{k_2}$,
+\[
+2^h = AB \cdot 2^{k_3}.
+\]
+The third step is $qy + 1 = 2^{k_3}$, so
+\[
+2^h = AB(qy + 1) = A(q \cdot By + B).
+\]
+The second step is $qx + 1 = By$, and therefore
+\[
+2^h = A\bigl(q(qx + 1) + B\bigr) = A(q^2 x + q + B) = q^2(Ax) + Aq + AB.
+\]
+The first step is $q + 1 = Ax$, so
+\[
+2^h = q^2(q + 1) + Aq + AB = q^3 + q^2 + Aq + AB.
+\]
 \end{proof}
 
 \begin{named}{Lemma 3 (cube window).}
@@ -431,6 +463,10 @@ Thus $q^{1-\mu} \ll q^{-1/\mu}$, which bounds $q$ exactly when $\mu^2 - \mu - 1 
 For $\ell = 3$, Theorem~A supplies the hypothesis of Theorem~$2'$ with $R = \{1, 2\}$, $\mu \approx 1.61487$ and $j_0 = 11000$.
 So Theorem~1 is the case $\ell = 3$ of Theorem~2; Section~\ref{sec:proof} carries out this case with explicit constants.
 
+\begin{named}{Theorem 3.}
+For each $\ell \ge 2$, only finitely many odd $q$ have $1$ on a cycle of $C$ of length $\ell$.
+\end{named}
+
 \begin{proof}[Proof of Theorem~3]
 Run the proof of Theorem~$2'$ with Ridout's theorem in place of an effective measure: for any $\varepsilon > 0$,
 \[
@@ -458,6 +494,21 @@ Bauer and Bennett's Corollary~1.6 (2002) gives $|\sqrt{2} - p/2^j| > 2^{-1.48 j}
 For $q \ge 10^5$ every exponent involved exceeds $8$, so Corollary~1.6 applies, and the two bounds are then incompatible (the inequalities already conflict from $q = 2 \times 10^4$). The search over $h$ covers $\ell = 4$ for $q < 2^{25{,}000}$.
 \end{proof}
 
+\begin{named}{Corollary 13.}
+Let $\ell = 2^a$ with $a \ge 2$.
+Only finitely many odd $q$ have $1$ on a cycle of $C$ of length $\ell$ whose total number of halvings is $\equiv \ell/2 \pmod{\ell}$, and a bound is computable from Bauer and Bennett's Corollary~1.6 (2002).
+For $\ell = 4$ every such $q$ is ruled out by Corollary~12.
+\end{named}
+
+\begin{proof}
+Write $h = \ell m + \ell/2$.
+Every multiple of $h$ is congruent to $0$ or $\ell/2$ modulo $\ell$, so the only root that occurs is $2^{1/2}$.
+A denominator $s \cdot 2^j$ with $s \in \{1, \ell\}$ is a power of $2$, because $\ell$ is.
+Bauer and Bennett's Corollary~1.6 (2002) therefore gives the hypothesis of Theorem~$2'$ with $R = \{\ell/2\}$, $\mu = 1.48 < \varphi$, and $j_0 = 9$: the finitely many excluded exponents $j \in \{1, 2, 3, 7, 8\}$ contribute only a constant factor depending on $\ell$.
+Theorem~$2'$ supplies the computable bound.
+The case $\ell = 4$ is Corollary~12.
+\end{proof}
+
 \topic{Four steps with $h$ odd.}
 Here the window and the near misses for $x_1$ and $x_3$ involve $2^{1/4}$ and $2^{3/4}$.
 Theorem~2 would finish the case given an effective exponent below $\varphi$ for these numbers with power-of-$2$ denominators.
@@ -467,7 +518,7 @@ The Bauer--Bennett construction needs a fourth power exceptionally close to a po
 \label{sec:other}
 
 The following were found along the way.
-They are not needed for Theorems~1 to~3 and Corollary~12; full statements and proofs are in the appendices indicated, and Appendix~\ref{app:history} has notes on the literature and the history of the work.
+They are not needed for Theorems~1 to~3 and Corollaries~12 and~13; full statements and proofs are in the appendices indicated, and Appendix~\ref{app:history} has notes on the literature and the history of the work.
 \begin{itemize}
 \item \textbf{One and two odd steps} (Appendix~\ref{app:one-two}).
 The two-step case, only $q = 5$, follows from Beukers's theorem on $x^2 + D = 2^n$.
