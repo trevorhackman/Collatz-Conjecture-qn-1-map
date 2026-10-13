@@ -10,6 +10,7 @@ Cycles through 1 for the qn+1 map: no cycles with three odd steps, and constrain
   - `search_through1.py` — cycles through 1 for a given length
   - `search_lengths.py` — general search for lengths 2–10
 - `cycles-through-1-qn1.pdf` — full paper
+- `cycles-through-1-qn1.tex` — editable LaTeX reconstructed from the PDF
 
 ## Paper
 
