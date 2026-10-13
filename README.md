@@ -9,7 +9,8 @@ Cycles through 1 for the qn+1 map: no cycles with three odd steps, and constrain
   - `search_length3.py` — window-pruned search for any 3-cycle with a bounded smallest element
   - `search_through1.py` — cycles through 1 for a given length
   - `search_lengths.py` — general search for lengths 2–10
-- `paper.md` — markdown source of the paper (excerpt; full version available as PDF)
+- `paper.md` — markdown excerpt of the paper
+- `cycles-through-1-qn1.pdf` — full paper
 
 ## Paper
 
