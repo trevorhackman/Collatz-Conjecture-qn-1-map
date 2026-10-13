@@ -9,12 +9,21 @@
 \documentclass[11pt]{article}
 
 \usepackage[margin=1in]{geometry}
+\usepackage{lmodern}
+\usepackage{microtype}
 \usepackage{amsmath,amssymb,amsthm}
-\emergencystretch=3em
+% Long inline formulas may break at a relation or a binary operator,
+% instead of stretching the spaces on that line.
+\relpenalty=100
+\binoppenalty=200
 
 \newenvironment{named}[1]{%
-  \par\medskip\noindent\textbf{#1}\space\ignorespaces
+  \par\medskip\noindent{\bfseries #1}\space\ignorespaces
 }{\par\medskip}
+
+% A blank line in the source does not open a visible gap, because paragraph
+% skip is zero. Topic headings need one.
+\newcommand{\topic}[1]{\par\vspace{0.85\baselineskip}\noindent\textbf{#1}}
 
 \newcounter{stmtref}
 % The headings above are written out by hand, so a label would otherwise
@@ -43,13 +52,14 @@ The method also shows that for every fixed number $\ell \ge 2$ of odd steps only
 \end{abstract}
 
 \section{Introduction}
+\label{sec:introduction}
 
 Fix an odd integer $q \ge 3$.
-On the odd positive integers define
+For an odd positive integer $n$, let $v$ be the largest integer such that $2^v$ divides $qn+1$.
+The map $C$ sends $n$ to
 \[
-C(n) = \frac{qn+1}{2^v},
+C(n) = \frac{qn+1}{2^v}.
 \]
-where $2^v$ is the largest power of $2$ dividing $qn+1$.
 
 The orbit of $n$ is the sequence $n$, $C(n)$, $C(C(n))$, \ldots.
 When $q = 3$, $C$ is the odd-to-odd form of the Collatz map, and the Collatz conjecture, posed by Lothar Collatz in 1937 and still open, asserts that every orbit eventually reaches $1$.
@@ -72,7 +82,9 @@ For longer cycles we prove an exact criterion for an effective answer, and finit
 
 \begin{named}{Theorem 2 (golden-ratio criterion, informal).}
 Fix $\ell \ge 2$.
-If the numbers $2^{r/\ell}$, $0 < r < \ell$, have an effective approximation exponent below the golden ratio by fractions with denominator $2^j$ or $\ell \cdot 2^j$, then any $q$ with $1$ on a cycle of $C$ of length $\ell$ is below a computable bound, so Santos's conjecture for cycles of length $\ell$ reduces to a finite computation.
+Suppose that each number $2^{r/\ell}$, for $0 < r < \ell$, has an effective approximation exponent below the golden ratio.
+The fractions in question have denominator $2^j$ or $\ell \cdot 2^j$.
+Then any $q$ with $1$ on a cycle of $C$ of length $\ell$ lies below a computable bound, and Santos's conjecture for cycles of that length reduces to a finite computation.
 The precise statement is Theorem~$2'$ in Section~\ref{sec:longer}.
 \end{named}
 
@@ -85,18 +97,19 @@ Theorem~3 is ineffective: it rests on Ridout's theorem and gives no bound on $q$
 Theorem~1 is effective and is completed by computation.
 
 \section{Definitions and notation}
+\label{sec:definitions}
 
 Throughout, $q \ge 3$ is an odd integer and $C$ is the map defined in Section~1.
 For a nonzero integer $n$, $v_2(n)$ denotes the largest integer $v$ such that $2^v$ divides $n$.
 
-\noindent\textbf{Cycles through 1.}
+\topic{Cycles through 1.}
 An $\ell$-odd cycle through $1$ is a cycle of $C$ of length $\ell$ containing $1$, written
 \[
 1 = x_0 \to x_1 \to \cdots \to x_{\ell-1} \to 1.
 \]
 Its elements are odd and distinct.
 
-\noindent\textbf{Halvings.}
+\topic{Halvings.}
 The halving counts $k_1, \ldots, k_\ell$ of the cycle are defined by
 \[
 q x_{i-1} + 1 = 2^{k_i} x_i
@@ -105,24 +118,24 @@ q x_{i-1} + 1 = 2^{k_i} x_i
 so $k_i = v_2(q \cdot x_{i-1} + 1)$.
 The total number of halvings is $h = k_1 + \cdots + k_\ell$, and $S_i = k_1 + \cdots + k_i$.
 
-\noindent\textbf{The window.}
+\topic{The window.}
 Write $2^{h/\ell} = q + \delta$.
 Lemmas~\ref{lem:cube-window} and~\ref{lem:power-window} show that $0 < \delta < 1$, so $q = \lfloor 2^{h/\ell} \rfloor$, and ``the window'' refers to the estimates for $\delta - 1/\ell$ in Lemmas~\ref{lem:window} and~\ref{lem:power-window}.
 
-\noindent\textbf{Near misses.}
+\topic{Near misses.}
 For an element $x_i$ of an $\ell$-odd cycle through $1$, put $n_i = ih - \ell S_i$ and define $\rho_i$ by $x_i = 2^{n_i/\ell}(1 + \rho_i)$.
 We call $2^{n_i/\ell}$ the near miss of $x_i$.
 Lemma~\ref{lem:near-misses} shows that $|\rho_i| \le (\ell-1)/q$ for $q \ge \ell$, so $x_i/2^j$ is extremely close to $2^{r/\ell}$, where $n_i = \ell j + r$ with $0 \le r < \ell$.
 For $\ell = 3$, Lemma~\ref{lem:near-x} gives an explicit version for $x$.
 
-\noindent\textbf{Approximation exponents.}
+\topic{Approximation exponents.}
 Let $\theta$ be irrational and let $\mathcal{D}$ be a set of positive integers.
 We say that $\theta$ has effective approximation exponent $\mu$ with respect to $\mathcal{D}$ if there are explicit $c > 0$ and $d_0$ with $|\theta - p/d| > c \cdot d^{-\mu}$ for all $p \in \mathbb{Z}$ and all $d \in \mathcal{D}$ with $d \ge d_0$.
 When $\mathcal{D}$ contains all positive integers, Dirichlet's theorem forces $\mu \ge 2$.
 We use the restricted sets $\mathcal{D}_\ell = \{2^j : j \ge 0\} \cup \{\ell \cdot 2^j : j \ge 0\}$, for which exponents below $2$ are possible; Theorem~A concerns $\mathcal{D}_3$.
 The bound in Theorem~A has the form $c \cdot 2^{-\mu j}$ after collecting constants, and Theorem~$2'$ is stated in that form; since $d = s \cdot 2^j$ with $s \in \{1, \ell\}$, this changes only the constant $c$. $\varphi = (1 + \sqrt{5})/2$ denotes the golden ratio.
 
-\noindent\textbf{Other conventions.}
+\topic{Other conventions.}
 $j$ denotes the exponent of $2$ in the denominator of an approximating fraction.
 Implied constants in $O$, $\ll$, $\gg$ and $\asymp$ depend only on $\ell$.
 In heuristic remarks, $\lesssim$ and $\gtrsim$ mean at most or at least roughly, ignoring constants.
@@ -235,6 +248,7 @@ Finally $B = (qx + 1)/y < (qx + 1)/x < q + 1$, and $B$ is even while $q$ is odd.
 \end{proof}
 
 \section{The window and the near miss for $x$}
+\label{sec:window}
 
 \begin{named}{Lemma 8 (the window).}
 \markstmt{8}{lem:window}
@@ -322,7 +336,7 @@ So any $3$-odd cycle through $1$ has $q < 2^{22003}$.
 By Lemma~\ref{lem:cube-window} each $h$ gives a single candidate $q = \lfloor 2^{h/3} \rfloor$, and checking every $h < 66{,}100$ directly (Appendix~\ref{app:computations}) finds no cycle.
 \end{proof}
 
-\noindent\textbf{Why the golden ratio appears.}
+\topic{Why the golden ratio appears.}
 The proof squeezes $x$ between two bounds, both governed by the exponent $\mu$ in Theorem~A.
 \begin{itemize}
 \item \textbf{The window keeps $x$ small.}
@@ -444,12 +458,13 @@ Bauer and Bennett's Corollary~1.6 (2002) gives $|\sqrt{2} - p/2^j| > 2^{-1.48 j}
 For $q \ge 10^5$ every exponent involved exceeds $8$, so Corollary~1.6 applies, and the two bounds are then incompatible (the inequalities already conflict from $q = 2 \times 10^4$). The search over $h$ covers $\ell = 4$ for $q < 2^{25{,}000}$.
 \end{proof}
 
-\noindent\textbf{Four steps with $h$ odd.}
+\topic{Four steps with $h$ odd.}
 Here the window and the near misses for $x_1$ and $x_3$ involve $2^{1/4}$ and $2^{3/4}$.
 Theorem~2 would finish the case given an effective exponent below $\varphi$ for these numbers with power-of-$2$ denominators.
 The Bauer--Bennett construction needs a fourth power exceptionally close to a power of $2$; among odd $a \le 3 \times 10^6$ the best is $19^4 = 2^{17} - 751$, of quality $\log_2(2^{17})/\log_2 751 \approx 1.78$, against $4.4$ for the cube case ($5^3 + 3 = 2^7$) and $5.3$ for $\sqrt{2}$ ($181^2 + 7 = 2^{15}$). This case needs a different construction.
 
 \section{Other results}
+\label{sec:other}
 
 The following were found along the way.
 They are not needed for Theorems~1 to~3 and Corollary~12; full statements and proofs are in the appendices indicated, and Appendix~\ref{app:history} has notes on the literature and the history of the work.
@@ -474,6 +489,7 @@ Searches over $h$ for $\ell = 3$ to $8$, verification of the Bauer--Bennett inpu
 \end{itemize}
 
 \section{Open problems}
+\label{sec:open}
 
 \begin{enumerate}
 \item \textbf{Four steps with $h$ odd.}
@@ -490,7 +506,7 @@ Franco's 1990 thesis on Diophantine approximation and the $qx+1$ problem could n
 \section{One and two odd steps}
 \label{app:one-two}
 
-\noindent\textbf{One odd step.}
+\topic{One odd step.}
 The cycle $1 \to 1$ requires $q + 1 = 2^e$, so $q = 2^e - 1$ (Santos, Proposition~15).
 
 \begin{named}{Proposition A.1 (two odd steps).}
@@ -512,6 +528,7 @@ For $k_1 = 1$, $D = 7$ is the Ramanujan--Nagell equation with $X \in \{1, 3, 5, 
 As a check, the argument of Lemma~B.2 below gives $2^{k_2} = qx + 1 < q^2 < 2^{2d}$ with $d$ the order of $2$ modulo $q$, so $k_2 = d$, and the cycle condition reads $q(q+1) = 2^{k_1}(2^d - 1)$; for $q = 5$, $d = 4$ and $5 \cdot 6 = 2 \cdot 15$.
 
 \section{Earlier results on three odd steps}
+\label{sec:earlier}
 
 These results were found before Theorem~1 and are not needed for it.
 Notation is as in Sections~\ref{sec:structure} to~\ref{sec:proof}.
@@ -748,7 +765,7 @@ The identity was also checked by computer algebra: substituting the cycle relati
 \section{Computations}
 \label{app:computations}
 
-\noindent\textbf{Searches.}
+\topic{Searches.}
 By Lemma~\ref{lem:power-window} each $h$ gives one candidate $q = \lfloor 2^{h/\ell} \rfloor$, which is tested by following $1$ for $\ell$ odd steps.
 \begin{center}
 \begin{tabular}{cc}
@@ -763,14 +780,15 @@ $8$ & $2^{12{,}500}$ \\
 \end{center}
 For $\ell = 3$ the search was repeated independently for every $h < 66{,}100$, which covers the range $q < 2^{22003}$ needed in Theorem~1.
 
-\noindent\textbf{Checks of Theorem~A.}
-$F(\tau) = 11.97804\ldots$ at $\tau = 0.20305\ldots$, and $9 \cdot 2^{28} \cdot F/1.79 = 16166467233.3\ldots$, matching the paper.
+\topic{Checks of Theorem~A.}
+$F(\tau) = 11.97804\ldots$ at $\tau = 0.20305\ldots$, and $9 \cdot 2^{28} \cdot F/1.79$ equals $16166467233.3\ldots$, matching the paper.
 The constant in~(21) is $2^{-5.0001}$, as used above.
 Their Lemma~7 was checked at $3000$-digit precision for every $n_1$ from $2$ to $60$, both $\delta$ and both $r$, and the side claim in its proof gives $\max f = 0.31999\ldots < 1/3$.
 Their Proposition~8 ($\Pi > 1.8^{n_1}$ for every $n_1 \ge 497$) was rechecked in full:
 \begin{itemize}
 \item \textbf{Lemma~9} (the primes that divide every Pad\'e coefficient) was verified directly for every $n_1 \le 160$, both $\delta$ and both $r$: $5{,}978$ cases, no failures.
-\item \textbf{The lower bound} $L(r, n_1) \le \log \Pi$ was computed exactly for every $497 \le n_1 < 10^6$ and both $r$, reproducing the paper's values $\exp(L(2, 3319)/3319) = 1.897735\ldots$ and $\exp(L(1, 10000)/10000) = 2.006523\ldots$.
+\item \textbf{The lower bound} $L(r, n_1) \le \log \Pi$ was computed exactly for every $497 \le n_1 < 10^6$ and both $r$.
+It reproduces the paper's values $\exp(L(2, 3319)/3319) = 1.897735\ldots$ and $\exp(L(1, 10000)/10000) = 2.006523\ldots$.
 It exceeds $\log 1.8$ except for $43$ pairs $(n_1, r)$, all with $n_1 \le 830$; for these $\Pi$ was computed exactly for both $\delta$, with minimum $\Pi^{1/n_1} = 1.80767$ at $n_1 = 497$.
 For $1000 < n_1 < 10^6$ the minimum of $\exp(L/n_1)$ is $1.8422$.
 \item \textbf{The analytic estimates} for $n_1 \ge 10^6$ were recomputed: $0.59197\, n_1$ for $10^6 \le n_1 \le 2 \times 10^9$ and $0.59035\, n_1$ for $n_1 > 2 \times 10^9$, against the required $\log 1.8 \cdot n_1 = 0.58779\, n_1$.
@@ -778,10 +796,10 @@ The explicit prime bound they rely on (Bennett, Martin, O'Bryant and Rechnitzer)
 \end{itemize}
 The remaining external inputs are that prime bound for $x > 2 \times 10^8$, Lemma~4 of Beukers (one choice of $\delta$ gives $\Lambda \ne 0$) and Lemma~4.5 of Chudnovsky, used inside their Lemma~9.
 
-\noindent\textbf{Checks of our lemmas.}
+\topic{Checks of our lemmas.}
 The identities in Lemmas~2, 4, 6, 8 and~9 were checked by computer algebra (substituting the cycle relations and expanding both sides) or on random orbits, Lemma~4 numerically for $k_1 \le 7$ and all odd $x < 20{,}000$, and the elimination in step~3 of the proof of Theorem~1 for every $f$ from $33{,}000$ to $400{,}000$.
 
-\noindent\textbf{Three-cycles not through $1$.}
+\topic{Three-cycles not through $1$.}
 The same window applies to any $3$-cycle, not only those through $1$: Lemma~\ref{lem:power-window} gives $q = \lfloor 2^{h/3} \rfloor$ and $\delta - 1/3 = \sigma/3 + O(1/q)$ with $\sigma = 1/x_0 + 1/x_1 + 1/x_2$.
 For each $h$ not divisible by $3$ we tested every odd start up to a bound $X$, skipping an $h$ only when $\delta > 1/3$, $q > 200$ and the window forces every element above $X$.
 The only cycles found are the two known ones at $q = 5$, namely $13 \to 33 \to 83$ and $17 \to 43 \to 27$.
@@ -817,7 +835,7 @@ Earlier versions stated this for $q \ge 71$, a threshold inherited from Proposit
 With Corollary~7 that crossover no longer matters.
 Testing only the fixed $48$-digit prefix lets the scan cover every $m$ up to $N - 48$, where $N$ is the number of digits computed.
 
-\noindent\textbf{The run.}
+\topic{The run.}
 $N = 1{,}072{,}000{,}000$ digits of each $\beta$ were computed with MPFR and certified twice: by MPFR's correct rounding (the $192$ guard digits are neither all $0$ nor all $1$, and the leading $61$ digits match an exact integer cube root), and independently by the exact test $I^3 < 2^{3N+r} < (I+1)^3$ on bit lengths, where $I = \lfloor 2^N \beta \rfloor$.
 MPFR returned wrong values above about $2^{30}$ digits of precision, which these checks caught, so $N$ was kept just below that.
 After XOR with \texttt{0x55}, an alternating run of $31$ or more digits shows up as three equal constant bytes, so the scan is linear.
@@ -864,7 +882,7 @@ With Proposition~D.1 these would have given finiteness for four steps; Theorem~3
 \section{Notes on the literature and history}
 \label{app:history}
 
-\noindent\textbf{Literature.}
+\topic{Literature.}
 \begin{itemize}
 \item Santos's preprint proves the one- and two-step cases (Propositions~15 and~16) and conjectures that $1$ is periodic only for $q = 5$ and $q = 2^e - 1$ (Conjecture~3).
 His Remark~5 describes three or more odd steps as far harder and likely out of reach; Theorem~1 settles three steps.
@@ -876,7 +894,7 @@ Only its title was available, and it is the most important item to check for ove
 \item The deep inputs are Bauer and Bennett (2002, 2018) on restricted irrationality measures, Beukers on $X^2 + D = 2^n$, and Ridout (1958) on approximation with $S$-unit denominators.
 \end{itemize}
 
-\noindent\textbf{History of the results.}
+\topic{History of the results.}
 The work began with the window (Lemma~\ref{lem:window}), which pins down $q$ from $h$ and makes a search over $h$ far faster than a search over $q$.
 Lower bounds on $x$ and $y$ (Lemmas~4 to~6 and Corollary~7, preceded by the weaker Proposition~B.13, which allowed $y < x$ with $y > (3q)^{1/3}$) then gave finiteness through Ridout's theorem (Proposition~B.4), but no bound.
 Residue-class arguments settled special cases (Propositions~B.5 and~B.6), and the effective inequality of Bauer and Bennett gave the lower bound on $k_1$ (Proposition~B.7) and most of the case analysis of Lemma~4 (Appendix~\ref{app:cases}). Playing the window against the near miss for $x$ then gave Theorem~1, once it was noticed that Bauer and Bennett's unrounded exponent lies below the golden ratio.
