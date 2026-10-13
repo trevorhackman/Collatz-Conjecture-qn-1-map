@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.1)  13 OCT 2026 00:54
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.1)  13 OCT 2026 00:58
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -228,7 +228,7 @@ Here is how much of TeX's memory you used:
  31168 multiletter control sequences out of 15000+600000
  640789 words of font info for 91 fonts, out of 8000000 for 9000
  319 hyphenation exceptions out of 8191
- 57i,9n,65p,1192b,243s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 57i,9n,65p,448b,243s stack positions out of 10000i,1000n,20000p,200000b,200000s
  </Users/trevorhackman/Library/texlive/2026basic/texmf-var/fonts/pk/ljfour/jk
 nappen/ec/tcrm1095.600pk></usr/local/texlive/2026basic/texmf-dist/fonts/type1/p
 ublic/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2026basic/texmf-dist/fonts/typ
