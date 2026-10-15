@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="cycle-search" target="25" />
+      <module name="cycle-search.main" target="25" />
+      <module name="cycle-search.test" target="25" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

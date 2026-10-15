@@ -9,15 +9,15 @@
       <latexCompile>
         <option name="persistedId" value="c4a1e6b2-7d34-4a91-9c10-texify-pdflatex-1" />
         <option name="type" value="latex-compile" />
-        <option name="compiler" value="PDFLATEX" />
-        <option name="compilerPath" value="/Library/TeX/texbin/pdflatex" />
+        <option name="compiler" value="LUALATEX" />
+        <option name="compilerPath" value="/Library/TeX/texbin/lualatex" />
         <option name="outputFormat" value="PDF" />
       </latexCompile>
       <latexCompile>
         <option name="persistedId" value="c4a1e6b2-7d34-4a91-9c10-texify-pdflatex-2" />
         <option name="type" value="latex-compile" />
-        <option name="compiler" value="PDFLATEX" />
-        <option name="compilerPath" value="/Library/TeX/texbin/pdflatex" />
+        <option name="compiler" value="LUALATEX" />
+        <option name="compilerPath" value="/Library/TeX/texbin/lualatex" />
         <option name="outputFormat" value="PDF" />
       </latexCompile>
       <pdfViewer>

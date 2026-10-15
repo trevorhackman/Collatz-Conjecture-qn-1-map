@@ -149,54 +149,54 @@ An implied constant in $O$, $\ll$, $\gg$, or $\asymp$ depends only on $\ell$.
 In a heuristic remark, $\lesssim$ and $\gtrsim$ mean at most or at least roughly, ignoring constants.
 
 \topic{Three odd steps.}
-When $\ell = 3$, write the cycle as $1 \to x \to y \to 1$, and set $A = 2^{k_1}$ and $B = 2^{k_2}$.
+When $\ell = 3$, write the cycle as $1 \to x \to y \to 1$.
 The three steps are
 \[
-q + 1 = Ax, \qquad qx + 1 = By, \qquad qy + 1 = 2^{k_3}.
+q + 1 = 2^{k_1} x, \qquad qx + 1 = 2^{k_2} y, \qquad qy + 1 = 2^{k_3}.
 \]
 
 \section{The structure of a three-step cycle}
 \label{sec:structure}
 
 \begin{named}{Lemma 1.}
-$k_3 \ge k_1 + 3$, and $y \equiv 1 \pmod{A}$.
+$k_3 \ge k_1 + 3$, and $y \equiv 1 \pmod{2^{k_1}}$.
 \end{named}
 
 \begin{proof}
 The odd elements other than $1$ are at least $3$, so $x \ge 3$ and $y \ge 3$.
-The first step is $q + 1 = Ax$, and therefore $q + 1 \ge 3A$, that is $q \ge 3A - 1$.
+The first step is $q + 1 = 2^{k_1} x$, and therefore $q + 1 \ge 3 \cdot 2^{k_1}$, that is $q \ge 3 \cdot 2^{k_1} - 1$.
 The third step is $2^{k_3} = qy + 1$, so
 \[
-2^{k_3} \ge (3A - 1) \cdot 3 + 1 = 9A - 2.
+2^{k_3} \ge (3 \cdot 2^{k_1} - 1) \cdot 3 + 1 = 9 \cdot 2^{k_1} - 2.
 \]
-Since $A = 2^{k_1} \ge 2$, we have $9A - 2 \ge 8A = 2^{k_1 + 3}$, and hence $k_3 \ge k_1 + 3$.
-From $q + 1 = Ax$ we also have $q \equiv -1 \pmod{A}$.
-Thus $qy + 1 \equiv 1 - y \pmod{A}$.
-But $qy + 1 = 2^{k_3}$ is divisible by $A$, because $k_3 \ge k_1$, so $1 - y \equiv 0 \pmod{A}$, that is $y \equiv 1 \pmod{A}$.
+Since $2^{k_1} \ge 2$, we have $9 \cdot 2^{k_1} - 2 \ge 8 \cdot 2^{k_1} = 2^{k_1 + 3}$, and hence $k_3 \ge k_1 + 3$.
+From $q + 1 = 2^{k_1} x$ we also have $q \equiv -1 \pmod{2^{k_1}}$.
+Thus $qy + 1 \equiv 1 - y \pmod{2^{k_1}}$.
+But $qy + 1 = 2^{k_3}$ is divisible by $2^{k_1}$, because $k_3 \ge k_1$, so $1 - y \equiv 0 \pmod{2^{k_1}}$, that is $y \equiv 1 \pmod{2^{k_1}}$.
 \end{proof}
 
 \begin{named}{Lemma 2 (cycle equation).}
 \[
-2^h = q^3 + q^2 + Aq + AB.
+2^h = q^3 + q^2 + 2^{k_1} q + 2^{k_1 + k_2}.
 \]
 \end{named}
 
 \begin{proof}
-Since $h = k_1 + k_2 + k_3$, $A = 2^{k_1}$ and $B = 2^{k_2}$,
+Since $h = k_1 + k_2 + k_3$,
 \[
-2^h = AB \cdot 2^{k_3}.
+2^h = 2^{k_1 + k_2} \cdot 2^{k_3}.
 \]
 The third step is $qy + 1 = 2^{k_3}$, so
 \[
-2^h = AB(qy + 1) = A(q \cdot By + B).
+2^h = 2^{k_1 + k_2}(qy + 1) = 2^{k_1}\bigl(q \cdot 2^{k_2} y + 2^{k_2}\bigr).
 \]
-The second step is $qx + 1 = By$, and therefore
+The second step is $qx + 1 = 2^{k_2} y$, and therefore
 \[
-2^h = A\bigl(q(qx + 1) + B\bigr) = A(q^2 x + q + B) = q^2(Ax) + Aq + AB.
+2^h = 2^{k_1}\bigl(q(qx + 1) + 2^{k_2}\bigr) = 2^{k_1}(q^2 x + q + 2^{k_2}) = q^2(2^{k_1} x) + 2^{k_1} q + 2^{k_1 + k_2}.
 \]
-The first step is $q + 1 = Ax$, so
+The first step is $q + 1 = 2^{k_1} x$, so
 \[
-2^h = q^2(q + 1) + Aq + AB = q^3 + q^2 + Aq + AB.
+2^h = q^2(q + 1) + 2^{k_1} q + 2^{k_1 + k_2} = q^3 + q^2 + 2^{k_1} q + 2^{k_1 + k_2}.
 \]
 \end{proof}
 
@@ -208,7 +208,7 @@ Hence $3$ does not divide $h$ and $q = \lfloor 2^{h/3} \rfloor$.
 
 \begin{proof}
 The lower bound is immediate from Lemma~2.
-Since $AB = (q(q+1) + A)/y \le (q+1)(3q+1)/9$ by $y \ge 3$, and $A \le (q+1)/3$,
+Since $2^{k_1 + k_2} = (q(q+1) + 2^{k_1})/y \le (q+1)(3q+1)/9$ by $y \ge 3$, and $2^{k_1} \le (q+1)/3$,
 \[
 2^h - q^3
 \le q^2 + \frac{q(q+1)}{3} + \frac{(q+1)(3q+1)}{9}
@@ -225,29 +225,29 @@ Then either $t = 2k_1$, or $t < k_1$ and $k_1 = t + v_2(s+1)$, or $t = k_1$.
 
 \begin{proof}
 Suppose $t > k_1$.
-Then $qx + 1 = Ax^2 - (x-1)$ has $2$-adic valuation $k_1$, so $B = A$ and $y = x^2 - w$ with $w = (x-1)/A$ even.
-Substituting $x = 1 + Aw$,
+Then $qx + 1 = 2^{k_1} x^2 - (x-1)$ has $2$-adic valuation $k_1$, so $k_2 = k_1$ and $y = x^2 - w$ with $w = (x-1)/2^{k_1}$ even.
+Substituting $x = 1 + 2^{k_1} w$,
 \[
-qy + 1 = A + w(1 - 3A) + A^2 w(3 - 2w) + 3A^3 w^2 + A^4 w^3.
+qy + 1 = 2^{k_1} + w(1 - 3 \cdot 2^{k_1}) + 2^{2k_1} w(3 - 2w) + 3 \cdot 2^{3k_1} w^2 + 2^{4k_1} w^3.
 \]
-The last three terms are divisible by $2^{2k_1 + v_2(w)}$ and $1 - 3A$ is odd, so if $v_2(w) \ne k_1$ then $v_2(qy + 1) = \min(k_1, v_2(w)) \le k_1$, contradicting Lemma~1.
+The last three terms are divisible by $2^{2k_1 + v_2(w)}$ and $1 - 3 \cdot 2^{k_1}$ is odd, so if $v_2(w) \ne k_1$ then $v_2(qy + 1) = \min(k_1, v_2(w)) \le k_1$, contradicting Lemma~1.
 Hence $v_2(w) = k_1$, that is $t = 2k_1$.
 
 Suppose $t < k_1$.
-Then $Ax^2 - x + 1 = 2^t\bigl(2^{k_1-t}x^2 - s\bigr)$ with the bracket odd, so $B = 2^t$, $y = 2^{k_1-t}x^2 - s$, and
+Then $2^{k_1} x^2 - x + 1 = 2^t\bigl(2^{k_1-t}x^2 - s\bigr)$ with the bracket odd, so $k_2 = t$, $y = 2^{k_1-t}x^2 - s$, and
 \[
-qy + 1 = (A-1)\, 2^{k_1-t} x^2 + (1+s) - As + A\, 2^t s y.
+qy + 1 = (2^{k_1}-1)\, 2^{k_1-t} x^2 + (1+s) - 2^{k_1} s + 2^{k_1 + t} s y.
 \]
 The last two terms are divisible by $2^{k_1}$ and the first has valuation exactly $k_1 - t$, so $v_2(s+1) \ne k_1 - t$ would give $v_2(qy + 1) < k_1$, again contradicting Lemma~1.
 \end{proof}
 
 \begin{named}{Lemma 5.}
-$A \le 2(x-1)$.
+$2^{k_1} \le 2(x-1)$.
 Hence $q < 2x^2$, that is $x > \sqrt{q/2}$.
 \end{named}
 
 \begin{proof}
-In the three cases of Lemma~4: $A^2 = 2^t \le x - 1$; or $A = 2^t \cdot 2^{v_2(s+1)} \le 2^t(s+1) = (x-1) + 2^t \le 2(x-1)$; or $A = 2^t \le x - 1$.
+In the three cases of Lemma~4: $2^{2k_1} = 2^t \le x - 1$; or $2^{k_1} = 2^t \cdot 2^{v_2(s+1)} \le 2^t(s+1) = (x-1) + 2^t \le 2(x-1)$; or $2^{k_1} = 2^t \le x - 1$.
 \end{proof}
 
 \begin{named}{Lemma 6 (consecutive triples).}
@@ -267,7 +267,7 @@ If $J \le K$, then $|a - b| \ge 2^J = (qa + 1)/b$; if $b > a$ this gives $b^2 > 
 
 \begin{named}{Corollary 7.}
 $y > x$ and $y^2 > qx$.
-In particular $B < q + 1$, so $AB \le Aq$.
+In particular $2^{k_2} < q + 1$, so $2^{k_1 + k_2} \le 2^{k_1} q$.
 \end{named}
 
 \begin{proof}
@@ -276,7 +276,7 @@ If $k_3 < k_2$, then $|x - y| \ge 2^{k_3} = qy + 1 > y$, which forces $x > qy > 
 So $k_2 \le k_3$.
 If $y < x$, Lemma~6 gives $y > q > x$, a contradiction.
 Hence $y > x$ and $y^2 > y(y-x) \ge qx + 1$.
-Finally $B = (qx + 1)/y < (qx + 1)/x < q + 1$, and $B$ is even while $q$ is odd.
+Finally $2^{k_2} = (qx + 1)/y < (qx + 1)/x < q + 1$, and $2^{k_2}$ is even while $q$ is odd.
 \end{proof}
 
 \section{The window and the near miss for $x$}
@@ -287,17 +287,17 @@ Finally $B = (qx + 1)/y < (qx + 1)/x < q + 1$, and $B$ is even while $q$ is odd.
 Let $N = 27 \cdot 2^h - (3q+1)^3$.
 Then
 \[
-N = 9q(3A-1) + 27AB - 1,
+N = 9q(3 \cdot 2^{k_1}-1) + 27 \cdot 2^{k_1 + k_2} - 1,
 \qquad
-0 < N < 54Aq,
+0 < N < 54 \cdot 2^{k_1} q,
 \qquad
-0 < \delta - \frac{1}{3} \le \frac{N}{81q^2} < \frac{2A}{3q}.
+0 < \delta - \frac{1}{3} \le \frac{N}{81q^2} < \frac{2^{k_1 + 1}}{3q}.
 \]
 \end{named}
 
 \begin{proof}
 The formula for $N$ follows from Lemma~2 by expanding $(3q+1)^3$.
-Since $A \ge 2$, $N \ge 45q - 1 > 0$, and $AB \le Aq$ (Corollary~7) gives $N < 54Aq$.
+Since $2^{k_1} \ge 2$, $N \ge 45q - 1 > 0$, and $2^{k_1 + k_2} \le 2^{k_1} q$ (Corollary~7) gives $N < 54 \cdot 2^{k_1} q$.
 Finally $N = 27\bigl[(q+\delta)^3 - (q + 1/3)^3\bigr]$; as $N > 0$ we have $\delta > 1/3$, and then $N \ge 81q^2(\delta - 1/3)$.
 \end{proof}
 
@@ -306,18 +306,18 @@ Finally $N = 27\bigl[(q+\delta)^3 - (q + 1/3)^3\bigr]$; as $N > 0$ we have $\del
 Let $f = h - 3k_1$.
 Then $3 \nmid f$, and
 \[
-\bigl|x^3 - 2^f\bigr| \le \frac{3.2\, x^2}{A},
+\bigl|x^3 - 2^f\bigr| \le \frac{3.2\, x^2}{2^{k_1}},
 \qquad
-\bigl|x - 2^{f/3}\bigr| \le \frac{1.6}{A}.
+\bigl|x - 2^{f/3}\bigr| \le \frac{1.6}{2^{k_1}}.
 \]
 \end{named}
 
 \begin{proof}
-Since $A^3 x^3 = (q+1)^3$, Lemma~2 gives $A^3 x^3 - 2^h = E$ with $E = 2q^2 + (3-A)q + 1 - AB$.
-Using $q < Ax$, $|3-A| \le A$ and $AB \le Aq < A^2 x$, we get $|E| \le 2A^2 x^2 + 2A^2 x + 1 \le 3.2 A^2 x^2$ for $x \ge 3$.
-Dividing by $A^3$ gives the first bound, and $f \equiv h \pmod{3}$.
+Since $2^{3k_1} x^3 = (q+1)^3$, Lemma~2 gives $2^{3k_1} x^3 - 2^h = E$ with $E = 2q^2 + (3 - 2^{k_1})q + 1 - 2^{k_1 + k_2}$.
+Using $q < 2^{k_1} x$, $|3 - 2^{k_1}| \le 2^{k_1}$ and $2^{k_1 + k_2} \le 2^{k_1} q < 2^{2k_1} x$, we get $|E| \le 2 \cdot 2^{2k_1} x^2 + 2 \cdot 2^{2k_1} x + 1 \le 3.2 \cdot 2^{2k_1} x^2$ for $x \ge 3$.
+Dividing by $2^{3k_1}$ gives the first bound, and $f \equiv h \pmod{3}$.
 Write $t = 2^{f/3}$.
-If $|x - t| \ge 1$, then $|x^3 - t^3| \ge 3x^2 - 3x + 1 \ge 2x^2 > 3.2 x^2/A$, a contradiction since $A \ge 2$.
+If $|x - t| \ge 1$, then $|x^3 - t^3| \ge 3x^2 - 3x + 1 \ge 2x^2 > 3.2 x^2/2^{k_1}$, a contradiction since $2^{k_1} \ge 2$.
 So $|x - t| < 1$, hence $t > x - 1 \ge 2x/3$ and $x^2 + xt + t^2 > 2x^2$, which gives the second bound.
 \end{proof}
 
@@ -354,12 +354,12 @@ With Lemma~\ref{lem:window} and $q \ge 2^m$,
 \]
 \item \textbf{The near miss for $x$.}
 Apply Theorem~A with $s = 1$, $p = x$, $j = j'$.
-By Lemma~\ref{lem:near-x}, $|1 - x/2^{f/3}| \le 1.6/(A \cdot 2^{f/3})$, so
+By Lemma~\ref{lem:near-x}, $|1 - x/2^{f/3}| \le 1.6/(2^a \cdot 2^{f/3})$, so
 \[
 2^a < 1.6 \cdot 2^{5-j'} \cdot 16166467234^{(f+77)/63}.
 \]
 \item \textbf{Combining.}
-By Lemma~\ref{lem:near-x}, $x \ge 2^{f/3} - 1.6/A \ge 2^{j'}$, so $q + 1 = Ax \ge A \cdot 2^{j'}$ and $m \ge a + j' - 1$.
+By Lemma~\ref{lem:near-x}, $x \ge 2^{f/3} - 1.6/2^a \ge 2^{j'}$, so $q + 1 = 2^a x \ge 2^a \cdot 2^{j'}$ and $m \ge a + j' - 1$.
 With $h = f + 3a$, step~1 gives $a > 0.20879\, f - 77.3$ and step~2 gives $a < 0.20496\, f + 47.2$.
 These are incompatible once $f \ge 32{,}214$, that is $j' \ge 10{,}738$.
 \end{enumerate}
@@ -392,15 +392,18 @@ Their stated exponent $1.62$ lies just above $\varphi$ and would leave room for 
 \markstmt{10}{lem:power-window}
 For an $\ell$-odd cycle through $1$,
 \[
-2^h = (q+1) \prod_{i=1}^{\ell-1} \left( q + \frac{1}{x_i} \right),
+2^h = (q+1) \prod_{i=1}^{\ell-1} \left( q + \frac{1}{x_i} \right).
 \]
-so $q^\ell < 2^h < (q+1)^\ell$, $\ell \nmid h$ and $q = \lfloor 2^{h/\ell} \rfloor$.
+If $\ell \ge 2$, then $q^\ell < 2^h < (q+1)^\ell$, $\ell \nmid h$ and $q = \lfloor 2^{h/\ell} \rfloor$.
 Moreover, with $\sigma = \sum 1/x_i$, we have $\delta - 1/\ell = \sigma/\ell + O(1/q)$.
 \end{named}
 
 \begin{proof}
 Multiply the relations $2^{k_i} = (q \cdot x_{i-1} + 1)/x_i$ around the cycle.
-Each factor $q + 1/x_i$ lies strictly between $q$ and $q+1$.
+The product on the right is empty when $\ell = 1$, and then $2^h = q + 1$.
+If $\ell \ge 2$, the product contains a factor $q + 1/x_i$ with $x_i \ge 3$, and every such factor lies strictly between $q$ and $q+1$.
+Hence $q^\ell < 2^h < (q+1)^\ell$.
+A power of $2$ strictly between consecutive $\ell$-th powers is not an $\ell$-th power, so $\ell \nmid h$, and $q = \lfloor 2^{h/\ell} \rfloor$.
 Comparing $(q+\delta)^\ell$ with the expanded product gives the last statement.
 \end{proof}
 
@@ -463,20 +466,41 @@ Thus $q^{1-\mu} \ll q^{-1/\mu}$, which bounds $q$ exactly when $\mu^2 - \mu - 1 
 For $\ell = 3$, Theorem~A supplies the hypothesis of Theorem~$2'$ with $R = \{1, 2\}$, $\mu \approx 1.61487$ and $j_0 = 11000$.
 So Theorem~1 is the case $\ell = 3$ of Theorem~2; Section~\ref{sec:proof} carries out this case with explicit constants.
 
+\begin{named}{Ridout's theorem (1958).}
+Let $\alpha$ be an algebraic irrational, let $S$ be a finite set of primes, and let $\varepsilon > 0$.
+Only finitely many reduced fractions $p/q$ with $q > 0$ have every prime factor of $q$ in $S$ and satisfy
+\[
+\left| \alpha - \frac{p}{q} \right| < q^{-1-\varepsilon}.
+\]
+\end{named}
+
+The theorem gives no bound on those fractions.
+This is why Theorem~3, which uses it in place of an effective measure, gives no bound on $q$.
+
 \begin{named}{Theorem 3.}
 For each $\ell \ge 2$, only finitely many odd $q$ have $1$ on a cycle of $C$ of length $\ell$.
 \end{named}
 
 \begin{proof}[Proof of Theorem~3]
-Run the proof of Theorem~$2'$ with Ridout's theorem in place of an effective measure: for any $\varepsilon > 0$,
+Let $r \in \{1, \ldots, \ell-1\}$ and let $S$ consist of $2$ and the prime factors of $\ell$.
+Then $2^{r/\ell}$ is an algebraic irrational.
+A fraction $p/(s \cdot 2^j)$ with $s \in \{1, \ell\}$, written in lowest terms, has every prime factor of its denominator in $S$.
+Ridout's theorem therefore gives, for any $\varepsilon > 0$,
 \[
 \left| 2^{r/\ell} - \frac{p}{s \cdot 2^j} \right| > (s \cdot 2^j)^{-1-\varepsilon}
 \]
-for all but finitely many fractions with $s \in \{1, \ell\}$, so the argument works with $\mu = 1 + \varepsilon < \varphi$.
-Each exceptional fraction has a fixed nonzero distance from $2^{r/\ell}$; for an element $x_i$ this fixes $x_i$ and its relative error, which Lemma~\ref{lem:near-misses} allows only for bounded $q$, and for the window it is incompatible with $|\delta - 1/\ell| \to 0$.
+for all but finitely many such fractions.
+The proof of Theorem~$2'$ runs with this inequality in place of an effective measure, and with $\mu = 1 + \varepsilon < \varphi$.
+Each exceptional fraction has a fixed nonzero distance from $2^{r/\ell}$.
+For an element $x_i$ this fixes $x_i$ and its relative error, which Lemma~\ref{lem:near-misses} allows only for bounded $q$, and for the window it is incompatible with $|\delta - 1/\ell| \to 0$.
 \end{proof}
 
-Theorem~3 fails for $\ell = 1$, where $1 \to 1$ for every Mersenne $q$.
+\emph{Theorem~3 fails for $\ell = 1$.}
+Evidently, $q = 2^e - 1$ gives the cycle $1 \to 1$ for every $e \ge 2$.
+Mathematically, for $\ell \ge 2$ an odd element other than $1$ puts a factor strictly between $q$ and $q+1$, so $\ell$ does not divide $h$ and $2^{r/\ell}$ is irrational.
+Ridout's theorem then applies.
+For $\ell = 1$ that product is empty, so the same identity becomes $2^h = q + 1$, and the three conclusions of Lemma~\ref{lem:power-window} fail.
+The root is the integer $2^h$, and Ridout's theorem does not apply.
 
 \begin{named}{Corollary 12.}
 No odd $q$ has $1$ on a cycle of $C$ of length $4$ whose total number of halvings is $\equiv 2 \pmod{4}$.
@@ -509,6 +533,23 @@ Theorem~$2'$ supplies the computable bound.
 The case $\ell = 4$ is Corollary~12.
 \end{proof}
 
+\begin{named}{Corollary 14.}
+Let $\ell = 3 \cdot 2^a$ with $a \ge 1$.
+Only finitely many odd $q$ have $1$ on a cycle of $C$ of length $\ell$ whose total number of halvings is $\equiv \ell/3$ or $2\ell/3 \pmod{\ell}$, and a bound is computable from Theorem~A.
+The length $3$ is Theorem~1, which rules out every such $q$.
+\end{named}
+
+\begin{proof}
+Write $h = \ell m + r_0$ with $r_0 \in \{\ell/3,\, 2\ell/3\}$.
+Every multiple of $h$ is congruent to $0$, $\ell/3$, or $2\ell/3$ modulo $\ell$, so the only irrational roots that occur are $2^{1/3}$ and $2^{2/3}$.
+In the proof of Theorem~$2'$ the window fraction is $(\ell q + 1)/(\ell \cdot 2^m)$.
+Its numerator is coprime to $\ell$, and $\ell \cdot 2^m = 3 \cdot 2^{m+a}$, so this is a fraction of the shape in Theorem~A with $s = 3$ and exponent $m+a$.
+Each near miss is $x_i/2^j$ with $x_i$ odd, so Theorem~A applies with $s = 1$.
+Both give the exponent $\mu = 3\log_2(16166467234)/63 \approx 1.61487 < \varphi$ once the exponent in Theorem~A is at least $11000$.
+The shift by $a$, and the fixed factors in Theorem~A, contribute only a constant depending on $\ell$.
+The fractions used in the proof of Theorem~$2'$ therefore satisfy its hypothesis with $R = \{\ell/3,\, 2\ell/3\}$, this $\mu$, and $j_0 = 11000$, and that proof supplies the computable bound.
+\end{proof}
+
 \topic{Four steps with $h$ odd.}
 Here the window and the near misses for $x_1$ and $x_3$ involve $2^{1/4}$ and $2^{3/4}$.
 Theorem~2 would finish the case given an effective exponent below $\varphi$ for these numbers with power-of-$2$ denominators.
@@ -535,7 +576,7 @@ The cases $t > k_1$ and $t = k_1$ are impossible, and the case $t < k_1$ is tigh
 In fact $x \ge 5$ and $y \ge 7$.
 Before Lemma~6, the best result was $y \ge x$ or $y > (3q)^{1/3}$; this is the origin of the threshold $q \ge 71$ in earlier versions of the window lemma.
 \item \textbf{Computations} (Appendix~\ref{app:computations}).
-Searches over $h$ for $\ell = 3$ to $8$, verification of the Bauer--Bennett inputs, the digit scan ruling out $q < 2^{1{,}071{,}999{,}953}$, and a search for $3$-cycles not through $1$.
+Searches over $h$ for $\ell = 3$ to $8$, verification of the Bauer--Bennett inputs, and the digit scan ruling out $q < 2^{1{,}071{,}999{,}953}$.
 \item \textbf{An earlier approach to four odd steps} (Appendix~\ref{app:four}), reducing finiteness to lower bounds on the elements, with $x > \sqrt{q/2}$ proved and two configurations left open.
 \end{itemize}
 
@@ -589,7 +630,7 @@ Bauer and Bennett's headline inequality, $|x^3 - 2^n| \ge x^{4/3}$ unless $x^3 =
 \label{app:order}
 
 \begin{named}{Lemma B.1 (factorization).}
-With $q = Ax - 1$,
+With $q = 2^{k_1} x - 1$,
 \[
 \bigl(2^{k_1} x - 1\bigr) \bigl(2^{k_1} x^2 - x + 1\bigr) = 2^{k_2} \bigl(2^{k_3} - 1\bigr).
 \]
@@ -608,7 +649,7 @@ In particular $d < 3 \log_2 q$.
 
 \begin{proof}
 $2^{k_3} = qy + 1 \equiv 1 \pmod{q}$, so $d$ divides $k_3$.
-Using $A \ge 2$ and $2^{k_2} \ge 2$, $y \le (q^2 + q + 2)/4$, so $2^{k_3} \le q(q^2 + q + 2)/4 + 1 < q^3$.
+Using $2^{k_1} \ge 2$ and $2^{k_2} \ge 2$, $y \le (q^2 + q + 2)/4$, so $2^{k_3} \le q(q^2 + q + 2)/4 + 1 < q^3$.
 Also $2^d \ge q + 1 > q$, so $q^3 < 2^{3d}$, and hence $k_3 < 3d$.
 \end{proof}
 
@@ -635,7 +676,7 @@ Only finitely many odd $q$ have a $3$-odd cycle through $1$.
 \end{named}
 
 \begin{proof}
-By Lemmas~\ref{lem:window} and~5, $\delta - 1/3 < 2A/(3q)$ with $A = (q+1)/x < (q+1)\sqrt{2/q}$, so $\delta - 1/3 < 0.96\, q^{-1/2}$ for $q \ge 71$.
+By Lemmas~\ref{lem:window} and~5, $\delta - 1/3 < 2^{k_1+1}/(3q)$ with $2^{k_1} = (q+1)/x < (q+1)\sqrt{2/q}$, so $\delta - 1/3 < 0.96\, q^{-1/2}$ for $q \ge 71$.
 With $h = 3m + r$, $\beta = 2^{r/3}$, $P = 3q + 1$ and $Q = 3 \cdot 2^m$ this gives $0 < \beta - P/Q < 2.9\, q^{-1/2}/Q$, and since $Q < 2.39(q+1)$ we get $|\beta - P/Q| < 4.6\, Q^{-3/2} < Q^{-5/4}$ for $Q > 450$.
 The reduced fraction still has a denominator built from $2$ and $3$, so Ridout's theorem with $S = \{2, 3\}$ and $\varepsilon = 1/4$ allows only finitely many such fractions; infinitely many $q$ would give infinitely many distinct ones, since the errors tend to $0$ and $\beta$ is irrational.
 \end{proof}
@@ -694,8 +735,8 @@ In any $3$-odd cycle through $1$, $2^{k_1} > q^{1/3}/2$.
 \begin{proof}
 Apply Bauer and Bennett's Corollary~4 with $x = 3q + 1$ and $n = h$.
 The exceptional values of $x$ give $q \in \{1, 6, 40\}$, which are excluded, and $N > 0$ by Lemma~\ref{lem:window}, so $N \ge 3^{5/3}(3q+1)^{4/3} > 27\, q^{4/3}$.
-By Lemma~\ref{lem:window}, $N < 54Aq$.
-Comparing, $54Aq > 27\, q^{4/3}$.
+By Lemma~\ref{lem:window}, $N < 54 \cdot 2^{k_1} q$.
+Comparing, $54 \cdot 2^{k_1} q > 27\, q^{4/3}$.
 \end{proof}
 
 \begin{named}{Corollary B.8.}
@@ -711,7 +752,7 @@ $2^{k_1} \le 3.2\, x^{2/3}$, and hence $2^{k_1} < 2.01(q+1)^{2/5}$.
 \end{named}
 
 \begin{proof}
-By Lemma~\ref{lem:near-x}, $x^3 - 2^f = E/A^3 \ne 0$ with $|E| \le 3.2\, A^2 x^2$, so Bauer and Bennett's headline inequality gives $A^3 x^{4/3} \le 3.2\, A^2 x^2$.
+By Lemma~\ref{lem:near-x}, $x^3 - 2^f = E/2^{3k_1} \ne 0$ with $|E| \le 3.2 \cdot 2^{2k_1} x^2$, so Bauer and Bennett's headline inequality gives $2^{3k_1} x^{4/3} \le 3.2 \cdot 2^{2k_1} x^2$.
 The exception $x = 5$ forces $q \le 39$ by Lemma~5.
 \end{proof}
 
@@ -725,15 +766,15 @@ No $3$-odd cycle through $1$ has $t > k_1$.
 \end{named}
 
 \begin{proof}
-Lemma~4 and its proof give $t = 2k_1$ and $k_2 = k_1$, so $x = 1 + A^2 s$ with $s$ odd.
-Proposition~B.7 gives $q < 8A^3$, so $x < 8A^2$ and $s \in \{1, 3, 5, 7\}$.
-Then $q = sA^3 + A - 1$, and the cycle equation reads $2^h = q^3 + q^2 + Aq + A^2$.
-Dividing by $A^9$,
+Lemma~4 and its proof give $t = 2k_1$ and $k_2 = k_1$, so $x = 1 + 2^{2k_1} s$ with $s$ odd.
+Proposition~B.7 gives $q < 8 \cdot 2^{3k_1}$, so $x < 8 \cdot 2^{2k_1}$ and $s \in \{1, 3, 5, 7\}$.
+Then $q = s \cdot 2^{3k_1} + 2^{k_1} - 1$, and the cycle equation reads $2^h = q^3 + q^2 + 2^{k_1} q + 2^{2k_1}$.
+Dividing by $2^{9k_1}$,
 \[
-s^3 < \frac{2^h}{A^9} < \left(s + \frac{1}{A^2}\right)^3 \left(1 + \frac{2}{q}\right),
+s^3 < \frac{2^h}{2^{9k_1}} < \left(s + \frac{1}{2^{2k_1}}\right)^3 \left(1 + \frac{2}{q}\right),
 \]
-and for $A \ge 8$ the right-hand side is below the next power of $2$ after $s^3$ ($2$, $32$, $128$, $512$), so $2^h/A^9$ lies strictly between consecutive powers of $2$.
-For $A \le 4$, $q \le 451$, which the direct search covers.
+and for $2^{k_1} \ge 8$ the right-hand side is below the next power of $2$ after $s^3$ ($2$, $32$, $128$, $512$), so $2^h/2^{9k_1}$ lies strictly between consecutive powers of $2$.
+For $2^{k_1} \le 4$, $q \le 451$, which the direct search covers.
 \end{proof}
 (Also checked in exact arithmetic for $k_1 < 400$.)
 
@@ -742,35 +783,35 @@ No $3$-odd cycle through $1$ has $t = k_1$.
 \end{named}
 
 \begin{proof}
-Here $x = 1 + As$ with $s$ odd, so $q = A^2 s + A - 1$.
+Here $x = 1 + 2^{k_1} s$ with $s$ odd, so $q = 2^{2k_1} s + 2^{k_1} - 1$.
 Let $g = h - 6k_1$.
 Expanding the cycle equation,
 \[
-0 < 2^g - s^3 = \frac{R}{A^6} \le \frac{6s^2}{A},
+0 < 2^g - s^3 = \frac{R}{2^{6k_1}} \le \frac{6s^2}{2^{k_1}},
 \qquad
-R = 3A^4 s^2(A-1) + 3A^2 s(A-1)^2 + (A-1)^3 + q^2 + Aq + AB,
+R = 3 \cdot 2^{4k_1} s^2(2^{k_1}-1) + 3 \cdot 2^{2k_1} s(2^{k_1}-1)^2 + (2^{k_1}-1)^3 + q^2 + 2^{k_1} q + 2^{k_1 + k_2},
 \]
-using $q < 2A^2 s$ and $B < q$ ($A \ge 4$). Bauer and Bennett's headline inequality gives $2^g - s^3 \ge s^{4/3}$, so $A \le 6\, s^{2/3}$, while Proposition~B.7 gives $8A^3 > q > A^2 s$, so $A > s/8$.
-Hence $s < 48^3$ and $A \le 13{,}824$, so $q < 2A^2 s < 5 \times 10^{13}$, which the computations cover.
+using $q < 2 \cdot 2^{2k_1} s$ and $2^{k_2} < q$ ($2^{k_1} \ge 4$). Bauer and Bennett's headline inequality gives $2^g - s^3 \ge s^{4/3}$, so $2^{k_1} \le 6\, s^{2/3}$, while Proposition~B.7 gives $8 \cdot 2^{3k_1} > q > 2^{2k_1} s$, so $2^{k_1} > s/8$.
+Hence $s < 48^3$ and $2^{k_1} \le 13{,}824$, so $q < 2 \cdot 2^{2k_1} s < 5 \times 10^{13}$, which the computations cover.
 The exception $s = 5$ gives $q < 4 \times 10^6$ through Proposition~B.9.
 \end{proof}
 
 \begin{named}{Proposition B.12 (a constraint when $t < k_1$).}
-Suppose $t < k_1$, so that $k_2 = t$, and write $x = Au - (B-1)$ with $u$ odd.
+Suppose $t < k_1$, so that $k_2 = t$, and write $x = 2^{k_1} u - (2^{k_2}-1)$ with $u$ odd.
 Then $2^{k_1}/2^{k_2} \le 3u^{2/3}$.
 \end{named}
 
 \begin{proof}
-Put $\delta' = AB - A + 1$, so $q = A^2 u - \delta'$, and $g = h - 6k_1$.
+Put $\delta' = 2^{k_1 + k_2} - 2^{k_1} + 1$, so $q = 2^{2k_1} u - \delta'$, and $g = h - 6k_1$.
 Expanding,
 \[
 0 < u^3 - 2^g
-= \frac{3A^4 u^2 \delta' - 3A^2 u \delta'^2 + \delta'^3 - q^2 - Aq - AB}{A^6}
-\le \frac{3u^2 B}{A},
+= \frac{3 \cdot 2^{4k_1} u^2 \delta' - 3 \cdot 2^{2k_1} u \delta'^2 + \delta'^3 - q^2 - 2^{k_1} q - 2^{k_1 + k_2}}{2^{6k_1}}
+\le \frac{3u^2 \cdot 2^{k_2}}{2^{k_1}},
 \]
-since the terms after the first are negative in total and $\delta' < AB$.
+since the terms after the first are negative in total and $\delta' < 2^{k_1 + k_2}$.
 Bauer and Bennett's headline inequality gives $u^3 - 2^g \ge u^{4/3}$.
-The exceptions are $u = 1$, where $x \le A$ and Proposition~B.9 forces $A \le 32$, and $u = 5$, where it forces $q < 4 \times 10^6$.
+The exceptions are $u = 1$, where $x \le 2^{k_1}$ and Proposition~B.9 forces $2^{k_1} \le 32$, and $u = 5$, where it forces $q < 4 \times 10^6$.
 \end{proof}
 
 The positivity and upper bounds in Propositions~B.11 and~B.12 were also checked in exact arithmetic on hundreds of thousands of random parameter choices.
@@ -850,18 +891,6 @@ The remaining external inputs are that prime bound for $x > 2 \times 10^8$, Lemm
 \topic{Checks of our lemmas.}
 The identities in Lemmas~2, 4, 6, 8 and~9 were checked by computer algebra (substituting the cycle relations and expanding both sides) or on random orbits, Lemma~4 numerically for $k_1 \le 7$ and all odd $x < 20{,}000$, and the elimination in step~3 of the proof of Theorem~1 for every $f$ from $33{,}000$ to $400{,}000$.
 
-\topic{Three-cycles not through $1$.}
-The same window applies to any $3$-cycle, not only those through $1$: Lemma~\ref{lem:power-window} gives $q = \lfloor 2^{h/3} \rfloor$ and $\delta - 1/3 = \sigma/3 + O(1/q)$ with $\sigma = 1/x_0 + 1/x_1 + 1/x_2$.
-For each $h$ not divisible by $3$ we tested every odd start up to a bound $X$, skipping an $h$ only when $\delta > 1/3$, $q > 200$ and the window forces every element above $X$.
-The only cycles found are the two known ones at $q = 5$, namely $13 \to 33 \to 83$ and $17 \to 43 \to 27$.
-\begin{itemize}
-\item For $h \le 10{,}000$, so $q < 2^{3333}$, no $3$-cycle has an element $\le 40$ except those two.
-\item For $h \le 5{,}000$, so $q < 2^{1666}$, none has an element $\le 100$ except those two.
-\item For $h \le 2{,}000$, so $q < 2^{666}$, none has an element $\le 500$ except those two.
-\end{itemize}
-This is a bound on the smallest element of a $3$-cycle.
-It is not a proof that no other $3$-cycle exists.
-
 \begin{named}{Proposition C.1 (digit test).}
 Let $q \ge 17$, write $h = 3m + r$ with $r \in \{1, 2\}$, and let $\beta = 2^{r/3}$.
 Then $q = \lfloor 2^m \beta \rfloor$, and binary digits $m+1$ through $m + \lfloor m/2 \rfloor - 2$ of $\beta$ alternate $0, 1, 0, 1, \ldots$.
@@ -870,7 +899,7 @@ In particular, for $m \ge 100$ the $48$ digits $m+1$ through $m+48$ alternate.
 
 \begin{proof}
 The fractional part of $2^m \beta$ is $\delta$, made of $\beta$'s digits from position $m+1$ on.
-Lemma~\ref{lem:window} gives $\delta - 1/3 < 2A/(3q)$ (this uses $y > x$ from Corollary~7, through $AB \le Aq$), and Lemma~5 gives $A = (q+1)/x < (q+1)\sqrt{2/q}$, so
+Lemma~\ref{lem:window} gives $\delta - 1/3 < 2^{k_1+1}/(3q)$ (this uses $y > x$ from Corollary~7, through $2^{k_1+k_2} \le 2^{k_1} q$), and Lemma~5 gives $2^{k_1} = (q+1)/x < (q+1)\sqrt{2/q}$, so
 \[
 0 < \delta - \frac{1}{3}
 < \frac{2\sqrt{2}}{3}\left(1 + \frac{1}{q}\right) q^{-1/2}
@@ -916,14 +945,14 @@ In a $4$-odd cycle through $1$, $2^{k_1} \le 2(x-1)$, so $x > \sqrt{q/2}$.
 \end{named}
 
 \begin{proof}
-As in Lemma~1, $z \equiv 1 \pmod{A}$, so $qy + 1 = 2^{k_3} z$ gives $y \equiv 1 - 2^{k_3} \pmod{A}$.
+As in Lemma~1, $z \equiv 1 \pmod{2^{k_1}}$, so $qy + 1 = 2^{k_3} z$ gives $y \equiv 1 - 2^{k_3} \pmod{2^{k_1}}$.
 Let $t = v_2(x-1)$ and $s = (x-1)/2^t$.
-If $t \ge k_1$, then $A \le x - 1$.
-Otherwise $k_2 = t$ and $y = 2^{k_1-t}x^2 - s \equiv 2^{k_1-t} - s \pmod{A}$, since $x^2 \equiv 1 \pmod{2^t}$.
-So $M = 2^{k_1-t} + 2^{k_3} - (s+1)$ is a multiple of $A$.
-If $M = 0$, then $2^{k_1-t} < s + 1$, so $A < 2^t(s+1) \le 2(x-1)$.
-If $M \le -A$, then $s + 1 > A$, so $A \le x$.
-If $M \ge A$, then $2^{k_3} > A/2$, so $k_3 \ge k_1$ and $2^{k_1-t} \equiv s + 1 \pmod{A}$, giving $2^{k_1-t} = s + 1$ or $s + 1 \ge A$; either way $A \le 2(x-1)$.
+If $t \ge k_1$, then $2^{k_1} \le x - 1$.
+Otherwise $k_2 = t$ and $y = 2^{k_1-t}x^2 - s \equiv 2^{k_1-t} - s \pmod{2^{k_1}}$, since $x^2 \equiv 1 \pmod{2^t}$.
+So $M = 2^{k_1-t} + 2^{k_3} - (s+1)$ is a multiple of $2^{k_1}$.
+If $M = 0$, then $2^{k_1-t} < s + 1$, so $2^{k_1} < 2^t(s+1) \le 2(x-1)$.
+If $M \le -2^{k_1}$, then $s + 1 > 2^{k_1}$, so $2^{k_1} \le x$.
+If $M \ge 2^{k_1}$, then $2^{k_3} > 2^{k_1-1}$, so $k_3 \ge k_1$ and $2^{k_1-t} \equiv s + 1 \pmod{2^{k_1}}$, giving $2^{k_1-t} = s + 1$ or $s + 1 \ge 2^{k_1}$; either way $2^{k_1} \le 2(x-1)$.
 \end{proof}
 
 Lemma~6 then gives $y \gg q^{3/4}$ if $k_2 \le k_3$, and $z > q$ or $z^2 > qy$ if $k_3 \le k_4$.

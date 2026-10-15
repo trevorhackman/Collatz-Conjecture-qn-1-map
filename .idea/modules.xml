@@ -3,6 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Collatz-Conjecture-qn-1-map.iml" filepath="$PROJECT_DIR$/.idea/Collatz-Conjecture-qn-1-map.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/cycle-search.iml" filepath="$PROJECT_DIR$/.idea/modules/cycle-search.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/cycle-search.main.iml" filepath="$PROJECT_DIR$/.idea/modules/cycle-search.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/cycle-search.test.iml" filepath="$PROJECT_DIR$/.idea/modules/cycle-search.test.iml" />
     </modules>
   </component>
 </project>
