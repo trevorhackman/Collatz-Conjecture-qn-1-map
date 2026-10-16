@@ -29,14 +29,14 @@ Every cycle, any elements. Finished runs of `cycle-search`.
 |---|---|---|---|
 | 2 | h ≤ 8000 | q < 2^4000 | q=5: 1→3; q=181: 27→611 and 35→99 |
 | 3 | h ≤ 4000 | q < 2^1333 | q=5: 13→33→83 and 17→43→27 |
-| 4 | h ≤ 400 | q < 2^100 | none |
-| 5 | h ≤ 120 | q < 2^24 | none |
+| 4 | h ≤ 3000 | q < 2^750 | none |
+| 5 | h ≤ 2000 | q < 2^400 | none |
 | 6 | h ≤ 1800 | q < 2^300 | none |
 | 7 | h ≤ 700 | q < 2^100 | none |
 | 8 | h ≤ 560 | q < 2^70 | none |
 | 9 | h ≤ 270 | q < 2^30 | none |
 
-Cycles through 1 only. Length 2 is not a search bound: Beukers's theorem leaves only q=5. Length 3 is the digit scan in Appendix D; lengths 4–8 are the Appendix D searches; lengths 9–15 are `cycle-search` for every admissible h ≤ 100000.
+Cycles through 1 only. Length 2 is not a search bound: Beukers's theorem leaves only q=5. Length 3 is the digit scan in Appendix D. Lengths 4 through 15 are every admissible h ≤ 100000.
 
 | ℓ | No cycle through 1 for |
 |---|---|
@@ -54,7 +54,7 @@ Cycles through 1 only. Length 2 is not a search bound: Beukers's theorem leaves 
 | 14 | q < 2^7142 |
 | 15 | q < 2^6666 |
 
-Fixed q. Every length from 2 up, only the heights with that q.
+Fixed q. Every length from 2 up, only the values of h with that q.
 
 | q | lengths searched | Cycles |
 |---|---|---|

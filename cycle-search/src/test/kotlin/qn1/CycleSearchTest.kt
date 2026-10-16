@@ -6,7 +6,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 import kotlin.test.fail
 
-/** Heights where the unsplit walk still finishes quickly. */
+/** Values of h where the unsplit walk still finishes quickly. */
 private const val MAX_H = 40
 
 /** First length that splits the numerator. Lengths below this only walk. */
@@ -75,11 +75,11 @@ class CycleSearchTest {
     }
 
     @Test
-    fun powerWindowMatchesKnownHeights() {
-        assertEquals(5..5, heightsForQ(BigInteger.valueOf(5), 2))
-        assertEquals(14..15, heightsForQ(BigInteger.valueOf(5), 6))
-        assertTrue(heightsForQ(BigInteger.valueOf(7), 2).isEmpty())
-        assertTrue(heightsForQ(BigInteger.valueOf(15), 4).isEmpty())
+    fun powerWindowMatchesKnownH() {
+        assertEquals(5..5, hForQ(BigInteger.valueOf(5), 2))
+        assertEquals(14..15, hForQ(BigInteger.valueOf(5), 6))
+        assertTrue(hForQ(BigInteger.valueOf(7), 2).isEmpty())
+        assertTrue(hForQ(BigInteger.valueOf(15), 4).isEmpty())
     }
 
     @Test
@@ -97,7 +97,7 @@ class CycleSearchTest {
     @Test
     fun q5Length11WalkMatchesSplit() {
         val q = BigInteger.valueOf(5)
-        for (h in heightsForQ(q, 11)) {
+        for (h in hForQ(q, 11)) {
             val adm = admissible(h, 11) ?: fail("missing h=$h")
             assertEquals(q, adm.q)
             val walk = walkVectors(11, h, adm.q, adm.gap)

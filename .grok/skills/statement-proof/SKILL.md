@@ -2,11 +2,11 @@
 name: statement-proof
 description: >
   Write or revise a theorem, lemma, proposition, or corollary and its proof.
-  The statement gives the conclusions and nothing else. The proof contains
-  every deduction, including intermediate inequalities and steps introduced
-  by "hence" or "that is". Use when writing or revising a theorem, lemma,
-  proposition, corollary, or proof, or when a statement contains part of
-  its own argument. Also /statement-proof.
+  The statement gives the conclusions. An immediate consequence may be
+  another claim in the same statement. A real argument belongs in the proof.
+  Use when writing or revising a theorem, lemma, proposition, corollary, or
+  proof, or when a statement contains part of its own argument. Also
+  /statement-proof.
 ---
 
 # Statement then proof
@@ -15,16 +15,15 @@ The statement says what is proved. The proof is the argument.
 
 ## Statement
 
-- The conclusions only, as claims.
-- Every conclusion a later line cites. If the paper uses both an inequality and a bound derived from it, both are claims in the statement.
+- The conclusions, as claims.
+- An immediate consequence of one conclusion may be another claim in the same statement. Lemma 3 is the pattern: \(q^3 < 2^h < (q+1)^3\), and in particular \(3 \nmid h\) and \(q = \lfloor 2^{h/3}\rfloor\). "In particular" is the usual wording. "Hence" for that same one-line fact is normal.
+- Every conclusion a later line cites.
 
 ## Proof
 
-- Every deduction, in order, including an intermediate inequality and a rearrangement.
-- A step that begins with "hence", "so", or "that is".
-- The hypotheses and earlier results the argument uses.
-- The proof reaches the last claim in the statement.
+- Every step that is not immediate: an intermediate inequality, a rearrangement, a multiplication, a hypothesis, or an earlier result.
+- The proof reaches the last claim, including an immediate one. One sentence is enough for that claim.
 
 ## Do not
 
-- Put a derivation in the statement. "Hence \(q < 2x^2\), that is \(x > \sqrt{q/2}\)" is a proof step.
+- Put a real argument in the statement. "Hence \(q < 2x^2\), that is \(x > \sqrt{q/2}\)" uses \(q + 1 = 2^{k_1} x\) and is a proof step.

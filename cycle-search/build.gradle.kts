@@ -24,6 +24,6 @@ tasks.withType<Test>().configureEach {
 }
 
 tasks.withType<JavaExec>().configureEach {
-    // Lengths 6–9 keep one hash table of residues per height, several heights at once.
+    // Lengths 6–9 keep one hash table of residues per value of h, several values at once.
     maxHeapSize = "24g"
 }

@@ -31,7 +31,7 @@ private const val PARALLEL_PROGRESS_STRIDE = 25
 private const val SEQUENTIAL_PROGRESS_STRIDE = 500
 private const val THROUGH1_PROGRESS_STRIDE = 1000
 
-/** A partial sum uses at most this many bits, so one height is at most [MAX_PACKED_H]. */
+/** A partial sum uses at most this many bits, so one value of h is at most [MAX_PACKED_H]. */
 private const val SUM_BIT_LIMIT = 16
 private const val MAX_PACKED_H = 1 shl SUM_BIT_LIMIT
 
@@ -63,7 +63,7 @@ private val MIN_ODD_Q: BigInteger = BigInteger.valueOf(3)
  * Omitted arguments are [THROUGH1_DEFAULT_MAX_H] and [THROUGH1_DEFAULT_LENGTH].
  *
  * Fixed q: `q [q] [maxLength]`. Lengths run from 2 through `maxLength`, and the only
- * heights are those with this odd `q = floor(2^{h/L})`. Omitted arguments are
+ * values of `h` are those with this odd `q = floor(2^{h/L})`. Omitted arguments are
  * [Q_DEFAULT] and [Q_DEFAULT_MAX_LENGTH].
  */
 fun main(args: Array<String>) {
@@ -138,7 +138,7 @@ fun searchLength(length: Int, hMax: Int): Set<Cycle> {
     System.err.println("L=$length h<=$hMax on $threads threads")
     try {
         val futures = (1..hMax).map { h ->
-            pool.submit(HeightSearch(length, h, hMax, done, hits))
+            pool.submit(SearchAtH(length, h, hMax, done, hits))
         }
         for (future in futures) found += future.get()
     } finally {
@@ -147,8 +147,8 @@ fun searchLength(length: Int, hMax: Int): Set<Cycle> {
     return found
 }
 
-/** One admissible height. Several of these run at once for length above [WALK_MAX_LENGTH]. */
-private class HeightSearch(
+/** One admissible value of h, the total number of halvings. Several of these run at once for length above [WALK_MAX_LENGTH]. */
+private class SearchAtH(
     private val length: Int,
     private val h: Int,
     private val hMax: Int,
@@ -196,8 +196,8 @@ private fun poolSize(length: Int, hMax: Int): Int {
     val logQ = (hMax + length - 1) / length + 1
     var states = 1.0
     for (j in 1..left) states *= j * logQ
-    val perHeight = states * LEFT_STATE_BYTES
-    val byMemory = if (!perHeight.isFinite()) 1 else (TABLE_BUDGET_BYTES / perHeight).toInt().coerceAtLeast(1)
+    val perH = states * LEFT_STATE_BYTES
+    val byMemory = if (!perH.isFinite()) 1 else (TABLE_BUDGET_BYTES / perH).toInt().coerceAtLeast(1)
     return minOf(Runtime.getRuntime().availableProcessors(), byMemory)
 }
 
@@ -211,21 +211,21 @@ fun searchFixedQ(q: Int, maxLength: Int): List<Cycle> {
     val qBig = BigInteger.valueOf(q.toLong())
     val found = mutableListOf<Cycle>()
     for (length in MIN_CYCLE_LENGTH..maxLength) {
-        val heights = heightsForQ(qBig, length)
-        if (heights.isEmpty()) {
+        val hs = hForQ(qBig, length)
+        if (hs.isEmpty()) {
             println("q=$q L=$length: no h")
             continue
         }
         val batch = mutableListOf<Cycle>()
         val ms = measureTimeMillis {
-            for (h in heights) {
+            for (h in hs) {
                 val adm = admissible(h, length) ?: continue
                 if (adm.q != qBig) continue
                 batch += cyclesAt(length, h, adm.q, adm.gap)
             }
         }
         batch.sortWith(compareBy({ it.h }, { it.elements.minOrNull() }))
-        val hText = if (heights.first == heights.last) "${heights.first}" else "${heights.first}..${heights.last}"
+        val hText = if (hs.first == hs.last) "${hs.first}" else "${hs.first}..${hs.last}"
         println("q=$q L=$length h=$hText: ${batch.size} cycles in ${ms / 1000.0}s")
         for (cycle in batch) println("  $cycle")
         found += batch
@@ -237,7 +237,7 @@ fun searchFixedQ(q: Int, maxLength: Int): List<Cycle> {
  * Integers `h` with `q^L < 2^h < (q+1)^L`.
  * Empty when that q is not `floor(2^{h/L})` for any h.
  */
-internal fun heightsForQ(q: BigInteger, length: Int): IntRange {
+internal fun hForQ(q: BigInteger, length: Int): IntRange {
     val hMin = q.pow(length).bitLength()
     val upper = q.add(BigInteger.ONE).pow(length)
     val hMax = if (upper.bitCount() == 1) upper.bitLength() - 2 else upper.bitLength() - 1
