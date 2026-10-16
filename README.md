@@ -4,7 +4,7 @@ Cycles through 1 for the qn+1 map: no cycles with three odd steps, and constrain
 
 ## Contents
 
-- `cycle-search/` — Gradle Kotlin search. From that directory, `./gradlew run --args="200 4"` searches every cycle (maximum halvings, then maximum length). `./gradlew run --args="full 200 6 9"` searches every cycle for a range of lengths through that halving bound, with no per-length cap. `./gradlew run --args="through1 2000 3"` follows only the orbit of 1 for one length, and a further number sets the last length. That mode has no tuple enumeration, so the halving bound can be much higher.
+- `cycle-search/` — Gradle Kotlin search. From that directory, `./gradlew run --args="200 4"` searches length 4 through 200 halvings for all starting values. `./gradlew run --args="through1 2000 3"` searches length 3 through 2000 halvings along the orbit of 1. That search has no tuple enumeration, so the halving bound can be much higher. `./gradlew run --args="q 5 20"` fixes q=5 and searches every length from 2 through 20.
 - `cycles-through-1-qn1.pdf` — full paper
 - `cycles-through-1-qn1.tex` — editable LaTeX reconstructed from the PDF
 
@@ -36,7 +36,7 @@ Every cycle, any elements. Finished runs of `cycle-search`.
 | 8 | h ≤ 560 | q < 2^70 | none |
 | 9 | h ≤ 270 | q < 2^30 | none |
 
-Cycles through 1 only. Length 2 is not a search bound: Beukers's theorem leaves only q=5. Length 3 is the digit scan in Appendix C; lengths 4–8 are the Appendix C searches; lengths 9–15 are `cycle-search` for every admissible h ≤ 100000.
+Cycles through 1 only. Length 2 is not a search bound: Beukers's theorem leaves only q=5. Length 3 is the digit scan in Appendix D; lengths 4–8 are the Appendix D searches; lengths 9–15 are `cycle-search` for every admissible h ≤ 100000.
 
 | ℓ | No cycle through 1 for |
 |---|---|
@@ -54,4 +54,11 @@ Cycles through 1 only. Length 2 is not a search bound: Beukers's theorem leaves 
 | 14 | q < 2^7142 |
 | 15 | q < 2^6666 |
 
-Nothing above limits length 10 or more, except the through-1 rows.
+Fixed q. Every length from 2 up, only the heights with that q.
+
+| q | lengths searched | Cycles |
+|---|---|---|
+| 5 | 2 through 20 | 1→3; 13→33→83 and 17→43→27 |
+| 7, 9, 11, 13, 15, 17, 19, 21, 23, 25 | 2 through 16 | none |
+
+A length whose window q^ℓ < 2^h < (q+1)^ℓ contains no integer h has no cycle of that length. Length 10 and above, for a general q, is limited by the through-1 table. For these odd q it is also limited by the fixed-q rows.

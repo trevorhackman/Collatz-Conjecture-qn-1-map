@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.24.0 (TeX Live 2026)  (format=lualatex 2026.3.1)  13 OCT 2026 17:49
+This is LuaHBTeX, Version 1.24.0 (TeX Live 2026)  (format=lualatex 2026.3.1)  15 OCT 2026 23:55
  restricted system commands enabled.
  file:line:error style messages enabled.
 **cycles-through-1-qn1.tex
@@ -808,12 +808,12 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 [1
 
 {/usr/local/texlive/2026basic/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-[2] [3] [4] [5] [6] [7] [8] [9] [10] [11] [12] [13] [14] [15]
+[2] [3] [4] [5] [6] [7] [8] [9] [10] [11] [12] [13] [14] [15] [16]
 Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `lmtt' (encoding: TU).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
- [16] [17]
+ [17]
 [18]
 (/Users/trevorhackman/IdeaProjects/Collatz-Conjecture-qn-1-map/out/cycles-throu
 gh-1-qn1.aux)
@@ -826,12 +826,12 @@ L3 programming layer <2026-01-19>
 Here is how much of LuaTeX's memory you used:
  11158 strings out of 476076
  125240,953878 words of node,token memory allocated
- 836 words of node memory still in use:
+ 840 words of node memory still in use:
    7 hlist, 2 vlist, 2 rule, 1 local_par, 4 glue, 4 kern, 1 penalty, 1 margin_ke
-rn, 4 glyph, 76 attribute, 55 glue_spec, 76 attribute_list, 1 write nodes
-   avail lists: 2:537,3:429,4:59,5:532,6:34,7:8164,8:67,9:652,10:17,11:392
+rn, 4 glyph, 77 attribute, 55 glue_spec, 77 attribute_list, 1 write nodes
+   avail lists: 2:757,3:405,4:56,5:485,6:34,7:7845,8:67,9:652,10:17,11:386
  33509 multiletter control sequences out of 65536+600000
- 99 fonts using 32428647 bytes
+ 99 fonts using 32429055 bytes
  90i,9n,89p,1016b,319s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2026basic/texmf-dist/fonts/opentype/public/lm/lmmono10-regul
 ar.otf></usr/local/texlive/2026basic/texmf-dist/fonts/opentype/public/lm/lmroman
@@ -846,7 +846,7 @@ ve/2026basic/texmf-dist/fonts/opentype/public/lm/lmroman12-regular.otf></usr/loc
 al/texlive/2026basic/texmf-dist/fonts/opentype/public/lm-math/latinmodern-math.o
 tf></usr/local/texlive/2026basic/texmf-dist/fonts/opentype/public/lm/lmroman17-r
 egular.otf>
-Output written on cycles-through-1-qn1.pdf (18 pages, 154187 bytes).
+Output written on cycles-through-1-qn1.pdf (18 pages, 156040 bytes).
 
 PDF statistics: 138 PDF objects out of 1000 (max. 8388607)
  84 compressed objects within 1 object stream

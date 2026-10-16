@@ -11,8 +11,16 @@ kotlin {
     jvmToolchain(25)
 }
 
+dependencies {
+    testImplementation(kotlin("test"))
+}
+
 application {
     mainClass.set("qn1.CycleSearchKt")
+}
+
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
 }
 
 tasks.withType<JavaExec>().configureEach {

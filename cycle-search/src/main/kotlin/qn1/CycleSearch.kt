@@ -4,37 +4,23 @@ import java.math.BigInteger
 import java.util.concurrent.Callable
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicInteger
+import kotlin.system.exitProcess
 import kotlin.system.measureTimeMillis
 
-/** Any-element search with no arguments: most halvings. Lengths above 3 also stop at [hCap]. */
+/** All starting values, no arguments: most halvings. One length. */
 private const val DEFAULT_MAX_H = 1500
-/** Any-element search with no arguments: longest cycle. */
-private const val DEFAULT_MAX_LENGTH = 6
+/** All starting values, no arguments: that length. */
+private const val DEFAULT_LENGTH = 6
 
-/** Any-element `full` search with no arguments: every requested length uses this many halvings. */
-private const val FULL_DEFAULT_MAX_H = 200
-/** Any-element `full` search with no arguments: first length. A further number is the last length. */
-private const val FULL_DEFAULT_MIN_LENGTH = 6
-
-/** Through-1 search with no arguments: most halvings. */
+/** Through 1, no arguments: most halvings. One length. */
 private const val THROUGH1_DEFAULT_MAX_H = 66100
-/** Through-1 search with no arguments: cycle length. A further number is the last length. */
-private const val THROUGH1_DEFAULT_MIN_LENGTH = 3
+/** Through 1, no arguments: that length. */
+private const val THROUGH1_DEFAULT_LENGTH = 3
 
-/** `check` with no arguments. Lengths 7 and 8 stop early so the unsplit walk stays cheap. */
-private const val CHECK_DEFAULT_MAX_H = 40
-private const val CHECK_MIN_LENGTH = 4
-private const val CHECK_MAX_LENGTH = 8
-private const val CHECK_LENGTH_7_MAX_H = 32
-private const val CHECK_LENGTH_8_MAX_H = 24
-
-// Any-element search without `full`: most halvings for that length.
-// Lengths 2 and 3 use the requested height. Through-1 does not use these.
-private const val H_CAP_LENGTH_4 = 1600
-private const val H_CAP_LENGTH_5 = 350
-private const val H_CAP_LENGTH_6 = 140
-private const val H_CAP_LENGTH_7 = 80
-private const val H_CAP_LENGTH_AT_LEAST_8 = 40
+/** Fixed q, no arguments: that odd multiplier. */
+private const val Q_DEFAULT = 5
+/** Fixed q, no arguments: longest cycle. Lengths run from 2 through this one. */
+private const val Q_DEFAULT_MAX_LENGTH = 20
 
 private const val MIN_CYCLE_LENGTH = 2
 
@@ -45,10 +31,9 @@ private const val PARALLEL_PROGRESS_STRIDE = 25
 private const val SEQUENTIAL_PROGRESS_STRIDE = 500
 private const val THROUGH1_PROGRESS_STRIDE = 1000
 
-/** Packed partial sums use 16 bits each, so one height is at most [MAX_PACKED_H]. */
-private const val SUM_BITS = 16
-private const val SUM_MASK = (1L shl SUM_BITS) - 1
-private const val MAX_PACKED_H = 1 shl SUM_BITS
+/** A partial sum uses at most this many bits, so one height is at most [MAX_PACKED_H]. */
+private const val SUM_BIT_LIMIT = 16
+private const val MAX_PACKED_H = 1 shl SUM_BIT_LIMIT
 
 /** Bytes charged to one stored left state when the thread count is chosen. */
 private const val LEFT_STATE_BYTES = 400.0
@@ -66,106 +51,66 @@ private val MIN_ODD_Q: BigInteger = BigInteger.valueOf(3)
  * inside `q^L < 2^h < (q+1)^L`. The element `x` at the start of the cycle is
  * `N / (2^h - q^L)`, where `N` is the numerator fixed by the first `L-1` halving counts.
  *
- * Two searches. An any-element search allows every odd positive element.
- * A through-1 search follows only the orbit of 1.
+ * Three searches.
  *
- * Any element, `[maxH] [maxL]`. Length 2 runs through `maxH`. Longer lengths stop
- * at [hCap]. Omitted arguments are [DEFAULT_MAX_H] and [DEFAULT_MAX_LENGTH].
+ * All starting values: `[maxH] [length]`. One length. Every odd positive element is allowed.
+ * The representative starts at the least element, so each halving count satisfies
+ * `2^{k_i} <= q U_{i-1} + 1` with `U_0 = 1` and `U_i = (q U_{i-1} + 1) / 2^{k_i}`.
+ * Omitted arguments are [DEFAULT_MAX_H] and [DEFAULT_LENGTH].
  *
- * Any element, `full [maxH] [length] [lastLength]`. Each requested length runs through
- * `maxH`, with no [hCap]. The representative starts at the least element, so each
- * halving count satisfies `2^{k_i} <= q U_{i-1} + 1` with `U_0 = 1` and
- * `U_i = (q U_{i-1} + 1) / 2^{k_i}`.
- * Omitted arguments are [FULL_DEFAULT_MAX_H] and [FULL_DEFAULT_MIN_LENGTH].
+ * Through 1: `through1 [maxH] [length]`. One length. Only the orbit of 1 is followed.
+ * There is no tuple enumeration, so `maxH` can sit far above an all-starting-values search.
+ * Omitted arguments are [THROUGH1_DEFAULT_MAX_H] and [THROUGH1_DEFAULT_LENGTH].
  *
- * Through 1, `through1 [maxH] [length] [lastLength]`. One length, or through `lastLength`
- * when a further number is given. There is no tuple enumeration, so `maxH` can sit
- * far above [hCap]. Defaults: [THROUGH1_DEFAULT_MIN_LENGTH] through [THROUGH1_DEFAULT_MAX_H].
- *
- * `check [maxH]` compares the two enumerations. Lengths [CHECK_MIN_LENGTH]–6 run through
- * `maxH` ([CHECK_DEFAULT_MAX_H] when omitted). Length 7 stops at [CHECK_LENGTH_7_MAX_H]
- * and length 8 at [CHECK_LENGTH_8_MAX_H].
+ * Fixed q: `q [q] [maxLength]`. Lengths run from 2 through `maxLength`, and the only
+ * heights are those with this odd `q = floor(2^{h/L})`. Omitted arguments are
+ * [Q_DEFAULT] and [Q_DEFAULT_MAX_LENGTH].
  */
 fun main(args: Array<String>) {
-    when (args.firstOrNull()) {
-        "through1" -> {
-            val maxH = argInt(args, 1, THROUGH1_DEFAULT_MAX_H)
-            val minL = argInt(args, 2, THROUGH1_DEFAULT_MIN_LENGTH)
-            val maxL = argInt(args, 3, minL)
-            require(maxH >= 1 && minL >= MIN_CYCLE_LENGTH && maxL >= minL)
-            runLengths(minL, maxL, " through 1", LengthSearch(maxH, throughOne = true, useCap = false))
-            return
-        }
-        "full" -> {
-            val maxH = argInt(args, 1, FULL_DEFAULT_MAX_H)
-            val minL = argInt(args, 2, FULL_DEFAULT_MIN_LENGTH)
-            val maxL = argInt(args, 3, minL)
-            require(maxH >= 1 && minL >= MIN_CYCLE_LENGTH && maxL >= minL)
-            runLengths(minL, maxL, "", LengthSearch(maxH, throughOne = false, useCap = false))
-            return
-        }
-        "check" -> {
-            checkEnumerations(argInt(args, 1, CHECK_DEFAULT_MAX_H))
-            return
-        }
+    if (args.firstOrNull() == "q") {
+        runFixedQ(args)
+        return
     }
-    val maxH = argInt(args, 0, DEFAULT_MAX_H)
-    val maxL = argInt(args, 1, DEFAULT_MAX_LENGTH)
-    require(maxH >= 1 && maxL >= MIN_CYCLE_LENGTH)
-    runLengths(MIN_CYCLE_LENGTH, maxL, "", LengthSearch(maxH, throughOne = false, useCap = true))
-}
-
-private class LengthSearch(
-    private val maxH: Int,
-    private val throughOne: Boolean,
-    private val useCap: Boolean,
-) : (Int) -> Pair<Collection<Cycle>, Int> {
-    override fun invoke(length: Int): Pair<Collection<Cycle>, Int> {
-        val hMax = if (useCap) hCap(length, maxH) else maxH
-        val cycles = if (throughOne) searchThroughOne(length, hMax) else searchLength(length, hMax)
-        return cycles to hMax
+    val throughOne = args.firstOrNull() == "through1"
+    val numbers = if (throughOne) args.drop(1) else args.asList()
+    if (!throughOne && numbers.isNotEmpty() && numbers[0].toIntOrNull() == null) usage()
+    if (numbers.size > 2) usage()
+    val maxH = if (numbers.isEmpty()) {
+        if (throughOne) THROUGH1_DEFAULT_MAX_H else DEFAULT_MAX_H
+    } else {
+        numbers[0].toIntOrNull() ?: usage()
     }
-}
-
-private fun argInt(args: Array<String>, index: Int, default: Int): Int {
-    val raw = args.getOrNull(index) ?: return default
-    return raw.toInt()
-}
-
-private fun runLengths(
-    minL: Int,
-    maxL: Int,
-    label: String,
-    search: (Int) -> Pair<Collection<Cycle>, Int>,
-) {
-    var total = 0
-    for (length in minL..maxL) {
-        val batch = mutableListOf<Cycle>()
-        var hMax = 0
-        val ms = measureTimeMillis {
-            val (cycles, cap) = search(length)
-            hMax = cap
-            batch += cycles
-        }
-        batch.sortWith(compareBy({ it.q }, { it.elements.minOrNull() }))
-        total += batch.size
-        println("L=$length h<=$hMax$label: ${batch.size} cycles in ${ms / 1000.0}s")
-        for (cycle in batch) println("  $cycle")
+    val length = if (numbers.size < 2) {
+        if (throughOne) THROUGH1_DEFAULT_LENGTH else DEFAULT_LENGTH
+    } else {
+        numbers[1].toIntOrNull() ?: usage()
     }
-    println("total $total")
+    if (maxH < 1 || length < MIN_CYCLE_LENGTH) usage()
+    val batch = mutableListOf<Cycle>()
+    val ms = measureTimeMillis {
+        val cycles = if (throughOne) searchThroughOne(length, maxH) else searchLength(length, maxH)
+        batch += cycles
+    }
+    batch.sortWith(compareBy({ it.q }, { it.elements.minOrNull() }))
+    val label = if (throughOne) " through 1" else ""
+    println("L=$length h<=$maxH$label: ${batch.size} cycles in ${ms / 1000.0}s")
+    for (cycle in batch) println("  $cycle")
 }
 
-/**
- * Most halvings for [length] in an any-element search that was not started with `full`.
- * Lengths 2 and 3 return [maxH]. Through-1 does not call this.
- */
-fun hCap(length: Int, maxH: Int): Int = when (length) {
-    2, 3 -> maxH
-    4 -> minOf(maxH, H_CAP_LENGTH_4)
-    5 -> minOf(maxH, H_CAP_LENGTH_5)
-    6 -> minOf(maxH, H_CAP_LENGTH_6)
-    7 -> minOf(maxH, H_CAP_LENGTH_7)
-    else -> minOf(maxH, H_CAP_LENGTH_AT_LEAST_8)
+private fun runFixedQ(args: Array<String>) {
+    val numbers = args.drop(1)
+    if (numbers.size > 2) usage()
+    val q = if (numbers.isEmpty()) Q_DEFAULT else numbers[0].toIntOrNull() ?: usage()
+    val maxLength = if (numbers.size < 2) Q_DEFAULT_MAX_LENGTH else numbers[1].toIntOrNull() ?: usage()
+    if (q < MIN_ODD_Q.intValueExact() || q % 2 == 0 || maxLength < MIN_CYCLE_LENGTH) usage()
+    searchFixedQ(q, maxLength)
+}
+
+private fun usage(): Nothing {
+    System.err.println("usage: [maxH] [length]")
+    System.err.println("       through1 [maxH] [length]")
+    System.err.println("       q [q] [maxLength]")
+    exitProcess(1)
 }
 
 data class Cycle(
@@ -257,6 +202,50 @@ private fun poolSize(length: Int, hMax: Int): Int {
 }
 
 /**
+ * Every cycle for one odd [q], of length 2 through [maxLength].
+ * A length whose power window contains no integer h has no cycle.
+ */
+fun searchFixedQ(q: Int, maxLength: Int): List<Cycle> {
+    require(q >= MIN_ODD_Q.intValueExact() && q % 2 == 1)
+    require(maxLength >= MIN_CYCLE_LENGTH)
+    val qBig = BigInteger.valueOf(q.toLong())
+    val found = mutableListOf<Cycle>()
+    for (length in MIN_CYCLE_LENGTH..maxLength) {
+        val heights = heightsForQ(qBig, length)
+        if (heights.isEmpty()) {
+            println("q=$q L=$length: no h")
+            continue
+        }
+        val batch = mutableListOf<Cycle>()
+        val ms = measureTimeMillis {
+            for (h in heights) {
+                val adm = admissible(h, length) ?: continue
+                if (adm.q != qBig) continue
+                batch += cyclesAt(length, h, adm.q, adm.gap)
+            }
+        }
+        batch.sortWith(compareBy({ it.h }, { it.elements.minOrNull() }))
+        val hText = if (heights.first == heights.last) "${heights.first}" else "${heights.first}..${heights.last}"
+        println("q=$q L=$length h=$hText: ${batch.size} cycles in ${ms / 1000.0}s")
+        for (cycle in batch) println("  $cycle")
+        found += batch
+    }
+    return found
+}
+
+/**
+ * Integers `h` with `q^L < 2^h < (q+1)^L`.
+ * Empty when that q is not `floor(2^{h/L})` for any h.
+ */
+internal fun heightsForQ(q: BigInteger, length: Int): IntRange {
+    val hMin = q.pow(length).bitLength()
+    val upper = q.add(BigInteger.ONE).pow(length)
+    val hMax = if (upper.bitCount() == 1) upper.bitLength() - 2 else upper.bitLength() - 1
+    if (hMin > hMax) return 1..0
+    return hMin..hMax
+}
+
+/**
  * Cycles through 1 of length [length] with at most [hMax] halvings.
  * Each admissible h gives one q, and [trace] is started at 1.
  */
@@ -277,9 +266,9 @@ fun searchThroughOne(length: Int, hMax: Int): List<Cycle> {
  * Odd `q = floor(2^{h/length})` and gap `2^h - q^length`.
  * Even floors and `h` divisible by the length are excluded.
  */
-private class Admissible(val q: BigInteger, val gap: BigInteger)
+internal class Admissible(val q: BigInteger, val gap: BigInteger)
 
-private fun admissible(h: Int, length: Int): Admissible? {
+internal fun admissible(h: Int, length: Int): Admissible? {
     if (h % length == 0) return null
     val twoH = BigInteger.ONE.shiftLeft(h)
     val q = floorRoot(twoH, length)
@@ -294,14 +283,14 @@ private fun cyclesAt(length: Int, h: Int, q: BigInteger, gap: BigInteger): List<
     if (gap <= BigInteger.ONE) return emptyList()
     val found = mutableListOf<Cycle>()
     val accept = CycleRecorder(found, length, h, q, gap)
-    if (length <= WALK_MAX_LENGTH) forEachWalk(length, h, q, gap, cap = true, accept)
-    else forEachSplit(length, h, q, gap, cap = true, accept)
+    if (length <= WALK_MAX_LENGTH) forEachWalk(length, h, q, gap, accept)
+    else forEachSplit(length, h, q, gap, accept)
     return found
 }
 
 /**
  * Keeps a halving vector only when `x0` is least, then traces it.
- * The split cap is a uniform bound, so this check is what makes the representative minimal.
+ * The split bound depends only on the step and the sum so far, so this filter is what makes the representative minimal.
  */
 private class CycleRecorder(
     private val found: MutableList<Cycle>,
@@ -345,17 +334,16 @@ private fun respectsMinimum(q: BigInteger, prefix: IntArray, kLast: Int): Boolea
 /**
  * `ks` is valid only for the duration of [block].
  * Walks `k1,...,k_{L-2}` and solves the next count from `N ≡ 0` modulo [gap].
- * With [cap], `x0` is the least element, so [maxHalvings] limits every count.
+ * `x0` is the least element, so [maxHalvings] limits every count.
  */
-private fun forEachWalk(
+internal fun forEachWalk(
     length: Int,
     h: Int,
     q: BigInteger,
     gap: BigInteger,
-    cap: Boolean,
     block: (IntArray) -> Unit,
 ) {
-    WalkSearch(length, h, q, gap, cap, block).run()
+    WalkSearch(length, h, q, gap, block).run()
 }
 
 private class WalkSearch(
@@ -363,7 +351,6 @@ private class WalkSearch(
     private val h: Int,
     private val q: BigInteger,
     private val gap: BigInteger,
-    private val cap: Boolean,
     private val block: (IntArray) -> Unit,
 ) {
     private val twoMod = Array(h) { BigInteger.ZERO }
@@ -404,18 +391,18 @@ private class WalkSearch(
         if (pos == length - 2) {
             val target = acc.negate().multiply(invTwoMod[sum]).mod(gap)
             val hits = byResidue[target] ?: return
-            val solvedCap = if (cap) maxHalvings(q, envelope, sum) else h
+            val solvedCap = maxHalvings(q, envelope, sum)
             for (k in hits) {
                 if (sum + k >= h || k > solvedCap) continue
                 prefix[length - 2] = k
-                if (cap && !respectsMinimum(q, prefix, h - sum - k)) continue
+                if (!respectsMinimum(q, prefix, h - sum - k)) continue
                 block(prefix)
             }
             return
         }
         val slotsLeft = length - 3 - pos
         val room = h - 2 - sum - slotsLeft
-        val maxK = if (cap) minOf(room, maxHalvings(q, envelope, sum)) else room
+        val maxK = minOf(room, maxHalvings(q, envelope, sum))
         val nextEnvelope = q.multiply(envelope).add(BigInteger.ONE.shiftLeft(sum))
         for (k in 1..maxK) {
             prefix[pos] = k
@@ -454,19 +441,18 @@ private fun looseCaps(length: Int, h: Int, q: BigInteger): Array<IntArray> {
  * Left residues are activated in order of `s_left`, and each right continuation
  * starts strictly later, so the two halves do not interleave.
  *
- * With [cap], [looseCaps] limits every count. The right half is shared by every
- * left state, so those limits depend on the step index and the sum so far.
- * The first right count still depends on the left sum and is checked per match.
+ * [looseCaps] limits every count. The right half is shared by every left state,
+ * so those limits depend on the step index and the sum so far.
+ * The first right count still depends on the left sum and is filtered per match.
  */
-private fun forEachSplit(
+internal fun forEachSplit(
     length: Int,
     h: Int,
     q: BigInteger,
     gap: BigInteger,
-    cap: Boolean,
     block: (IntArray) -> Unit,
 ) {
-    SplitSearch(length, h, q, gap, cap, block).run()
+    SplitSearch(length, h, q, gap, block).run()
 }
 
 private class SplitSearch(
@@ -474,13 +460,12 @@ private class SplitSearch(
     private val h: Int,
     private val q: BigInteger,
     private val gap: BigInteger,
-    private val cap: Boolean,
     private val block: (IntArray) -> Unit,
 ) {
     private val free = length - 1
     private val leftCount = free / 2
     private val rightCount = free - leftCount
-    private val capAt: Array<IntArray>?
+    private val capAt: Array<IntArray>
     private val term: Array<Array<BigInteger>>
     private val coeff0: BigInteger
     private val byEnd: Array<ArrayList<Pair<BigInteger, Long>>>
@@ -488,13 +473,19 @@ private class SplitSearch(
     private val rightSums = IntArray(rightCount)
     private val partial = IntArray(free)
     private val ks = IntArray(free)
+    private val sumBits: Int
+    private val sumMask: Long
     private lateinit var active: HashMap<BigInteger, MutableList<Long>>
 
     init {
         require(length > WALK_MAX_LENGTH)
         require(h <= MAX_PACKED_H) { "halving count $h does not fit the packed partial sums" }
-        require(leftCount * SUM_BITS <= 64) { "length $length has too many left partial sums to pack" }
-        capAt = if (cap) looseCaps(length, h, q) else null
+        sumBits = bitsForSums(h)
+        sumMask = (1L shl sumBits) - 1
+        require(leftCount * sumBits <= 64) {
+            "length $length at h=$h packs $leftCount sums of $sumBits bits"
+        }
+        capAt = looseCaps(length, h, q)
         val coeff = Array(length) { BigInteger.ONE }
         var powQ = BigInteger.ONE
         for (j in length - 2 downTo 0) {
@@ -514,15 +505,12 @@ private class SplitSearch(
 
     fun run() {
         genLeft(0, 0, coeff0)
-        var maxStart = if (capAt == null) h - 1 else 0
-        val caps = capAt
-        if (caps != null) {
-            val firstRight = caps[leftCount]
-            for (s in 0 until h) {
-                if (byEnd[s].isEmpty()) continue
-                val reach = s + firstRight[s]
-                if (reach > maxStart) maxStart = reach
-            }
+        var maxStart = 0
+        val firstRightCap = capAt[leftCount]
+        for (s in 0 until h) {
+            if (byEnd[s].isEmpty()) continue
+            val reach = s + firstRightCap[s]
+            if (reach > maxStart) maxStart = reach
         }
         var states = 0
         for (bucket in byEnd) states += bucket.size
@@ -538,15 +526,13 @@ private class SplitSearch(
         }
     }
 
-    private fun cappedS(stepsDone: Int, sum: Int, maxS: Int): Int {
-        val table = capAt ?: return maxS
-        return minOf(maxS, sum + table[stepsDone][sum])
-    }
+    private fun cappedS(stepsDone: Int, sum: Int, maxS: Int): Int =
+        minOf(maxS, sum + capAt[stepsDone][sum])
 
     private fun genLeft(pos: Int, prev: Int, acc: BigInteger) {
         if (pos == leftCount) {
             val neg = if (acc.signum() == 0) BigInteger.ZERO else gap.subtract(acc)
-            byEnd[leftSums[leftCount - 1]].add(neg to packSums(leftSums, leftCount))
+            byEnd[leftSums[leftCount - 1]].add(neg to packSums(leftSums, leftCount, sumBits))
             return
         }
         val remainingAfter = (leftCount - 1 - pos) + rightCount
@@ -573,15 +559,14 @@ private class SplitSearch(
     private fun emit(acc: BigInteger) {
         val matches = active[acc] ?: return
         val last = rightSums[rightCount - 1]
-        val caps = capAt
-        if (caps != null && h - last > caps[free][last]) return
+        if (h - last > capAt[free][last]) return
         val start = rightSums[0]
-        val firstRight = caps?.get(leftCount)
+        val firstRight = capAt[leftCount]
         for (i in 0 until rightCount) partial[leftCount + i] = rightSums[i]
         for (packed in matches) {
-            val sLeft = ((packed ushr ((leftCount - 1) * SUM_BITS)) and SUM_MASK).toInt()
-            if (firstRight != null && start - sLeft > firstRight[sLeft]) continue
-            unpackSums(packed, leftCount, partial, 0)
+            val sLeft = ((packed ushr ((leftCount - 1) * sumBits)) and sumMask).toInt()
+            if (start - sLeft > firstRight[sLeft]) continue
+            unpackSums(packed, leftCount, partial, 0, sumBits, sumMask)
             var prev = 0
             for (i in partial.indices) {
                 ks[i] = partial[i] - prev
@@ -603,80 +588,34 @@ private class SplitSearch(
     }
 }
 
-private fun packSums(sums: IntArray, count: Int): Long {
+/** Bits needed to store a partial sum strictly below [h]. */
+private fun bitsForSums(h: Int): Int {
+    val maxSum = h - 1
+    if (maxSum <= 1) return 1
+    return 32 - maxSum.countLeadingZeroBits()
+}
+
+private fun packSums(sums: IntArray, count: Int, sumBits: Int): Long {
     var packed = 0L
-    for (i in 0 until count) packed = packed or (sums[i].toLong() shl (i * SUM_BITS))
+    for (i in 0 until count) packed = packed or (sums[i].toLong() shl (i * sumBits))
     return packed
 }
 
-private fun unpackSums(packed: Long, count: Int, dest: IntArray, offset: Int) {
-    for (i in 0 until count) dest[offset + i] = ((packed ushr (i * SUM_BITS)) and SUM_MASK).toInt()
+private fun unpackSums(
+    packed: Long,
+    count: Int,
+    dest: IntArray,
+    offset: Int,
+    sumBits: Int,
+    sumMask: Long,
+) {
+    for (i in 0 until count) dest[offset + i] = ((packed ushr (i * sumBits)) and sumMask).toInt()
 }
 
 /** Both arguments lie in `0..gap-1`, so the sum needs at most one subtraction. */
 private fun addMod(a: BigInteger, b: BigInteger, gap: BigInteger): BigInteger {
     val sum = a.add(b)
     return if (sum.compareTo(gap) >= 0) sum.subtract(gap) else sum
-}
-
-/**
- * Halving vectors from one enumeration.
- * [minimal] is the subset that keeps `x0` least. With [minimalOnly], [keys] is that subset.
- */
-private class VectorKeys(
-    private val q: BigInteger,
-    private val h: Int,
-    private val minimalOnly: Boolean,
-) : (IntArray) -> Unit {
-    val keys = linkedSetOf<String>()
-    val minimal = linkedSetOf<String>()
-
-    override fun invoke(ks: IntArray) {
-        val keep = respectsMinimum(q, ks, h - ks.sum())
-        if (minimalOnly && !keep) return
-        val key = ks.joinToString(",")
-        keys.add(key)
-        if (keep) minimal.add(key)
-    }
-}
-
-/**
- * The walk and the split must accept the same halving vectors.
- * With the least-element cap, both must accept the vectors that keep `x0` least.
- * A mismatch means a later search would miss a cycle or invent one before [trace].
- */
-private fun checkEnumerations(maxH: Int) {
-    require(maxH >= 1)
-    for (length in CHECK_MIN_LENGTH..CHECK_MAX_LENGTH) {
-        val limit = when (length) {
-            7 -> minOf(maxH, CHECK_LENGTH_7_MAX_H)
-            8 -> minOf(maxH, CHECK_LENGTH_8_MAX_H)
-            else -> maxH
-        }
-        var count = 0
-        for (h in 1..limit) {
-            val adm = admissible(h, length) ?: continue
-            val walk = VectorKeys(adm.q, h, minimalOnly = false)
-            val split = VectorKeys(adm.q, h, minimalOnly = false)
-            val capped = VectorKeys(adm.q, h, minimalOnly = false)
-            val fromSplit = VectorKeys(adm.q, h, minimalOnly = true)
-            forEachWalk(length, h, adm.q, adm.gap, cap = false, walk)
-            forEachWalk(length, h, adm.q, adm.gap, cap = true, capped)
-            forEachSplit(length, h, adm.q, adm.gap, cap = false, split)
-            forEachSplit(length, h, adm.q, adm.gap, cap = true, fromSplit)
-            if (walk.keys != split.keys || capped.keys != walk.minimal || capped.keys != fromSplit.keys) {
-                error(
-                    "mismatch L=$length h=$h walkSplit=${walk.keys == split.keys} " +
-                        "cappedWalk=${capped.keys == walk.minimal} splitCap=${capped.keys == fromSplit.keys} " +
-                        "missed=${(walk.minimal - fromSplit.keys).take(8)} " +
-                        "extra=${(fromSplit.keys - walk.minimal).take(8)}",
-                )
-            }
-            count += capped.keys.size
-        }
-        println("L=$length h<=$limit match ($count vectors)")
-    }
-    println("check ok")
 }
 
 /** `N / gap` when the stored halving counts make `N` an odd positive multiple of the gap. */
