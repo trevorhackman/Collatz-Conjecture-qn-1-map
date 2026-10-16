@@ -4,7 +4,7 @@ Cycles through 1 for the qn+1 map: no cycles with three odd steps, and constrain
 
 ## Contents
 
-- `cycle-search/` — Gradle Kotlin search. From that directory, `./gradlew run --args="200 4"` searches every cycle (maximum halvings, then maximum length). `./gradlew run --args="through1 2000 3"` follows only the orbit of 1 for one length, and a further number sets the last length. That mode has no tuple enumeration, so the halving bound can be much higher.
+- `cycle-search/` — Gradle Kotlin search. From that directory, `./gradlew run --args="200 4"` searches every cycle (maximum halvings, then maximum length). `./gradlew run --args="full 200 6 9"` searches every cycle for a range of lengths through that halving bound, with no per-length cap. `./gradlew run --args="through1 2000 3"` follows only the orbit of 1 for one length, and a further number sets the last length. That mode has no tuple enumeration, so the halving bound can be much higher.
 - `cycles-through-1-qn1.pdf` — full paper
 - `cycles-through-1-qn1.tex` — editable LaTeX reconstructed from the PDF
 
@@ -31,6 +31,10 @@ Every cycle, any elements. Finished runs of `cycle-search`.
 | 3 | h ≤ 4000 | q < 2^1333 | q=5: 13→33→83 and 17→43→27 |
 | 4 | h ≤ 400 | q < 2^100 | none |
 | 5 | h ≤ 120 | q < 2^24 | none |
+| 6 | h ≤ 1800 | q < 2^300 | none |
+| 7 | h ≤ 700 | q < 2^100 | none |
+| 8 | h ≤ 560 | q < 2^70 | none |
+| 9 | h ≤ 270 | q < 2^30 | none |
 
 Cycles through 1 only. Length 2 is not a search bound: Beukers's theorem leaves only q=5. Length 3 is the digit scan in Appendix C; lengths 4–8 are the Appendix C searches; lengths 9–15 are `cycle-search` for every admissible h ≤ 100000.
 
@@ -50,4 +54,4 @@ Cycles through 1 only. Length 2 is not a search bound: Beukers's theorem leaves 
 | 14 | q < 2^7142 |
 | 15 | q < 2^6666 |
 
-Nothing above limits length 6 or more, except the through-1 rows.
+Nothing above limits length 10 or more, except the through-1 rows.
