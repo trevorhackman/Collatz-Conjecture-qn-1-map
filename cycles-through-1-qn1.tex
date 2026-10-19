@@ -55,7 +55,7 @@
 \noindent
 For the $qn+1$ map with $q$ an odd integer at least $3$, we prove that $1$ never lies on a cycle with exactly three distinct odd numbers.
 This settles the three-step case of a conjecture of Santos that $1$ is periodic only for $q = 5$ and for Mersenne numbers $q = 2^e - 1$.
-We found that for every such $q$ at least $2^{22003}$, a lower bound and an upper bound cannot hold at the same time.
+We found that for every such $q$ at least $2^{22001}$, a lower bound and an upper bound cannot hold at the same time.
 Bauer and Bennett (2018) give an irrationality measure whose exponent, about $1.6149$, lies just below the golden ratio, the threshold at which these bounds conflict.
 Every smaller $q$ is ruled out by a direct computation.
 \end{abstract}
@@ -244,27 +244,40 @@ Since $2^{k_1 + k_2} = (q(q+1) + 2^{k_1})/y \le (q+1)(3q+1)/9$ by $y \ge 3$, and
 A power of $2$ strictly between consecutive cubes is not a cube, so $3 \nmid h$.
 \end{proof}
 
-\begin{named}{Lemma 4 (2-adic structure of $x$).}
+\begin{named}{Lemma 4 ($2$-adic valuation of $x-1$).}
 Let $t = v_2(x-1)$ and $s = (x-1)/2^t$.
 Then either $t = 2k_1$, or $t < k_1$ and $k_1 = t + v_2(s+1)$, or $t = k_1$.
 \end{named}
 
 \begin{proof}
+The first step is $q + 1 = 2^{k_1} x$, so $q = 2^{k_1} x - 1$.
+
+Substitute $q = 2^{k_1} x - 1$ into the second step $2^{k_2} y = qx + 1$:
+\[
+2^{k_2} y = (2^{k_1} x - 1)x + 1 = 2^{k_1} x^2 - x + 1 = 2^{k_1} x^2 - (x - 1).
+\]
+
 Suppose $t > k_1$.
-Then $qx + 1 = 2^{k_1} x^2 - (x-1)$ has $2$-adic valuation $k_1$, so $k_2 = k_1$ and $y = x^2 - w$ with $w = (x-1)/2^{k_1}$ even.
+Since $x$ is odd, $v_2(2^{k_1} x^2) = k_1$, while $v_2(x-1) = t > k_1$, so
+\[
+2^{k_1} x^2 - (x-1) = 2^{k_1}\bigl(x^2 - 2^{t-k_1}s\bigr),
+\]
+and $x^2 - 2^{t-k_1}s$ is odd, since $x^2$ is odd and $2^{t-k_1}s$ is even.
+Thus the $2$-adic valuation of $2^{k_2} y$ is $k_1$. Since $y$ is odd, $k_2 = k_1$, and $y = x^2 - w$ with $w = (x-1)/2^{k_1}$ even.
 Substituting $x = 1 + 2^{k_1} w$,
 \[
 qy + 1 = 2^{k_1} + w(1 - 3 \cdot 2^{k_1}) + 2^{2k_1} w(3 - 2w) + 3 \cdot 2^{3k_1} w^2 + 2^{4k_1} w^3.
 \]
-The last three terms are divisible by $2^{2k_1 + v_2(w)}$ and $1 - 3 \cdot 2^{k_1}$ is odd, so if $v_2(w) \ne k_1$ then $v_2(qy + 1) = \min(k_1, v_2(w)) \le k_1$, contradicting Lemma~1.
+The terms $2^{2k_1} w(3 - 2w)$, $3 \cdot 2^{3k_1} w^2$, and $2^{4k_1} w^3$ are divisible by $2^{2k_1 + v_2(w)}$, and $1 - 3 \cdot 2^{k_1}$ is odd, so $v_2\bigl(w(1 - 3 \cdot 2^{k_1})\bigr) = v_2(w)$. If $v_2(w) \ne k_1$, then $v_2(qy + 1) = \min(k_1, v_2(w)) \le k_1$, contradicting Lemma~1.
 Hence $v_2(w) = k_1$, that is $t = 2k_1$.
 
 Suppose $t < k_1$.
-Then $2^{k_1} x^2 - x + 1 = 2^t\bigl(2^{k_1-t}x^2 - s\bigr)$ with the bracket odd, so $k_2 = t$, $y = 2^{k_1-t}x^2 - s$, and
+Then $2^{k_2} y = 2^{k_1} x^2 - 2^t s = 2^t\bigl(2^{k_1-t}x^2 - s\bigr)$.
+The factor $2^{k_1-t}x^2 - s$ is odd, since $2^{k_1-t}x^2$ is even and $s$ is odd, so $k_2 = t$, $y = 2^{k_1-t}x^2 - s$, and
 \[
 qy + 1 = (2^{k_1}-1)\, 2^{k_1-t} x^2 + (1+s) - 2^{k_1} s + 2^{k_1 + t} s y.
 \]
-The last two terms are divisible by $2^{k_1}$ and the first has valuation exactly $k_1 - t$, so $v_2(s+1) \ne k_1 - t$ would give $v_2(qy + 1) < k_1$, again contradicting Lemma~1.
+Now $2^{k_1} s$ and $2^{k_1 + t} s y$ are divisible by $2^{k_1}$, and $v_2\bigl((2^{k_1}-1)\, 2^{k_1-t} x^2\bigr) = k_1 - t$, since $2^{k_1}-1$ and $x$ are odd. If $v_2(s+1) \ne k_1 - t$, then $v_2(qy + 1) < k_1$, contradicting Lemma~1.
 \end{proof}
 
 \begin{named}{Lemma 5.}
@@ -372,8 +385,18 @@ The factor $2^{-5}$ is $1/(1.26 \cdot 2^{14/3})$ from their inequality~(21); the
 Per unit of $j$ the exponent is $\mu = 3 \log_2(16166467234)/63 \approx 1.61487$.
 
 \begin{proof}[Proof of Theorem~1]
-Suppose $q \ge 2^{22003}$.
+Suppose $q \ge 2^{22001}$.
 Write $a = k_1$, $h = 3m + r$ and $f = h - 3a = 3j' + r'$, where $r, r' \in \{1, 2\}$ by Lemmas~\ref{lem:cube-window} and~\ref{lem:near-x}.
+Lemma~5 gives $x > \sqrt{q/2} \ge 2^{11000}$.
+Since $q$ is odd, $a \ge 1$, and Lemma~\ref{lem:near-x} gives $|x - 2^{f/3}| \le 0.8$.
+Also $2^{f/3} \le 2^{j'+2/3}$.
+If $j' \le 10999$, then $x \le 2^{10999+2/3} + 0.8$.
+Now $(8/5)^3 = 512/125 > 4$, so $2^{2/3} < 8/5$, and $2^{11000} - (8/5)\,2^{10999} = (2/5)\,2^{10999} > 0.8$.
+Thus $x < 2^{11000}$, a contradiction, and $j' \ge 11000$.
+Likewise $(5/4)^3 = 125/64 < 2$, so $2^{1/3} > 5/4$ and $2^{j'}/4 > 0.8$, which gives $x \ge 2^{j'+1/3} - 0.8 > 2^{j'} + 2^{j'}/4 - 0.8 > 2^{j'}$.
+Hence $x \ge 2^{j'}+1$ and $q = 2^a x - 1 \ge 2^{a+j'} + 2^a - 1 \ge 2^{a+j'} + 1$.
+From Lemma~\ref{lem:cube-window}, $2^h > q^3$, so $2^{h/3} > q > 2^{a+j'}$ and $m + r/3 > a + j'$.
+As $r \le 2$, this forces $m \ge a + j' \ge 11000$.
 \begin{enumerate}
 \item \textbf{The window.}
 Apply Theorem~(Bauer--Bennett) with $s = 3$, $p = 3q + 1$, $j = m$.
@@ -386,15 +409,13 @@ With Lemma~\ref{lem:window} and $q \ge 2^m$,
 Apply Theorem~(Bauer--Bennett) with $s = 1$, $p = x$, $j = j'$.
 By Lemma~\ref{lem:near-x}, $|1 - x/2^{f/3}| \le 1.6/(2^a \cdot 2^{f/3})$, so
 \[
-2^a < 1.6 \cdot 2^{5-j'} \cdot 16166467234^{(f+77)/63}.
+2^a < 1.6 \cdot 2^{5 - f/3} \cdot 16166467234^{(f+77)/63}.
 \]
 \item \textbf{Combining.}
-By Lemma~\ref{lem:near-x}, $x \ge 2^{f/3} - 1.6/2^a \ge 2^{j'}$, so $q + 1 = 2^a x \ge 2^a \cdot 2^{j'}$ and $m \ge a + j' - 1$.
-With $h = f + 3a$, step~1 gives $a > 0.20879\, f - 77.3$ and step~2 gives $a < 0.20496\, f + 47.2$.
-These are incompatible once $f \ge 32{,}214$, that is $j' \ge 10{,}738$.
+With $h = f + 3a$, $m \ge a + j'$ and $j' \ge (f-2)/3$, step~1 gives $a > 0.20878\, f - 76.8$ and step~2 gives $a < 0.20496\, f + 47.2$.
+These are incompatible once $f \ge 32{,}461$, that is $j' \ge 10{,}820$.
 \end{enumerate}
-Both applications of Theorem~(Bauer--Bennett) need $j', m \ge 11000$, which holds because $x > \sqrt{q/2} \ge 2^{11001}$ by Lemma~5.
-So any $3$-odd cycle through $1$ has $q < 2^{22003}$.
+So any $3$-odd cycle through $1$ has $q < 2^{22001}$.
 By Lemma~\ref{lem:cube-window} each $h$ gives a single candidate $q = \lfloor 2^{h/3} \rfloor$, and checking every $h < 66{,}100$ directly (Appendix~\ref{app:computations}) finds no cycle.
 \end{proof}
 
@@ -409,7 +430,7 @@ By Lemma~\ref{lem:near-x}, $x/2^{j'}$ approximates $2^{r'/3}$ with error about $
 Theorem~(Bauer--Bennett) forbids errors below about $x^{-\mu}$, so $x \gtrsim q^{1/\mu}$.
 \end{itemize}
 Both bounds can hold only if $1/\mu \le \mu - 1$, that is $\mu^2 - \mu - 1 \ge 0$, whose positive root is $\varphi = (1 + \sqrt{5})/2$.
-With $\mu = 1.61487$ the bounds read $q^{0.6192} \lesssim x \lesssim q^{0.6149}$, which are incompatible once $q$ is large; the explicit constants in steps~1 to~3 make this precise for $q \ge 2^{22003}$.
+With $\mu = 1.61487$ the bounds read $q^{0.6192} \lesssim x \lesssim q^{0.6149}$, which are incompatible once $q$ is large; the explicit constants in steps~1 to~3 make this precise for $q \ge 2^{22001}$.
 The two bounds are tied together by $q + 1 = 2^{k_1} x$: a large $x$ makes the window's approximation too good, while a small $x$ forces $2^{k_1}$ to be large and makes $x$'s own approximation too good.
 
 The threshold $\varphi$ comes from this argument; the exponent comes from Bauer and Bennett, who needed only an exponent below $2$ for their own purposes.
@@ -815,16 +836,18 @@ For every larger $q$, Ridout's theorem gives $\lvert \theta_i - F_i \rvert \ge \
 Lemma~\ref{lem:three-approx} gives $2i\theta_i/(aq) \ge \eta$, and $2i\theta_i < (\ell-1)\, 2^\ell$ with $a \ge 1$, so $q < (\ell-1)\, 2^\ell/\eta$.
 
 Suppose instead that $y > q^{1-2\varepsilon}$.
-The numerator $\ell aq + 1$ is congruent to $1$ modulo $\ell a$, and it is odd, so it is coprime to $\ell a \cdot 2^m$.
-Thus $W = P/d$ in lowest terms with $d = \ell a \cdot 2^m$ and $P = \ell aq + 1$.
+The numerator $N = \ell aq + 1$ is congruent to $1$ modulo $\ell a$, so $\gcd(N,\, \ell a) = 1$.
+Any common factor of $N$ and $\ell a \cdot 2^m$ is therefore a power of $2$.
+Let $v = v_2(N)$ and $e = \max(m - v,\, 0)$.
+In lowest terms, $W = P/d$ with $d = \ell a \cdot 2^e$ and $P \le N$.
 The product formula gives $\prod_p \lvert \ell \rvert_p = 1/\ell$, and every prime factor of $\ell$ lies in $S$, so $\prod_{p \in S} \lvert \ell \rvert_p = 1/\ell$.
 Since $\lvert a \rvert_p \le 1$,
 \[
-\prod_{p \in S} \lvert d \rvert_p \le \frac{2^{-m}}{\ell}.
+\prod_{p \in S} \lvert d \rvert_p \le \frac{2^{-e}}{\ell}.
 \]
 The left side of the general form is therefore at most
 \[
-d^2 \cdot \lvert \theta - W \rvert \cdot \frac{2^{-m}}{\ell} = \ell a^2\, 2^m \cdot \lvert \theta - W \rvert.
+d^2 \cdot \lvert \theta - W \rvert \cdot \frac{2^{-e}}{\ell} = \ell a^2\, 2^e \cdot \lvert \theta - W \rvert \le \ell a^2\, 2^m \cdot \lvert \theta - W \rvert.
 \]
 Lemma~\ref{lem:three-approx} and $2^m < q+1$ bound this by $2\ell a^2(1 + 1/q)(1/y + 2\ell/q)$.
 Insert $1/y < q^{-1+2\varepsilon}$ and $a < 2(q+1)^\varepsilon$.
@@ -832,7 +855,7 @@ For $q \ge 4\ell$ one has $1 + 1/q < 2$, $1 + 2\ell\, q^{-2\varepsilon} \le 1 + 
 \[
 16\ell(1+2\ell)\, 2^{2\varepsilon}\, q^{-1+4\varepsilon}.
 \]
-The height satisfies $\max(\lvert P \rvert,\, d) < \ell a(q+1) + 1 < 4\ell(q+1)^{1+\varepsilon}$, so the right side is greater than $(4\ell)^{-\varepsilon}(q+1)^{-\varepsilon(1+\varepsilon)} > (4\ell)^{-\varepsilon}(2q)^{-\varepsilon(1+\varepsilon)}$.
+Since $P \le \ell aq + 1$ and $d \le \ell a \cdot 2^m < \ell a(q+1)$, the height satisfies $\max(\lvert P \rvert,\, d) < \ell a(q+1) + 1 < 4\ell(q+1)^{1+\varepsilon}$, so the right side is greater than $(4\ell)^{-\varepsilon}(q+1)^{-\varepsilon(1+\varepsilon)} > (4\ell)^{-\varepsilon}(2q)^{-\varepsilon(1+\varepsilon)}$.
 The quotient of these two bounds is
 \[
 16\ell(1+2\ell)\, 2^{2\varepsilon}(4\ell)^\varepsilon\, 2^{\varepsilon(1+\varepsilon)}\, q^{-1+5\varepsilon+\varepsilon^2}.
@@ -1340,7 +1363,7 @@ Theorem~4 does not need them.
 \topic{Searches.}
 By Lemma~\ref{lem:power-window} each $h$ gives one candidate $q = \lfloor 2^{h/\ell} \rfloor$, which is tested by following $1$ for $\ell$ odd steps.
 For $\ell = 3$ the same test was run for every $h \le 200{,}000$.
-It was repeated independently for every $h < 66{,}100$, which covers the range $q < 2^{22003}$ needed in Theorem~1.
+It was repeated independently for every $h < 66{,}100$, which covers the range $q < 2^{22001}$ needed in Theorem~1.
 For each $\ell$ from $4$ to $15$, the same test was run for every $h \le 100{,}000$ with $\ell \nmid h$.
 \begin{center}
 \begin{tabular}{cc}

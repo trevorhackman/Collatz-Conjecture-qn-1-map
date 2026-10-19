@@ -15,7 +15,7 @@ The abstract states the result and how it is proved. The introduction defines th
 ## Say
 
 - The theorem, in ordinary words.
-- A numerical cutoff exactly as proved. \(2^{22003}\) is not "about \(22000\)".
+- A numerical cutoff exactly as proved. \(2^{22001}\) is not "about \(22000\)".
 - When the argument is a conflict of bounds: for every case past that cutoff, a lower bound and an upper bound cannot hold at the same time. Every remaining case is ruled out by a direct computation, when that is the proof.
 - After that conflict, one short sentence on the external result that sets the threshold. Name the authors and the year when they have more than one cited paper. Here that sentence is: Bauer and Bennett (2018) give an irrationality measure whose exponent, about \(1.6149\), lies just below the golden ratio, the threshold at which these bounds conflict.
 

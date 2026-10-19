@@ -5,7 +5,8 @@ description: >
   The statement gives the conclusions. An immediate consequence may be
   another claim in the same statement. A real argument belongs in the proof.
   Use when writing or revising a theorem, lemma, proposition, corollary, or
-  proof, or when a statement contains part of its own argument. Also
+  proof, or when a statement contains part of its own argument. Name each
+  formula in the sentence that uses it. Do not rename a defined term. Also
   /statement-proof.
 ---
 
@@ -23,6 +24,16 @@ The statement says what is proved. The proof is the argument.
 
 - Every step that is not immediate: an intermediate inequality, a rearrangement, a multiplication, a hypothesis, or an earlier result.
 - The proof reaches the last claim, including an immediate one. One sentence is enough for that claim.
+
+## Name the object
+
+Using vague terms is not okay. A sentence that refers to a formula must contain that formula, or a symbol defined in that sentence. Do not write "the difference", "the bracket", "the expression", "the term", "the first", or "this" to point at an earlier formula.
+
+Do not rename a defined term. Synonyms are bad. This is a maths paper. Use the term as defined, or its defined symbol. "2-adic valuation" is not "valuation", and it is not "2-adic structure".
+
+Not: "with the bracket odd." Write: "\(x^2 - 2^{t-k_1}s\) is odd."
+
+Not: "Thus the difference has valuation \(k_1\)." Write: "Thus the 2-adic valuation of \(2^{k_2} y\) is \(k_1\)."
 
 ## Do not
 
