@@ -23,7 +23,7 @@ private const val Q_DEFAULT = 5
 private const val Q_DEFAULT_MAX_LENGTH = 20
 
 /** Length 1 is C(x)=x, so x(2^h-q)=1: only x=1 and q=2^h-1. */
-private const val MIN_CYCLE_LENGTH = 2
+internal const val MIN_CYCLE_LENGTH = 2
 
 /** Lengths through this one walk the counts. Longer lengths split the numerator. */
 private const val WALK_MAX_LENGTH = 3
@@ -52,7 +52,7 @@ private val MIN_ODD_Q: BigInteger = BigInteger.valueOf(3)
  * inside `q^L < 2^h < (q+1)^L`. The element `x` at the start of the cycle is
  * `N / (2^h - q^L)`, where `N` is the numerator fixed by the first `L-1` halving counts.
  *
- * Three searches.
+ * Five commands.
  *
  * All starting values: `[maxH] [length]`. One length. Every odd positive element is allowed.
  * The representative starts at the least element, so each halving count satisfies
@@ -66,11 +66,27 @@ private val MIN_ODD_Q: BigInteger = BigInteger.valueOf(3)
  * Fixed q: `q [q] [maxLength]`. Lengths run from 2 through `maxLength`, and the only
  * values of `h` are those with this odd `q = floor(2^{h/L})`. Omitted arguments are
  * [Q_DEFAULT] and [Q_DEFAULT_MAX_LENGTH].
+ *
+ * Paper II bounds: `bounds [x]`. Odd `x` from 1 through 35 when `x` is omitted.
+ * Prints Q_{3,*}, Q_{3,0}, Q_{2,*}, and Q_2 as the powers of two in the tables.
+ *
+ * Paper I table rows: `tables i through1 [length] [maxH]`, `tables i any [length] [maxH]`,
+ * and `tables i q [q] [maxLength]`. Omitted numbers are the ranges in the computations section.
  */
 fun main(args: Array<String>) {
-    if (args.firstOrNull() == "q") {
-        runFixedQ(args)
-        return
+    when (args.firstOrNull()) {
+        "q" -> {
+            runFixedQ(args)
+            return
+        }
+        "bounds" -> {
+            runBounds(args)
+            return
+        }
+        "tables" -> {
+            runTables(args)
+            return
+        }
     }
     val throughOne = args.firstOrNull() == "through1"
     val numbers = if (throughOne) args.drop(1) else args.asList()
@@ -107,10 +123,14 @@ private fun runFixedQ(args: Array<String>) {
     searchFixedQ(q, maxLength)
 }
 
-private fun usage(): Nothing {
+internal fun usage(): Nothing {
     System.err.println("usage: [maxH] [length]")
     System.err.println("       through1 [maxH] [length]")
     System.err.println("       q [q] [maxLength]")
+    System.err.println("       bounds [x]")
+    System.err.println("       tables i through1 [length] [maxH]")
+    System.err.println("       tables i any [length] [maxH]")
+    System.err.println("       tables i q [q] [maxLength]")
     exitProcess(1)
 }
 
@@ -661,7 +681,7 @@ private fun canonical(q: BigInteger, orbit: List<BigInteger>): Cycle {
 }
 
 /** Greatest integer `r` with `r^degree <= n`. */
-private fun floorRoot(n: BigInteger, degree: Int): BigInteger {
+internal fun floorRoot(n: BigInteger, degree: Int): BigInteger {
     var x = BigInteger.ONE.shiftLeft(n.bitLength() / degree + 1)
     val deg = BigInteger.valueOf(degree.toLong())
     val degM1 = BigInteger.valueOf((degree - 1).toLong())
