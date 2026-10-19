@@ -22,6 +22,7 @@ private const val Q_DEFAULT = 5
 /** Fixed q, no arguments: longest cycle. Lengths run from 2 through this one. */
 private const val Q_DEFAULT_MAX_LENGTH = 20
 
+/** Length 1 is C(x)=x, so x(2^h-q)=1: only x=1 and q=2^h-1. */
 private const val MIN_CYCLE_LENGTH = 2
 
 /** Lengths through this one walk the counts. Longer lengths split the numerator. */

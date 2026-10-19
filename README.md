@@ -19,7 +19,7 @@ The paper proves that 1 never lies on a cycle with exactly three odd numbers for
 - Through 1: 1→1 for Mersenne q = 2^e − 1, and 1→3→1 for q=5
 - Not through 1: 13→33→83 and 17→43→27 for q=5; 27→611 and 35→99 for q=181
 
-Every cycle of length ℓ has q = floor(2^{h/ℓ}) with ℓ not dividing h.
+Length 1 is classified: C(x₀)=x₀ forces x₀(2^h−q)=1, so the only positive odd cycle is 1→1 with q=2^h−1. Every cycle of length ℓ≥2 has q = floor(2^{h/ℓ}) with ℓ not dividing h.
 
 ## What the searches rule out
 
