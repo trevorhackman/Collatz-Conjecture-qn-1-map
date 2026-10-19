@@ -1,0 +1,4 @@
+# LaTeX scratch next to the .tex. Copies under out/ are tracked.
+*.aux
+*.log
+*.synctex.gz
