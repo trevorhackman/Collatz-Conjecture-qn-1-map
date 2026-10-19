@@ -52,7 +52,7 @@ private val MIN_ODD_Q: BigInteger = BigInteger.valueOf(3)
  * inside `q^L < 2^h < (q+1)^L`. The element `x` at the start of the cycle is
  * `N / (2^h - q^L)`, where `N` is the numerator fixed by the first `L-1` halving counts.
  *
- * Five commands.
+ * Six commands.
  *
  * All starting values: `[maxH] [length]`. One length. Every odd positive element is allowed.
  * The representative starts at the least element, so each halving count satisfies
@@ -72,6 +72,9 @@ private val MIN_ODD_Q: BigInteger = BigInteger.valueOf(3)
  *
  * Paper I table rows: `tables i through1 [length] [maxH]`, `tables i any [length] [maxH]`,
  * and `tables i q [q] [maxLength]`. Omitted numbers are the ranges in the computations section.
+ *
+ * Digit scan: `digits [places]`. The first [DIGIT_PLACES] binary places of 2^{1/3} and of 2^{2/3}
+ * when `places` is omitted. Reports alternating blocks of length [DIGIT_BLOCK] for m >= [DIGIT_M_MIN].
  */
 fun main(args: Array<String>) {
     when (args.firstOrNull()) {
@@ -85,6 +88,10 @@ fun main(args: Array<String>) {
         }
         "tables" -> {
             runTables(args)
+            return
+        }
+        "digits" -> {
+            runDigits(args)
             return
         }
     }
@@ -131,6 +138,7 @@ internal fun usage(): Nothing {
     System.err.println("       tables i through1 [length] [maxH]")
     System.err.println("       tables i any [length] [maxH]")
     System.err.println("       tables i q [q] [maxLength]")
+    System.err.println("       digits [places]")
     exitProcess(1)
 }
 

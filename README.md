@@ -10,7 +10,7 @@ Two papers on cycles of the qn+1 map, and the searches behind their tables.
 
 `./gradlew run --args="200 4"` searches length 4 through 200 halvings for all starting values. `./gradlew run --args="through1 2000 3"` searches length 3 through 2000 halvings along the orbit of 1. That search has no tuple enumeration, so the halving bound can be much higher. `./gradlew run --args="q 5 20"` fixes q=5 and searches every length from 2 through 20.
 
-`./gradlew run --args="bounds"` prints the Paper II powers of two for odd x from 1 through 35: Q_{3,*}, Q_{3,0}, Q_{2,*}, and Q_2. `bounds 1` prints one row. `./gradlew run --args="tables i through1"`, `tables i any`, and `tables i q` rerun the three Paper I computation tables. A length, or a q, alone reruns one published row. A second number overrides that row's limit.
+`./gradlew run --args="bounds"` prints the Paper II powers of two for odd x from 1 through 35: Q_{3,*}, Q_{3,0}, Q_{2,*}, and Q_2. `bounds 1` prints one row. `./gradlew run --args="tables i through1"`, `tables i any`, and `tables i q` rerun the three Paper I computation tables. A length, or a q, alone reruns one published row. A second number overrides that row's limit. `./gradlew run --args="digits"` scans the first 1072000000 binary places of 2^{1/3} and 2^{2/3} for an alternating block of length 48. `digits 10000` scans fewer places.
 
 ## Papers
 
@@ -60,7 +60,7 @@ Cycles through 1. Length 2 is not a search bound: Beukers's theorem leaves only 
 | 14 | h ≤ 100000 | q < 2^7142 |
 | 15 | h ≤ 100000 | q < 2^6666 |
 
-A separate digit scan of 2^{1/3} and 2^{2/3}, not part of `cycle-search`, rules out every 3-odd cycle through 1 with q < 2^1071999953.
+`digits` scans 2^{1/3} and 2^{2/3}. With no alternating block of length 48 from m = 100 through m = 1071999952, that rules out every 3-odd cycle through 1 with q < 2^1071999953. Every m < 100 has h = 3m+r < 66100 and is covered by the length-3 search.
 
 Fixed q. Every length from 2 up, only the values of h with that q. `tables i q` reruns these rows.
 
