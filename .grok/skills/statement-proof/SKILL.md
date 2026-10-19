@@ -6,8 +6,8 @@ description: >
   another claim in the same statement. A real argument belongs in the proof.
   Use when writing or revising a theorem, lemma, proposition, corollary, or
   proof, or when a statement contains part of its own argument. Name each
-  formula in the sentence that uses it. Do not rename a defined term. Also
-  /statement-proof.
+  formula in the sentence that uses it. Do not rename a defined term. Define
+  a symbol before later lines use it. Also /statement-proof.
 ---
 
 # Statement then proof
@@ -34,6 +34,12 @@ Do not rename a defined term. Synonyms are bad. This is a maths paper. Use the t
 Not: "with the bracket odd." Write: "\(x^2 - 2^{t-k_1}s\) is odd."
 
 Not: "Thus the difference has valuation \(k_1\)." Write: "Thus the 2-adic valuation of \(2^{k_2} y\) is \(k_1\)."
+
+## Define a symbol first
+
+A symbol that later lines use is defined before it appears. "\(y = x^2 - w\) with \(w = (x-1)/2^{k_1}\)" uses \(w\) and only then says what it is. Write "Let \(w = (x-1)/2^{k_1}\). Then \(y = x^2 - w\)."
+
+"With \(w = \ldots\)" is for a label used in that one formula and nowhere later.
 
 ## Do not
 
