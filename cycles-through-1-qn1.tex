@@ -22,6 +22,9 @@
 % instead of stretching the spaces on that line.
 \relpenalty=100
 \binoppenalty=200
+% Reference links only. Section and statement cross-references stay black.
+\usepackage[bookmarks=false,colorlinks,linkcolor=black,citecolor=black,urlcolor=blue]{hyperref}
+\newcommand{\doilink}[1]{\href{https://doi.org/#1}{\nolinkurl{doi:#1}}}
 
 \newenvironment{named}[1]{%
   \par\addvspace{\medskipamount}%
@@ -104,7 +107,7 @@ Theorem~4 is ineffective: it rests on the $p$-adic form of Ridout's theorem and 
 (A finiteness result is called effective if its proof gives an explicit bound on any exception, so that a finite computation can find them all, and ineffective if it gives no such bound.)
 Theorem~1 is effective and is completed by computation.
 Proposition~3 is the case of Theorem~4 in which the cycle visits~$1$.
-Its proof, in Section~\ref{sec:longer}, uses only the $S$-unit form of Ridout's theorem and Theorem~$2'$.
+Its proof, in Section~\ref{sec:ineffective}, uses only the $S$-unit form of Ridout's theorem and Theorem~$2'$.
 
 \section{Definitions and notation}
 \label{sec:definitions}
@@ -582,6 +585,9 @@ The bound is then the $Q$ in the proof of Theorem~$2'$ for these values.
 The length $3$ is Theorem~1.
 \end{proof}
 
+\section{Ineffective finiteness}
+\label{sec:ineffective}
+
 \begin{named}{Ridout's theorem (1958).}
 Let $\alpha$ be an algebraic irrational, let $S$ be a finite set of primes, and let $\varepsilon > 0$.
 Only finitely many reduced fractions $p/Q$ with $Q > 0$ have every prime factor of $Q$ in $S$ and satisfy
@@ -627,20 +633,9 @@ Ridout's theorem then applies.
 For $\ell = 1$ that product is empty, so the same identity becomes $2^h = q + 1$, and the three conclusions of Lemma~\ref{lem:power-window} fail.
 The root is the integer $2^h$, and Ridout's theorem does not apply.
 
-\section{A conjecture on all cycles}
-\label{sec:all-cycles}
-
 Theorems~1 and~2 and Proposition~3 concern cycles through $1$.
 The same map $C$ may have cycles that never visit $1$.
 Theorem~4 is the finiteness statement for every cycle of each length at least~$2$.
-The complete list of known cycles is short.
-
-A length-$1$ cycle is a fixed point $C(x_0) = x_0$, hence $x_0(2^h - q) = 1$.
-The only positive odd solution is $x_0 = 1$ and $q = 2^h - 1$, so $1 \to 1$ when $q = 2^e - 1$ with $e \ge 2$, and there is no length-$1$ cycle with $x_0 > 1$.
-For $q = 5$ and $h = 5$ there is $1 \to 3 \to 1$.
-For $q = 5$ and $h = 7$ there are $13 \to 33 \to 83 \to 13$ and $17 \to 43 \to 27 \to 17$.
-For $q = 181$ and $h = 15$ there are $27 \to 611 \to 27$ and $35 \to 99 \to 35$.
-Crandall recorded the cycle $27 \to 611$ from the identity $2^{15} - 181^2 = 7$.
 
 \begin{named}{Theorem 4.}
 For each $\ell \ge 2$, only finitely many odd $q$ have a cycle of $C$ of length $\ell$.
@@ -702,6 +697,18 @@ Reducing $P/Q$ only divides the left-hand side by the odd part of the gcd and ra
 
 \emph{Theorem~4 fails for $\ell = 1$.}
 The Mersenne family $q = 2^e - 1$ gives the cycle $1 \to 1$ for every $e \ge 2$, and the same identity becomes $2^h = q + 1$.
+
+\section{A conjecture on all cycles}
+\label{sec:all-cycles}
+
+The complete list of known cycles is short.
+
+A length-$1$ cycle is a fixed point $C(x_0) = x_0$, hence $x_0(2^h - q) = 1$.
+The only positive odd solution is $x_0 = 1$ and $q = 2^h - 1$, so $1 \to 1$ when $q = 2^e - 1$ with $e \ge 2$, and there is no length-$1$ cycle with $x_0 > 1$.
+For $q = 5$ and $h = 5$ there is $1 \to 3 \to 1$.
+For $q = 5$ and $h = 7$ there are $13 \to 33 \to 83 \to 13$ and $17 \to 43 \to 27 \to 17$.
+For $q = 181$ and $h = 15$ there are $27 \to 611 \to 27$ and $35 \to 99 \to 35$.
+Crandall recorded the cycle $27 \to 611$ from the identity $2^{15} - 181^2 = 7$.
 
 \begin{named}{Conjecture 5.}
 These are all the cycles of $C$.
@@ -1313,45 +1320,46 @@ Lower bounds on $x$ and $y$ (Lemmas~4 to~6 and Corollary~7, preceded by the weak
 Residue-class arguments settled special cases (Propositions~B.5 and~B.6), and the effective inequality of Bauer and Bennett gave the lower bound on $k_1$ (Proposition~B.7) and most of the case analysis of Lemma~4 (Appendix~\ref{app:cases}). Playing the window against the near miss for $x$ then gave Theorem~1, once it was noticed that Bauer and Bennett's unrounded exponent lies below the golden ratio.
 The near-miss principle (Lemma~\ref{lem:near-misses}) extended this to Theorem~2, Corollaries~12 to~14, and Proposition~3.
 The digit scan (Appendix~\ref{app:computations}) was computational evidence found along the way.
-The census of known cycles, Theorem~4, and the heuristic for Conjecture~5, are in Section~\ref{sec:all-cycles}.
+Theorem~4 is in Section~\ref{sec:ineffective}.
+The census of known cycles and the heuristic for Conjecture~5 are in Section~\ref{sec:all-cycles}.
 The final verification found and corrected a dropped constant in an intermediate step of Bauer and Bennett and confirmed their Proposition~8 for every $n_1 \ge 497$.
 
 \begin{thebibliography}{99}
 \bibitem{bauer-bennett-2002}
-M.~Bauer and M.~A.~Bennett, Applications of the hypergeometric method to the generalized Ramanujan--Nagell equation, Ramanujan J.\ 6 (2002), 209--270.
+M.~Bauer and M.~A.~Bennett, Applications of the hypergeometric method to the generalized Ramanujan--Nagell equation, Ramanujan J.\ 6 (2002), 209--270, \doilink{10.1023/A:1015779301077}.
 
 \bibitem{bauer-bennett-2018}
-M.~Bauer and M.~A.~Bennett, Ramanujan--Nagell cubics, Rocky Mountain J.\ Math.\ 48 (2018).
+M.~Bauer and M.~A.~Bennett, Ramanujan--Nagell cubics, Rocky Mountain J.\ Math.\ 48 (2018), 385--412, \doilink{10.1216/rmj-2018-48-2-385}.
 
 \bibitem{bennett-martin-obryant-rechnitzer}
-M.~A.~Bennett, G.~Martin, K.~O'Bryant and A.~Rechnitzer, Explicit bounds for primes in arithmetic progressions, Illinois J.\ Math.\ 62 (2018), 427--532.
+M.~A.~Bennett, G.~Martin, K.~O'Bryant and A.~Rechnitzer, Explicit bounds for primes in arithmetic progressions, Illinois J.\ Math.\ 62 (2018), 427--532, \doilink{10.1215/ijm/1552442669}.
 
 \bibitem{beukers}
-F.~Beukers, On the generalized Ramanujan--Nagell equation~I, Acta Arith.\ 38 (1980/81), 389--410.
+F.~Beukers, On the generalized Ramanujan--Nagell equation~I, Acta Arith.\ 38 (1980/81), 389--410, \doilink{10.4064/aa-38-4-389-410}.
 
 \bibitem{chudnovsky}
-G.~V.~Chudnovsky, On the method of Thue--Siegel, Ann.\ of Math.\ 117 (1983), 325--382.
+G.~V.~Chudnovsky, On the method of Thue--Siegel, Ann.\ of Math.\ 117 (1983), 325--382, \doilink{10.2307/2007080}.
 
 \bibitem{crandall}
-R.~E.~Crandall, On the ``$3x+1$'' problem, Math.\ Comp.\ 32 (1978).
+R.~E.~Crandall, On the ``$3x+1$'' problem, Math.\ Comp.\ 32 (1978), 1281--1292, \doilink{10.1090/S0025-5718-1978-0480321-3}.
 
 \bibitem{franco-thesis}
 Z.~Franco, Diophantine Approximation and the $qx+1$ Problem, PhD thesis, UC Berkeley, 1990.
 
 \bibitem{franco-pomerance}
-Z.~Franco and C.~Pomerance, On a conjecture of Crandall concerning the $qx+1$ problem, Math.\ Comp.\ 64 (1995).
+Z.~Franco and C.~Pomerance, On a conjecture of Crandall concerning the $qx+1$ problem, Math.\ Comp.\ 64 (1995), 1333--1336, \doilink{10.1090/S0025-5718-1995-1297468-4}.
 
 \bibitem{ridout}
-D.~Ridout, The $p$-adic generalization of the Thue--Siegel--Roth theorem, Mathematika 5 (1958), 40--48.
+D.~Ridout, The $p$-adic generalization of the Thue--Siegel--Roth theorem, Mathematika 5 (1958), 40--48, \doilink{10.1112/S0025579300001339}.
 
 \bibitem{santos}
-R.~Santos, On the Collatz general problem $qn+1$, arXiv:2005.00346 (preprint).
+R.~Santos, On the Collatz general problem $qn+1$, \href{https://arxiv.org/abs/2005.00346}{\nolinkurl{arXiv:2005.00346}} (preprint).
 
 \bibitem{steiner-1977}
 R.~P.~Steiner, A theorem on the Syracuse problem, Proc.\ 7th Manitoba Conference on Numerical Mathematics (1977), 553--559.
 
 \bibitem{steiner-1981}
-R.~P.~Steiner, On the ``$qx + 1$ problem'', $q$ odd, Fibonacci Quart.\ 19 (1981), 285--288.
+R.~P.~Steiner, On the ``$qx + 1$ problem'', $q$ odd, Fibonacci Quart.\ 19 (1981), 285--288, \doilink{10.1080/00150517.1981.12430094}.
 \end{thebibliography}
 
 \end{document}
