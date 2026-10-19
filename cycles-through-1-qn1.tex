@@ -54,7 +54,7 @@
 \begin{abstract}
 \noindent
 For the $qn+1$ map with $q$ an odd integer at least $3$, we prove that $1$ never lies on a cycle with exactly three distinct odd numbers.
-This settles the three-step case of a conjecture of Santos that $1$ is periodic only for $q = 5$ and for Mersenne numbers $q = 2^e - 1$.
+This settles the three-step case of a conjecture of Santos (2020) that $1$ is periodic only for $q = 5$ and for Mersenne numbers $q = 2^e - 1$.
 We found that for every such $q$ at least $2^{22001}$, a lower bound and an upper bound cannot hold at the same time.
 Bauer and Bennett (2018) give an irrationality measure whose exponent, about $1.61487$, lies just below the golden ratio, the threshold at which these bounds conflict.
 Every smaller $q$ is ruled out by a direct computation.
@@ -62,6 +62,9 @@ Every smaller $q$ is ruled out by a direct computation.
 
 \section{Introduction}
 \label{sec:introduction}
+
+This paper studies cycles of the $qn+1$ map through $1$.
+It is followed by the broader paper~\cite{hackman-ii}, which studies cycles of the same map for any starting value.
 
 Fix an odd integer $q \ge 3$.
 For an odd positive integer $n$, let $v$ be the largest integer such that $2^v$ divides $qn+1$.
@@ -77,11 +80,13 @@ For larger $q$, heuristic arguments suggest that most orbits grow without bound 
 We say that $1$ is periodic if its orbit returns to $1$, and ask for which $q$ this happens.
 We classify the answers by the length $\ell$ of the cycle through $1$, that is, the number of distinct odd numbers on it.
 
-For $\ell = 1$ the cycle is $1 \to 1$, which happens exactly when $q+1$ is a power of $2$, that is $q = 2^e - 1$ (Santos, Proposition~15).
-For $\ell = 2$, the only $q$ is $5$, with $1 \to 3 \to 1$ (Santos, Proposition~16; a short proof also follows from Beukers's theorem on $x^2 + D = 2^n$, stated as Theorem~1.8 in Bauer and Bennett (2002)).
-Santos conjectured that these are the only cases: $1$ is periodic only for $q = 5$ and $q = 2^e - 1$.
+For $\ell = 1$ the cycle is $1 \to 1$, which happens exactly when $q+1$ is a power of $2$, that is $q = 2^e - 1$ (Proposition~15 of Santos (2020)).
+For $\ell = 2$, the only $q$ is $5$, with $1 \to 3 \to 1$ (Proposition~16 of Santos (2020); a short proof also follows from the theorem of Beukers (1980/81) on $x^2 + D = 2^n$, stated as Theorem~1.8 of Bauer and Bennett (2002)).
 Besides the Mersenne family $1 \to 1$, the only known cycle through $1$ is $1 \to 3 \to 1$ for $q = 5$.
-Cycles that miss $1$ are taken up in the companion paper~\cite{hackman-ii}.
+
+\begin{named}{Santos's conjecture (2020).}
+$1$ is periodic only for $q = 5$ and $q = 2^e - 1$.
+\end{named}
 
 \begin{named}{Theorem 1.}
 No odd $q \ge 3$ has $1$ on a cycle of $C$ of length $3$.
@@ -103,7 +108,7 @@ Theorem~3 is ineffective: it rests on the $S$-unit form of Ridout's theorem in S
 Theorem~1 is effective and is completed by computation.
 The proof of Theorem~3, in Section~\ref{sec:ineffective}, uses only the $S$-unit form of Ridout's theorem and Theorem~2.
 Cycles that need not visit $1$ are treated in the companion paper~\cite{hackman-ii}.
-For a cycle of length $2$ or $3$ through a fixed odd element, that paper gives a bound on $q$ depending only on the element (Theorem~2), and for the longer classes of Corollaries~12 to~14 the same bound is Corollary~3 of that paper.
+For a cycle of length $2$ or $3$ through a fixed odd element, that paper gives a bound on $q$ depending only on the element (Theorem~3), and for the longer classes of Corollaries~12 to~14 the same bound is Corollary~4 of that paper.
 
 \section{Definitions and notation}
 \label{sec:definitions}
@@ -410,7 +415,7 @@ In particular $\bigl|x - 2^{f/3}\bigr| \le 1.6/2^{k_1}$.
 
 We use the following effective irrationality measure, which is the inequality obtained in the proof of Theorem~3 of Bauer and Bennett (2018) from their inequality~(21), Lemma~7 and Proposition~8, before they round it to $2^{-1.62k}$ in~(7).
 
-\begin{named}{Theorem (Bauer--Bennett).}
+\begin{named}{Theorem (Bauer--Bennett (2018)).}
 Let $j \ge 11000$, $r \in \{1, 2\}$, $s \in \{1, 3\}$ and $n = 3j + r$.
 For every integer $p$,
 \[
@@ -440,14 +445,14 @@ From Lemma~\ref{lem:cube-window}, $2^h > q^3$, so $2^{h/3} > q > 2^{a+j'}$ and $
 As $r \le 2$, this forces $m \ge a + j' \ge 11000$.
 \begin{enumerate}
 \item \textbf{The window.}
-Apply Theorem~(Bauer--Bennett) with $s = 3$, $p = 3q + 1$, $j = m$.
+Apply Theorem~(Bauer--Bennett (2018)) with $s = 3$, $p = 3q + 1$, $j = m$.
 Here $1 - p/(3 \cdot 2^{h/3}) = (\delta - 1/3)/2^{h/3}$, so $\delta - 1/3 > 2^m \cdot 2^{-5} \cdot 16166467234^{-(h+77)/63}$.
 With Lemma~\ref{lem:window} and $q \ge 2^m$,
 \[
 2^a > 1.5 \cdot 2^{2m-5} \cdot 16166467234^{-(h+77)/63}.
 \]
 \item \textbf{The near miss for $x$.}
-Apply Theorem~(Bauer--Bennett) with $s = 1$, $p = x$, $j = j'$.
+Apply Theorem~(Bauer--Bennett (2018)) with $s = 1$, $p = x$, $j = j'$.
 By Lemma~\ref{lem:near-x}, $|1 - x/2^{f/3}| \le 1.6/(2^a \cdot 2^{f/3})$, so
 \[
 2^a < 1.6 \cdot 2^{5 - f/3} \cdot 16166467234^{(f+77)/63}.
@@ -461,14 +466,14 @@ By Lemma~\ref{lem:cube-window} each $h$ gives a single candidate $q = \lfloor 2^
 \end{proof}
 
 \topic{Why the golden ratio appears.}
-The proof squeezes $x$ between two bounds, both governed by the exponent $\mu$ in Theorem~(Bauer--Bennett).
+The proof squeezes $x$ between two bounds, both governed by the exponent $\mu$ in Theorem~(Bauer--Bennett (2018)).
 \begin{itemize}
 \item \textbf{The window keeps $x$ small.}
 By Lemma~\ref{lem:window}, $2^{h/3}$ exceeds $q + 1/3$ by about $1/(3x)$, so $(3q+1)/(3 \cdot 2^m)$ approximates $2^{r/3}$ with error about $1/(xq)$.
-Theorem~(Bauer--Bennett) forbids errors below about $q^{-\mu}$, so $x \lesssim q^{\mu-1}$.
+Theorem~(Bauer--Bennett (2018)) forbids errors below about $q^{-\mu}$, so $x \lesssim q^{\mu-1}$.
 \item \textbf{The near miss for $x$ keeps $x$ large.}
 By Lemma~\ref{lem:near-x}, $x/2^{j'}$ approximates $2^{r'/3}$ with error about $1/q$, where $2^{j'} \asymp x$.
-Theorem~(Bauer--Bennett) forbids errors below about $x^{-\mu}$, so $x \gtrsim q^{1/\mu}$.
+Theorem~(Bauer--Bennett (2018)) forbids errors below about $x^{-\mu}$, so $x \gtrsim q^{1/\mu}$.
 \end{itemize}
 Both bounds can hold only if $1/\mu \le \mu - 1$, that is $\mu^2 - \mu - 1 \ge 0$, whose positive root is $\varphi = (1 + \sqrt{5})/2$.
 With $\mu = 1.61487$ the bounds read $q^{0.6192} \lesssim x \lesssim q^{0.6149}$, which are incompatible once $q$ is large; the explicit constants in steps~1 to~3 make this precise for $q \ge 2^{22001}$.
@@ -604,7 +609,7 @@ If $\mu \le 1$, they conflict once $c/2 > (A^{-1} + 4\ell)\, q^{-1/\mu}$, that i
 Take $Q = \max\bigl(2(\ell-1),\ 2^{j_0+1},\ Q_0,\ Q_*\bigr)$.
 \end{proof}
 
-For $\ell = 3$, Theorem~(Bauer--Bennett) supplies the hypothesis of Theorem~2 with $R = \{1, 2\}$, $\mu \approx 1.61487$ and $j_0 = 11000$.
+For $\ell = 3$, Theorem~(Bauer--Bennett (2018)) supplies the hypothesis of Theorem~2 with $R = \{1, 2\}$, $\mu \approx 1.61487$ and $j_0 = 11000$.
 So Theorem~1 is the case $\ell = 3$ of Theorem~2; Section~\ref{sec:proof} carries out this case with explicit constants.
 
 \begin{named}{Corollary 12.}
@@ -640,7 +645,7 @@ The case $\ell = 4$ is Corollary~12.
 
 \begin{named}{Corollary 14.}
 Let $\ell = 3 \cdot 2^a$ with $a \ge 1$.
-Only finitely many odd $q$ have $1$ on a cycle of $C$ of length $\ell$ whose total number of halvings is $\equiv \ell/3$ or $2\ell/3 \pmod{\ell}$, and a bound is computable from Theorem~(Bauer--Bennett).
+Only finitely many odd $q$ have $1$ on a cycle of $C$ of length $\ell$ whose total number of halvings is $\equiv \ell/3$ or $2\ell/3 \pmod{\ell}$, and a bound is computable from Theorem~(Bauer--Bennett (2018)).
 The length $3$ is Theorem~1, which rules out every such $q$.
 \end{named}
 
@@ -648,11 +653,11 @@ The length $3$ is Theorem~1, which rules out every such $q$.
 Write $h = \ell m + r_0$ with $r_0 \in \{\ell/3,\, 2\ell/3\}$.
 Every multiple of $h$ is congruent to $0$, $\ell/3$, or $2\ell/3$ modulo $\ell$, so the only irrational roots that occur are $2^{1/3}$ and $2^{2/3}$.
 In the proof of Theorem~2 the window fraction is $(\ell q + 1)/(\ell \cdot 2^m)$.
-Its numerator is coprime to $\ell$, and $\ell \cdot 2^m = 3 \cdot 2^{m+a}$, so this is a fraction of the shape in Theorem~(Bauer--Bennett) with $s = 3$ and exponent $m+a$.
-Each near miss is $x_i/2^j$ with $x_i$ odd, so Theorem~(Bauer--Bennett) applies with $s = 1$.
-Both give the exponent $\mu = 3\log_2(16166467234)/63 \approx 1.61487 < \varphi$ once the exponent in Theorem~(Bauer--Bennett) is at least $11000$.
-The shift by $a$, and the fixed factors in Theorem~(Bauer--Bennett), contribute only a constant depending on $\ell$.
-The fractions used in the proof of Theorem~2 therefore satisfy its hypothesis with $R = \{\ell/3,\, 2\ell/3\}$, this $\mu$, a $c > 0$ read from Theorem~(Bauer--Bennett), and $j_0 = 11000$.
+Its numerator is coprime to $\ell$, and $\ell \cdot 2^m = 3 \cdot 2^{m+a}$, so this is a fraction of the shape in Theorem~(Bauer--Bennett (2018)) with $s = 3$ and exponent $m+a$.
+Each near miss is $x_i/2^j$ with $x_i$ odd, so Theorem~(Bauer--Bennett (2018)) applies with $s = 1$.
+Both give the exponent $\mu = 3\log_2(16166467234)/63 \approx 1.61487 < \varphi$ once the exponent in Theorem~(Bauer--Bennett (2018)) is at least $11000$.
+The shift by $a$, and the fixed factors in Theorem~(Bauer--Bennett (2018)), contribute only a constant depending on $\ell$.
+The fractions used in the proof of Theorem~2 therefore satisfy its hypothesis with $R = \{\ell/3,\, 2\ell/3\}$, this $\mu$, a $c > 0$ read from Theorem~(Bauer--Bennett (2018)), and $j_0 = 11000$.
 The bound is then the $Q$ in the proof of Theorem~2 for these values.
 The length $3$ is Theorem~1.
 \end{proof}
@@ -700,7 +705,7 @@ For $\ell = 1$ that product is empty, so the same identity becomes $2^h = q + 1$
 The root is the integer $2^h$, and Ridout's theorem does not apply.
 
 Cycles that need not visit $1$ are treated in the companion paper~\cite{hackman-ii}.
-The same finiteness, for a cycle that need not visit $1$, is Theorem~1 of that paper.
+The same finiteness, for a cycle that need not visit $1$, is Theorem~2 of that paper.
 
 \section{Other results}
 \label{sec:other}
@@ -709,7 +714,7 @@ The following were found along the way.
 They are not needed for Theorems~1, 2 and~3, and Corollaries~12 to~14; full statements and proofs are in the appendices indicated, and Appendix~\ref{app:history} has notes on the literature and the history of the work.
 \begin{itemize}
 \item \textbf{One and two odd steps through 1} (Appendix~\ref{app:one-two}).
-The two-step case, only $q = 5$, follows from Beukers's theorem on $x^2 + D = 2^n$.
+The two-step case, only $q = 5$, follows from the theorem of Beukers (1980/81) on $x^2 + D = 2^n$.
 \item \textbf{The order of $2$} (Appendix~\ref{sec:earlier}). $k_3 = d$ or $2d$, where $d$ is the order of $2$ modulo $q$; in particular $d < 3 \log_2 q$, and no Wieferich prime $q$ has a $3$-odd cycle through $1$, the same mechanism Franco and Pomerance use for Crandall's question of when orbits avoid $1$.
 \item \textbf{Finiteness for three steps via Ridout alone} (Appendix~\ref{sec:earlier}).
 Lemmas~5 and~\ref{lem:window} bound the window by about $q^{-1/2}$, and Ridout's theorem then gives finiteness through~$1$.
@@ -740,7 +745,7 @@ The Bauer--Bennett construction needs a fourth power exceptionally close to a po
 A different construction is likely needed.
 \item \textbf{Effective results for larger $\ell$.}
 Theorem~2 turns any such exponent for the roots $2^{r/\ell}$ into a complete answer for that $\ell$.
-Santos's conjecture in full would need this for every $\ell$, or a bound uniform in $\ell$.
+Santos's conjecture (2020) in full would need this for every $\ell$, or a bound uniform in $\ell$.
 \item \textbf{Novelty.}
 Franco's 1990 thesis on Diophantine approximation and the $qx+1$ problem could not be consulted and should be checked for overlap, including with Theorems~1, 2 and~3.
 \end{enumerate}
@@ -752,7 +757,7 @@ Franco's 1990 thesis on Diophantine approximation and the $qx+1$ problem could n
 
 \begin{named}{Proposition A.1 (one odd step).}
 The only positive odd solution of a length-$1$ cycle is $x_0 = 1$ and $q = 2^h - 1$.
-In particular the cycle through $1$ is $1 \to 1$ precisely when $q = 2^e - 1$ (Santos, Proposition~15).
+In particular the cycle through $1$ is $1 \to 1$ precisely when $q = 2^e - 1$ (Proposition~15 of Santos (2020)).
 \end{named}
 
 \begin{proof}
@@ -773,7 +778,7 @@ Multiplying by $4$ and adding $1$,
 (2q+1)^2 + \bigl(2^{k_1+2} - 1\bigr) = 2^{k_1+k_2+2}.
 \]
 This is $X^2 + D = 2^n$ with $X = 2q+1$ and $D = 2^{k_1+2} - 1$.
-By a theorem of Beukers (Theorem~1.8 in Bauer and Bennett 2002), for $D \ne 7$, $23$ and $D$ not of the form $2^k - 1$ there is at most one solution, while for $D = 2^k - 1$ with $k \ge 4$ there are exactly two, $X = 1$ and $X = 2^{k-1} - 1$.
+By the theorem of Beukers (1980/81), stated as Theorem~1.8 of Bauer and Bennett (2002), for $D \ne 7$, $23$ and $D$ not of the form $2^k - 1$ there is at most one solution, while for $D = 2^k - 1$ with $k \ge 4$ there are exactly two, $X = 1$ and $X = 2^{k-1} - 1$.
 These give $q = 0$ and $q = 2^{k_1} - 1$, the one-step cycle traversed twice, so $k_1 \ge 2$ gives nothing new.
 For $k_1 = 1$, $D = 7$ is the Ramanujan--Nagell equation with $X \in \{1, 3, 5, 11, 181\}$, and only $X = 11$ gives an odd $q$ other than $1$: $q = 5$, with $1 \to 3 \to 1$.
 \end{proof}
@@ -840,7 +845,7 @@ The reduced fraction still has a denominator built from $2$ and $3$, so Ridout's
 
 This is the case $\ell = 3$ of Theorem~3, and Theorem~1 supersedes it.
 The exponent $3/2$ comes from the lower bounds $x > \sqrt{q/2}$ and $y > x$; with only $x, y \ge 3$ the error is of order $1/Q$ and Ridout's theorem gives nothing.
-The result is ineffective, which is why Theorem~1 needs Theorem~(Bauer--Bennett) instead.
+The result is ineffective, which is why Theorem~1 needs Theorem~(Bauer--Bennett (2018)) instead.
 
 \topic{Elementary special cases.}
 \begin{named}{Proposition B.5 ($k_1 = k_2 = 1$).}
@@ -1097,7 +1102,7 @@ If $k_3 \le k_4$ and $z < y$, then $z > q$; if $z > y$, then $z^2 > qy$.
 Lemma~C.4 bounds $y$ only when $k_2 \le k_3$, and $z$ only when $k_3 \le k_4$.
 It leaves open $k_3 < k_2$ with $y < x$, where $y$ could be small, and $k_4 < k_3$, where $z$ could be small.
 Those two lower bounds are the missing inputs for Proposition~D.4.
-Theorem~1 of the companion paper does not need them.
+Theorem~2 of the companion paper does not need them.
 
 \section{Work on any cycle length through 1}
 \label{app:any}
@@ -1233,10 +1238,10 @@ $15$ & $100{,}000$ & $2^{6{,}666}$ \\
 
 \topic{Any cycle.}
 The same test, for odd elements that need not include $1$, was run for each $\ell$ from $2$ to $9$ and every $h$ up to the value in the table.
-The only cycles found are those of Conjecture~4 of the companion paper~\cite{hackman-ii}.
+The only cycles found are those of Conjecture~1 of the companion paper~\cite{hackman-ii}.
 \begin{center}
 \begin{tabular}{ccc}
-\multicolumn{3}{c}{\textbf{Any cycle: only those of Conjecture~4 in the companion paper}} \\[0.4em]
+\multicolumn{3}{c}{\textbf{Any cycle: only those of Conjecture~1 in the companion paper}} \\[0.4em]
 odd steps $\ell$ & $h$ at most & for $q$ below \\
 $2$ & $8{,}000$ & $2^{4{,}000}$ \\
 $3$ & $4{,}000$ & $2^{1{,}333}$ \\
@@ -1313,11 +1318,11 @@ Such an $m$ would give $q = \lfloor 2^m \beta \rfloor < 2^{m+1} \le 2^{N-47} = 2
 Every $m < 100$ has $h = 3m + r < 66{,}100$ and was covered by the search over $h$.
 Together these rule out every $3$-odd cycle through $1$ with $q < 2^{1{,}071{,}999{,}953}$.
 
-\topic{Bauer and Bennett (2018).}
-Theorem~(Bauer--Bennett) is the inequality in the proof of their Theorem~3, before the exponent is rounded.
+\topic{Checking Bauer and Bennett (2018).}
+Theorem~(Bauer--Bennett (2018)) is the inequality in the proof of their Theorem~3, before the exponent is rounded.
 The constant $16166467234$ in that inequality is the integer just above $9 \cdot 2^{28} \cdot F(\tau)/1.79$, where $F$ is their auxiliary function: $F(\tau) = 11.97804\ldots$ at $\tau = 0.20305\ldots$, and the product equals $16166467233.3\ldots$.
 Their inequality~(21) has constant $2^{-5.0001}$.
-The factor $2^{-5}$ in Theorem~(Bauer--Bennett) is this constant; the sentence before the proof of Theorem~1 records that their displayed intermediate step omits it.
+The factor $2^{-5}$ in Theorem~(Bauer--Bennett (2018)) is this constant; the sentence before the proof of Theorem~1 records that their displayed intermediate step omits it.
 Their Lemma~7 was checked at $3000$-digit precision for every parameter $n_1$ from $2$ to $60$ and both values of each of their parameters $\delta$ and $r$.
 A quantity $f$ bounded in that proof satisfies $\max f = 0.31999\ldots < 1/3$.
 
@@ -1336,21 +1341,21 @@ Both exceed $\log 1.8 \cdot n_1 = 0.58779\, n_1$.
 The explicit prime bound used for these estimates, from Bennett, Martin, O'Bryant and Rechnitzer, was spot-checked for $x \le 2 \times 10^8$.
 The largest ratio found is $1.79628$, against their stated $1.798158$, and the two ranges in that bound meet at $x = 641{,}239{,}200.2$.
 \end{itemize}
-What was not recomputed is that prime bound for $x > 2 \times 10^8$, Lemma~4 of Beukers (one choice of $\delta$ gives $\Lambda \ne 0$), and Lemma~4.5 of Chudnovsky, which their Lemma~9 uses.
+What was not recomputed is that prime bound for $x > 2 \times 10^8$, Lemma~4 of Beukers (1980/81), where one choice of $\delta$ gives $\Lambda \ne 0$, and Lemma~4.5 of Chudnovsky (1983), which their Lemma~9 uses.
 
 \section{Notes on the literature and history}
 \label{app:history}
 
 \topic{Literature.}
 \begin{itemize}
-\item Santos's preprint proves the one- and two-step cases (Propositions~15 and~16) and conjectures that $1$ is periodic only for $q = 5$ and $q = 2^e - 1$ (Conjecture~3).
+\item Santos (2020) proves the one- and two-step cases (Propositions~15 and~16) and conjectures that $1$ is periodic only for $q = 5$ and $q = 2^e - 1$ (Conjecture~3).
 His Remark~5 describes three or more odd steps as far harder and likely out of reach; Theorem~1 settles three steps.
 The same preprint claims a proof of the Collatz conjecture, which is not accepted; only its elementary propositions are relied on here.
 \item Crandall (1978) and Franco and Pomerance (1995) study when orbits of $qx+1$ maps avoid $1$; Corollary~B.3 matches their mechanism.
 \item Franco's 1990 thesis uses Diophantine approximation for the $qx+1$ problem.
 Only its title was available, and it is the most important item to check for overlap.
 \item Steiner (1977, 1981) rules out one-block ``circuits'' for $q = 3$, $5$, $7$ with Baker's method, a related use of Diophantine approximation for cycles.
-\item The deep inputs are Bauer and Bennett (2002, 2018) on restricted irrationality measures, Beukers on $X^2 + D = 2^n$, and Ridout (1958) on approximation with $S$-unit denominators.
+\item The deep inputs are Bauer and Bennett (2002, 2018) on restricted irrationality measures, Beukers (1980/81) on $X^2 + D = 2^n$, and Ridout (1958) on approximation with $S$-unit denominators.
 \end{itemize}
 
 \topic{History of the results.}
@@ -1394,7 +1399,7 @@ T.~Hackman, II. Cycles beyond $1$ for the $qn+1$ map: finiteness for each length
 D.~Ridout, The $p$-adic generalization of the Thue--Siegel--Roth theorem, Mathematika 5 (1958), 40--48, \doilink{10.1112/S0025579300001339}.
 
 \bibitem{santos}
-R.~Santos, On the Collatz general problem $qn+1$, \href{https://arxiv.org/abs/2005.00346}{\nolinkurl{arXiv:2005.00346}} (preprint).
+R.~Santos, On the Collatz general problem $qn+1$, preprint (2020), \href{https://arxiv.org/abs/2005.00346}{\nolinkurl{arXiv:2005.00346}}.
 
 \bibitem{steiner-1977}
 R.~P.~Steiner, A theorem on the Syracuse problem, Proc.\ 7th Manitoba Conference on Numerical Mathematics (1977), 553--559.

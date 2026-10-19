@@ -36,7 +36,7 @@
   \refstepcounter{stmtref}%
   \label{#2}%
 }
-% Lemmas are numbered on their own, so Lemma 1 and Theorem 1 do not share a link target.
+% Lemmas are numbered on their own, so Lemma 1 and Conjecture 1 do not share a link target.
 \newcounter{lemmaref}
 \newcommand{\marklemma}[2]{%
   \setcounter{lemmaref}{#1}%
@@ -77,15 +77,36 @@ The map $C$ sends $n$ to $(qn+1)/2^v$.
 A cycle of length $\ell$ is $\ell$ distinct odd positive integers, each sent to the next by $C$, and the last sent back to the first.
 The integer $h$ is the total number of factors of $2$ removed along the cycle.
 
-\begin{named}{Theorem 1.}
-\markstmt{1}{thm:finite}
+The complete list of known cycles is short.
+
+A length-$1$ cycle is a fixed point: $C$ sends some odd positive integer $x_0$ to itself, hence $x_0(2^h - q) = 1$.
+The only positive odd solution is $x_0 = 1$ and $q = 2^h - 1$, so $1 \to 1$ when $q = 2^e - 1$ with $e \ge 2$, and there is no length-$1$ cycle with $x_0 > 1$.
+For $q = 5$ and $h = 5$ there is $1 \to 3 \to 1$.
+For $q = 5$ and $h = 7$ there are $13 \to 33 \to 83 \to 13$ and $17 \to 43 \to 27 \to 17$.
+For $q = 181$ and $h = 15$ there are $27 \to 611 \to 27$ and $35 \to 99 \to 35$.
+Crandall recorded the cycle $27 \to 611$ from the identity $2^{15} - 181^2 = 7$.
+
+\begin{named}{Conjecture 1.}
+\markstmt{1}{conj:all}
+These are all the cycles of $C$.
+For every odd $q \ge 3$, every cycle is either $1 \to 1$ with $q = 2^e - 1$, or one of the five cycles at $q = 5$ and $q = 181$ listed above.
+In particular, if $q \ge 7$ is neither $181$ nor of the form $2^e - 1$, then $C$ has no cycle, so every orbit diverges.
+\end{named}
+
+There is then no cycle through $1$ other than $1 \to 1$ for Mersenne $q$ and $1 \to 3 \to 1$ for $q = 5$, which is the conjecture of Santos (2020), and for $q = 3$ there is no cycle other than $1 \to 1$.
+For those $q \ge 7$ that are neither $181$ nor Mersenne, the claim is stronger than Crandall's conjecture that some orbit avoids $1$: there is no cycle at all, and an infinite orbit of odd positive integers is unbounded.
+The searches that found no others, in the ranges they cover, are in the companion paper~\cite{hackman-i}.
+Section~\ref{sec:all-cycles} gives a heuristic for the expected number of cycles.
+
+\begin{named}{Theorem 2.}
+\markstmt{2}{thm:finite}
 For each $\ell \ge 2$, only finitely many odd $q$ have a cycle of $C$ of length $\ell$.
 \end{named}
 
-Theorem~1 is ineffective: it rests on the general form of Ridout's theorem~\cite{ridout} in Section~\ref{sec:ineffective}, which allows prime factors of the denominator outside a fixed finite set, and gives no bound on $q$, and no bound depending on a fixed starting value.
+Theorem~2 is ineffective: it rests on the general form of Ridout's theorem~\cite{ridout} in Section~\ref{sec:ineffective}, which allows prime factors of the denominator outside a fixed finite set, and gives no bound on $q$, and no bound depending on a fixed starting value.
 (A finiteness result is called effective if its proof gives an explicit bound on any exception, so that a finite computation can find them all, and ineffective if it gives no such bound.)
 The case in which the cycle visits $1$ is Theorem~3 of the companion paper, and that proof uses only the $S$-unit form of Ridout's theorem.
-The proof of Theorem~1 is in Section~\ref{sec:ineffective}.
+The proof of Theorem~2 is in Section~\ref{sec:ineffective}.
 
 The argument of Theorem~\ref{thm:bound} is the comparison already written in the proof of Theorem~2 of~\cite{hackman-i}.
 That theorem assumes the cycle visits $1$, and that the odd part of each denominator is $1$ or $\ell$.
@@ -93,8 +114,8 @@ Here the cycle need not visit $1$.
 The odd part is $x$, or $3x$ in the length-$3$ product.
 The exponent is still below the golden ratio $\varphi = (1+\sqrt{5})/2$, so the same comparison forces $q$ below a bound read off from $x$.
 
-\begin{named}{Theorem 2.}
-\markstmt{2}{thm:bound}
+\begin{named}{Theorem 3.}
+\markstmt{3}{thm:bound}
 Let $x$ be an odd positive integer, and let $Q(x) = \max\bigl(Q_2(x), Q_3(x)\bigr)$ be the integer defined in Section~\ref{sec:bound}.
 If $x$ lies on a cycle of $C$ of length $2$ or of length $3$, then $q < Q(x)$.
 A length-$2$ cycle satisfies the stronger $q < Q_2(x)$.
@@ -113,7 +134,6 @@ Section~\ref{sec:bound} records $181 < Q_2(27)$ and $181 < Q_2(35)$.
 
 Length $4$ with $h$ odd remains open, as in the companion paper: the roots are $2^{1/4}$ and $2^{3/4}$, and a fixed odd part does not supply an exponent below $\varphi$ for them.
 Corollary~\ref{cor:longer} covers the longer classes whose roots are only $\sqrt{2}$, or only the cube roots of $2$.
-Section~\ref{sec:all-cycles} lists every known cycle and conjectures that the list is complete.
 
 \section{Definitions and notation}
 \label{sec:definitions}
@@ -266,7 +286,7 @@ Therefore $\lvert \delta - 1/(\ell a) \rvert \le 1/y + 2\ell/q$.
 Dividing by $2^m > q/2$ gives part~3.
 \end{proof}
 
-\begin{named}{Theorem 1.}
+\begin{named}{Theorem 2.}
 For each $\ell \ge 2$, only finitely many odd $q$ have a cycle of $C$ of length $\ell$.
 \end{named}
 
@@ -369,7 +389,7 @@ Lemma~\ref{lem:three-approx} and $1/y \le 1$ give $\lvert \theta - W \rvert \le 
 In every case $q$ is at most a number depending only on $\ell$ and $\eta$.
 \end{proof}
 
-\emph{Theorem~1 fails for $\ell = 1$.}
+\emph{Theorem~2 fails for $\ell = 1$.}
 The Mersenne family $q = 2^e - 1$ gives the cycle $1 \to 1$ for every $e \ge 2$, and the same identity becomes $2^h = q + 1$.
 The constant $\eta$ is not explicit, so neither is the bound on $q$.
 An effective bound would require an effective inequality of the same shape for every denominator whose odd part is at most a constant times $q^\varepsilon$.
@@ -405,7 +425,7 @@ It stays smaller than $1/(2s'D)$ for every $j \ge 11000$ when $s' \le 16$.
 For a larger $s'$ the same comparison holds once $j \ge j_0(s')$, with $j_0(s') = 11000 + O(\log s')$.
 Both the constant and this integer are read off from their estimates.
 
-Their appeal to Beukers's nonvanishing lemma uses $s \mid 3$.
+Their appeal to the nonvanishing lemma of Beukers (1980/81) uses $s \mid 3$.
 For a general $s$, one of the two Padé choices $\delta \in \{0, 1\}$ still gives $\Lambda \ne 0$.
 If both choices vanished, $2^{1/3}$ would be rational.
 \end{proof}
@@ -674,8 +694,8 @@ Length $3$ is the longest length for which every cycle through a fixed odd $x$ f
 Two thinner classes go further.
 They depend on $\ell$ and on $h$ modulo $\ell$, so they are a corollary rather than part of Theorem~\ref{thm:bound}.
 
-\begin{named}{Corollary 3.}
-\markstmt{3}{cor:longer}
+\begin{named}{Corollary 4.}
+\markstmt{4}{cor:longer}
 Let $x_0$ be an odd positive integer.
 There is an integer $Q(x_0, \ell)$, read off from $x_0$ and $\ell$ by the comparison in the proof of Theorem~\ref{thm:bound}, with the following property.
 If $x_0$ lies on a cycle of length $\ell$ with halving total $h$, and either
@@ -710,30 +730,9 @@ For a general $x_0$ the bound $Q(x_0, \ell)$ does not by itself rule the cycle o
 Corollaries~13 and~14 of~\cite{hackman-i} keep the constants of those papers ($c = 1$ and $j_0 = 9$ for $\sqrt{2}$; $j_0 = 11000$ for the cube roots).
 The integer $Q(x_0, \ell)$ still depends on $x_0$, so it gives no uniform bound on every cycle of that length and residue.
 
-\section{A conjecture on all cycles}
+\section{A heuristic}
 \label{sec:all-cycles}
 
-The complete list of known cycles is short.
-
-A length-$1$ cycle is a fixed point $C(x_0) = x_0$, hence $x_0(2^h - q) = 1$.
-The only positive odd solution is $x_0 = 1$ and $q = 2^h - 1$, so $1 \to 1$ when $q = 2^e - 1$ with $e \ge 2$, and there is no length-$1$ cycle with $x_0 > 1$.
-For $q = 5$ and $h = 5$ there is $1 \to 3 \to 1$.
-For $q = 5$ and $h = 7$ there are $13 \to 33 \to 83 \to 13$ and $17 \to 43 \to 27 \to 17$.
-For $q = 181$ and $h = 15$ there are $27 \to 611 \to 27$ and $35 \to 99 \to 35$.
-Crandall recorded the cycle $27 \to 611$ from the identity $2^{15} - 181^2 = 7$.
-
-\begin{named}{Conjecture 4.}
-\markstmt{4}{conj:all}
-These are all the cycles of $C$.
-For every odd $q \ge 3$, every cycle is either $1 \to 1$ with $q = 2^e - 1$, or one of the five cycles at $q = 5$ and $q = 181$ listed above.
-In particular, if $q \ge 7$ is neither $181$ nor of the form $2^e - 1$, then $C$ has no cycle, so every orbit diverges.
-\end{named}
-
-There is then no cycle through $1$ other than $1 \to 1$ for Mersenne $q$ and $1 \to 3 \to 1$ for $q = 5$, which is Santos's conjecture, and for $q = 3$ there is no cycle other than $1 \to 1$.
-For those $q \ge 7$ that are neither $181$ nor Mersenne, the claim is stronger than Crandall's conjecture that some orbit avoids $1$: there is no cycle at all, and an infinite orbit of odd positive integers is unbounded.
-The searches that found no others, in the ranges they cover, are in the companion paper~\cite{hackman-i}.
-
-\topic{A heuristic.}
 A cycle of length $\ell \ge 2$ with $h$ halvings has to satisfy several conditions at once.
 As above, $q^\ell < 2^h < (q+1)^\ell$, so $\ell$ does not divide $h$ and $q = \lfloor 2^{h/\ell}\rfloor$ is a single odd integer at least $3$.
 Write $D = 2^h - q^\ell$.
@@ -798,6 +797,9 @@ M.~Bauer and M.~A.~Bennett, Applications of the hypergeometric method to the gen
 \bibitem{bauer-bennett-2018}
 M.~Bauer and M.~A.~Bennett, Ramanujan--Nagell cubics, Rocky Mountain J.\ Math.\ 48 (2018), 385--412, \doilink{10.1216/rmj-2018-48-2-385}.
 
+\bibitem{beukers}
+F.~Beukers, On the generalized Ramanujan--Nagell equation~I, Acta Arith.\ 38 (1980/81), 389--410, \doilink{10.4064/aa-38-4-389-410}.
+
 \bibitem{franco-thesis}
 Z.~Franco, Diophantine Approximation and the $qx+1$ Problem, PhD thesis, UC Berkeley, 1990.
 
@@ -806,6 +808,9 @@ T.~Hackman, I. Cycles through 1 for the $qn+1$ map: no cycles with three odd ste
 
 \bibitem{ridout}
 D.~Ridout, The $p$-adic generalization of the Thue--Siegel--Roth theorem, Mathematika 5 (1958), 40--48, \doilink{10.1112/S0025579300001339}.
+
+\bibitem{santos}
+R.~Santos, On the Collatz general problem $qn+1$, preprint (2020), \href{https://arxiv.org/abs/2005.00346}{\nolinkurl{arXiv:2005.00346}}.
 
 \end{thebibliography}
 
