@@ -15,14 +15,14 @@ internal val THROUGH1_ROWS: List<LengthRow> = listOf(LengthRow(3, 200_000)) +
 
 /** Any odd elements, as in the computations table. */
 internal val ANY_ROWS: List<LengthRow> = listOf(
-    LengthRow(2, 8_000),
-    LengthRow(3, 4_000),
-    LengthRow(4, 3_000),
-    LengthRow(5, 2_000),
-    LengthRow(6, 1_800),
-    LengthRow(7, 700),
-    LengthRow(8, 560),
-    LengthRow(9, 270),
+    LengthRow(2, 9_000),
+    LengthRow(3, 7_000),
+    LengthRow(4, 5_500),
+    LengthRow(5, 4_500),
+    LengthRow(6, 1_400),
+    LengthRow(7, 950),
+    LengthRow(8, 470),
+    LengthRow(9, 320),
 )
 
 /** Fixed q. The first entry is q = 5 through length 20; the rest are the odd q from 7 through 25. */

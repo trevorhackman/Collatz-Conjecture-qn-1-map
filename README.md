@@ -16,16 +16,16 @@ Each line is `./search …` from `cycle-search/`. An omitted option takes the de
 |---|---|---|
 | `--length N --max-h N` | One length, every odd starting value | `--length 6 --max-h 1500` |
 | `--through-1 --length N --max-h N` | One length, orbit of 1 only | `--length 3 --max-h 66100` |
-| `--q N --max-length N` | One odd q, lengths 2 through N | `--q 5 --max-length 20` |
+| `--q N [--min-length N] --max-length N` | One odd q, from the minimum length through N | `--q 5 --max-length 20`, minimum 2 |
 | `--tables any [--length N] [--max-h N]` | The any-cycle table | every published row |
 | `--tables through1 [--length N] [--max-h N]` | The through-1 table | every published row |
 | `--tables q [--q N] [--max-length N]` | The fixed-q table | q = 5 through length 20, then odd q from 7 through 25 through length 16 |
 | `--bounds [--x N]` | The four Paper II bound tables | odd x from 1 through 35 |
 | `--digits [--places N]` | Binary places of 2^{1/3} and 2^{2/3} | 1072000000 places |
 
-`--length` on a table selects that published row, and `--max-h` replaces its limit. `--tables any --length 6` is length 6 through h ≤ 1800. `--tables any --length 6 --max-h 100` stops at h ≤ 100. `--bounds --x 1` prints the four bounds for x = 1. `--digits --places 10000` scans fewer places.
+`--length` on a table selects that published row, and `--max-h` replaces its limit. `--tables any --length 6` is length 6 through h ≤ 1400. `--tables any --length 6 --max-h 100` stops at h ≤ 100. `--min-length` starts a fixed-q search at that length: `--q 1093 --min-length 201 --max-length 250` searches lengths 201 through 250. `--bounds --x 1` prints the four bounds for x = 1. `--digits --places 10000` scans fewer places.
 
-`--through-1` follows the orbit of 1 and does not enumerate halving tuples, so its halving bound can sit far above an any-starting-value search. The default `--through-1` is the length-3 check h ≤ 66100 cited in the proof of Theorem 1. The printed through-1 table is the longer run, `--tables through1`.
+`--through-1` follows the orbit of 1 and does not enumerate halving tuples, so its halving bound can sit far above an any-starting-value search. With no arguments it stops at h ≤ 66100. Theorem 1 needs only h < 66003. The printed through-1 table is `--tables through1`, and its length-3 row runs through h ≤ 200000.
 
 ## Machine
 
@@ -35,7 +35,7 @@ The runs below were done one at a time on a MacBook Pro with an Apple M4 Pro, 14
 
 Author: Trevor Hackman
 
-Paper I proves that 1 never lies on a cycle with exactly three odd numbers, for odd q ≥ 3. For every such q at least 2^22001, a lower bound and an upper bound cannot hold at the same time, and every smaller q is ruled out by checking h < 66100. For each longer length, only finitely many q have 1 on a cycle, and that finiteness gives no bound. When the roots of 2 for that length have an approximation exponent below the golden ratio, the same comparison produces a bound that a finite search can finish.
+Paper I proves that 1 never lies on a cycle with exactly three odd numbers, for odd q ≥ 3. For every such q at least 2^22001, a lower bound and an upper bound cannot hold at the same time. Every smaller q has h < 66003. The length-3 search through h ≤ 200000 rules those out, and the digit scan rules out q < 2^1071999953. For each longer length, only finitely many q have 1 on a cycle, and that finiteness gives no bound. When the roots of 2 for that length have an approximation exponent below the golden ratio, the same comparison produces a bound that a finite search can finish.
 
 Paper II proves that each length at least 2 has only finitely many odd q with a cycle of that length, again with no bound. If a fixed odd positive integer x lies on a cycle of length 2 or 3, then q lies below an explicit bound depending only on x. For x = 1 and length 3 that bound is q < 2^17990, which the search in Paper I already covers.
 
@@ -54,24 +54,24 @@ A length whose window q^ℓ < 2^h < (q+1)^ℓ contains no integer h has no cycle
 
 `./search --tables any`
 
-Paper I, “Any cycle.” Odd elements that need not include 1. One row is `--length 2 --max-h 8000`.
+Paper I, “Any cycle.” Odd elements that need not include 1. One row is `--length 2 --max-h 9000`.
 
 | ℓ | h searched | No other cycle for | Exceptions | Time |
 |---|---|---|---|---|
-| 2 | h ≤ 8000 | q < 2^4000 | q=5: 1→3; q=181: 27→611 and 35→99 | 90 s |
-| 3 | h ≤ 4000 | q < 2^1333 | q=5: 13→33→83 and 17→43→27 | 25 s |
-| 4 | h ≤ 3000 | q < 2^750 | none | 5 s |
-| 5 | h ≤ 2000 | q < 2^400 | none | 6 s |
-| 6 | h ≤ 1800 | q < 2^300 | none | 503 s |
-| 7 | h ≤ 700 | q < 2^100 | none | 47 s |
-| 8 | h ≤ 560 | q < 2^70 | none | 687 s |
-| 9 | h ≤ 270 | q < 2^30 | none | 125 s |
+| 2 | h ≤ 9000 | q < 2^4500 | q=5: 1→3; q=181: 27→611 and 35→99 | 128 s |
+| 3 | h ≤ 7000 | q < 2^2333 | q=5: 13→33→83 and 17→43→27 | 158 s |
+| 4 | h ≤ 5500 | q < 2^1375 | none | 140 s |
+| 5 | h ≤ 4500 | q < 2^900 | none | 136 s |
+| 6 | h ≤ 1400 | q < 2^233 | none | 147 s |
+| 7 | h ≤ 950 | q < 2^135 | none | 167 s |
+| 8 | h ≤ 470 | q < 2^58 | none | 179 s |
+| 9 | h ≤ 320 | q < 2^35 | none | 138 s |
 
 ### Cycles through 1
 
 `./search --tables through1`
 
-Paper I, “Cycles through 1.” Length 2 is not a search bound: Beukers's theorem leaves only q=5. One row is `--through-1 --length 4 --max-h 100000`. The length-3 proof uses the shorter check `--through-1`, h ≤ 66100, since q ≥ 2^22001 is already impossible.
+Paper I, “Cycles through 1.” Length 2 is not a search bound: Beukers's theorem leaves only q=5. One row is `--through-1 --length 4 --max-h 100000`. The length-3 row is the search through h ≤ 200000. Theorem 1 needs only h < 66003, since q < 2^22001 forces 2^h < 2^66003.
 
 | ℓ | h searched | No cycle through 1 for | Time |
 |---|---|---|---|
@@ -93,7 +93,7 @@ Paper I, “Cycles through 1.” Length 2 is not a search bound: Beukers's theor
 
 `./search --digits`
 
-Paper I, “Digits of 2^{1/3} and 2^{2/3}.” Both roots are scanned. With no alternating block of length 48 from m = 100 through m = 1071999952, that rules out every 3-odd cycle through 1 with q < 2^1071999953. Every m < 100 has h = 3m+r < 66100 and is covered by `--through-1`. The scan took 170 s.
+Paper I, “Digits of 2^{1/3} and 2^{2/3}.” Both roots are scanned. With no alternating block of length 48 from m = 100 through m = 1071999952, that rules out every 3-odd cycle through 1 with q < 2^1071999953. Every m < 100 has h = 3m+r < 300 and is covered by the length-3 row. The scan took 170 s.
 
 ### Fixed q
 
