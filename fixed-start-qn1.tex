@@ -136,6 +136,10 @@ The bound is not an emptiness result for a general $x$.
 At $q = 181$ the cycles $27 \to 611 \to 27$ and $35 \to 99 \to 35$ both occur.
 Section~\ref{sec:bound} records $181 < Q_2(27)$ and $181 < Q_2(35)$.
 
+Section~\ref{sec:length-2} takes up cycles of length $2$ with no element fixed in advance.
+The three known cycles are the only ones with $D = 7$.
+Every other cycle of length $2$ has $q \ge 2^{4500}$ and $t \ge 2409$.
+
 Length $4$ with $h$ odd remains open, as in the companion paper: the roots are $2^{1/4}$ and $2^{3/4}$, and a fixed odd part does not supply an exponent below $\varphi$ for them.
 Corollary~\ref{cor:longer} covers the longer classes whose roots are only $\sqrt{2}$, or only the cube roots of $2$.
 
@@ -691,6 +695,270 @@ $35$ & $22$ & $17$ & $2^{32}$ \\
 The cycle $27 \to 611 \to 27$ has $q = 181 < 2^{22}$.
 The cycle $35 \to 99 \to 35$ has $q = 181 < 2^{32}$.
 
+\section{Cycles of length $2$}
+\label{sec:length-2}
+
+Throughout this section, $x \to y \to x$ is a cycle of length $2$, and $x$ is its smallest element.
+The steps are $qx + 1 = 2^{k_1} y$ and $qy + 1 = 2^{k_2} x$, and $h = k_1 + k_2$.
+Lemma~\ref{lem:any-window} gives $q = \lfloor 2^{h/2} \rfloor$ and $h$ odd.
+Let $D = 2^h - q^2$.
+
+\begin{named}{Lemma 3 (the length-$2$ equation).}
+\marklemma{3}{lem:length-2}
+Then $k_1 < k_2$.
+Let $t = k_2 - k_1$.
+Then $t$ is positive and odd, $h = 2k_1 + t$, and
+\[
+x = \frac{q + 2^{k_1}}{D}, \qquad y = \frac{q + 2^{k_2}}{D}.
+\]
+The integer $D$ divides $2^t - 1$, and $D \equiv 7 \pmod{8}$.
+Every prime divisor of $D$ is congruent to $1$ or $7$ modulo $8$.
+Let $u = (2^t - 1)/D$.
+Then $u$ is a positive odd integer,
+\[
+y = x + u\, 2^{k_1}, \qquad y^2 - 2^t x^2 = u,
+\]
+$2^{k_1} \le q - 1$, $t > \log_2(q/x)$, and $y^2 > qx + 1$.
+\end{named}
+
+\begin{proof}
+Since $h$ is odd, $k_1 \ne k_2$.
+From $qy + 1 = 2^{k_2} x$ and $y = (qx + 1)/2^{k_1}$,
+\[
+2^h x = q(qx + 1) + 2^{k_1},
+\]
+so $x(2^h - q^2) = q + 2^{k_1}$.
+Lemma~\ref{lem:any-window} gives $q^2 < 2^h$, so $D > 0$ and $x = (q + 2^{k_1})/D$.
+The same elimination with the roles of $x$ and $y$ exchanged gives $y = (q + 2^{k_2})/D$.
+Since $x < y$ and $D > 0$, one has $k_1 < k_2$.
+Thus $t > 0$.
+From $h = 2k_1 + t$ and $h$ odd, $t$ is odd.
+
+Now $D$ divides $q + 2^{k_1}$ and $q + 2^{k_2}$, so $D$ divides
+\[
+(q + 2^{k_2}) - (q + 2^{k_1}) = 2^{k_1}(2^t - 1).
+\]
+Here $q$ is odd and $h \ge 3$, so $2^h$ is divisible by $8$ and $q^2 \equiv 1 \pmod{8}$.
+Thus $D \equiv 7 \pmod{8}$, and in particular $D$ is odd.
+Hence $D$ divides $2^t - 1$.
+Let $p$ be a prime divisor of $D$.
+Then $q^2 = 2^h - D \equiv 2^h \pmod{p}$.
+If $p$ divides $q$, then $p$ divides $2^h$.
+But $D$ is odd, so $p \ne 2$, and $p$ does not divide $2^h$.
+Thus $2^h$ is a nonzero square modulo $p$.
+Since $h$ is odd, $2$ is a quadratic residue modulo $p$, and therefore $p \equiv 1 \pmod{8}$ or $p \equiv 7 \pmod{8}$.
+
+The quotient $u = (2^t - 1)/D$ is a positive integer.
+Both $2^t - 1$ and $D$ are odd, so $u$ is odd.
+Then
+\[
+y - x = \frac{2^{k_2} - 2^{k_1}}{D} = u\, 2^{k_1},
+\]
+so $y = x + u\, 2^{k_1}$.
+Substitute $q = Dx - 2^{k_1}$ into $qx + 1 = 2^{k_1} y$:
+\[
+D x^2 - 2^{k_1 + 1} x + 1 = u\, 4^{k_1}.
+\]
+Therefore
+\begin{align*}
+y^2 - 2^t x^2
+&= \bigl(x + u\, 2^{k_1}\bigr)^2 - 2^t x^2 \\
+&= u\, 2^{k_1 + 1} x + u^2 4^{k_1} - x^2(2^t - 1) \\
+&= u\bigl(2^{k_1 + 1} x + u\, 4^{k_1} - D x^2\bigr) \\
+&= u.
+\end{align*}
+
+Since $x$ and $y$ are distinct and odd, $y \ge x + 2$.
+Then
+\[
+2^{k_1} = \frac{qx + 1}{y} \le \frac{qx + 1}{x + 2}.
+\]
+The inequality $(qx + 1)/(x + 2) < q$ is $1 < 2q$.
+Thus $2^{k_1} < q$.
+Both are integers, so $2^{k_1} \le q - 1$.
+
+From $y - x \ge 2^{k_1}$ and $2^{k_1} = (qx + 1)/y$,
+\[
+2^{k_1}\bigl(x + 2^{k_1}\bigr) \le qx + 1,
+\]
+so $2^{2k_1} \le x(q - 2^{k_1}) + 1$.
+For $k_1 \ge 1$ the right side is at most $x(q - 2) + 1$, and $x(q - 2) + 1 < xq$ because $1 < 2x$.
+Thus $2^{2k_1} < xq$.
+Lemma~\ref{lem:any-window} gives $2^{h/2} = q + \delta$ with $\delta > 0$, so $h > 2\log_2 q$.
+Therefore
+\[
+t = h - 2k_1 > 2\log_2 q - \log_2(xq) = \log_2(q/x).
+\]
+
+Finally $y(y - x) \ge y \cdot 2^{k_1} = qx + 1$.
+Since $x \ge 1$, one has $y > y - x$, and therefore $y^2 > qx + 1$.
+\end{proof}
+
+\begin{named}{Lemma 4 (the case $D = 7$).}
+\marklemma{4}{lem:gap-7}
+If $D = 7$, the cycle is $1 \to 3$ with $q = 5$, or $35 \to 99$ with $q = 181$, or $27 \to 611$ with $q = 181$.
+\end{named}
+
+\begin{proof}
+Here $q^2 + 7 = 2^h$.
+By Theorem~1.8 of Bauer and Bennett (2002), the positive solutions $(q, h)$ are $(1, 3)$, $(3, 4)$, $(5, 5)$, $(11, 7)$ and $(181, 15)$.
+Lemma~\ref{lem:length-2} requires $q \ge 3$ and $h$ odd, which leaves $(5, 5)$, $(11, 7)$ and $(181, 15)$.
+The order of $2$ modulo $7$ is $3$, so $3$ divides $t$, and Lemma~\ref{lem:length-2} requires $t$ odd and $1 \le t \le h - 2$.
+
+For $(q, h) = (5, 5)$ the only such $t$ is $3$, so $k_1 = 1$ and $k_2 = 4$.
+Then $(5 + 2^1)/7 = 1$ and $(5 + 2^4)/7 = 3$, which is $1 \to 3$.
+
+For $(q, h) = (11, 7)$ one has $-11 \equiv 3 \pmod{7}$.
+The powers of $2$ modulo $7$ are $2$, $4$ and $1$, so $q + 2^{k_1}$ is never divisible by $7$.
+
+For $(q, h) = (181, 15)$ the admissible values are $t = 3$ and $t = 9$.
+If $t = 3$, then $k_1 = 6$ and $k_2 = 9$, and
+\[
+\frac{181 + 2^6}{7} = 35, \qquad \frac{181 + 2^9}{7} = 99,
+\]
+which is $35 \to 99$.
+If $t = 9$, then $k_1 = 3$ and $k_2 = 12$, and
+\[
+\frac{181 + 2^3}{7} = 27, \qquad \frac{181 + 2^{12}}{7} = 611,
+\]
+which is $27 \to 611$.
+\end{proof}
+
+\begin{named}{Lemma 5 (the case $u = 1$).}
+\marklemma{5}{lem:u-one}
+If $u = 1$, the cycle is $1 \to 3$ with $q = 5$, or $35 \to 99$ with $q = 181$.
+\end{named}
+
+\begin{proof}
+Here $D = 2^t - 1$, so $q^2 = 2^{2k_1 + t} - 2^t + 1$ and
+\[
+(q - 1)(q + 1) = 2^t\bigl(2^{2k_1} - 1\bigr).
+\]
+The factor $2^{2k_1} - 1$ is odd, and $\gcd(q - 1, q + 1) = 2$, so
+\[
+v_2(q - 1) + v_2(q + 1) = t
+\]
+with the smaller valuation equal to $1$.
+Lemma~\ref{lem:length-2} gives $t$ odd and $D \equiv 7 \pmod{8}$, so $t \ge 3$.
+Let $c = t - 2$, which is odd and at least $1$.
+
+If $v_2(q + 1) = 1$ and $v_2(q - 1) = t - 1$, write $q + 1 = 2r$ and $q - 1 = 2^{t - 1} s$ with $r$ and $s$ odd.
+Then $r = 2^{t - 2} s + 1$ and $s(2^{t - 2} s + 1) = 2^{2k_1} - 1$, so
+\[
+2^c s^2 + s + 1 = 2^{2k_1}.
+\]
+If $v_2(q - 1) = 1$ and $v_2(q + 1) = t - 1$, write $q - 1 = 2s$ and $q + 1 = 2^{t - 1} r$ with $r$ and $s$ odd.
+Then $s = 2^{t - 2} r - 1$ and $r(2^{t - 2} r - 1) = 2^{2k_1} - 1$, so
+\[
+2^c r^2 - r + 1 = 2^{2k_1}.
+\]
+In either case, for a positive odd integer $X$,
+\[
+\bigl(2^{c + 1} X \pm 1\bigr)^2 + \bigl(2^{c + 2} - 1\bigr) = 2^{2k_1 + c + 2},
+\]
+the plus sign for $X = s$ and the minus sign for $X = r$.
+
+Suppose $c \ge 3$.
+Then $2^{c + 2} - 1 = 2^k - 1$ with $k = c + 2 \ge 5$.
+Theorem~1.8 of Bauer and Bennett (2002) gives exactly two positive solutions of $Y^2 + (2^k - 1) = 2^n$, namely $Y = 1$ with $n = k$, and $Y = 2^{k - 1} - 1$ with $n = 2k - 2$.
+The first gives $2k_1 + c + 2 = c + 2$, so $k_1 = 0$.
+The second gives $2k_1 + c + 2 = 2c + 2$, so $2k_1 = c$.
+But $c$ is odd, so neither solution has an integer $k_1 \ge 1$.
+
+Now $c = 1$, so $t = 3$ and $D = 7$, and the equation is $Y^2 + 7 = 2^{2k_1 + 3}$ with $Y = 4X \pm 1$.
+The same theorem gives $Y \in \{1, 3, 5, 11, 181\}$ and $2k_1 + 3 \in \{3, 4, 5, 7, 15\}$.
+The exponent $2k_1 + 3$ is odd and at least $5$, which leaves $5$, $7$ and $15$.
+If the exponent is $5$, then $Y = 5$ and $k_1 = 1$.
+The equation $4X - 1 = 5$ has no integer solution, while $4X + 1 = 5$ gives $X = 1$.
+This is the plus sign, $q - 1 = 2^{2} \cdot 1$, and $q = 5$, the cycle $1 \to 3$.
+If the exponent is $7$, then $Y = 11$ and $k_1 = 2$.
+The equation $4X + 1 = 11$ has no integer solution, while $4X - 1 = 11$ gives $X = 3$.
+This is the minus sign and $q = 11$.
+Then $(11 + 2^2)/7 = 15/7$, which is not an integer.
+If the exponent is $15$, then $Y = 181$ and $k_1 = 6$.
+The equation $4X - 1 = 181$ has no integer solution, while $4X + 1 = 181$ gives $X = 45$.
+This is the plus sign, $q - 1 = 2^{2} \cdot 45$, and $q = 181$, the cycle $35 \to 99$.
+\end{proof}
+
+\begin{named}{Proposition 5.}
+\markstmt{5}{prop:other-two}
+Any cycle of length $2$ other than $1 \to 3$, $35 \to 99$ and $27 \to 611$ has
+\[
+q \ge 2^{4500}, \qquad D \ge 15, \qquad u \ge 3,
+\]
+every odd element at least $37$, and, writing $h = 2m + 1$,
+\[
+m \ge 4500, \qquad D > 2^{0.535 m + 1}, \qquad t \ge 2409.
+\]
+In particular $k_1 \le \lfloor \log_2 q \rfloor - 1204$ and $k_2 \ge \lfloor \log_2 q \rfloor + 1205$.
+Also $t > \log_2(3q/x)$.
+\end{named}
+
+\begin{proof}
+The companion paper searches every cycle of length $2$ with $h \le 9000$ and finds only the three cycles named above.
+That search excludes every cycle of length $2$ with $q < 2^{4500}$.
+Thus any other cycle has $q \ge 2^{4500}$.
+Since $2^{h/2} > q$, one has $h > 2 \cdot 4500$, so $h \ge 9001$.
+With $h = 2m + 1$ this is $m \ge 4500$.
+
+Lemma~\ref{lem:gap-7} gives $D \ne 7$.
+Lemma~\ref{lem:length-2} gives $D \equiv 7 \pmod{8}$ and $D > 0$, so $D \ge 15$.
+Lemma~\ref{lem:u-one} gives $u \ne 1$.
+Lemma~\ref{lem:length-2} gives that $u$ is a positive odd integer, so $u \ge 3$.
+
+Let $z$ be an odd element of the cycle with $z \le 35$.
+Theorem~\ref{thm:bound} gives $q < Q_2(z)$.
+Section~\ref{sec:bound} records $Q_2(z) \le 2^{33}$ for every odd $z \le 35$.
+Then $q < 2^{33} < 2^{4500}$, so the cycle is one of the three found by the search.
+Each of those has its odd elements in $\{1, 3, 27, 35, 99, 611\}$.
+An element $z \le 35$ on one of them is $1$, $3$, $27$ or $35$.
+Therefore every odd element of any other cycle is at least $37$.
+
+Corollary~1.4 of Bauer and Bennett (2002), applied with odd part $1$, gives
+\[
+\Bigl| \sqrt{2} - \frac{q}{2^m} \Bigr| > 2^{-1.465 m}
+\]
+for every $m \ge j_0(1)$.
+Section~\ref{sec:bound} records $j_0(1) = 9$, and here $m \ge 4500$.
+Writing $2^{h/2} = q + \delta$ as in Lemma~\ref{lem:any-window},
+\[
+\delta > 2^{-0.465 m}.
+\]
+Then $D = \delta(2q + \delta) > 2q\delta$, so
+\[
+\log_2 D > 1 + \log_2 q - 0.465 m.
+\]
+Since $q > 2^m \sqrt{2} - 1$ and $m \ge 4500$,
+\[
+\log_2 q > m + \tfrac12 - 2^{-4499}.
+\]
+Hence $\log_2 D > 0.535 m + 1.5 - 2^{-4499} > 0.535 m + 1$, and $D > 2^{0.535 m + 1}$.
+At $m = 4500$ this is $D > 2^{2408.5}$.
+For $m > 4500$ the same lower bound is larger.
+Lemma~\ref{lem:length-2} gives $D \le 2^t - 1$, so $t \ge 2409$.
+
+Since $t$ is odd, $(t - 1)/2$ is an integer, and $k_1 = m - (t - 1)/2$.
+Thus $k_1 \le m - 1204$.
+Since $m \ge 4500$ and $\sqrt{2} - 1 > 2^{-m}$, one has $2^m \sqrt{2} > 2^m + 1$, so $q \ge 2^m + 1$.
+Also $\sqrt{2} < 2$, so $q < 2^m \sqrt{2} < 2^{m + 1}$.
+Thus $\lfloor \log_2 q \rfloor = m$ and $k_1 \le \lfloor \log_2 q \rfloor - 1204$.
+Also $k_2 = m + (t + 1)/2 \ge m + 1205 = \lfloor \log_2 q \rfloor + 1205$.
+
+For the last claim, $u \ge 3$ gives $y - x \ge 3 \cdot 2^{k_1}$.
+Combined with $2^{k_1} = (qx + 1)/y$,
+\[
+3 \cdot 4^{k_1} \le x\bigl(q - 2^{k_1}\bigr) + 1 < xq,
+\]
+so $2^{2k_1} < xq/3$.
+With $h > 2\log_2 q$,
+\[
+t = h - 2k_1 > 2\log_2 q - \log_2(xq/3) = \log_2(3q/x).
+\]
+\end{proof}
+
+The case that remains is $u \ge 3$.
+Proposition~\ref{prop:other-two} puts $q \ge 2^{4500}$ and $t \ge 2409$, with $D$ dividing $2^t - 1$ and $(q + 2^{(h - t)/2})/D$ an odd integer at least $37$.
+
 \section{Longer cycles}
 \label{sec:longer}
 
@@ -789,6 +1057,7 @@ Conjecture~\ref{conj:all} is open.
 Theorem~\ref{thm:finite} gives, for each $\ell \ge 2$, only finitely many $q$ with a cycle of length $\ell$, with no bound and no classification.
 A bound in terms of a fixed odd element, for lengths $2$ and $3$, is Theorem~\ref{thm:bound}, and for the classes in Corollary~\ref{cor:longer} it is that corollary.
 A uniform bound on $q$ remains open.
+For length $2$, Section~\ref{sec:length-2} leaves the case $u \ge 3$.
 The heuristic of Section~\ref{sec:all-cycles} is not a proof, and the searches leave infinitely many pairs $(\ell, h)$ unchecked.
 \item \textbf{Novelty.}
 Franco's 1990 thesis~\cite{franco-thesis} on Diophantine approximation and the $qx+1$ problem could not be consulted and should be checked for overlap, including with Theorem~\ref{thm:finite}.
