@@ -95,6 +95,16 @@ class CycleSearchTest {
     }
 
     @Test
+    fun q1093Length21HasNoCycle() {
+        val q = BigInteger.valueOf(1093)
+        assertEquals(212..212, hForQ(q, 21))
+        val adm = admissible(212, 21) ?: fail("missing h=212")
+        assertEquals(q, adm.q)
+        assertEquals(BigInteger.ZERO, maxLeastElement(21, 212, adm.q, adm.gap))
+        assertEquals(emptyList(), searchFixedQ(1093, 21))
+    }
+
+    @Test
     fun q5Length11WalkMatchesSplit() {
         val q = BigInteger.valueOf(5)
         for (h in hForQ(q, 11)) {

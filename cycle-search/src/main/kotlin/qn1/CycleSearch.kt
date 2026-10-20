@@ -42,6 +42,12 @@ private const val LEFT_STATE_BYTES = 400.0
 /** Live left-half tables stay under this, inside the 24g run heap. */
 private const val TABLE_BUDGET_BYTES = 12.0 * 1024 * 1024 * 1024
 
+/**
+ * Odd starts followed when the left partial sums do not fit in one long.
+ * The least element of a cycle is at most the numerator bound; above this many starts the trace is refused.
+ */
+private val TRACE_LEAST_LIMIT: BigInteger = BigInteger.valueOf(1_000_000)
+
 private val MIN_ODD_Q: BigInteger = BigInteger.valueOf(3)
 
 /**
@@ -310,11 +316,87 @@ internal fun admissible(h: Int, length: Int): Admissible? {
 private fun cyclesAt(length: Int, h: Int, q: BigInteger, gap: BigInteger): List<Cycle> {
     // 2^h and q^L differ by 1 only for the Catalan pair, which has the other sign.
     if (gap <= BigInteger.ONE) return emptyList()
+    // One long holds the left partial sums only while leftCount * sumBits <= 64.
+    if (length > WALK_MAX_LENGTH && !sumsPackIntoOneLong(length, h)) {
+        return traceByLeastElement(length, h, q, gap)
+    }
     val found = mutableListOf<Cycle>()
     val accept = CycleRecorder(found, length, h, q, gap)
     if (length <= WALK_MAX_LENGTH) forEachWalk(length, h, q, gap, accept)
     else forEachSplit(length, h, q, gap, accept)
     return found
+}
+
+/** True when [SplitSearch] can store every left partial sum in one long. */
+private fun sumsPackIntoOneLong(length: Int, h: Int): Boolean {
+    if (h > MAX_PACKED_H) return false
+    val leftCount = (length - 1) / 2
+    return leftCount * bitsForSums(h) <= 64
+}
+
+/**
+ * Every cycle of this length, `q`, and `h`.
+ * The least element is at most [maxLeastElement], so following each odd start up to that bound finds the cycle.
+ */
+internal fun traceByLeastElement(
+    length: Int,
+    h: Int,
+    q: BigInteger,
+    gap: BigInteger,
+): List<Cycle> {
+    val least = maxLeastElement(length, h, q, gap)
+    if (least.signum() <= 0) return emptyList()
+    require(least <= TRACE_LEAST_LIMIT) {
+        "least element bound $least at length $length h=$h is above $TRACE_LEAST_LIMIT"
+    }
+    val found = mutableListOf<Cycle>()
+    var x = BigInteger.ONE
+    val two = BigInteger.TWO
+    while (x <= least) {
+        val orbit = trace(q, x, length)
+        if (orbit != null && orbit.minOrNull() == x) {
+            val cycle = canonical(q, orbit)
+            if (cycle.h == h) found += cycle
+        }
+        x = x.add(two)
+    }
+    return found
+}
+
+/**
+ * Upper bound on the least element of a cycle of this length, `q`, and `h`.
+ * With that element first, [looseCaps] limits every halving count, and the numerator is at most the largest value under those caps.
+ */
+internal fun maxLeastElement(length: Int, h: Int, q: BigInteger, gap: BigInteger): BigInteger {
+    val caps = looseCaps(length, h, q)
+    val free = length - 1
+    var layer = arrayOfNulls<BigInteger>(h)
+    layer[0] = q.pow(free)
+    for (pos in 0 until free) {
+        val coeff = if (pos == free - 1) BigInteger.ONE else q.pow(free - 1 - pos)
+        val maxS = h - 1 - (free - 1 - pos)
+        val next = arrayOfNulls<BigInteger>(h)
+        for (prev in 0 until h) {
+            val num = layer[prev] ?: continue
+            val hi = minOf(maxS, prev + caps[pos][prev])
+            var s = prev + 1
+            while (s <= hi) {
+                val candidate = num.add(coeff.shiftLeft(s))
+                val old = next[s]
+                if (old == null || candidate > old) next[s] = candidate
+                s++
+            }
+        }
+        layer = next
+    }
+    var best = BigInteger.ZERO
+    val lastCap = caps[free]
+    for (last in 0 until h) {
+        val num = layer[last] ?: continue
+        val kLast = h - last
+        if (kLast >= 1 && kLast <= lastCap[last] && num > best) best = num
+    }
+    return best.divide(gap)
 }
 
 /**
