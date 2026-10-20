@@ -15,6 +15,9 @@ internal const val DIGIT_M_MIN = 100
 
 private const val NATIVE_DIV_LIMIT = 100_000L
 
+/** Bits of divisor kept past the quotient length. The discarded tail moves the quotient by at most one. */
+private const val QUOTIENT_GUARD = 96L
+
 /**
  * A product whose bit length stays under this fits in one [BigInteger].
  * The published cube is about 2^3220000002, so the two halves of that product each sit just under this.
@@ -86,8 +89,6 @@ internal fun scanRootDigits(places: Int, r: Int, onProgress: (String) -> Unit = 
     val exponent = 3L * places + r
     val root = floorCubeRootPowerOfTwo(exponent) { onProgress("2^{$r/3} $it") }
     check(root.bitLength() == places + 1) { "2^{$r/3} has bit length ${root.bitLength()}" }
-    check(cubeComparedToPowerOfTwo(root, exponent) < 0)
-    check(cubeComparedToPowerOfTwo(root + BigInteger.ONE, exponent) > 0)
     return DigitRoot(places, r, alternatingBlocks(root, places))
 }
 
@@ -111,21 +112,39 @@ internal fun floorCubeRootPowerOfTwo(exponent: Long, onProgress: (String) -> Uni
         shift -= add
         val work = exponent - 3L * shift
         onProgress("root bits $bits")
-        val quotient = floorDivPowerOfTwo(work, x.multiply(x), onProgress)
+        val zeros = x.getLowestSetBit()
+        val body = if (zeros == 0) x else x.shiftRight(zeros)
+        if (body.bitLength() >= 1_000_000) onProgress("squaring ${body.bitLength()} bits")
+        val square = FastMul.square(body)
+        val quotient = floorDivPowerOfTwo(work - 2L * zeros, square, onProgress, snap = false)
         x = x.shiftLeft(1).add(quotient).divide(THREE)
         x = snapCubeFloor(x, work)
     }
     return x
 }
 
-/** Greatest integer q with q * [divisor] <= 2^exponent. */
+/**
+ * Greatest integer q with q * [divisor] <= 2^exponent.
+ * With [snap] false, the value may sit a few units off that floor.
+ */
 internal fun floorDivPowerOfTwo(
     exponent: Long,
     divisor: BigInteger,
     onProgress: (String) -> Unit = {},
+    snap: Boolean = true,
 ): BigInteger {
     require(divisor.signum() > 0)
     require(exponent >= 0)
+    val trailingZeros = divisor.getLowestSetBit()
+    if (trailingZeros > 0) {
+        if (exponent < trailingZeros.toLong()) return BigInteger.ZERO
+        return floorDivPowerOfTwo(
+            exponent - trailingZeros,
+            divisor.shiftRight(trailingZeros),
+            onProgress,
+            snap,
+        )
+    }
     val divisorBits = divisor.bitLength()
     if (exponent < divisorBits - 1L) return BigInteger.ZERO
     if (exponent <= NATIVE_DIV_LIMIT) {
@@ -136,13 +155,8 @@ internal fun floorDivPowerOfTwo(
     val dropped = divisorBits - kept
     val high = if (dropped == 0) divisor else divisor.shiftRight(dropped)
     val reduced = exponent - dropped
-    val approximate = exactFloorDivPowerOfTwo(reduced, high, onProgress)
-    if (productComparedToPowerOfTwo(approximate, divisor, exponent) <= 0) return approximate
-    val previous = approximate - BigInteger.ONE
-    check(productComparedToPowerOfTwo(previous, divisor, exponent) <= 0) {
-        "quotient of 2^$exponent is off by more than 1"
-    }
-    return previous
+    val approximate = coarseQuotient(reduced, high, onProgress)
+    return if (snap) snapToFloorQuotient(approximate, divisor, exponent) else approximate
 }
 
 /**
@@ -185,7 +199,8 @@ internal fun alternatingBlocks(
     return BlockHits(count, first)
 }
 
-private fun exactFloorDivPowerOfTwo(
+/** Quotient of 2^[exponent] / [divisor] before [snapToFloorQuotient]. Exact when the quotient is short. */
+private fun coarseQuotient(
     exponent: Long,
     divisor: BigInteger,
     onProgress: (String) -> Unit,
@@ -194,33 +209,191 @@ private fun exactFloorDivPowerOfTwo(
     if (exponent <= divisorBits.toLong() || exponent <= NATIVE_DIV_LIMIT) {
         return BigInteger.ONE.shiftLeft(shiftAmount(exponent)).divide(divisor)
     }
-    val base = BigInteger.ONE.shiftLeft(divisorBits)
-    val quotient = base.divide(divisor)
-    val remainder = base - quotient.multiply(divisor)
-    check(remainder.signum() >= 0)
-    val grow = exponent - divisorBits
     onProgress("division by a $divisorBits-bit integer")
-    val extra = remainder.shiftLeft(shiftAmount(grow)).divide(divisor)
-    return quotient.shiftLeft(shiftAmount(grow)).add(extra)
+    return newtonFloorDivPowerOfTwo(exponent, divisor, onProgress)
 }
 
-private fun snapCubeFloor(root: BigInteger, exponent: Long): BigInteger {
-    var x = root
-    var steps = 0
-    while (cubeComparedToPowerOfTwo(x, exponent) > 0) {
-        x -= BigInteger.ONE
-        check(++steps <= 8) { "cube root of 2^$exponent stayed above the root" }
-    }
-    while (cubeComparedToPowerOfTwo(x + BigInteger.ONE, exponent) <= 0) {
-        x += BigInteger.ONE
-        check(++steps <= 8) { "cube root of 2^$exponent stayed below the root" }
+/**
+ * Doubles the known quotient bits until [exponent] is reached.
+ * A step that produces a q-bit quotient multiplies the top q + [QUOTIENT_GUARD] bits of [divisor].
+ * [snapToFloorQuotient] turns the returned value into the floor.
+ */
+private fun newtonFloorDivPowerOfTwo(
+    exponent: Long,
+    divisor: BigInteger,
+    onProgress: (String) -> Unit,
+): BigInteger {
+    val n = divisor.bitLength().toLong()
+    if (exponent - n + 1 <= QUOTIENT_GUARD) return shortExactDiv(exponent, divisor)
+    var k = n + QUOTIENT_GUARD - 1
+    var x = shortExactDiv(k, divisor)
+    while (k < exponent) {
+        val k2 = minOf(exponent, 2 * k - n - 4)
+        check(k2 > k) { "quotient of 2^$exponent stopped at $k bits" }
+        val q2 = k2 - n + 1
+        onProgress("quotient bits $q2")
+        val kept = q2 + QUOTIENT_GUARD
+        val (stepDivisor, stepK, stepK2) = if (n > kept) {
+            val shift = n - kept
+            Triple(divisor.shiftRight(shiftAmount(shift)), k - shift, k2 - shift)
+        } else {
+            Triple(divisor, k, k2)
+        }
+        x = newtonStep(stepDivisor, x, stepK, stepK2)
+        check(x.bitLength().toLong() <= q2 + 8) { "quotient of 2^$exponent grew past $q2 bits" }
+        k = k2
     }
     return x
 }
 
-/** Negative when x^3 < 2^exponent, zero when equal, positive when greater. */
-private fun cubeComparedToPowerOfTwo(root: BigInteger, exponent: Long): Int {
-    return productComparedToPowerOfTwo(root, root.multiply(root), exponent)
+/** One Newton step from a k-bit reciprocal to a k2-bit reciprocal of [divisor]. */
+private fun newtonStep(divisor: BigInteger, x: BigInteger, k: Long, k2: Long): BigInteger {
+    val dx = FastMul.multiply(divisor, x)
+    val remainder = subtractFromPowerOfTwo(k, dx)
+    val corr = FastMul.multiply(remainder, x).shiftRight(shiftAmount(2 * k - k2))
+    return x.shiftLeft(shiftAmount(k2 - k)).add(corr)
+}
+
+/**
+ * Moves [approximate] until it is the greatest integer whose product with [divisor] is at most 2^[exponent].
+ * The Newton step lands within a few units of that floor.
+ */
+private fun snapToFloorQuotient(
+    approximate: BigInteger,
+    divisor: BigInteger,
+    exponent: Long,
+): BigInteger {
+    var q = if (approximate.signum() > 0) approximate else BigInteger.ZERO
+    var steps = 0
+    if (q.signum() > 0 && q.bitLength().toLong() + divisor.bitLength() <= PRODUCT_BIT_LIMIT) {
+        var product = FastMul.multiply(q, divisor)
+        while (steps < 8) {
+            if (compareToPowerOfTwo(product, exponent) > 0) {
+                q -= BigInteger.ONE
+                product -= divisor
+                check(product.signum() >= 0) { "quotient of 2^$exponent stepped below 0" }
+                steps++
+                continue
+            }
+            val next = product + divisor
+            if (compareToPowerOfTwo(next, exponent) <= 0) {
+                q += BigInteger.ONE
+                product = next
+                steps++
+                continue
+            }
+            return q
+        }
+    } else {
+        while (steps < 8) {
+            if (productComparedToPowerOfTwo(q, divisor, exponent) > 0) {
+                q -= BigInteger.ONE
+                steps++
+                continue
+            }
+            if (productComparedToPowerOfTwo(q + BigInteger.ONE, divisor, exponent) <= 0) {
+                q += BigInteger.ONE
+                steps++
+                continue
+            }
+            return q
+        }
+    }
+    error("quotient of 2^$exponent is off by more than 8")
+}
+
+/** floor(2^exponent / divisor) when the quotient has at most a few hundred bits. */
+private fun shortExactDiv(exponent: Long, divisor: BigInteger): BigInteger {
+    val n = divisor.bitLength().toLong()
+    if (exponent < n - 1) return BigInteger.ZERO
+    if (exponent == n - 1L) {
+        return if (divisor.bitCount() == 1) BigInteger.ONE else BigInteger.ZERO
+    }
+    if (divisor.bitCount() == 1) {
+        return BigInteger.ONE.shiftLeft(shiftAmount(exponent - (n - 1)))
+    }
+    val grow = exponent - n
+    val remainder = BigInteger.ONE.shiftLeft(shiftAmount(n)).subtract(divisor)
+    val extra = if (grow == 0L) {
+        BigInteger.ZERO
+    } else {
+        remainder.shiftLeft(shiftAmount(grow)).divide(divisor)
+    }
+    return BigInteger.ONE.shiftLeft(shiftAmount(grow)).add(extra)
+}
+
+private fun subtractFromPowerOfTwo(exponent: Long, value: BigInteger): BigInteger {
+    require(value.signum() >= 0)
+    if (value.signum() == 0) return BigInteger.ONE.shiftLeft(shiftAmount(exponent))
+    if (value.bitLength().toLong() == exponent + 1L) {
+        check(value.bitCount() == 1) { "value exceeds 2^$exponent" }
+        return BigInteger.ZERO
+    }
+    check(value.bitLength().toLong() <= exponent) { "value exceeds 2^$exponent" }
+    return BigInteger.ONE.shiftLeft(shiftAmount(exponent)).subtract(value)
+}
+
+/**
+ * Moves [root] until x^3 <= 2^[exponent] < (x+1)^3.
+ * One square is kept and adjusted. The next cube is x^3 + 3x^2 + 3x + 1, so it does not need its own product.
+ */
+private fun snapCubeFloor(root: BigInteger, exponent: Long): BigInteger {
+    var x = root
+    var square = FastMul.square(x)
+    var steps = 0
+    while (steps < 8) {
+        val (cmp, nextCmp) = cubeVersusNext(x, square, exponent)
+        if (cmp > 0) {
+            square = square.subtract(x.shiftLeft(1)).add(BigInteger.ONE)
+            x -= BigInteger.ONE
+            steps++
+            continue
+        }
+        if (nextCmp > 0) return x
+        square = square.add(x.shiftLeft(1)).add(BigInteger.ONE)
+        x += BigInteger.ONE
+        steps++
+    }
+    error("cube root of 2^$exponent stayed off the root")
+}
+
+/** Signs of x^3 - 2^[exponent] and (x+1)^3 - 2^[exponent]. [limit] forces the split product in tests. */
+internal fun cubeVersusNext(
+    x: BigInteger,
+    square: BigInteger,
+    exponent: Long,
+    limit: Long = PRODUCT_BIT_LIMIT,
+): Pair<Int, Int> {
+    val span = square.multiply(THREE).add(x.multiply(THREE)).add(BigInteger.ONE)
+    if (x.signum() == 0 || x.bitLength().toLong() + square.bitLength() <= limit) {
+        val cube = if (x.signum() == 0) BigInteger.ZERO else FastMul.multiply(x, square)
+        return compareToPowerOfTwo(cube, exponent) to compareToPowerOfTwo(cube.add(span), exponent)
+    }
+    val minHigh = (x.bitLength().toLong() + square.bitLength() - limit).toInt()
+    val maxHigh = (limit - x.bitLength()).toInt()
+    check(minHigh in 1..maxHigh) { "cube does not fit in a BigInteger" }
+    val split = square.bitLength() - minHigh
+    val lowMask = BigInteger.ONE.shiftLeft(split) - BigInteger.ONE
+    val lowProduct = FastMul.multiply(x, square.and(lowMask))
+    val high = FastMul.multiply(x, square.shiftRight(split)) + lowProduct.shiftRight(split)
+    val low = lowProduct.and(lowMask)
+    val spanLow = span.and(lowMask)
+    val carry = (low + spanLow).shiftRight(split)
+    val nextHigh = high + span.shiftRight(split) + carry
+    val nextLow = (low + spanLow).and(lowMask)
+    return compareSplitToPower(high, low, exponent, split) to
+        compareSplitToPower(nextHigh, nextLow, exponent, split)
+}
+
+/** Sign of high * 2^split + low compared with 2^[exponent], with 0 <= low < 2^split. */
+private fun compareSplitToPower(high: BigInteger, low: BigInteger, exponent: Long, split: Int): Int {
+    if (exponent < split) {
+        if (high.signum() > 0) return 1
+        return compareToPowerOfTwo(low, exponent)
+    }
+    val highCompared = compareToPowerOfTwo(high, exponent - split)
+    if (highCompared != 0) return highCompared
+    return if (low.signum() == 0) 0 else 1
 }
 
 /**
@@ -238,15 +411,15 @@ internal fun productComparedToPowerOfTwo(
     if (left.bitLength().toLong() + right.bitLength() <= exponent) return -1
     val (a, b) = if (left.bitLength() <= right.bitLength()) left to right else right to left
     if (a.bitLength().toLong() + b.bitLength() <= limit) {
-        return compareToPowerOfTwo(a.multiply(b), exponent)
+        return compareToPowerOfTwo(FastMul.multiply(a, b), exponent)
     }
     val minHigh = (a.bitLength().toLong() + b.bitLength() - limit).toInt()
     val maxHigh = (limit - a.bitLength()).toInt()
     check(minHigh in 1..maxHigh) { "product does not fit in a BigInteger" }
     val split = b.bitLength() - minHigh
     val lowMask = BigInteger.ONE.shiftLeft(split) - BigInteger.ONE
-    val lowProduct = a.multiply(b.and(lowMask))
-    val highProduct = a.multiply(b.shiftRight(split))
+    val lowProduct = FastMul.multiply(a, b.and(lowMask))
+    val highProduct = FastMul.multiply(a, b.shiftRight(split))
     val highTotal = highProduct + lowProduct.shiftRight(split)
     val highCompared = compareToPowerOfTwo(highTotal, exponent - split)
     if (highCompared != 0) return highCompared
