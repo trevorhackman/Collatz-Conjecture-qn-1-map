@@ -28,14 +28,10 @@ internal val ANY_ROWS: List<LengthRow> = listOf(
 /** Fixed q. The first entry is q = 5 through length 20; the rest are the odd q from 7 through 25. */
 internal val FIXED_Q_ROWS: List<Pair<Int, Int>> = listOf(5 to 20) + (7..25 step 2).map { it to 16 }
 
-internal fun runBounds(args: Array<String>) {
-    val numbers = args.drop(1)
-    if (numbers.size > 1) usage()
-    val xs = if (numbers.isEmpty()) {
+internal fun runBounds(x: Int?) {
+    val xs = if (x == null) {
         (1..BOUNDS_MAX_X).filter { it % 2 == 1 }
     } else {
-        val x = numbers[0].toIntOrNull() ?: usage()
-        if (x < 1 || x % 2 == 0) usage()
         listOf(x)
     }
     println("Q3*")
@@ -62,44 +58,40 @@ private fun boundLine(x: Int, log: BigDecimal): String {
     return "x=$x log2=$shown 2^${powerAbove(log)}"
 }
 
-internal fun runTables(args: Array<String>) {
-    if (args.size < 3 || args[1] != "i") usage()
-    val rest = args.drop(3)
-    when (args[2]) {
-        "through1" -> for (row in selectedRows(THROUGH1_ROWS, rest)) {
+internal fun runTables(table: String, length: Int?, maxH: Int?, q: Int?, maxLength: Int?) {
+    when (table) {
+        "through1" -> for (row in selectedRows(THROUGH1_ROWS, length, maxH)) {
             println(formatSweep("through 1", row, searchThroughOne(row.length, row.maxH)))
         }
-        "any" -> for (row in selectedRows(ANY_ROWS, rest)) {
+        "any" -> for (row in selectedRows(ANY_ROWS, length, maxH)) {
             println(formatSweep("any", row, searchLength(row.length, row.maxH)))
         }
-        "q" -> runFixedQTable(rest)
+        "q" -> runFixedQTable(q, maxLength)
         else -> usage()
     }
 }
 
-private fun selectedRows(rows: List<LengthRow>, args: List<String>): List<LengthRow> {
-    if (args.size > 2) usage()
-    if (args.isEmpty()) return rows
-    val length = args[0].toIntOrNull() ?: usage()
+private fun selectedRows(rows: List<LengthRow>, length: Int?, maxH: Int?): List<LengthRow> {
+    if (length == null && maxH == null) return rows
+    if (length == null) usage()
     val published = rows.firstOrNull { it.length == length }
-    val maxH = if (args.size == 2) args[1].toIntOrNull() ?: usage() else published?.maxH ?: usage()
-    if (length < MIN_CYCLE_LENGTH || maxH < 1) usage()
-    return listOf(LengthRow(length, maxH))
+    val limit = maxH ?: published?.maxH ?: usage()
+    if (length < MIN_CYCLE_LENGTH || limit < 1) usage()
+    return listOf(LengthRow(length, limit))
 }
 
-private fun runFixedQTable(args: List<String>) {
-    if (args.size > 2) usage()
-    val rows = if (args.isEmpty()) {
+private fun runFixedQTable(q: Int?, maxLength: Int?) {
+    val rows = if (q == null) {
+        if (maxLength != null) usage()
         FIXED_Q_ROWS
     } else {
-        val q = args[0].toIntOrNull() ?: usage()
         val published = FIXED_Q_ROWS.firstOrNull { it.first == q }?.second
-        val maxLength = if (args.size == 2) args[1].toIntOrNull() ?: usage() else published ?: usage()
-        listOf(q to maxLength)
+        val limit = maxLength ?: published ?: usage()
+        listOf(q to limit)
     }
-    for ((q, maxLength) in rows) {
-        val cycles = searchFixedQ(q, maxLength)
-        println("q=$q lengths 2 through $maxLength: ${cycles.size} cycles")
+    for ((multiplier, longest) in rows) {
+        val cycles = searchFixedQ(multiplier, longest)
+        println("q=$multiplier lengths 2 through $longest: ${cycles.size} cycles")
     }
 }
 

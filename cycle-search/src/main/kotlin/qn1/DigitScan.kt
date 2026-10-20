@@ -56,10 +56,7 @@ internal data class DigitRoot(
     }
 }
 
-internal fun runDigits(args: Array<String>) {
-    val numbers = args.drop(1)
-    if (numbers.size > 1) usage()
-    val places = if (numbers.isEmpty()) DIGIT_PLACES else numbers[0].toIntOrNull() ?: usage()
+internal fun runDigits(places: Int) {
     if (places < 1 || !digitsFit(places)) {
         System.err.println("places must be from 1 through ${maxDigitPlaces()}")
         exitProcess(1)

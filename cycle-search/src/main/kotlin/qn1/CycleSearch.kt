@@ -8,19 +8,19 @@ import kotlin.system.exitProcess
 import kotlin.system.measureTimeMillis
 
 /** All starting values, no arguments: most halvings. One length. */
-private const val DEFAULT_MAX_H = 1500
+internal const val DEFAULT_MAX_H = 1500
 /** All starting values, no arguments: that length. */
-private const val DEFAULT_LENGTH = 6
+internal const val DEFAULT_LENGTH = 6
 
 /** Through 1, no arguments: most halvings. One length. */
-private const val THROUGH1_DEFAULT_MAX_H = 66100
+internal const val THROUGH1_DEFAULT_MAX_H = 66100
 /** Through 1, no arguments: that length. */
-private const val THROUGH1_DEFAULT_LENGTH = 3
+internal const val THROUGH1_DEFAULT_LENGTH = 3
 
 /** Fixed q, no arguments: that odd multiplier. */
-private const val Q_DEFAULT = 5
+internal const val Q_DEFAULT = 5
 /** Fixed q, no arguments: longest cycle. Lengths run from 2 through this one. */
-private const val Q_DEFAULT_MAX_LENGTH = 20
+internal const val Q_DEFAULT_MAX_LENGTH = 20
 
 /** Length 1 is C(x)=x, so x(2^h-q)=1: only x=1 and q=2^h-1. */
 internal const val MIN_CYCLE_LENGTH = 2
@@ -58,64 +58,50 @@ private val MIN_ODD_Q: BigInteger = BigInteger.valueOf(3)
  * inside `q^L < 2^h < (q+1)^L`. The element `x` at the start of the cycle is
  * `N / (2^h - q^L)`, where `N` is the numerator fixed by the first `L-1` halving counts.
  *
- * Six commands.
+ * Named options, as parsed by [parseCli].
  *
- * All starting values: `[maxH] [length]`. One length. Every odd positive element is allowed.
+ * `--length` and `--max-h` search one length over every odd element.
  * The representative starts at the least element, so each halving count satisfies
  * `2^{k_i} <= q U_{i-1} + 1` with `U_0 = 1` and `U_i = (q U_{i-1} + 1) / 2^{k_i}`.
- * Omitted arguments are [DEFAULT_MAX_H] and [DEFAULT_LENGTH].
+ * Omitted values are [DEFAULT_LENGTH] and [DEFAULT_MAX_H].
  *
- * Through 1: `through1 [maxH] [length]`. One length. Only the orbit of 1 is followed.
- * There is no tuple enumeration, so `maxH` can sit far above an all-starting-values search.
- * Omitted arguments are [THROUGH1_DEFAULT_MAX_H] and [THROUGH1_DEFAULT_LENGTH].
+ * `--through-1` follows only the orbit of 1. There is no tuple enumeration, so `--max-h`
+ * can sit far above an all-starting-values search. Omitted values are [THROUGH1_DEFAULT_LENGTH]
+ * and [THROUGH1_DEFAULT_MAX_H].
  *
- * Fixed q: `q [q] [maxLength]`. Lengths run from 2 through `maxLength`, and the only
- * values of `h` are those with this odd `q = floor(2^{h/L})`. Omitted arguments are
- * [Q_DEFAULT] and [Q_DEFAULT_MAX_LENGTH].
+ * `--q` and `--max-length` fix the odd multiplier. Lengths run from 2 through the maximum,
+ * and the only values of `h` are those with this `q = floor(2^{h/L})`. When the left partial sums
+ * do not fit in one long, the least element is bounded and every odd start up to that bound is followed.
+ * Omitted values are [Q_DEFAULT] and [Q_DEFAULT_MAX_LENGTH].
  *
- * Paper II bounds: `bounds [x]`. Odd `x` from 1 through 35 when `x` is omitted.
- * Prints Q_{3,*}, Q_{3,0}, Q_{2,*}, and Q_2 as the powers of two in the tables.
+ * `--bounds` prints the Paper II powers of two. `--x` selects one odd element; omitted, the odds from 1 through 35.
  *
- * Paper I table rows: `tables i through1 [length] [maxH]`, `tables i any [length] [maxH]`,
- * and `tables i q [q] [maxLength]`. Omitted numbers are the ranges in the computations section.
+ * `--tables through1`, `--tables any`, and `--tables q` rerun the Paper I computation tables.
+ * `--length` or `--q` selects one published row. `--max-h` or `--max-length` overrides that row's limit.
  *
- * Digit scan: `digits [places]`. The first [DIGIT_PLACES] binary places of 2^{1/3} and of 2^{2/3}
- * when `places` is omitted. Reports alternating blocks of length [DIGIT_BLOCK] for m >= [DIGIT_M_MIN].
+ * `--digits` scans the first [DIGIT_PLACES] binary places of 2^{1/3} and of 2^{2/3}.
+ * `--places` scans fewer. The scan reports alternating blocks of length [DIGIT_BLOCK] for m >= [DIGIT_M_MIN].
  */
 fun main(args: Array<String>) {
-    when (args.firstOrNull()) {
-        "q" -> {
-            runFixedQ(args)
-            return
-        }
-        "bounds" -> {
-            runBounds(args)
-            return
-        }
-        "tables" -> {
-            runTables(args)
-            return
-        }
-        "digits" -> {
-            runDigits(args)
-            return
-        }
+    val cli = try {
+        parseCli(args)
+    } catch (e: IllegalArgumentException) {
+        if (!e.message.isNullOrEmpty()) System.err.println(e.message)
+        usage()
     }
-    val throughOne = args.firstOrNull() == "through1"
-    val numbers = if (throughOne) args.drop(1) else args.asList()
-    if (!throughOne && numbers.isNotEmpty() && numbers[0].toIntOrNull() == null) usage()
-    if (numbers.size > 2) usage()
-    val maxH = if (numbers.isEmpty()) {
-        if (throughOne) THROUGH1_DEFAULT_MAX_H else DEFAULT_MAX_H
-    } else {
-        numbers[0].toIntOrNull() ?: usage()
+    when (cli.mode) {
+        SearchMode.FIXED_Q -> searchFixedQ(cli.q!!, cli.maxLength!!)
+        SearchMode.BOUNDS -> runBounds(cli.x)
+        SearchMode.TABLES -> runTables(cli.table!!, cli.length, cli.maxH, cli.q, cli.maxLength)
+        SearchMode.DIGITS -> runDigits(cli.places!!)
+        SearchMode.ANY, SearchMode.THROUGH_1 -> runLengthSearch(cli)
     }
-    val length = if (numbers.size < 2) {
-        if (throughOne) THROUGH1_DEFAULT_LENGTH else DEFAULT_LENGTH
-    } else {
-        numbers[1].toIntOrNull() ?: usage()
-    }
-    if (maxH < 1 || length < MIN_CYCLE_LENGTH) usage()
+}
+
+private fun runLengthSearch(cli: Cli) {
+    val throughOne = cli.mode == SearchMode.THROUGH_1
+    val length = cli.length!!
+    val maxH = cli.maxH!!
     val batch = mutableListOf<Cycle>()
     val ms = measureTimeMillis {
         val cycles = if (throughOne) searchThroughOne(length, maxH) else searchLength(length, maxH)
@@ -127,24 +113,14 @@ fun main(args: Array<String>) {
     for (cycle in batch) println("  $cycle")
 }
 
-private fun runFixedQ(args: Array<String>) {
-    val numbers = args.drop(1)
-    if (numbers.size > 2) usage()
-    val q = if (numbers.isEmpty()) Q_DEFAULT else numbers[0].toIntOrNull() ?: usage()
-    val maxLength = if (numbers.size < 2) Q_DEFAULT_MAX_LENGTH else numbers[1].toIntOrNull() ?: usage()
-    if (q < MIN_ODD_Q.intValueExact() || q % 2 == 0 || maxLength < MIN_CYCLE_LENGTH) usage()
-    searchFixedQ(q, maxLength)
-}
-
 internal fun usage(): Nothing {
-    System.err.println("usage: [maxH] [length]")
-    System.err.println("       through1 [maxH] [length]")
-    System.err.println("       q [q] [maxLength]")
-    System.err.println("       bounds [x]")
-    System.err.println("       tables i through1 [length] [maxH]")
-    System.err.println("       tables i any [length] [maxH]")
-    System.err.println("       tables i q [q] [maxLength]")
-    System.err.println("       digits [places]")
+    System.err.println("usage: --length N --max-h N")
+    System.err.println("       --through-1 --length N --max-h N")
+    System.err.println("       --q N --max-length N")
+    System.err.println("       --bounds [--x N]")
+    System.err.println("       --tables through1|any [--length N] [--max-h N]")
+    System.err.println("       --tables q [--q N] [--max-length N]")
+    System.err.println("       --digits [--places N]")
     exitProcess(1)
 }
 
