@@ -46,10 +46,16 @@ private const val LEFT_STATE_BYTES = 96.0
 private const val TABLE_BUDGET_BYTES = 12.0 * 1024 * 1024 * 1024
 
 /**
- * Odd starts followed when the left partial sums do not fit in one long.
+ * Odd starts followed when the left partial sums do not fit in one long, or the packed table is past [PACKED_STATE_LIMIT].
  * The least element of a cycle is at most the numerator bound; above this many starts the trace is refused.
  */
 private val TRACE_LEAST_LIMIT: BigInteger = BigInteger.valueOf(1_000_000)
+
+/**
+ * Packed left tables no larger than this stay on the split search.
+ * A larger estimate uses the least-element bound when that bound is at most [TRACE_LEAST_LIMIT].
+ */
+private const val PACKED_STATE_LIMIT = 50_000_000.0
 
 private val MIN_ODD_Q: BigInteger = BigInteger.valueOf(3)
 
@@ -74,7 +80,8 @@ private val MIN_ODD_Q: BigInteger = BigInteger.valueOf(3)
  *
  * `--q`, `--min-length`, and `--max-length` fix the odd multiplier and the lengths to search.
  * The only values of `h` are those with this `q = floor(2^{h/L})`. When the left partial sums
- * do not fit in one long, the least element is bounded and every odd start up to that bound is followed.
+ * do not fit in one long, or the packed table is past [PACKED_STATE_LIMIT] and the least element
+ * is at most [TRACE_LEAST_LIMIT], every odd start up to that bound is followed.
  * Omitted values are [Q_DEFAULT], [MIN_CYCLE_LENGTH], and [Q_DEFAULT_MAX_LENGTH].
  *
  * `--bounds` prints the Paper II powers of two. `--x` selects one odd element; omitted, the odds from 1 through 35.
@@ -318,9 +325,14 @@ internal fun admissible(h: Int, length: Int): Admissible? {
 private fun cyclesAt(length: Int, h: Int, q: BigInteger, gap: BigInteger): List<Cycle> {
     // 2^h and q^L differ by 1 only for the Catalan pair, which has the other sign.
     if (gap <= BigInteger.ONE) return emptyList()
-    // One long holds the left partial sums only while leftCount * sumBits <= 64.
-    if (length > WALK_MAX_LENGTH && !sumsPackIntoOneLong(length, h)) {
-        return traceByLeastElement(length, h, q, gap)
+    if (length > WALK_MAX_LENGTH) {
+        val packed = sumsPackIntoOneLong(length, h)
+        if (!packed) return traceByLeastElement(length, h, q, gap)
+        val states = estimatedLeftStates(length, h, storedHalfCount(length, h))
+        if (states > PACKED_STATE_LIMIT) {
+            val least = maxLeastElement(length, h, q, gap)
+            if (least <= TRACE_LEAST_LIMIT) return followLeastElement(length, h, q, least)
+        }
     }
     val found = mutableListOf<Cycle>()
     val accept = CycleRecorder(found, length, h, q, gap)
@@ -346,10 +358,15 @@ internal fun traceByLeastElement(
     gap: BigInteger,
 ): List<Cycle> {
     val least = maxLeastElement(length, h, q, gap)
-    if (least.signum() <= 0) return emptyList()
     require(least <= TRACE_LEAST_LIMIT) {
         "least element bound $least at length $length h=$h is above $TRACE_LEAST_LIMIT"
     }
+    return followLeastElement(length, h, q, least)
+}
+
+/** Every cycle whose least element is at most [least]. A non-positive bound means there is no cycle. */
+private fun followLeastElement(length: Int, h: Int, q: BigInteger, least: BigInteger): List<Cycle> {
+    if (least.signum() <= 0) return emptyList()
     val found = mutableListOf<Cycle>()
     var x = BigInteger.ONE
     val two = BigInteger.TWO
