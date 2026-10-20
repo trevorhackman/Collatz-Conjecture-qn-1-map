@@ -36,8 +36,11 @@ private const val THROUGH1_PROGRESS_STRIDE = 1000
 private const val SUM_BIT_LIMIT = 16
 private const val MAX_PACKED_H = 1 shl SUM_BIT_LIMIT
 
-/** Bytes charged to one stored left state when the thread count is chosen. */
-private const val LEFT_STATE_BYTES = 400.0
+/**
+ * Bytes charged to one stored left state when the thread count is chosen.
+ * One state is a residue hash and a packed partial sum, plus its open-addressed slot.
+ */
+private const val LEFT_STATE_BYTES = 96.0
 
 /** Live left-half tables stay under this, inside the 24g run heap. */
 private const val TABLE_BUDGET_BYTES = 12.0 * 1024 * 1024 * 1024
@@ -69,10 +72,10 @@ private val MIN_ODD_Q: BigInteger = BigInteger.valueOf(3)
  * can sit far above an all-starting-values search. Omitted values are [THROUGH1_DEFAULT_LENGTH]
  * and [THROUGH1_DEFAULT_MAX_H].
  *
- * `--q` and `--max-length` fix the odd multiplier. Lengths run from 2 through the maximum,
- * and the only values of `h` are those with this `q = floor(2^{h/L})`. When the left partial sums
+ * `--q`, `--min-length`, and `--max-length` fix the odd multiplier and the lengths to search.
+ * The only values of `h` are those with this `q = floor(2^{h/L})`. When the left partial sums
  * do not fit in one long, the least element is bounded and every odd start up to that bound is followed.
- * Omitted values are [Q_DEFAULT] and [Q_DEFAULT_MAX_LENGTH].
+ * Omitted values are [Q_DEFAULT], [MIN_CYCLE_LENGTH], and [Q_DEFAULT_MAX_LENGTH].
  *
  * `--bounds` prints the Paper II powers of two. `--x` selects one odd element; omitted, the odds from 1 through 35.
  *
@@ -90,7 +93,7 @@ fun main(args: Array<String>) {
         usage()
     }
     when (cli.mode) {
-        SearchMode.FIXED_Q -> searchFixedQ(cli.q!!, cli.maxLength!!)
+        SearchMode.FIXED_Q -> searchFixedQ(cli.q!!, cli.maxLength!!, cli.minLength!!)
         SearchMode.BOUNDS -> runBounds(cli.x)
         SearchMode.TABLES -> runTables(cli.table!!, cli.length, cli.maxH, cli.q, cli.maxLength)
         SearchMode.DIGITS -> runDigits(cli.places!!)
@@ -116,7 +119,7 @@ private fun runLengthSearch(cli: Cli) {
 internal fun usage(): Nothing {
     System.err.println("usage: --length N --max-h N")
     System.err.println("       --through-1 --length N --max-h N")
-    System.err.println("       --q N --max-length N")
+    System.err.println("       --q N [--min-length N] --max-length N")
     System.err.println("       --bounds [--x N]")
     System.err.println("       --tables through1|any [--length N] [--max-h N]")
     System.err.println("       --tables q [--q N] [--max-length N]")
@@ -202,26 +205,49 @@ private fun searchLengthSequential(length: Int, hMax: Int): Set<Cycle> {
  * that can still keep `x0` least. Stay inside the 24g run heap.
  */
 private fun poolSize(length: Int, hMax: Int): Int {
-    val left = (length - 1) / 2
-    // q + 1 < 2^{logQ}, so the j-th count has fewer than j * logQ choices.
-    val logQ = (hMax + length - 1) / length + 1
-    var states = 1.0
-    for (j in 1..left) states *= j * logQ
-    val perH = states * LEFT_STATE_BYTES
+    val perH = estimatedLeftStates(length, hMax, storedHalfCount(length, hMax)) * LEFT_STATE_BYTES
     val byMemory = if (!perH.isFinite()) 1 else (TABLE_BUDGET_BYTES / perH).toInt().coerceAtLeast(1)
     return minOf(Runtime.getRuntime().availableProcessors(), byMemory)
 }
 
 /**
- * Every cycle for one odd [q], of length 2 through [maxLength].
+ * Upper bound on stored left states at this h.
+ * q + 1 < 2^logQ, so the j-th count has fewer than j * logQ choices.
+ */
+private fun estimatedLeftStates(length: Int, h: Int, left: Int): Double {
+    val logQ = (h + length - 1) / length + 1
+    var states = 1.0
+    for (j in 1..left) states *= j.toDouble() * logQ
+    return states
+}
+
+/**
+ * How many partial sums are stored.
+ * The extra sum is stored when the other half would otherwise be walked at depth 3 or more
+ * and the stored table fits in the heap. A walked half of two sums is already shallow.
+ */
+private fun storedHalfCount(length: Int, h: Int): Int {
+    val free = length - 1
+    val smaller = free / 2
+    val larger = free - smaller
+    if (larger < 3) return smaller
+    if (larger * bitsForSums(h) > 64) return smaller
+    val bytes = estimatedLeftStates(length, h, larger) * LEFT_STATE_BYTES
+    if (bytes * 2 > TABLE_BUDGET_BYTES) return smaller
+    return larger
+}
+
+/**
+ * Every cycle for one odd [q], of length [minLength] through [maxLength].
  * A length whose power window contains no integer h has no cycle.
  */
-fun searchFixedQ(q: Int, maxLength: Int): List<Cycle> {
+fun searchFixedQ(q: Int, maxLength: Int, minLength: Int = MIN_CYCLE_LENGTH): List<Cycle> {
     require(q >= MIN_ODD_Q.intValueExact() && q % 2 == 1)
-    require(maxLength >= MIN_CYCLE_LENGTH)
+    require(minLength >= MIN_CYCLE_LENGTH)
+    require(maxLength >= minLength)
     val qBig = BigInteger.valueOf(q.toLong())
     val found = mutableListOf<Cycle>()
-    for (length in MIN_CYCLE_LENGTH..maxLength) {
+    for (length in minLength..maxLength) {
         val hs = hForQ(qBig, length)
         if (hs.isEmpty()) {
             println("q=$q L=$length: no h")
@@ -306,8 +332,7 @@ private fun cyclesAt(length: Int, h: Int, q: BigInteger, gap: BigInteger): List<
 /** True when [SplitSearch] can store every left partial sum in one long. */
 private fun sumsPackIntoOneLong(length: Int, h: Int): Boolean {
     if (h > MAX_PACKED_H) return false
-    val leftCount = (length - 1) / 2
-    return leftCount * bitsForSums(h) <= 64
+    return storedHalfCount(length, h) * bitsForSums(h) <= 64
 }
 
 /**
@@ -524,7 +549,7 @@ private fun looseCaps(length: Int, h: Int, q: BigInteger): Array<IntArray> {
 
 /**
  * `ks` is valid only for the duration of [block].
- * Partial sums `0 = s0 < s1 < ... < s_{L-1} < h` split after the smaller half.
+ * Partial sums `0 = s0 < s1 < ... < s_{L-1} < h` split so the walked half is the smaller one when the stored half fits.
  * Left residues are activated in order of `s_left`, and each right continuation
  * starts strictly later, so the two halves do not interleave.
  *
@@ -550,19 +575,21 @@ private class SplitSearch(
     private val block: (IntArray) -> Unit,
 ) {
     private val free = length - 1
-    private val leftCount = free / 2
+    private val leftCount = storedHalfCount(length, h)
     private val rightCount = free - leftCount
     private val capAt: Array<IntArray>
-    private val term: Array<Array<BigInteger>>
-    private val coeff0: BigInteger
-    private val byEnd: Array<ArrayList<Pair<BigInteger, Long>>>
+    private val gapLimbs: IntArray
+    private val term: Array<Array<IntArray>>
+    private val coeff0: IntArray
+    private val residue: ModResidue
+    private val byEnd: Array<StateList>
     private val leftSums = IntArray(leftCount)
     private val rightSums = IntArray(rightCount)
     private val partial = IntArray(free)
     private val ks = IntArray(free)
     private val sumBits: Int
     private val sumMask: Long
-    private lateinit var active: HashMap<BigInteger, MutableList<Long>>
+    private lateinit var active: LongMultimap
 
     init {
         require(length > WALK_MAX_LENGTH)
@@ -573,105 +600,411 @@ private class SplitSearch(
             "length $length at h=$h packs $leftCount sums of $sumBits bits"
         }
         capAt = looseCaps(length, h, q)
+        val width = (gap.bitLength() + 32) ushr 5
+        gapLimbs = limbsOf(gap, width)
         val coeff = Array(length) { BigInteger.ONE }
         var powQ = BigInteger.ONE
         for (j in length - 2 downTo 0) {
             powQ = powQ.multiply(q).mod(gap)
             coeff[j] = powQ
         }
-        coeff0 = coeff[0]
+        coeff0 = limbsOf(coeff[0], width)
         val pow2 = Array(h) { BigInteger.ONE }
         for (s in 1 until h) pow2[s] = addMod(pow2[s - 1], pow2[s - 1], gap)
         term = Array(length) { j ->
             if (j == 0) emptyArray() else Array(h) { s ->
-                if (s == 0) BigInteger.ZERO else coeff[j].multiply(pow2[s]).mod(gap)
+                val value = if (s == 0) BigInteger.ZERO else coeff[j].multiply(pow2[s]).mod(gap)
+                limbsOf(value, width)
             }
         }
-        byEnd = Array(h) { ArrayList() }
+        residue = ModResidue(gapLimbs)
+        byEnd = Array(h) { StateList() }
     }
 
     fun run() {
-        genLeft(0, 0, coeff0)
+        residue.set(coeff0)
+        genLeft(0, 0)
         var maxStart = 0
         val firstRightCap = capAt[leftCount]
         for (s in 0 until h) {
-            if (byEnd[s].isEmpty()) continue
+            val ended = byEnd[s]
+            if (ended.size == 0) continue
             val reach = s + firstRightCap[s]
             if (reach > maxStart) maxStart = reach
         }
         var states = 0
         for (bucket in byEnd) states += bucket.size
-        active = HashMap(states * 2 + 16)
+        active = LongMultimap(states)
         for (start in 1..maxStart) {
             if (start >= h) break
             val ended = byEnd[start - 1]
-            for ((neg, packed) in ended) addActive(neg, packed)
-            ended.clear()
+            for (i in 0 until ended.size) active.add(ended.hash[i], ended.packed[i])
+            ended.release()
             if (start + rightCount - 1 > h - 1) continue
             rightSums[0] = start
-            genRight(1, start, term[leftCount + 1][start])
+            residue.set(term[leftCount + 1][start])
+            genRight(1, start)
         }
     }
 
     private fun cappedS(stepsDone: Int, sum: Int, maxS: Int): Int =
         minOf(maxS, sum + capAt[stepsDone][sum])
 
-    private fun genLeft(pos: Int, prev: Int, acc: BigInteger) {
+    private fun genLeft(pos: Int, prev: Int) {
         if (pos == leftCount) {
-            val neg = if (acc.signum() == 0) BigInteger.ZERO else gap.subtract(acc)
-            byEnd[leftSums[leftCount - 1]].add(neg to packSums(leftSums, leftCount, sumBits))
+            byEnd[leftSums[leftCount - 1]].add(residue.hashNegated(), packSums(leftSums, leftCount, sumBits))
             return
         }
         val remainingAfter = (leftCount - 1 - pos) + rightCount
         val maxS = h - 1 - remainingAfter
         for (s in prev + 1..cappedS(pos, prev, maxS)) {
             leftSums[pos] = s
-            genLeft(pos + 1, s, addMod(acc, term[pos + 1][s], gap))
+            val add = term[pos + 1][s]
+            residue.addMod(add)
+            genLeft(pos + 1, s)
+            residue.subMod(add)
         }
     }
 
-    private fun genRight(pos: Int, prev: Int, acc: BigInteger) {
+    private fun genRight(pos: Int, prev: Int) {
         if (pos == rightCount) {
-            emit(acc)
+            emit()
             return
         }
         val remainingAfter = rightCount - 1 - pos
         val maxS = h - 1 - remainingAfter
         for (s in prev + 1..cappedS(leftCount + pos, prev, maxS)) {
             rightSums[pos] = s
-            genRight(pos + 1, s, addMod(acc, term[leftCount + 1 + pos][s], gap))
+            val add = term[leftCount + 1 + pos][s]
+            residue.addMod(add)
+            genRight(pos + 1, s)
+            residue.subMod(add)
         }
     }
 
-    private fun emit(acc: BigInteger) {
-        val matches = active[acc] ?: return
+    private fun emit() {
+        val node0 = active.first(residue.hash())
+        if (node0 < 0) return
         val last = rightSums[rightCount - 1]
         if (h - last > capAt[free][last]) return
         val start = rightSums[0]
         val firstRight = capAt[leftCount]
         for (i in 0 until rightCount) partial[leftCount + i] = rightSums[i]
-        for (packed in matches) {
+        var node = node0
+        while (node >= 0) {
+            val packed = active.packedAt(node)
             val sLeft = ((packed ushr ((leftCount - 1) * sumBits)) and sumMask).toInt()
-            if (start - sLeft > firstRight[sLeft]) continue
-            unpackSums(packed, leftCount, partial, 0, sumBits, sumMask)
-            var prev = 0
-            for (i in partial.indices) {
-                ks[i] = partial[i] - prev
-                prev = partial[i]
+            if (start - sLeft <= firstRight[sLeft]) {
+                unpackSums(packed, leftCount, partial, 0, sumBits, sumMask)
+                var prev = 0
+                for (i in partial.indices) {
+                    ks[i] = partial[i] - prev
+                    prev = partial[i]
+                }
+                block(ks)
             }
-            block(ks)
+            node = active.next(node)
+        }
+    }
+}
+
+/**
+ * One residue modulo a fixed gap.
+ * The walk adds a term on the way down and subtracts it on the way back, so this buffer stays put.
+ */
+internal class ModResidue(private val gap: IntArray) {
+    private val limb = IntArray(gap.size)
+
+    fun set(src: IntArray) {
+        src.copyInto(limb)
+    }
+
+    fun addMod(add: IntArray) {
+        var carry = 0L
+        for (i in limb.indices) {
+            val sum = u32(limb[i]) + u32(add[i]) + carry
+            limb[i] = sum.toInt()
+            carry = sum ushr 32
+        }
+        check(carry == 0L)
+        if (!lessThan(limb, gap)) subtract(gap)
+    }
+
+    /** Inverse of [addMod] for the same addend. */
+    fun subMod(add: IntArray) {
+        var borrow = 0L
+        for (i in limb.indices) {
+            val diff = u32(limb[i]) - u32(add[i]) - borrow
+            if (diff < 0) {
+                limb[i] = (diff + LIMB).toInt()
+                borrow = 1
+            } else {
+                limb[i] = diff.toInt()
+                borrow = 0
+            }
+        }
+        if (borrow != 0L) addWrapped(gap)
+    }
+
+    fun hash(): Long = hashLimbs(limb)
+
+    /** Hash of the additive inverse. Zero stays zero, matching a stored key of 0 rather than the gap. */
+    fun hashNegated(): Long {
+        if (isZero()) return hash()
+        var mixed = HASH_OFFSET
+        var borrow = 0L
+        for (i in limb.indices) {
+            val diff = u32(gap[i]) - u32(limb[i]) - borrow
+            val bits: Int
+            if (diff < 0) {
+                bits = (diff + LIMB).toInt()
+                borrow = 1
+            } else {
+                bits = diff.toInt()
+                borrow = 0
+            }
+            mixed = mixHash(mixed, bits)
+        }
+        check(borrow == 0L)
+        return avalanche(mixed)
+    }
+
+    fun toBigInteger(): BigInteger {
+        var n = BigInteger.ZERO
+        for (i in limb.lastIndex downTo 0) {
+            n = n.shiftLeft(32).or(BigInteger.valueOf(u32(limb[i])))
+        }
+        return n
+    }
+
+    private fun isZero(): Boolean {
+        for (bits in limb) if (bits != 0) return false
+        return true
+    }
+
+    /** Adds [add] and drops a carry out of the last limb. The buffer is below zero by less than the gap. */
+    private fun addWrapped(add: IntArray) {
+        var carry = 0L
+        for (i in limb.indices) {
+            val sum = u32(limb[i]) + u32(add[i]) + carry
+            limb[i] = sum.toInt()
+            carry = sum ushr 32
         }
     }
 
-    private fun addActive(neg: BigInteger, packed: Long) {
-        val bucket = active[neg]
-        if (bucket == null) {
-            val created = ArrayList<Long>(1)
-            created.add(packed)
-            active[neg] = created
-        } else {
-            bucket.add(packed)
+    private fun subtract(dec: IntArray) {
+        var borrow = 0L
+        for (i in limb.indices) {
+            val diff = u32(limb[i]) - u32(dec[i]) - borrow
+            if (diff < 0) {
+                limb[i] = (diff + LIMB).toInt()
+                borrow = 1
+            } else {
+                limb[i] = diff.toInt()
+                borrow = 0
+            }
         }
+        check(borrow == 0L)
+    }
+}
+
+/** Little-endian unsigned limbs. The width has room for one extra bit past the gap. */
+internal fun limbsOf(n: BigInteger, width: Int): IntArray {
+    require(n.signum() >= 0)
+    val out = IntArray(width)
+    var rest = n
+    val mask = BigInteger.ONE.shiftLeft(32).subtract(BigInteger.ONE)
+    for (i in 0 until width) {
+        if (rest.signum() == 0) break
+        out[i] = rest.and(mask).toInt()
+        rest = rest.shiftRight(32)
+    }
+    require(rest.signum() == 0) { "value does not fit in $width limbs" }
+    return out
+}
+
+private fun u32(bits: Int): Long = bits.toLong() and 0xffffffffL
+
+private fun lessThan(a: IntArray, b: IntArray): Boolean {
+    for (i in a.lastIndex downTo 0) {
+        val aa = u32(a[i])
+        val bb = u32(b[i])
+        if (aa != bb) return aa < bb
+    }
+    return false
+}
+
+private const val LIMB = 0x1_0000_0000L
+private const val HASH_OFFSET = -0x61C8864680B583EBL
+
+private fun hashLimbs(src: IntArray): Long {
+    var mixed = HASH_OFFSET
+    for (bits in src) mixed = mixHash(mixed, bits)
+    return avalanche(mixed)
+}
+
+private fun mixHash(mixed: Long, bits: Int): Long {
+    var x = mixed xor u32(bits)
+    x = x xor (x ushr 30)
+    x *= -0x40A7B892E31B1A47L
+    return x xor (x ushr 27)
+}
+
+private fun avalanche(mixed: Long): Long {
+    var x = mixed
+    x = x xor (x ushr 33)
+    x *= -49064778989728563L
+    x = x xor (x ushr 33)
+    return x
+}
+
+/** Left states that end at one partial sum, before they join the active table. */
+private class StateList {
+    var hash = LongArray(4)
+    var packed = LongArray(4)
+    var size = 0
+
+    fun add(h: Long, p: Long) {
+        if (size == hash.size) {
+            val n = size * 2
+            hash = hash.copyOf(n)
+            packed = packed.copyOf(n)
+        }
+        hash[size] = h
+        packed[size] = p
+        size++
+    }
+
+    fun release() {
+        hash = LongArray(0)
+        packed = LongArray(0)
+        size = 0
+    }
+}
+
+/**
+ * Packed partial sums grouped by a 64-bit residue hash.
+ * Equal hashes share a chain. A colliding pair fails when the numerator is rebuilt.
+ */
+private class LongMultimap(expected: Int) {
+    private var cap: Int
+    private var mask: Int
+    private var hashes: LongArray
+    private var used: BooleanArray
+    private var head: IntArray
+    private var nextNode: IntArray
+    private var packed: LongArray
+    private var nodeHash: LongArray
+    private var nodeCount = 0
+    private var filled = 0
+
+    init {
+        var c = 16
+        val need = expected.coerceAtLeast(1) * 2
+        while (c < need) {
+            val grown = c shl 1
+            if (grown <= 0) break
+            c = grown
+        }
+        cap = c
+        mask = c - 1
+        hashes = LongArray(c)
+        used = BooleanArray(c)
+        head = IntArray(c) { -1 }
+        val nodes = expected.coerceAtLeast(1)
+        nextNode = IntArray(nodes)
+        packed = LongArray(nodes)
+        nodeHash = LongArray(nodes)
+    }
+
+    fun add(hash: Long, value: Long) {
+        if (nodeCount == packed.size) growNodes()
+        if (filled * 2 >= cap) growTable()
+        val slot = find(hash)
+        if (!used[slot]) {
+            used[slot] = true
+            hashes[slot] = hash
+            head[slot] = -1
+            filled++
+        }
+        val n = nodeCount++
+        nodeHash[n] = hash
+        packed[n] = value
+        nextNode[n] = head[slot]
+        head[slot] = n
+    }
+
+    /** First packed sum with this hash, or -1 when none is stored. */
+    fun first(hash: Long): Int {
+        val slot = locate(hash)
+        if (slot < 0) return -1
+        return head[slot]
+    }
+
+    fun next(node: Int): Int = nextNode[node]
+
+    fun packedAt(node: Int): Long = packed[node]
+
+    private fun find(hash: Long): Int {
+        var i = slot(hash)
+        var steps = 0
+        while (used[i] && hashes[i] != hash) {
+            i = (i + 1) and mask
+            check(++steps <= cap)
+        }
+        return i
+    }
+
+    private fun locate(hash: Long): Int {
+        var i = slot(hash)
+        var steps = 0
+        while (used[i]) {
+            if (hashes[i] == hash) return i
+            i = (i + 1) and mask
+            if (++steps > cap) return -1
+        }
+        return -1
+    }
+
+    private fun slot(hash: Long): Int = (hash xor (hash ushr 32)).toInt() and mask
+
+    private fun growNodes() {
+        val n = packed.size * 2
+        nextNode = nextNode.copyOf(n)
+        packed = packed.copyOf(n)
+        nodeHash = nodeHash.copyOf(n)
+    }
+
+    private fun growTable() {
+        val grown = cap shl 1
+        if (grown <= 0) return
+        val newMask = grown - 1
+        val newHashes = LongArray(grown)
+        val newUsed = BooleanArray(grown)
+        val newHead = IntArray(grown) { -1 }
+        var newFilled = 0
+        for (n in 0 until nodeCount) {
+            val hash = nodeHash[n]
+            var i = (hash xor (hash ushr 32)).toInt() and newMask
+            var steps = 0
+            while (newUsed[i] && newHashes[i] != hash) {
+                i = (i + 1) and newMask
+                check(++steps <= grown)
+            }
+            if (!newUsed[i]) {
+                newUsed[i] = true
+                newHashes[i] = hash
+                newFilled++
+            }
+            nextNode[n] = newHead[i]
+            newHead[i] = n
+        }
+        cap = grown
+        mask = newMask
+        hashes = newHashes
+        used = newUsed
+        head = newHead
+        filled = newFilled
     }
 }
 

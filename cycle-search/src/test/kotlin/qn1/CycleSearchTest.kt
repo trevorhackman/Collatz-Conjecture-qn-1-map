@@ -1,6 +1,7 @@
 package qn1
 
 import java.math.BigInteger
+import java.util.Random
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -95,6 +96,17 @@ class CycleSearchTest {
     }
 
     @Test
+    fun q5FromLength3SkipsTheLength2Cycle() {
+        assertEquals(
+            setOf(
+                cycle(5, 7, 13, 33, 83),
+                cycle(5, 7, 17, 43, 27),
+            ),
+            searchFixedQ(5, 4, minLength = 3).toSet(),
+        )
+    }
+
+    @Test
     fun q1093Length21HasNoCycle() {
         val q = BigInteger.valueOf(1093)
         assertEquals(212..212, hForQ(q, 21))
@@ -102,6 +114,37 @@ class CycleSearchTest {
         assertEquals(q, adm.q)
         assertEquals(BigInteger.ZERO, maxLeastElement(21, 212, adm.q, adm.gap))
         assertEquals(emptyList(), searchFixedQ(1093, 21))
+    }
+
+    @Test
+    fun modResidueMatchesBigInteger() {
+        val random = Random(1)
+        val gaps = listOf(
+            BigInteger.valueOf(3),
+            BigInteger.ONE.shiftLeft(17).subtract(BigInteger.ONE),
+            BigInteger.ONE.shiftLeft(32),
+            BigInteger.ONE.shiftLeft(32).subtract(BigInteger.ONE),
+            BigInteger("12345678901234567890123456789012345678901"),
+        )
+        for (gap in gaps) {
+            val width = (gap.bitLength() + 32) ushr 5
+            val gapLimbs = limbsOf(gap, width)
+            val residue = ModResidue(gapLimbs)
+            repeat(40) {
+                val a = BigInteger(gap.bitLength() + 8, random).mod(gap)
+                val b = BigInteger(gap.bitLength() + 8, random).mod(gap)
+                residue.set(limbsOf(a, width))
+                assertEquals(a, residue.toBigInteger())
+                residue.addMod(limbsOf(b, width))
+                assertEquals(a.add(b).mod(gap), residue.toBigInteger())
+                residue.subMod(limbsOf(b, width))
+                assertEquals(a, residue.toBigInteger())
+                val neg = if (a.signum() == 0) BigInteger.ZERO else gap.subtract(a)
+                val negated = ModResidue(gapLimbs)
+                negated.set(limbsOf(neg, width))
+                assertEquals(negated.hash(), residue.hashNegated())
+            }
+        }
     }
 
     @Test
