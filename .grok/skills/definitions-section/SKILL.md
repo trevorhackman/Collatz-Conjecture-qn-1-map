@@ -34,4 +34,4 @@ State each quantity in its own sentence. Do not start in words, interrupt the se
 
 When the user corrects the meaning, use their words. For this paper, \(\delta\) is the fractional part of \(2^{h/\ell}\), and the window is a lower bound and an upper bound on \(\delta\):
 
-> On an \(\ell\)-odd cycle through 1 with \(h\) halvings in all, write \(2^{h/\ell} = q + \delta\), so \(\delta\) is the fractional part of \(2^{h/\ell}\). The window is a lower bound and an upper bound on \(\delta\).
+> On a cycle of length \(\ell\) through 1 with \(h\) halvings in all, write \(2^{h/\ell} = q + \delta\), so \(\delta\) is the fractional part of \(2^{h/\ell}\). The window is a lower bound and an upper bound on \(\delta\).

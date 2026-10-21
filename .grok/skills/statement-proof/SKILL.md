@@ -7,7 +7,8 @@ description: >
   Use when writing or revising a theorem, lemma, proposition, corollary, or
   proof, or when a statement contains part of its own argument. Name each
   formula in the sentence that uses it. Do not rename a defined term. Define
-  a symbol before later lines use it. Also /statement-proof.
+  a symbol before later lines use it. Do not mix setup and results in one
+  comma-separated list. Set the type of every new variable. Also /statement-proof.
 ---
 
 # Statement then proof
@@ -19,6 +20,12 @@ The statement says what is proved. The proof is the argument.
 - The conclusions, as claims.
 - An immediate consequence of one conclusion may be another claim in the same statement. Lemma 3 is the pattern: \(q^3 < 2^h < (q+1)^3\), and in particular \(3 \nmid h\) and \(q = \lfloor 2^{h/3}\rfloor\). "In particular" is the usual wording. "Hence" for that same one-line fact is normal.
 - Every conclusion a later line cites.
+- Setup and results are not items of one comma-separated list. A hypothesis or a range is its own sentence. The next sentence is the claims. Two results may share a sentence. Setup may not.
+- Do not restate notation already defined earlier in the paper. The setup sentence names the hypothesis only.
+
+Not: "For a cycle of length \(\ell\) through \(1\) with \(\ell \ge 2\), \(k_\ell \ge k_1 + 3\), and \(x_{\ell-1} \equiv 1 \pmod{2^{k_1}}\)." The bound \(\ell \ge 2\) is setup. The other two items are results.
+
+Write: "Let \(\ell \ge 2\). On a cycle of length \(\ell\) through \(1\), \(k_\ell \ge k_1 + 3\) and \(x_{\ell-1} \equiv 1 \pmod{2^{k_1}}\)."
 
 ## Proof
 
@@ -41,6 +48,16 @@ A symbol that later lines use is defined before it appears. "\(y = x^2 - w\) wit
 
 "With \(w = \ldots\)" is for a label used in that one formula and nowhere later.
 
+A new variable has a type in the sentence that introduces it: an integer, a rational, a real number, a positive integer, a fixed real number. An inequality is not a type. \(\theta > 0\) does not say whether \(\theta\) is an integer, a rational, or a real number.
+
+A real number may vary with the cycle or with \(q\). A fixed real number is chosen once and does not. Those are different types. If the same value is used for every cycle, the type is a fixed real number.
+
+Not: "let \(\theta > 0\) and \(c > 0\) be real numbers."
+
+Write: "Suppose there are fixed real numbers \(\theta > 0\) and \(c > 0\) such that, on every cycle of length \(\ell\) through \(1\), every element other than \(1\) is at least \(c \cdot q^\theta\)."
+
 ## Do not
 
 - Put a real argument in the statement. "Hence \(q < 2x^2\), that is \(x > \sqrt{q/2}\)" uses \(q + 1 = 2^{k_1} x\) and is a proof step.
+- Mix setup and results in one comma-separated list.
+- Introduce a new variable without its type. An inequality such as \(\theta > 0\) is not a type. A real number that may vary is not a fixed real number.
