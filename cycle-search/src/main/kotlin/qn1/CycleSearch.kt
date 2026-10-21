@@ -28,6 +28,9 @@ internal const val MIN_CYCLE_LENGTH = 2
 /** Lengths through this one walk the counts. Longer lengths split the numerator. */
 private const val WALK_MAX_LENGTH = 3
 
+/** A walked half this deep is the fixed-q cost. The least-element bound is cheaper there. */
+private const val DEEP_RIGHT_COUNT = 7
+
 private const val PARALLEL_PROGRESS_STRIDE = 25
 private const val SEQUENTIAL_PROGRESS_STRIDE = 500
 private const val THROUGH1_PROGRESS_STRIDE = 1000
@@ -53,7 +56,8 @@ private val TRACE_LEAST_LIMIT: BigInteger = BigInteger.valueOf(1_000_000)
 
 /**
  * Packed left tables no larger than this stay on the split search.
- * A larger estimate uses the least-element bound when that bound is at most [TRACE_LEAST_LIMIT].
+ * A larger estimate, or a walked half of [DEEP_RIGHT_COUNT] sums, uses the least-element bound
+ * when that bound is at most [TRACE_LEAST_LIMIT].
  */
 private const val PACKED_STATE_LIMIT = 50_000_000.0
 
@@ -80,11 +84,13 @@ private val MIN_ODD_Q: BigInteger = BigInteger.valueOf(3)
  *
  * `--q`, `--min-length`, and `--max-length` fix the odd multiplier and the lengths to search.
  * The only values of `h` are those with this `q = floor(2^{h/L})`. When the left partial sums
- * do not fit in one long, or the packed table is past [PACKED_STATE_LIMIT] and the least element
- * is at most [TRACE_LEAST_LIMIT], every odd start up to that bound is followed.
+ * do not fit in one long, or the packed table is past [PACKED_STATE_LIMIT], or the walked half
+ * has [DEEP_RIGHT_COUNT] sums, and the least element is at most [TRACE_LEAST_LIMIT], every odd
+ * start up to that bound is followed.
  * Omitted values are [Q_DEFAULT], [MIN_CYCLE_LENGTH], and [Q_DEFAULT_MAX_LENGTH].
  *
- * `--bounds` prints the Paper II powers of two. `--x` selects one odd element; omitted, the odds from 1 through 35.
+ * `--bounds q3star`, `--bounds q30`, `--bounds q2star`, and `--bounds q2` each print one Paper II table.
+ * `--x` selects one odd element; omitted, the odds from 1 through 35.
  *
  * `--tables through1`, `--tables any`, and `--tables q` rerun the Paper I computation tables.
  * `--length` or `--q` selects one published row. `--max-h` or `--max-length` overrides that row's limit.
@@ -101,7 +107,7 @@ fun main(args: Array<String>) {
     }
     when (cli.mode) {
         SearchMode.FIXED_Q -> searchFixedQ(cli.q!!, cli.maxLength!!, cli.minLength!!)
-        SearchMode.BOUNDS -> runBounds(cli.x)
+        SearchMode.BOUNDS -> runBounds(cli.bound!!, cli.x)
         SearchMode.TABLES -> runTables(cli.table!!, cli.length, cli.maxH, cli.q, cli.maxLength)
         SearchMode.DIGITS -> runDigits(cli.places!!)
         SearchMode.ANY, SearchMode.THROUGH_1 -> runLengthSearch(cli)
@@ -127,7 +133,7 @@ internal fun usage(): Nothing {
     System.err.println("usage: --length N --max-h N")
     System.err.println("       --through-1 --length N --max-h N")
     System.err.println("       --q N [--min-length N] --max-length N")
-    System.err.println("       --bounds [--x N]")
+    System.err.println("       --bounds q3star|q30|q2star|q2 [--x N]")
     System.err.println("       --tables through1|any [--length N] [--max-h N]")
     System.err.println("       --tables q [--q N] [--max-length N]")
     System.err.println("       --digits [--places N]")
@@ -150,7 +156,7 @@ data class Cycle(
  * The same cycle is stored once, starting at its least element.
  */
 fun searchLength(length: Int, hMax: Int): Set<Cycle> {
-    if (length <= WALK_MAX_LENGTH) return searchLengthSequential(length, hMax)
+    if (length == 3) return searchLengthSequential(length, hMax)
     val threads = poolSize(length, hMax)
     val found = linkedSetOf<Cycle>()
     val done = AtomicInteger()
@@ -168,7 +174,7 @@ fun searchLength(length: Int, hMax: Int): Set<Cycle> {
     return found
 }
 
-/** One admissible value of h, the total number of halvings. Several of these run at once for length above [WALK_MAX_LENGTH]. */
+/** One admissible value of h, the total number of halvings. Several of these run at once. Length 3 stays on one thread. */
 private class SearchAtH(
     private val length: Int,
     private val h: Int,
@@ -292,18 +298,62 @@ internal fun hForQ(q: BigInteger, length: Int): IntRange {
 /**
  * Cycles through 1 of length [length] with at most [hMax] halvings.
  * Each admissible h gives one q, and [trace] is started at 1.
+ * Those h are independent, so they run together.
  */
 fun searchThroughOne(length: Int, hMax: Int): List<Cycle> {
-    val found = mutableListOf<Cycle>()
-    for (h in 1..hMax) {
-        if (h % THROUGH1_PROGRESS_STRIDE == 0) {
-            System.err.println("through 1 L=$length h=$h/$hMax cycles=${found.size}")
+    if (hMax < 1) return emptyList()
+    val threads = Runtime.getRuntime().availableProcessors().coerceAtLeast(1)
+    if (threads == 1 || hMax < threads * 4) {
+        return throughOneRange(length, hMax, 1, 1, report = false)
+    }
+    val done = AtomicInteger()
+    val hits = AtomicInteger()
+    val pool = Executors.newFixedThreadPool(threads)
+    System.err.println("through 1 L=$length h<=$hMax on $threads threads")
+    try {
+        val futures = (0 until threads).map { worker ->
+            pool.submit(Callable {
+                throughOneRange(length, hMax, worker + 1, threads, report = true, done, hits)
+            })
         }
-        val adm = admissible(h, length) ?: continue
-        val orbit = trace(adm.q, BigInteger.ONE, length) ?: continue
-        found += canonical(adm.q, orbit)
+        val found = mutableListOf<Cycle>()
+        for (future in futures) found += future.get()
+        return found.sortedBy { it.h }
+    } finally {
+        pool.shutdownNow()
+    }
+}
+
+private fun throughOneRange(
+    length: Int,
+    hMax: Int,
+    first: Int,
+    step: Int,
+    report: Boolean,
+    done: AtomicInteger? = null,
+    hits: AtomicInteger? = null,
+): List<Cycle> {
+    val found = mutableListOf<Cycle>()
+    var h = first
+    while (h <= hMax) {
+        val cycle = cycleThroughOne(length, h)
+        if (cycle != null) {
+            found += cycle
+            hits?.incrementAndGet()
+        }
+        val finished = done?.incrementAndGet() ?: h
+        if (report && (finished % THROUGH1_PROGRESS_STRIDE == 0 || finished == hMax)) {
+            System.err.println("through 1 L=$length h=$finished/$hMax cycles=${hits?.get() ?: found.size}")
+        }
+        h += step
     }
     return found
+}
+
+private fun cycleThroughOne(length: Int, h: Int): Cycle? {
+    val adm = admissible(h, length) ?: return null
+    val orbit = trace(adm.q, BigInteger.ONE, length) ?: return null
+    return canonical(adm.q, orbit)
 }
 
 /**
@@ -315,9 +365,8 @@ internal class Admissible(val q: BigInteger, val gap: BigInteger)
 internal fun admissible(h: Int, length: Int): Admissible? {
     if (h % length == 0) return null
     val twoH = BigInteger.ONE.shiftLeft(h)
-    val q = floorRoot(twoH, length)
+    val (q, qPow) = floorRootAndPower(twoH, length)
     if (q < MIN_ODD_Q || !q.testBit(0)) return null
-    val qPow = q.pow(length)
     if (qPow >= twoH) return null
     return Admissible(q, twoH.subtract(qPow))
 }
@@ -328,15 +377,18 @@ private fun cyclesAt(length: Int, h: Int, q: BigInteger, gap: BigInteger): List<
     if (length > WALK_MAX_LENGTH) {
         val packed = sumsPackIntoOneLong(length, h)
         if (!packed) return traceByLeastElement(length, h, q, gap)
-        val states = estimatedLeftStates(length, h, storedHalfCount(length, h))
-        if (states > PACKED_STATE_LIMIT) {
+        val stored = storedHalfCount(length, h)
+        val states = estimatedLeftStates(length, h, stored)
+        val right = length - 1 - stored
+        if (states > PACKED_STATE_LIMIT || right >= DEEP_RIGHT_COUNT) {
             val least = maxLeastElement(length, h, q, gap)
             if (least <= TRACE_LEAST_LIMIT) return followLeastElement(length, h, q, least)
         }
     }
     val found = mutableListOf<Cycle>()
     val accept = CycleRecorder(found, length, h, q, gap)
-    if (length <= WALK_MAX_LENGTH) forEachWalk(length, h, q, gap, accept)
+    if (length == 2) forEachLength2(h, q, gap, accept)
+    else if (length <= WALK_MAX_LENGTH) forEachWalk(length, h, q, gap, accept)
     else forEachSplit(length, h, q, gap, accept)
     return found
 }
@@ -458,6 +510,53 @@ private fun respectsMinimum(q: BigInteger, prefix: IntArray, kLast: Int): Boolea
         sum += k
     }
     return kLast <= maxHalvings(q, envelope, sum)
+}
+
+/**
+ * Length 2. The free count `k` is the one with `2^k ≡ -q` modulo the gap, and `k` at most the least-element cap.
+ * The gap is odd, so each doubling of the residue is one subtraction.
+ */
+internal fun forEachLength2(h: Int, q: BigInteger, gap: BigInteger, block: (IntArray) -> Unit) {
+    val qMod = q.mod(gap)
+    if (qMod.signum() == 0) return
+    val cap = maxHalvings(q, BigInteger.ONE, 0)
+    val lastK = minOf(cap, h - 1)
+    if (lastK < 1) return
+    val width = (gap.bitLength() + 31) ushr 5
+    val gapLimbs = limbsOf(gap, width)
+    val target = limbsOf(gap.subtract(qMod), width)
+    val pow = IntArray(width)
+    pow[0] = 1
+    val ks = IntArray(1)
+    for (k in 1..lastK) {
+        doubleMod(pow, gapLimbs)
+        if (!pow.contentEquals(target)) continue
+        ks[0] = k
+        if (respectsMinimum(q, ks, h - k)) block(ks)
+    }
+}
+
+/** `2 * limb` modulo [gap]. The residue starts below the gap, so the product needs at most one subtraction. */
+private fun doubleMod(limb: IntArray, gap: IntArray) {
+    var carry = 0L
+    for (i in limb.indices) {
+        val doubled = (u32(limb[i]) shl 1) + carry
+        limb[i] = doubled.toInt()
+        carry = doubled ushr 32
+    }
+    if (carry == 0L && lessThan(limb, gap)) return
+    var borrow = 0L
+    for (i in limb.indices) {
+        val diff = u32(limb[i]) - u32(gap[i]) - borrow
+        if (diff < 0) {
+            limb[i] = (diff + LIMB).toInt()
+            borrow = 1
+        } else {
+            limb[i] = diff.toInt()
+            borrow = 0
+        }
+    }
+    check(borrow == carry)
 }
 
 /**
@@ -1096,17 +1195,59 @@ private fun canonical(q: BigInteger, orbit: List<BigInteger>): Cycle {
     return Cycle(q, h, rotated)
 }
 
-/** Greatest integer `r` with `r^degree <= n`. */
-internal fun floorRoot(n: BigInteger, degree: Int): BigInteger {
-    var x = BigInteger.ONE.shiftLeft(n.bitLength() / degree + 1)
+/** Greatest integer `r` with `r^degree <= n`, and that power. */
+internal fun floorRoot(n: BigInteger, degree: Int): BigInteger = floorRootAndPower(n, degree).first
+
+internal fun floorRootAndPower(n: BigInteger, degree: Int): Pair<BigInteger, BigInteger> {
+    require(degree >= 1)
+    require(n.signum() >= 0)
+    if (degree == 1 || n < BigInteger.TWO) return n to n.pow(degree)
+    val bitlen = n.bitLength()
+    var workBits = 1
+    var root = BigInteger.ONE
+    var power = BigInteger.ONE
+    while (workBits < bitlen) {
+        val nextBits = minOf(bitlen, workBits shl 1)
+        val extra = nextBits - workBits
+        val top = if (nextBits == bitlen) n else n.shiftRight(bitlen - nextBits)
+        // One past the previous root, shifted by ceil(extra/degree), sits strictly above this prefix.
+        val grow = (extra + degree - 1) / degree
+        val guess = root.add(BigInteger.ONE).shiftLeft(grow)
+        val solved = newtonFloorRoot(top, degree, guess)
+        root = solved.first
+        power = solved.second
+        workBits = nextBits
+    }
+    return root to power
+}
+
+private fun newtonFloorRoot(n: BigInteger, degree: Int, start: BigInteger): Pair<BigInteger, BigInteger> {
+    var x = if (start.signum() > 0) start else BigInteger.ONE
     val deg = BigInteger.valueOf(degree.toLong())
     val degM1 = BigInteger.valueOf((degree - 1).toLong())
     while (true) {
-        val y = x.multiply(degM1).add(n.divide(x.pow(degree - 1))).divide(deg)
+        val reduced = x.pow(degree - 1)
+        val y = if (reduced.signum() == 0) {
+            BigInteger.ONE
+        } else {
+            x.multiply(degM1).add(n.divide(reduced)).divide(deg)
+        }
         if (y >= x) break
         x = y
     }
-    while (x.pow(degree) > n) x = x.subtract(BigInteger.ONE)
-    while (x.add(BigInteger.ONE).pow(degree) <= n) x = x.add(BigInteger.ONE)
-    return x
+    var power = x.pow(degree)
+    while (power > n) {
+        x = x.subtract(BigInteger.ONE)
+        power = if (x.signum() > 0) x.pow(degree) else BigInteger.ZERO
+    }
+    if (x.signum() <= 0) return BigInteger.ZERO to BigInteger.ZERO
+    val linear = deg.multiply(x.pow(degree - 1))
+    if (power.add(linear) > n) return x to power
+    while (true) {
+        val next = x.add(BigInteger.ONE)
+        val nextPower = next.pow(degree)
+        if (nextPower > n) return x to power
+        x = next
+        power = nextPower
+    }
 }

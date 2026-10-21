@@ -39,6 +39,80 @@ class CliTest {
     }
 
     @Test
+    fun omittedOptionsTakeTheDefaults() {
+        val any = parseCli(emptyArray())
+        assertEquals(SearchMode.ANY, any.mode)
+        assertEquals(DEFAULT_LENGTH, any.length)
+        assertEquals(DEFAULT_MAX_H, any.maxH)
+
+        val throughOne = parseCli(arrayOf("--through-1"))
+        assertEquals(SearchMode.THROUGH_1, throughOne.mode)
+        assertEquals(THROUGH1_DEFAULT_LENGTH, throughOne.length)
+        assertEquals(THROUGH1_DEFAULT_MAX_H, throughOne.maxH)
+
+        val fixed = parseCli(arrayOf("--q", "9"))
+        assertEquals(SearchMode.FIXED_Q, fixed.mode)
+        assertEquals(9, fixed.q)
+        assertEquals(MIN_CYCLE_LENGTH, fixed.minLength)
+        assertEquals(Q_DEFAULT_MAX_LENGTH, fixed.maxLength)
+
+        val digits = parseCli(arrayOf("--digits"))
+        assertEquals(SearchMode.DIGITS, digits.mode)
+        assertEquals(DIGIT_PLACES, digits.places)
+
+        val tables = parseCli(arrayOf("--tables", "through1"))
+        assertEquals(SearchMode.TABLES, tables.mode)
+        assertEquals("through1", tables.table)
+        assertEquals(null, tables.length)
+    }
+
+    @Test
+    fun anEvenMultiplierIsRejected() {
+        assertFailsWith<IllegalArgumentException> {
+            parseCli(arrayOf("--q", "4"))
+        }
+    }
+
+    @Test
+    fun twoModesAreRejected() {
+        assertFailsWith<IllegalArgumentException> {
+            parseCli(arrayOf("--q", "5", "--through-1"))
+        }
+    }
+
+    @Test
+    fun maxHNeedsALengthOnATable() {
+        assertFailsWith<IllegalArgumentException> {
+            parseCli(arrayOf("--tables", "any", "--max-h", "100"))
+        }
+    }
+
+    @Test
+    fun boundsNamesOneTable() {
+        val cli = parseCli(arrayOf("--bounds", "q2", "--x", "1"))
+        assertEquals(SearchMode.BOUNDS, cli.mode)
+        assertEquals("q2", cli.bound)
+        assertEquals(1, cli.x)
+        for (name in listOf("q3star", "q30", "q2star")) {
+            assertEquals(name, parseCli(arrayOf("--bounds", name)).bound)
+        }
+    }
+
+    @Test
+    fun boundsRejectsAnEvenElement() {
+        assertFailsWith<IllegalArgumentException> {
+            parseCli(arrayOf("--bounds", "q2", "--x", "2"))
+        }
+    }
+
+    @Test
+    fun boundsNeedsATable() {
+        assertFailsWith<IllegalArgumentException> {
+            parseCli(arrayOf("--bounds", "all"))
+        }
+    }
+
+    @Test
     fun aBareNumberIsRejected() {
         assertFailsWith<IllegalArgumentException> {
             parseCli(arrayOf("1093", "200"))

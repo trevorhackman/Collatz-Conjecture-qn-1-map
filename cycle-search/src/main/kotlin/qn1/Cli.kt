@@ -14,6 +14,7 @@ internal enum class SearchMode {
  * [length] and [maxH] are set for [SearchMode.ANY] and [SearchMode.THROUGH_1].
  * [q], [minLength], and [maxLength] are set for [SearchMode.FIXED_Q].
  * [places] is set for [SearchMode.DIGITS].
+ * [bound] is set for [SearchMode.BOUNDS].
  * [table] is set for [SearchMode.TABLES]. The other fields stay unset when the flag was omitted.
  */
 internal data class Cli(
@@ -25,11 +26,12 @@ internal data class Cli(
     val maxLength: Int? = null,
     val x: Int? = null,
     val places: Int? = null,
+    val bound: String? = null,
     val table: String? = null,
 )
 
-private val VALUE_FLAGS = setOf("q", "length", "max-h", "min-length", "max-length", "x", "places", "tables")
-private val SWITCHES = setOf("through-1", "bounds", "digits")
+private val VALUE_FLAGS = setOf("q", "length", "max-h", "min-length", "max-length", "x", "places", "bounds", "tables")
+private val SWITCHES = setOf("through-1", "digits")
 
 /** Reads `--name value` and `--name=value`. A bare word is rejected. */
 internal fun parseCli(args: Array<String>): Cli {
@@ -68,7 +70,7 @@ internal fun parseCli(args: Array<String>): Cli {
 private fun interpret(values: Map<String, String>, switches: Set<String>): Cli {
     val modes = buildList {
         if ("through-1" in switches) add(SearchMode.THROUGH_1)
-        if ("bounds" in switches) add(SearchMode.BOUNDS)
+        if ("bounds" in values) add(SearchMode.BOUNDS)
         if ("digits" in switches) add(SearchMode.DIGITS)
         if ("tables" in values) add(SearchMode.TABLES)
         if ("q" in values && "tables" !in values) add(SearchMode.FIXED_Q)
@@ -82,6 +84,7 @@ private fun interpret(values: Map<String, String>, switches: Set<String>): Cli {
     val maxLength = optionalInt(values, "max-length")
     val x = optionalInt(values, "x")
     val places = optionalInt(values, "places")
+    val bound = values["bounds"]
     val table = values["tables"]
     when (mode) {
         SearchMode.ANY -> {
@@ -111,7 +114,8 @@ private fun interpret(values: Map<String, String>, switches: Set<String>): Cli {
         SearchMode.BOUNDS -> {
             reject(values, switches, "q", "length", "max-h", "min-length", "max-length", "places", "tables", "through-1", "digits")
             if (x != null && (x < 1 || x % 2 == 0)) throw IllegalArgumentException("--x must be a positive odd integer")
-            return Cli(mode, x = x)
+            if (bound !in BOUND_TABLES) throw IllegalArgumentException("--bounds must be q3star, q30, q2star, or q2")
+            return Cli(mode, x = x, bound = bound)
         }
         SearchMode.DIGITS -> {
             reject(values, switches, "q", "length", "max-h", "min-length", "max-length", "x", "tables", "through-1", "bounds")

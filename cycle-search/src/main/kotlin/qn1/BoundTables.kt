@@ -24,6 +24,12 @@ private val MU2 = BigDecimal("1.465")
 /** Odd x in the Paper II tables run from 1 through this value. */
 internal const val BOUNDS_MAX_X = 35
 
+/** Odd x covered by the Q_2 table. */
+internal const val Q2_TABLE_MAX_X = 2043
+
+/** Convergent scan for that table runs through every j below this exponent. */
+internal const val Q2_CONV_SCAN_LIMIT = 200_000
+
 /** The length-3 table takes the maximum over j below this exponent. */
 internal const val Q30_J_MAX = 11_000
 
@@ -242,6 +248,129 @@ private fun <T> parallelChunks(limit: Int, block: (Int, Int) -> T): List<T> {
         return pool.invokeAll(tasks).map { it.get() }
     } finally {
         pool.shutdown()
+    }
+}
+
+/**
+ * One row of the Q_2 table: [j0] is the last failure of the square-root measure, plus one,
+ * and [hit] is the maximum of (1+1/x)/ρ over j below that.
+ */
+internal data class Q2Row(val x: Int, val j0: Int, val hit: BoundHit)
+
+/**
+ * Q_2 for every odd x from 1 through [maxX].
+ * Below [q2DirectLimit] every j is tested directly.
+ * At and above that exponent, |√2 - p/(x 2^j)| ≤ 2^{-1.465 j} is stricter than 1/(2x^2),
+ * so a failure is a continued-fraction convergent of {2^j √2}. The scan runs through j < [through].
+ */
+internal fun q2Table(maxX: Int = Q2_TABLE_MAX_X, through: Int = Q2_CONV_SCAN_LIMIT): List<Q2Row> {
+    require(maxX >= 1 && through > 0)
+    val direct = q2DirectLimit(maxX).coerceAtMost(through)
+    val last = IntArray(maxX + 1) { -1 }
+    val odds = (1..maxX step 2).toList()
+    for ((x, j) in parallelChunks(direct) { start, end ->
+        buildList {
+            for (j in start until end) {
+                for (x in odds) if (sqrt2MeasureFails(x, j)) add(x to j)
+            }
+        }
+    }.flatten()) {
+        if (j > last[x]) last[x] = j
+    }
+    if (direct < through) {
+        val guard = 96
+        val places = (through - 1) + ((465 * (through - 1) + 999) / 1000) + guard + 64
+        val expansion = BigInteger.ONE.shiftLeft(2 * places + 1).sqrt()
+        val hits = parallelChunks(through - direct) { start, end ->
+            buildList {
+                for (j in (direct + start) until (direct + end)) {
+                    addAll(convergentFailures(expansion, places, j, maxX))
+                }
+            }
+        }.flatten()
+        for ((k, j) in hits) {
+            var m = k
+            while (m <= maxX) {
+                if ((m and 1) == 1 && j > last[m]) last[m] = j
+                if (m > maxX - k) break
+                m += k
+            }
+        }
+    }
+    return odds.map { x ->
+        val j0 = last[x] + 1
+        Q2Row(x, j0, q20Hit(x, j0))
+    }
+}
+
+/**
+ * Smallest j at which a failure for every odd denominator at most [maxX] is a convergent.
+ * The exponent 0.465 is μ_2 - 1.
+ */
+internal fun q2DirectLimit(maxX: Int): Int {
+    val twoX2 = BigInteger.valueOf(maxX.toLong()).pow(2).shiftLeft(1)
+    val ratio = log2(twoX2).multiply(BigDecimal(1000), MC).divide(BigDecimal(465), MC)
+    return ratio.setScale(0, RoundingMode.FLOOR).intValueExact() + 1
+}
+
+private fun convergentFailures(
+    expansion: BigInteger,
+    places: Int,
+    j: Int,
+    maxX: Int,
+): List<Pair<Int, Int>> {
+    val guard = 96
+    val ell = (465 * j + 999) / 1000 + guard
+    val shift = places - j - ell
+    val mask = BigInteger.ONE.shiftLeft(ell).subtract(BigInteger.ONE)
+    val fraction = expansion.shiftRight(shift).and(mask)
+    if (fraction.signum() == 0) {
+        return if (sqrt2MeasureFails(1, j)) listOf(1 to j) else emptyList()
+    }
+    var n0 = fraction
+    var n1 = BigInteger.ONE.shiftLeft(ell)
+    var a0 = BigInteger.ZERO
+    var a1 = BigInteger.ONE
+    var b0 = BigInteger.ONE
+    var b1 = BigInteger.ZERO
+    val found = mutableListOf<Pair<Int, Int>>()
+    val cap = BigInteger.valueOf(maxX.toLong())
+    while (n1.signum() > 0) {
+        val quotient = n0.divide(n1)
+        val remainder = n0.subtract(quotient.multiply(n1))
+        n0 = n1
+        n1 = remainder
+        val h = quotient.multiply(a1).add(a0)
+        val k = quotient.multiply(b1).add(b0)
+        a0 = a1
+        a1 = h
+        b0 = b1
+        b1 = k
+        if (k > cap) break
+        if (k.signum() == 0 || !k.testBit(0)) continue
+        val diff = fraction.multiply(k).subtract(h.shiftLeft(ell)).abs()
+        val limit = convergentThreshold(k, ell, j)
+        if (diff <= limit.add(k.shiftLeft(4)) && sqrt2MeasureFails(k.toInt(), j)) found += k.toInt() to j
+    }
+    return found
+}
+
+/** floor(k · 2^{ell - 0.465 j}), with 0.465 = 465/1000. */
+private fun convergentThreshold(k: BigInteger, ell: Int, j: Int): BigInteger {
+    val exponent = 465L * j
+    val quotient = exponent / 1000
+    val remainder = (exponent % 1000).toInt()
+    val shift = ell + 256 - quotient
+    val mantissa = sqrt2Mantissa[remainder]
+    return if (shift >= 0) k.shiftLeft(shift.toInt()).divide(mantissa)
+    else k.divide(mantissa.shiftLeft((-shift).toInt()))
+}
+
+private val sqrt2Mantissa: Array<BigInteger> by lazy {
+    val scale = BigDecimal(BigInteger.ONE.shiftLeft(256))
+    Array(1000) { r ->
+        val frac = BigDecimal(r).divide(BigDecimal(1000), MC)
+        exp(frac.multiply(LN2, MC)).multiply(scale, MC).setScale(0, RoundingMode.HALF_EVEN).unscaledValue()
     }
 }
 

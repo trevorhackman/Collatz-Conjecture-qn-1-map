@@ -55,6 +55,18 @@ class CycleSearchTest {
     }
 
     @Test
+    fun length2ScanAgreesWithTheWalk() {
+        for (h in 1..160) {
+            val adm = admissible(h, 2) ?: continue
+            val walk = walkVectors(2, h, adm.q, adm.gap)
+            val scan = linkedSetOf<String>()
+            forEachLength2(h, adm.q, adm.gap) { ks -> scan.add(ks.joinToString(",")) }
+            if (walk == scan) continue
+            fail("h=$h walk=$walk scan=$scan")
+        }
+    }
+
+    @Test
     fun lengthThreeThroughFortyFindsTheTwoKnownCycles() {
         assertEquals(
             setOf(
@@ -73,6 +85,32 @@ class CycleSearchTest {
     @Test
     fun throughOneLengthTwoKeepsOnlyTheOrbitOfOne() {
         assertEquals(listOf(cycle(5, 5, 1, 3)), searchThroughOne(2, 30))
+        assertEquals(listOf(cycle(5, 5, 1, 3)), searchThroughOne(2, 200))
+    }
+
+    @Test
+    fun floorRootIsTheGreatestPowerThatFits() {
+        val values = listOf(
+            BigInteger.ONE,
+            BigInteger.TWO,
+            BigInteger.TEN,
+            BigInteger.valueOf(999_999),
+            BigInteger("12345678901234567890123456789012345678901234567890"),
+            BigInteger.ONE.shiftLeft(80).subtract(BigInteger.ONE),
+            BigInteger.ONE.shiftLeft(240).add(BigInteger.valueOf(17)),
+            BigInteger.ONE.shiftLeft(2_000),
+        )
+        for (degree in 1..12) {
+            for (n in values) {
+                val (root, power) = floorRootAndPower(n, degree)
+                assertEquals(power, root.pow(degree), "power degree=$degree bits=${n.bitLength()}")
+                assertTrue(power <= n, "low degree=$degree bits=${n.bitLength()}")
+                assertTrue(
+                    root.add(BigInteger.ONE).pow(degree) > n,
+                    "high degree=$degree bits=${n.bitLength()}",
+                )
+            }
+        }
     }
 
     @Test
@@ -104,6 +142,35 @@ class CycleSearchTest {
             ),
             searchFixedQ(5, 4, minLength = 3).toSet(),
         )
+    }
+
+    @Test
+    fun leastElementTraceFindsTheKnownCycles() {
+        assertEquals(setOf(cycle(5, 5, 1, 3)), traceAt(5, 2).toSet())
+        assertEquals(
+            setOf(
+                cycle(5, 7, 13, 33, 83),
+                cycle(5, 7, 17, 43, 27),
+            ),
+            traceAt(5, 3).toSet(),
+        )
+        assertEquals(
+            setOf(
+                cycle(181, 15, 27, 611),
+                cycle(181, 15, 35, 99),
+            ),
+            traceAt(181, 2).toSet(),
+        )
+    }
+
+    @Test
+    fun q181Length16BoundRulesTheCycleOut() {
+        val q = BigInteger.valueOf(181)
+        assertEquals(120..120, hForQ(q, 16))
+        val adm = admissible(120, 16) ?: fail("missing h=120")
+        assertEquals(q, adm.q)
+        assertEquals(BigInteger.valueOf(44), maxLeastElement(16, 120, adm.q, adm.gap))
+        assertEquals(emptyList(), searchFixedQ(181, 16, minLength = 16))
     }
 
     @Test
@@ -148,6 +215,18 @@ class CycleSearchTest {
     }
 
     @Test
+    fun q5Through20FindsTheThreeKnownCycles() {
+        assertEquals(
+            setOf(
+                cycle(5, 5, 1, 3),
+                cycle(5, 7, 13, 33, 83),
+                cycle(5, 7, 17, 43, 27),
+            ),
+            searchFixedQ(5, 20).toSet(),
+        )
+    }
+
+    @Test
     fun q5Length11WalkMatchesSplit() {
         val q = BigInteger.valueOf(5)
         for (h in hForQ(q, 11)) {
@@ -159,6 +238,17 @@ class CycleSearchTest {
             fail("h=$h walk=${walk.size} split=${split.size} missed=${(walk - split).take(8)} extra=${(split - walk).take(8)}")
         }
     }
+}
+
+private fun traceAt(q: Int, length: Int): List<Cycle> {
+    val qBig = BigInteger.valueOf(q.toLong())
+    val found = mutableListOf<Cycle>()
+    for (h in hForQ(qBig, length)) {
+        val adm = admissible(h, length) ?: fail("missing h=$h")
+        assertEquals(qBig, adm.q)
+        found += traceByLeastElement(length, h, adm.q, adm.gap)
+    }
+    return found
 }
 
 private fun walkVectors(length: Int, h: Int, q: BigInteger, gap: BigInteger): Set<String> {

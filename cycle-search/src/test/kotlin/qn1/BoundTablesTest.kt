@@ -91,6 +91,66 @@ class BoundTablesTest {
     }
 
     @Test
+    fun length2TableAgreesWithThePrintedRows() {
+        val expected = mapOf(
+            1 to Triple(9, 7, 15),
+            3 to Triple(12, 11, 18),
+            5 to Triple(22, 17, 33),
+            7 to Triple(12, 10, 18),
+            9 to Triple(12, 11, 18),
+            11 to Triple(13, 12, 19),
+            13 to Triple(14, 9, 21),
+            15 to Triple(22, 17, 32),
+            17 to Triple(15, 13, 23),
+            19 to Triple(17, 14, 25),
+            21 to Triple(17, 12, 25),
+            23 to Triple(16, 14, 23),
+            25 to Triple(22, 17, 32),
+            27 to Triple(15, 14, 22),
+            29 to Triple(17, 16, 25),
+            31 to Triple(17, 16, 25),
+            33 to Triple(15, 13, 22),
+            35 to Triple(22, 17, 32),
+        )
+        val direct = q2DirectLimit(Q2_TABLE_MAX_X)
+        assertTrue(direct in 50..60, "direct limit $direct")
+        val rows = q2Table(maxX = 35, through = direct + 30).associateBy { it.x }
+        for ((x, row) in expected) {
+            val got = rows.getValue(x)
+            assertEquals(row.first, got.j0, "j0 x=$x")
+            assertEquals(row.second, got.hit.j, "j x=$x")
+            assertEquals(row.third, powerAbove(got.hit.log2), "power x=$x")
+        }
+    }
+
+    @Test
+    fun squareRootMeasureHasNoLaterFailure() {
+        val lastFailure = mapOf(
+            1 to 9,
+            3 to 12,
+            5 to 22,
+            7 to 12,
+            9 to 12,
+            11 to 13,
+            13 to 14,
+            15 to 22,
+            17 to 15,
+            19 to 17,
+            21 to 17,
+            23 to 16,
+            25 to 22,
+            27 to 15,
+            29 to 17,
+            31 to 17,
+            33 to 15,
+            35 to 22,
+        )
+        for ((x, j0) in lastFailure) {
+            assertEquals(j0, j0Sqrt2(x), "j0 x=$x through $SQRT2_SEARCH_LIMIT")
+        }
+    }
+
+    @Test
     fun length3ZeroAtOneMatchesThePrintedPower() {
         val hit = q30Hit(1)
         assertEquals(11003, powerAbove(hit.log2))
@@ -121,11 +181,16 @@ class BoundTablesTest {
                 13 to 7_692,
                 14 to 7_142,
                 15 to 6_666,
+                16 to 6_250,
+                17 to 5_882,
+                18 to 5_555,
+                19 to 5_263,
+                20 to 5_000,
             ),
             THROUGH1_ROWS.associate { it.length to it.qBelowExponent },
         )
         assertEquals(
-            mapOf(2 to 4_000, 3 to 1_333, 4 to 750, 5 to 400, 6 to 300, 7 to 100, 8 to 70, 9 to 30),
+            mapOf(2 to 160_000, 3 to 2_333, 4 to 1_375, 5 to 900, 6 to 233, 7 to 135, 8 to 58, 9 to 35),
             ANY_ROWS.associate { it.length to it.qBelowExponent },
         )
         assertEquals(20, FIXED_Q_ROWS.first { it.first == 5 }.second)
