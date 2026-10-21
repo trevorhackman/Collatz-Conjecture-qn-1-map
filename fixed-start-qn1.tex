@@ -83,8 +83,8 @@ The integer $h$ is the total number of factors of $2$ removed along the cycle.
 
 The complete list of known cycles is short.
 
-A length-$1$ cycle is a fixed point: $C$ sends some odd positive integer $x_0$ to itself, hence $x_0(2^h - q) = 1$.
-The only positive odd solution is $x_0 = 1$ and $q = 2^h - 1$, so $1 \to 1$ when $q = 2^e - 1$ with $e \ge 2$, and there is no length-$1$ cycle with $x_0 > 1$.
+A cycle of length $1$ is a fixed point: $C$ sends some odd positive integer $x_0$ to itself, hence $x_0(2^h - q) = 1$.
+The only positive odd solution is $x_0 = 1$ and $q = 2^h - 1$, so $1 \to 1$ when $q = 2^e - 1$ with $e \ge 2$, and there is no cycle of length $1$ with $x_0 > 1$.
 For $q = 5$ and $h = 5$ there is $1 \to 3 \to 1$.
 For $q = 5$ and $h = 7$ there are $13 \to 33 \to 83 \to 13$ and $17 \to 43 \to 27 \to 17$.
 For $q = 181$ and $h = 15$ there are $27 \to 611 \to 27$ and $35 \to 99 \to 35$.
@@ -99,7 +99,8 @@ In particular, if $q \ge 7$ is neither $181$ nor of the form $2^e - 1$, then $C$
 
 There is then no cycle through $1$ other than $1 \to 1$ for Mersenne $q$ and $1 \to 3 \to 1$ for $q = 5$, which is the conjecture of Santos (2020), and for $q = 3$ there is no cycle other than $1 \to 1$.
 For those $q \ge 7$ that are neither $181$ nor Mersenne, the claim is stronger than Crandall's conjecture that some orbit avoids $1$: there is no cycle at all, and an infinite orbit of odd positive integers is unbounded.
-The searches that found no others, in the ranges they cover, are in the companion paper~\cite{hackman-i}.
+The searches through $1$ are in the companion paper~\cite{hackman-i}.
+The searches of an arbitrary cycle and of a fixed $q$, and the values of $Q_2(x)$ and $Q_3(x)$, are in Section~\ref{sec:computations}.
 Section~\ref{sec:all-cycles} gives a heuristic for the expected number of cycles.
 
 \begin{named}{Theorem 2.}
@@ -120,13 +121,15 @@ The exponent is still below the golden ratio $\varphi = (1+\sqrt{5})/2$, so the 
 
 \begin{named}{Theorem 3.}
 \markstmt{3}{thm:bound}
-Let $x$ be an odd positive integer, and let $Q(x) = \max\bigl(Q_2(x), Q_3(x)\bigr)$ be the integer defined in Section~\ref{sec:bound}.
+Let $x$ be an odd positive integer.
+Let $Q_3(x)$ be the integer defined in Section~\ref{sec:q3}, and let $Q_2(x)$ be the integer defined in Section~\ref{sec:q2}.
+Set $Q(x) = \max\bigl(Q_2(x), Q_3(x)\bigr)$.
 If $x$ lies on a cycle of $C$ of length $2$ or of length $3$, then $q < Q(x)$.
-A length-$2$ cycle satisfies the stronger $q < Q_2(x)$.
-A length-$3$ cycle satisfies the stronger $q < Q_3(x)$.
+A cycle of length $2$ satisfies the stronger $q < Q_2(x)$.
+A cycle of length $3$ satisfies the stronger $q < Q_3(x)$.
 \end{named}
 
-For $x = 1$ and length $3$, Section~\ref{sec:bound} gives $Q_3(1) < 2^{17990}$.
+For $x = 1$ and length $3$, Section~\ref{sec:computations} gives $Q_3(1) < 2^{17990}$.
 Any such cycle has one candidate $q = \lfloor 2^{h/3} \rfloor$ for each $h$, so it is enough to check $h < 53970$.
 The companion paper checks every $h \le 200{,}000$ and finds no cycle.
 That search includes $h < 53970$, and Theorem~1 of~\cite{hackman-i} is the resulting emptiness.
@@ -134,11 +137,11 @@ Length $2$ through $1$ is Proposition~A.1 of~\cite{hackman-i}: the only such $q$
 
 The bound is not an emptiness result for a general $x$.
 At $q = 181$ the cycles $27 \to 611 \to 27$ and $35 \to 99 \to 35$ both occur.
-Section~\ref{sec:bound} records $181 < Q_2(27)$ and $181 < Q_2(35)$.
+Section~\ref{sec:computations} records $181 < Q_2(27)$ and $181 < Q_2(35)$.
 
 Section~\ref{sec:length-2} takes up cycles of length $2$ with no element fixed in advance.
 The three known cycles are the only ones with $D = 7$.
-Every other cycle of length $2$ has $q \ge 2^{4500}$ and $t \ge 2409$.
+Every other cycle of length $2$ has $q \ge 2^{160{,}000}$ and $t \ge 85{,}603$.
 
 Length $4$ with $h$ odd remains open, as in the companion paper: the roots are $2^{1/4}$ and $2^{3/4}$, and a fixed odd part does not supply an exponent below $\varphi$ for them.
 Corollary~\ref{cor:longer} covers the longer classes whose roots are only $\sqrt{2}$, or only the cube roots of $2$.
@@ -167,13 +170,13 @@ The total number of halvings is $h = k_1 + \cdots + k_\ell$, and $S_i = k_1 + \c
 \topic{The golden ratio.}
 The golden ratio is $\varphi = (1 + \sqrt{5})/2$.
 
-\topic{The length-$3$ constants.}
+\topic{The constants $\mu_3$, $\gamma_3$, and $c_3(s')$.}
 Let $N = 16166467234$.
 The exponent $\mu_3$ is $3\log_2 N/63$.
 The positive number $\gamma_3$ is $1 - \mu_3 + 1/\mu_3$.
 For a positive integer $s'$, the constant $c_3(s')$ is $2^{-5}\, N^{-79/63}/s'$.
 
-\topic{Odd parts at length $3$.}
+\topic{The integers $s'_{\mathrm{near}}$ and $s'_{\mathrm{win}}$.}
 Let $x$ be an odd positive integer.
 The positive integer $s'_{\mathrm{near}}$ is $x/\gcd(x, 3)$.
 The positive integer $s'_{\mathrm{win}}$ is $x$.
@@ -440,13 +443,9 @@ If both choices vanished, $2^{1/3}$ would be rational.
 
 Per unit of $j$ the exponent is $\mu_3 \approx 1.61487$, which lies below $\varphi$.
 
-\section{The bound}
-\label{sec:bound}
+\section{The integer $Q_3(x)$}
+\label{sec:q3}
 
-The integer $Q(x)$ is defined by the formulas in this section.
-The comparison that produces them is the proof of Theorem~\ref{thm:bound}.
-
-\topic{Length $3$.}
 Let $x$ be an odd positive integer.
 Set
 \[
@@ -473,46 +472,11 @@ The factor $x/2$ in $A_3$ is the condition $|\rho| < 1/2$.
 The power $2^{1/3}$ is the smaller cube root in the lower bound for another element of the cycle, and $2^{2/3}$ is the larger cube root in the error of that approximation.
 The numerator $2/(3A_3)+3$ is two other elements, divided by the length, plus the length.
 
-For every odd $x \le 35$ one has $s'_{\mathrm{near}} \le 35$, and the values of $Q_{3,0}(x)$ below were computed with upper limit $11000$ on $j$.
-The gate $2^{11001}$ does not appear in $Q_3(x)$.
-The quantity $Q_{3,*}(x)$ is smallest at $x = 3$, where $\log_2 Q_{3,*}(3) = 17906.510814$, so $Q_{3,*}(x) > 2^{17906} > 2^{11001}$ for every odd positive integer $x$.
-
-\topic{Length $2$.}
-Let $\mu_2 = 1.465$ and $\gamma_2 = 1 - \mu_2 + 1/\mu_2$.
-The value $\mu_2 = 1.465$ is the exponent printed to three decimals in Corollary~1.4 of Bauer and Bennett~\cite{bauer-bennett-2002}, for the square root of $2$.
-For each fixed positive integer $s$ that corollary gives an integer $j_0(s)$ such that for every integer $p$ and every integer $j \ge j_0(s)$,
-\[
-\Bigl| \sqrt{2} - \frac{p}{s\, 2^{j}} \Bigr| > 2^{-\mu_2 j}.
-\]
-The constant in front is $1$.
-The integer $j_0(x)$ is that exponent for $s = x$.
-Set
-\[
-A_2 = \frac{x}{2}\, 2^{1/2}
-\Biggl( \frac{1}{2^{1/2}\,(1+1/x)} \Biggr)^{1/\mu_2}
-\]
-and
-\[
-Q_{2,*}(x) = \Biggl( \frac{1/(2A_2) + 2}{2^{1-\mu_2}} \Biggr)^{1/\gamma_2}.
-\]
-For each integer $j$ with $0 \le j < j_0(x)$, and for each odd positive integer $y$ with $y < 3x \cdot 2^{j_0(x)}$, set
-\[
-\rho = \Biggl| \frac{y}{x\, 2^{j}} \cdot 2^{-1/2} - 1 \Biggr|.
-\]
-Whenever $\rho > 0$, set the corresponding value equal to $(1+1/x)/\rho$.
-The integer $Q_{2,0}(x)$ is the maximum of those finitely many values.
-The length-$2$ bound is this integer:
-\[
-Q_2(x) = Q_{2,0}(x).
-\]
-The quantities $2^{j_0(x)+1}$ and $Q_{2,*}(x)$ are at most $Q_{2,0}(x)$ for every odd positive integer $x$.
-The proof of Theorem~\ref{thm:bound} records that comparison.
-
-\begin{proof}[Proof of Theorem~\ref{thm:bound}]
+\begin{proof}[Proof of Theorem~\ref{thm:bound} for length $3$]
 The statement of Theorem~2 of~\cite{hackman-i} does not apply: the cycle need not visit $1$, and the odd part is $x$ or $3x$ rather than $1$ or $\ell$.
 The comparison in its proof does apply, with that odd part.
 
-Consider first a cycle of length $3$ through $x$, written $x \to y \to z \to x$.
+Consider a cycle of length $3$ through $x$, written $x \to y \to z \to x$.
 Lemma~\ref{lem:any-window} gives $2^h = (q+1/x)(q+1/y)(q+1/z)$, so $q = \lfloor 2^{h/3} \rfloor$ and $3 \nmid h$.
 Write $2^{h/3} = q + \delta$ with $0 < \delta < 1$, and write $h = 3m + r$ with $r \in \{1, 2\}$.
 The fraction $(3xq+1)/(3x \cdot 2^m)$ then satisfies
@@ -551,7 +515,7 @@ Then $\sigma \le 1/x + 2 A_3^{-1} q^{-1/\mu_3}$, so
 Here $N < 2^{34}$ and $79/63 < 4/3$, so $N^{79/63} < 2^{46}$ and $c_3(s'_{\mathrm{near}}) > 2^{-51}/x$.
 Also $N > 2^{33}$, so $\mu_3 > 3/2$, hence $1/\mu_3 < 2/3$, and $2^{2/3}(1+1/x) \le 4$.
 Hence $A_3 > 2^{-37}\, x^{1/3}$ and $4A_3^{-1} < 2^{39}$.
-Combined with $Q_{3,*}(x) > 2^{17906}$, one has $q > 4A_3^{-1}$ whenever $q > Q_{3,*}(x)$.
+Section~\ref{sec:computations} records $Q_{3,*}(x) > 2^{17906}$, so $q > 4A_3^{-1}$ whenever $q > Q_{3,*}(x)$.
 For such $q$ one has $e^{3/q} < 2$ and $q^{-1} \le q^{-1/\mu_3}$, because $\mu_3 > 1$.
 The first summand is then at most $2\, q^{-1/\mu_3}$, and the second is at most $q^{-1/\mu_3}$.
 Therefore
@@ -569,11 +533,47 @@ It does not change $\max\bigl(Q_{3,0}(x), Q_{3,*}(x)\bigr)$ whenever $J_3(x) \le
 
 If instead $0 \le j < J_3(x)$, the value $(1+1/x)/\rho$ is one of the numbers whose maximum is $Q_{3,0}(x)$, so $q \le Q_{3,0}(x)$.
 Thus $q < Q_3(x)$.
+\end{proof}
 
-Now consider a cycle of length $2$ through $x$, written $x \to y \to x$.
+\section{The integer $Q_2(x)$}
+\label{sec:q2}
+
+Let $x$ be an odd positive integer.
+Let $\mu_2 = 1.465$ and $\gamma_2 = 1 - \mu_2 + 1/\mu_2$.
+The value $\mu_2 = 1.465$ is the exponent printed to three decimals in Corollary~1.4 of Bauer and Bennett~\cite{bauer-bennett-2002}, for the square root of $2$.
+For each fixed positive integer $s$ that corollary gives an integer $j_0(s)$ such that for every integer $p$ and every integer $j \ge j_0(s)$,
+\[
+\Bigl| \sqrt{2} - \frac{p}{s\, 2^{j}} \Bigr| > 2^{-\mu_2 j}.
+\]
+The constant in front is $1$.
+The integer $j_0(x)$ is that exponent for $s = x$.
+Set
+\[
+A_2 = \frac{x}{2}\, 2^{1/2}
+\Biggl( \frac{1}{2^{1/2}\,(1+1/x)} \Biggr)^{1/\mu_2}
+\]
+and
+\[
+Q_{2,*}(x) = \Biggl( \frac{1/(2A_2) + 2}{2^{1-\mu_2}} \Biggr)^{1/\gamma_2}.
+\]
+For each integer $j$ with $0 \le j < j_0(x)$, and for each odd positive integer $y$ with $y < 3x \cdot 2^{j_0(x)}$, set
+\[
+\rho = \Biggl| \frac{y}{x\, 2^{j}} \cdot 2^{-1/2} - 1 \Biggr|.
+\]
+Whenever $\rho > 0$, set the corresponding value equal to $(1+1/x)/\rho$.
+The integer $Q_{2,0}(x)$ is the maximum of those finitely many values.
+The length-$2$ bound is this integer:
+\[
+Q_2(x) = Q_{2,0}(x).
+\]
+The quantities $2^{j_0(x)+1}$ and $Q_{2,*}(x)$ are at most $Q_{2,0}(x)$ for every odd positive integer $x$.
+The proof of Theorem~\ref{thm:bound} records that comparison.
+
+\begin{proof}[Proof of Theorem~\ref{thm:bound} for length $2$]
+Consider a cycle of length $2$ through $x$, written $x \to y \to x$.
 Here $h$ is odd.
 Write $2^{h/2} = q + \delta$ and $h = 2m+1$.
-The same comparison, with one other element and with Corollary~1.4 of~\cite{bauer-bennett-2002} in place of Theorem (fixed odd part), produces $A_2$ and $Q_{2,*}(x)$.
+The argument for $Q_3(x)$ in Section~\ref{sec:q3}, with one other element and with Corollary~1.4 of Bauer and Bennett (2002)~\cite{bauer-bennett-2002} in place of Theorem (fixed odd part), produces $A_2$ and $Q_{2,*}(x)$.
 Both the product around the cycle and the approximation for $y$ have odd part $x$, and the constant in front of $2^{-\mu_2 j}$ is $1$.
 The numerator $1/(2A_2)+2$ is that one other element, divided by the length, plus the length.
 
@@ -587,113 +587,12 @@ The quantity $A_2$ increases with $x$, so $Q_{2,*}(x)$ decreases, and $Q_{2,*}(1
 Every exponent $j$ with $x \cdot 2^{-0.465 j} \ge 1/2$ fails the inequality, and the largest such $j$ contributes at least $(1+1/x)\, x \sqrt{2}\, 2^{j}$ even when the distance to an odd integer is $1$.
 For every odd $x \ge 5$ that lower bound already exceeds $Q_{2,*}(x)$.
 For $x = 1$ and $x = 3$ the values $Q_{2,0}(1) > 2^{14}$ and $Q_{2,0}(3) > 2^{17}$ do the same.
-Thus $Q_{2,*}(x) \le Q_{2,0}(x)$, and $Q_2(x) = Q_{2,0}(x)$, and a length-$2$ cycle satisfies $q < Q_2(x)$.
+Thus $Q_{2,*}(x) \le Q_{2,0}(x)$, and $Q_2(x) = Q_{2,0}(x)$, and a cycle of length $2$ satisfies $q < Q_2(x)$.
+Since $Q(x) = \max\bigl(Q_2(x), Q_3(x)\bigr)$, a cycle of length $2$ or of length $3$ satisfies $q < Q(x)$.
 
 For $x = 1$ and length $2$, Proposition~A.1 of~\cite{hackman-i} gives the only such $q$, namely $q = 5$.
 That conclusion does not change the formula for $Q_2(1)$.
 \end{proof}
-
-\topic{The value at $x = 1$, length $3$.}
-Here $s'_{\mathrm{near}} = 1$ and $s'_{\mathrm{win}} = 1$, so $J_3(1) = 11000$.
-The maximum $Q_{3,0}(1)$ is less than $2^{11003}$, and $Q_{3,*}(1)$ is less than $2^{17990}$, so
-\[
-Q_3(1) = Q_{3,*}(1) < 2^{17990}.
-\]
-Each $h$ gives one candidate $q = \lfloor 2^{h/3} \rfloor$.
-The bound $q < 2^{17990}$ means it is enough to check $h < 53970$.
-The companion paper checks every $h \le 200{,}000$ and finds no cycle, so that search includes the range.
-Theorem~1 of~\cite{hackman-i} is this case.
-
-The proof of that theorem in the companion paper reaches the larger cutoff $q < 2^{22003}$.
-There the symbol $x$ is the element after $1$.
-The argument asks for that element to clear $2^{11001}$, using a lower bound of the shape $\sqrt{q/2}$.
-The integer $Q_3(1)$ does not use that lower bound.
-Once $q > Q_{3,0}(1)$, an exponent below $11000$ is already impossible, and the conflict is $Q_{3,*}(1)$.
-
-\topic{Powers of two above $Q_{3,*}(x)$.}
-The integer $\lceil Q_{3,*}(x) \rceil$ is the sharper bound, and it has thousands of digits.
-The table uses the next power of $2$ above $Q_{3,*}(x)$, read off from the logarithm.
-For $x = 5$ one has $\log_2 Q_{3,*}(5) = 18213.724287504393$, so $\lceil Q_{3,*}(5) \rceil$ has $5483$ digits and begins $753951296\ldots$, while the table entry is $2^{18214}$.
-The same rounding, $2^{\lceil \log_2 \,\cdot\, \rceil}$, is used for $Q_{3,0}(x)$, $Q_{2,*}(x)$ and $Q_2(x)$.
-
-For every odd $x$ from $1$ to $35$, the entry $2^{\lceil \log_2 Q_{3,*}(x) \rceil}$ is:
-
-\begin{center}
-\begin{tabular}{rrrrrr}
-$x$ & & $x$ & & $x$ & \\
-$1$ & $2^{17990}$ & $13$ & $2^{18387}$ & $25$ & $2^{18514}$ \\
-$3$ & $2^{17907}$ & $15$ & $2^{18190}$ & $27$ & $2^{18304}$ \\
-$5$ & $2^{18214}$ & $17$ & $2^{18439}$ & $29$ & $2^{18543}$ \\
-$7$ & $2^{18273}$ & $19$ & $2^{18460}$ & $31$ & $2^{18556}$ \\
-$9$ & $2^{18094}$ & $21$ & $2^{18255}$ & $33$ & $2^{18344}$ \\
-$11$ & $2^{18356}$ & $23$ & $2^{18497}$ & $35$ & $2^{18580}$ \\
-\end{tabular}
-\end{center}
-
-Rows in which $3$ divides $x$ sit below their neighbors because $s'_{\mathrm{near}} = x/\gcd(x, 3)$.
-The row $x = 3$ has $s'_{\mathrm{near}} = 1$ and $s'_{\mathrm{win}} = 3$, so the factor $3$ in $c_3(s'_{\mathrm{win}})$ is the place this table uses Theorem (fixed odd part) past odd part $1$ or $3$.
-
-\topic{Powers of two above $Q_{3,0}(x)$.}
-For the same odd $x$, with the maximum taken over $0 \le j < 11000$, the entry $2^{\lceil \log_2 Q_{3,0}(x) \rceil}$ is:
-
-\begin{center}
-\begin{tabular}{rrrrrr}
-$x$ & & $x$ & & $x$ & \\
-$1$ & $2^{11003}$ & $13$ & $2^{11007}$ & $25$ & $2^{11009}$ \\
-$3$ & $2^{11002}$ & $15$ & $2^{11006}$ & $27$ & $2^{11006}$ \\
-$5$ & $2^{11006}$ & $17$ & $2^{11009}$ & $29$ & $2^{11012}$ \\
-$7$ & $2^{11006}$ & $19$ & $2^{11009}$ & $31$ & $2^{11008}$ \\
-$9$ & $2^{11006}$ & $21$ & $2^{11006}$ & $33$ & $2^{11005}$ \\
-$11$ & $2^{11005}$ & $23$ & $2^{11006}$ & $35$ & $2^{11008}$ \\
-\end{tabular}
-\end{center}
-
-In every row the exponent $j$ that attains the maximum lies in $\{10997, 10998, 10999\}$.
-For these eighteen values, $Q_{3,0}(x) < Q_{3,*}(x)$.
-That comparison is checked for odd $x \le 35$.
-It is not proved for every odd $x$.
-From $t^3 - 2^r$, if the distance from $s'_{\mathrm{near}}\, 2^{j+r/3}$ to an integer is positive, that distance is greater than $1/(Q^2 \cdot 3(2^{2/3}+1)^2)$ once the integer is within $1$ of $s'_{\mathrm{near}}\, 2^{j+r/3}$, with $Q = s'_{\mathrm{near}} 2^j$.
-With $j \le 10999$ and $s'_{\mathrm{near}} \le x$ this only yields $Q_{3,0}(x) < x^3\, 2^{33003}$.
-At $x = 1$ the two logarithms, of this upper estimate and of $Q_{3,*}(1)$, are $33003$ and $17989$.
-The estimate $x^3\, 2^{33003}$ stays above $Q_{3,*}(x)$ until $x$ is about $2^{67}$.
-Past that size, $Q_{3,*}(x)$ grows like $x^{1/\gamma_3}$ with $1/\gamma_3 \approx 229$, while $x^3\, 2^{33003}$ grows like $x^3$.
-
-\topic{Powers of two above $Q_{2,*}(x)$.}
-This integer is used in the proof and is at most $Q_2(x)$.
-As $x \to \infty$, $\log_2 Q_{2,*}(x)$ decreases to $\mu_2/\gamma_2 \approx 6.733$.
-The row $x = 11$ has logarithm $7.013$, so that one ceiling moves if the fourth digit of the exponent $1.465$ is lower.
-For odd $x$ from $1$ to $35$, the entry $2^{\lceil \log_2 Q_{2,*}(x) \rceil}$ is $2^{11}$ at $x = 1$, then $2^{8}$ for $x = 3, 5, 7, 9, 11$, and $2^{7}$ for every odd $x$ from $13$ to $35$.
-
-\topic{The integer $Q_2(x)$.}
-For these eighteen values the last failure of $|\sqrt{2} - p/(x\, 2^j)| > 2^{-1.465 j}$ lies at $j \le 21$, and a check through $j < 53620$ finds no later failure.
-The entry is $2^{\lceil \log_2 Q_2(x) \rceil}$.
-
-\begin{center}
-\begin{tabular}{rrrr}
-$x$ & $j_0(x)$ & winning $j$ & $Q_2(x)$ below \\
-$1$ & $9$ & $7$ & $2^{15}$ \\
-$3$ & $12$ & $11$ & $2^{18}$ \\
-$5$ & $22$ & $17$ & $2^{33}$ \\
-$7$ & $12$ & $10$ & $2^{18}$ \\
-$9$ & $12$ & $11$ & $2^{18}$ \\
-$11$ & $13$ & $12$ & $2^{19}$ \\
-$13$ & $14$ & $9$ & $2^{21}$ \\
-$15$ & $22$ & $17$ & $2^{32}$ \\
-$17$ & $15$ & $13$ & $2^{23}$ \\
-$19$ & $17$ & $14$ & $2^{25}$ \\
-$21$ & $17$ & $12$ & $2^{25}$ \\
-$23$ & $16$ & $14$ & $2^{23}$ \\
-$25$ & $22$ & $17$ & $2^{32}$ \\
-$27$ & $15$ & $14$ & $2^{22}$ \\
-$29$ & $17$ & $16$ & $2^{25}$ \\
-$31$ & $17$ & $16$ & $2^{25}$ \\
-$33$ & $15$ & $13$ & $2^{22}$ \\
-$35$ & $22$ & $17$ & $2^{32}$ \\
-\end{tabular}
-\end{center}
-
-The cycle $27 \to 611 \to 27$ has $q = 181 < 2^{22}$.
-The cycle $35 \to 99 \to 35$ has $q = 181 < 2^{32}$.
 
 \section{Cycles of length $2$}
 \label{sec:length-2}
@@ -884,22 +783,22 @@ This is the plus sign, $q - 1 = 2^{2} \cdot 45$, and $q = 181$, the cycle $35 \t
 \markstmt{5}{prop:other-two}
 Any cycle of length $2$ other than $1 \to 3$, $35 \to 99$ and $27 \to 611$ has
 \[
-q \ge 2^{4500}, \qquad D \ge 15, \qquad u \ge 3,
+q \ge 2^{160{,}000}, \qquad D \ge 15, \qquad u \ge 3,
 \]
 every odd element at least $37$, and, writing $h = 2m + 1$,
 \[
-m \ge 4500, \qquad D > 2^{0.535 m + 1}, \qquad t \ge 2409.
+m \ge 160{,}000, \qquad D > 2^{0.535 m + 1}, \qquad t \ge 85{,}603.
 \]
-In particular $k_1 \le \lfloor \log_2 q \rfloor - 1204$ and $k_2 \ge \lfloor \log_2 q \rfloor + 1205$.
+In particular $k_1 \le \lfloor \log_2 q \rfloor - 42{,}801$ and $k_2 \ge \lfloor \log_2 q \rfloor + 42{,}802$.
 Also $t > \log_2(3q/x)$.
 \end{named}
 
 \begin{proof}
-The companion paper searches every cycle of length $2$ with $h \le 9000$ and finds only the three cycles named above.
-That search excludes every cycle of length $2$ with $q < 2^{4500}$.
-Thus any other cycle has $q \ge 2^{4500}$.
-Since $2^{h/2} > q$, one has $h > 2 \cdot 4500$, so $h \ge 9001$.
-With $h = 2m + 1$ this is $m \ge 4500$.
+Section~\ref{sec:computations} searches every cycle of length $2$ with $h \le 320{,}000$ and finds only the three cycles named above.
+That search excludes every cycle of length $2$ with $q < 2^{160{,}000}$.
+Thus any other cycle has $q \ge 2^{160{,}000}$.
+Since $2^{h/2} > q$, one has $h > 2 \cdot 160{,}000$, so $h \ge 320{,}001$.
+With $h = 2m + 1$ this is $m \ge 160{,}000$.
 
 Lemma~\ref{lem:gap-7} gives $D \ne 7$.
 Lemma~\ref{lem:length-2} gives $D \equiv 7 \pmod{8}$ and $D > 0$, so $D \ge 15$.
@@ -908,8 +807,8 @@ Lemma~\ref{lem:length-2} gives that $u$ is a positive odd integer, so $u \ge 3$.
 
 Let $z$ be an odd element of the cycle with $z \le 35$.
 Theorem~\ref{thm:bound} gives $q < Q_2(z)$.
-Section~\ref{sec:bound} records $Q_2(z) \le 2^{33}$ for every odd $z \le 35$.
-Then $q < 2^{33} < 2^{4500}$, so the cycle is one of the three found by the search.
+Section~\ref{sec:computations} records $Q_2(z) \le 2^{33}$ for every odd $z \le 35$.
+Then $q < 2^{33} < 2^{160{,}000}$, so the cycle is one of the three found by the search.
 Each of those has its odd elements in $\{1, 3, 27, 35, 99, 611\}$.
 An element $z \le 35$ on one of them is $1$, $3$, $27$ or $35$.
 Therefore every odd element of any other cycle is at least $37$.
@@ -919,7 +818,7 @@ Corollary~1.4 of Bauer and Bennett (2002), applied with odd part $1$, gives
 \Bigl| \sqrt{2} - \frac{q}{2^m} \Bigr| > 2^{-1.465 m}
 \]
 for every $m \ge j_0(1)$.
-Section~\ref{sec:bound} records $j_0(1) = 9$, and here $m \ge 4500$.
+Section~\ref{sec:q2} records $j_0(1) = 9$, and here $m \ge 160{,}000$.
 Writing $2^{h/2} = q + \delta$ as in Lemma~\ref{lem:any-window},
 \[
 \delta > 2^{-0.465 m}.
@@ -928,21 +827,22 @@ Then $D = \delta(2q + \delta) > 2q\delta$, so
 \[
 \log_2 D > 1 + \log_2 q - 0.465 m.
 \]
-Since $q > 2^m \sqrt{2} - 1$ and $m \ge 4500$,
+Since $q > 2^m \sqrt{2} - 1$ and $m \ge 160{,}000$,
 \[
-\log_2 q > m + \tfrac12 - 2^{-4499}.
+\log_2 q > m + \tfrac12 - 2^{-159{,}999}.
 \]
-Hence $\log_2 D > 0.535 m + 1.5 - 2^{-4499} > 0.535 m + 1$, and $D > 2^{0.535 m + 1}$.
-At $m = 4500$ this is $D > 2^{2408.5}$.
-For $m > 4500$ the same lower bound is larger.
-Lemma~\ref{lem:length-2} gives $D \le 2^t - 1$, so $t \ge 2409$.
+Hence $\log_2 D > 0.535 m + 1.5 - 2^{-159{,}999} > 0.535 m + 1$, and $D > 2^{0.535 m + 1}$.
+At $m = 160{,}000$ this is $D > 2^{85{,}601}$.
+For $m > 160{,}000$ the same lower bound is larger.
+Lemma~\ref{lem:length-2} gives $D \le 2^t - 1$, so $t > 85{,}601$.
+Since $t$ is odd, $t \ge 85{,}603$.
 
 Since $t$ is odd, $(t - 1)/2$ is an integer, and $k_1 = m - (t - 1)/2$.
-Thus $k_1 \le m - 1204$.
-Since $m \ge 4500$ and $\sqrt{2} - 1 > 2^{-m}$, one has $2^m \sqrt{2} > 2^m + 1$, so $q \ge 2^m + 1$.
+Thus $k_1 \le m - 42{,}801$.
+Since $m \ge 160{,}000$ and $\sqrt{2} - 1 > 2^{-m}$, one has $2^m \sqrt{2} > 2^m + 1$, so $q \ge 2^m + 1$.
 Also $\sqrt{2} < 2$, so $q < 2^m \sqrt{2} < 2^{m + 1}$.
-Thus $\lfloor \log_2 q \rfloor = m$ and $k_1 \le \lfloor \log_2 q \rfloor - 1204$.
-Also $k_2 = m + (t + 1)/2 \ge m + 1205 = \lfloor \log_2 q \rfloor + 1205$.
+Thus $\lfloor \log_2 q \rfloor = m$ and $k_1 \le \lfloor \log_2 q \rfloor - 42{,}801$.
+Also $k_2 = m + (t + 1)/2 \ge m + 42{,}802 = \lfloor \log_2 q \rfloor + 42{,}802$.
 
 For the last claim, $u \ge 3$ gives $y - x \ge 3 \cdot 2^{k_1}$.
 Combined with $2^{k_1} = (qx + 1)/y$,
@@ -956,8 +856,49 @@ t = h - 2k_1 > 2\log_2 q - \log_2(xq/3) = \log_2(3q/x).
 \]
 \end{proof}
 
+\begin{named}{Lemma 6.}
+\marklemma{6}{lem:linear-two}
+Let the cycle be other than $1 \to 3$, $35 \to 99$, and $27 \to 611$, and write $h = 2m + 1$.
+Then
+\[
+k_1 < \frac{1.465}{2}\, m - \frac{\log_2 3 - 1}{2},
+\qquad
+t > 0.535 m + \log_2 3,
+\qquad
+x < 2^{0.465 m + 1/2}.
+\]
+\end{named}
+
+\begin{proof}
+Proposition~\ref{prop:other-two} gives $D > 2^{0.535 m + 1}$ and $t > \log_2(3q/x)$.
+Lemma~\ref{lem:length-2} gives $x = (q + 2^{k_1})/D$ and $2^{k_1} \le q - 1$.
+Hence $q + 2^{k_1} \le 2q - 1 < 2q$, so $x < 2q/D$ and $3q/x > 3D/2$.
+Therefore
+\[
+t > \log_2(3q/x) > \log_2(3D/2) = \log_2 D + \log_2 3 - 1.
+\]
+Since $\log_2 D > 0.535 m + 1$,
+\[
+t > 0.535 m + \log_2 3.
+\]
+Lemma~\ref{lem:length-2} gives $h = 2k_1 + t$, so $k_1 = (2m + 1 - t)/2 = m - (t - 1)/2$.
+Thus
+\begin{align*}
+k_1
+&< m - \frac{0.535 m + \log_2 3 - 1}{2} \\
+&= \frac{1.465}{2}\, m - \frac{\log_2 3 - 1}{2}.
+\end{align*}
+Since $q = \lfloor 2^{h/2} \rfloor = \lfloor 2^m \sqrt{2} \rfloor$ and $2^m \sqrt{2}$ is irrational, $q < 2^m \sqrt{2}$ and $\log_2 q < m + 1/2$.
+Combined with $x < 2q/D$ and $D > 2^{0.535 m + 1}$,
+\[
+\log_2 x < 1 + \log_2 q - \log_2 D < 1 + \bigl(m + \tfrac12\bigr) - \bigl(0.535 m + 1\bigr) = 0.465 m + \tfrac12,
+\]
+and $x < 2^{0.465 m + 1/2}$.
+\end{proof}
+
 The case that remains is $u \ge 3$.
-Proposition~\ref{prop:other-two} puts $q \ge 2^{4500}$ and $t \ge 2409$, with $D$ dividing $2^t - 1$ and $(q + 2^{(h - t)/2})/D$ an odd integer at least $37$.
+Proposition~\ref{prop:other-two} puts $q \ge 2^{160{,}000}$, $D \ge 15$, and $t \ge 85{,}603$, with $D$ dividing $2^t - 1$ and $(q + 2^{(h - t)/2})/D$ an odd integer at least $37$.
+Lemma~\ref{lem:linear-two} gives $k_1 < (1.465/2)\, m - (\log_2 3 - 1)/2$, $t > 0.535 m + \log_2 3$, and $x < 2^{0.465 m + 1/2}$.
 
 \section{Longer cycles}
 \label{sec:longer}
@@ -1034,11 +975,11 @@ The only consecutive perfect powers are $8$ and $9$, of the other sign, so $D \g
 The next-smallest values of $D$ do not produce cycles.
 For $q = 11$ and $h = 7$ one has $11^2 = 2^7 - 7$, the same $D$ as for $q = 5$ and $q = 181$, and the estimate is $6/(2\cdot 7) \approx 0.43$; but $11 + 2^{k_1} \not\equiv 0 \pmod{7}$ for every positive $k_1 < 7$, so $D$ never divides $N$.
 For $q = 45$ and $h = 11$, likewise $45^2 = 2^{11} - 23$ and $45 + 2^{k_1} \equiv 0 \pmod{23}$ forces $2^{k_1} \equiv 1 \pmod{23}$, hence $11 \mid k_1$, which is impossible for $0 < k_1 < 11$.
-For $q = 3$ and $h = 5$, $3^3 = 2^5 - 5$ and the estimate is $0.4$; the length-$3$ search finds no cycle.
-For $q = 3$ and $h = 8$, $3^5 = 2^8 - 13$ and the estimate is $0.54$; the length-$5$ search finds no cycle.
-For $q = 19$ and $h = 17$, $19^4 = 2^{17} - 751$, the fourth-power near miss recorded in the companion paper~\cite{hackman-i}, and the estimate is $0.19$; the length-$4$ search finds no cycle.
+For $q = 3$ and $h = 5$, $3^3 = 2^5 - 5$ and the estimate is $0.4$; the length-$3$ search in Section~\ref{sec:computations} finds no cycle.
+For $q = 3$ and $h = 8$, $3^5 = 2^8 - 13$ and the estimate is $0.54$; the length-$5$ search there finds no cycle.
+For $q = 19$ and $h = 17$, $19^4 = 2^{17} - 751$, the fourth-power near miss recorded in the companion paper~\cite{hackman-i}, and the estimate is $0.19$; the length-$4$ search there finds no cycle.
 
-Summing the same estimate over every admissible pair with $2 \le \ell \le 20$ and $h \le 200$ gives a total of about $7$ expected cycles, of which about $3$ sit in the three known slots and the remaining $4$ are spread over pairs that the searches in the companion paper~\cite{hackman-i} have already emptied.
+Summing the same estimate over every admissible pair with $2 \le \ell \le 20$ and $h \le 200$ gives a total of about $7$ expected cycles, of which about $3$ sit in the three known slots and the remaining $4$ are spread over pairs that Section~\ref{sec:computations} and the companion paper~\cite{hackman-i} have already emptied.
 For large $h$ a typical $D$ is of size $\ell \delta\, 2^{h(1-1/\ell)}$, with $\delta$ the fractional part of $2^{h/\ell}$, and $\binom{h-1}{\ell-1}/D$ decays exponentially in $h$.
 Length $1$ is different: $D = 2^h - q = 1$ holds for every Mersenne $q$, and $N = 1$, so the division succeeds for every $e$ and produces $1 \to 1$.
 
@@ -1047,6 +988,169 @@ A random odd input has $E[v_2(qn+1)] = 2$, while a cycle needs mean $h/\ell \app
 For $q = 5$ this is $2.32$, a mild excess, and three cycles exist.
 For $q = 181$ it is $7.5$, which occurs only because $D = 7$.
 For larger $q$ the same mean requires a still smaller relative gap, which is the Diophantine condition already used in Theorem~2 of the companion paper and Theorem~\ref{thm:finite}.
+
+\section{Computations}
+\label{sec:computations}
+
+Lemma~\ref{lem:any-window} gives $q^\ell < 2^h < (q+1)^\ell$ for a cycle of length $\ell \ge 2$, so $\ell \nmid h$ and $q = \lfloor 2^{h/\ell}\rfloor$.
+A search of every $h \le H$ with $\ell \nmid h$ therefore excludes every such cycle with $q < 2^{\lfloor H/\ell \rfloor}$: it would have $2^h < (q+1)^\ell \le 2^{\ell \lfloor H/\ell \rfloor} \le 2^H$, so $h \le H$.
+The time in each table is the search itself.
+
+\topic{Any cycle.}
+For each $\ell$ from $2$ to $9$, every $h$ up to the value in the table was tested, for odd elements that need not include $1$.
+The only cycles found are those of Conjecture~\ref{conj:all}.
+\begin{center}
+\begin{tabular}{cccc}
+\multicolumn{4}{c}{\textbf{Any cycle: only those of Conjecture~\ref{conj:all}}} \\[0.4em]
+length $\ell$ & $h$ at most & for $q$ below & time \\
+$2$ & $320{,}000$ & $2^{160{,}000}$ & $1{,}360$\,s \\
+$3$ & $7{,}000$ & $2^{2{,}333}$ & $158$\,s \\
+$4$ & $5{,}500$ & $2^{1{,}375}$ & $140$\,s \\
+$5$ & $4{,}500$ & $2^{900}$ & $136$\,s \\
+$6$ & $1{,}400$ & $2^{233}$ & $147$\,s \\
+$7$ & $950$ & $2^{135}$ & $167$\,s \\
+$8$ & $470$ & $2^{58}$ & $179$\,s \\
+$9$ & $320$ & $2^{35}$ & $138$\,s \\
+\end{tabular}
+\end{center}
+Length $2$ finds $1 \to 3 \to 1$ at $q = 5$, and $27 \to 611 \to 27$ and $35 \to 99 \to 35$ at $q = 181$.
+Length $3$ finds $13 \to 33 \to 83 \to 13$ and $17 \to 43 \to 27 \to 17$ at $q = 5$.
+Lengths $4$ through $9$ find no cycle.
+
+\topic{A fixed $q$.}
+Here $q$ is fixed and the length varies.
+The only possible $h$ are the integers satisfying $q^\ell < 2^h < (q+1)^\ell$; if there is none, that length has no cycle.
+For $q = 5$, lengths $2$ through $20$ produce only $1 \to 3 \to 1$ and the two cycles of length $3$ above.
+For each odd $q$ from $7$ through $25$, lengths $2$ through $16$ produce no cycle.
+The cycles at $q = 181$ were found in the length-$2$ row above, at $h = 15$, not in this search.
+\begin{center}
+\begin{tabular}{cccc}
+\multicolumn{4}{c}{\textbf{Cycles at a fixed $q$}} \\[0.4em]
+$q$ & lengths & cycles found & time \\
+$5$ & $2$ through $20$ & $1 \to 3 \to 1$;\ $13 \to 33 \to 83$;\ $17 \to 43 \to 27$ & under $1$\,s \\
+$7$ & $2$ through $16$ & none & under $1$\,s \\
+$9$ & $2$ through $16$ & none & under $1$\,s \\
+$11$ & $2$ through $16$ & none & under $1$\,s \\
+$13$ & $2$ through $16$ & none & under $1$\,s \\
+$15$ & $2$ through $16$ & none & under $1$\,s \\
+$17$ & $2$ through $16$ & none & under $1$\,s \\
+$19$ & $2$ through $16$ & none & under $1$\,s \\
+$21$ & $2$ through $16$ & none & under $1$\,s \\
+$23$ & $2$ through $16$ & none & under $1$\,s \\
+$25$ & $2$ through $16$ & none & under $1$\,s \\
+\end{tabular}
+\end{center}
+
+\topic{The bounds $Q_2(x)$ and $Q_3(x)$.}
+For every odd $x \le 35$, the values of $Q_{3,0}(x)$ were computed with upper limit $11000$ on $j$.
+The gate $2^{11001}$ does not appear in $Q_3(x)$.
+The quantity $Q_{3,*}(x)$ is smallest at $x = 3$, where $\log_2 Q_{3,*}(3) = 17906.510814$, so $Q_{3,*}(x) > 2^{17906} > 2^{11001}$ for every odd positive integer $x$.
+
+\topic{Powers of two above $Q_{3,*}(x)$.}
+The integer $\lceil Q_{3,*}(x) \rceil$ is the sharper bound, and it has thousands of digits.
+The table uses the next power of $2$ above $Q_{3,*}(x)$, read off from the logarithm.
+For $x = 5$ one has $\log_2 Q_{3,*}(5) = 18213.724287504393$, so $\lceil Q_{3,*}(5) \rceil$ has $5483$ digits and begins $753951296\ldots$, while the table entry is $2^{18214}$.
+The same rounding, $2^{\lceil \log_2 \,\cdot\, \rceil}$, is used for $Q_{3,0}(x)$, $Q_{2,*}(x)$ and $Q_2(x)$.
+
+For every odd $x$ from $1$ to $35$, the entry $2^{\lceil \log_2 Q_{3,*}(x) \rceil}$ is:
+
+\begin{center}
+\begin{tabular}{rrrrrr}
+$x$ & & $x$ & & $x$ & \\
+$1$ & $2^{17990}$ & $13$ & $2^{18387}$ & $25$ & $2^{18514}$ \\
+$3$ & $2^{17907}$ & $15$ & $2^{18190}$ & $27$ & $2^{18304}$ \\
+$5$ & $2^{18214}$ & $17$ & $2^{18439}$ & $29$ & $2^{18543}$ \\
+$7$ & $2^{18273}$ & $19$ & $2^{18460}$ & $31$ & $2^{18556}$ \\
+$9$ & $2^{18094}$ & $21$ & $2^{18255}$ & $33$ & $2^{18344}$ \\
+$11$ & $2^{18356}$ & $23$ & $2^{18497}$ & $35$ & $2^{18580}$ \\
+\end{tabular}
+\end{center}
+
+Rows in which $3$ divides $x$ sit below their neighbors because $s'_{\mathrm{near}} = x/\gcd(x, 3)$.
+The row $x = 3$ has $s'_{\mathrm{near}} = 1$ and $s'_{\mathrm{win}} = 3$, so the factor $3$ in $c_3(s'_{\mathrm{win}})$ is the place this table uses Theorem (fixed odd part) past odd part $1$ or $3$.
+
+\topic{Powers of two above $Q_{3,0}(x)$.}
+For the same odd $x$, with the maximum taken over $0 \le j < 11000$, the entry $2^{\lceil \log_2 Q_{3,0}(x) \rceil}$ is:
+
+\begin{center}
+\begin{tabular}{rrrrrr}
+$x$ & & $x$ & & $x$ & \\
+$1$ & $2^{11003}$ & $13$ & $2^{11007}$ & $25$ & $2^{11009}$ \\
+$3$ & $2^{11002}$ & $15$ & $2^{11006}$ & $27$ & $2^{11006}$ \\
+$5$ & $2^{11006}$ & $17$ & $2^{11009}$ & $29$ & $2^{11012}$ \\
+$7$ & $2^{11006}$ & $19$ & $2^{11009}$ & $31$ & $2^{11008}$ \\
+$9$ & $2^{11006}$ & $21$ & $2^{11006}$ & $33$ & $2^{11005}$ \\
+$11$ & $2^{11005}$ & $23$ & $2^{11006}$ & $35$ & $2^{11008}$ \\
+\end{tabular}
+\end{center}
+
+In every row the exponent $j$ that attains the maximum lies in $\{10997, 10998, 10999\}$.
+For these eighteen values, $Q_{3,0}(x) < Q_{3,*}(x)$.
+That comparison is checked for odd $x \le 35$.
+It is not proved for every odd $x$.
+From $t^3 - 2^r$, if the distance from $s'_{\mathrm{near}}\, 2^{j+r/3}$ to an integer is positive, that distance is greater than $1/(Q^2 \cdot 3(2^{2/3}+1)^2)$ once the integer is within $1$ of $s'_{\mathrm{near}}\, 2^{j+r/3}$, with $Q = s'_{\mathrm{near}} 2^j$.
+With $j \le 10999$ and $s'_{\mathrm{near}} \le x$ this only yields $Q_{3,0}(x) < x^3\, 2^{33003}$.
+At $x = 1$ the two logarithms, of this upper estimate and of $Q_{3,*}(1)$, are $33003$ and $17989$.
+The estimate $x^3\, 2^{33003}$ stays above $Q_{3,*}(x)$ until $x$ is about $2^{67}$.
+Past that size, $Q_{3,*}(x)$ grows like $x^{1/\gamma_3}$ with $1/\gamma_3 \approx 229$, while $x^3\, 2^{33003}$ grows like $x^3$.
+
+\topic{The value $Q_3(1)$.}
+Here $s'_{\mathrm{near}} = 1$ and $s'_{\mathrm{win}} = 1$, so $J_3(1) = 11000$.
+The maximum $Q_{3,0}(1)$ is less than $2^{11003}$, and $Q_{3,*}(1)$ is less than $2^{17990}$, so
+\[
+Q_3(1) = Q_{3,*}(1) < 2^{17990}.
+\]
+Each $h$ gives one candidate $q = \lfloor 2^{h/3} \rfloor$.
+The bound $q < 2^{17990}$ means it is enough to check $h < 53970$.
+The companion paper checks every $h \le 200{,}000$ and finds no cycle, so that search includes the range.
+Theorem~1 of~\cite{hackman-i} is this case.
+
+The proof of that theorem in the companion paper reaches the larger cutoff $q < 2^{22003}$.
+There the symbol $x$ is the element after $1$.
+The argument asks for that element to clear $2^{11001}$, using a lower bound of the shape $\sqrt{q/2}$.
+The integer $Q_3(1)$ does not use that lower bound.
+Once $q > Q_{3,0}(1)$, an exponent below $11000$ is already impossible, and the conflict is $Q_{3,*}(1)$.
+
+\topic{Powers of two above $Q_{2,*}(x)$.}
+This integer is used in the proof and is at most $Q_2(x)$.
+As $x \to \infty$, $\log_2 Q_{2,*}(x)$ decreases to $\mu_2/\gamma_2 \approx 6.733$.
+The row $x = 11$ has logarithm $7.013$, so that one ceiling moves if the fourth digit of the exponent $1.465$ is lower.
+For odd $x$ from $1$ to $35$, the entry $2^{\lceil \log_2 Q_{2,*}(x) \rceil}$ is $2^{11}$ at $x = 1$, then $2^{8}$ for $x = 3, 5, 7, 9, 11$, and $2^{7}$ for every odd $x$ from $13$ to $35$.
+
+\topic{Values of $Q_2(x)$.}
+For these eighteen values the last failure of $|\sqrt{2} - p/(x\, 2^j)| > 2^{-1.465 j}$ lies at $j \le 21$, and a check through $j < 53620$ finds no later failure.
+The entry is $2^{\lceil \log_2 Q_2(x) \rceil}$.
+
+\begin{center}
+\begin{tabular}{rrrr}
+$x$ & $j_0(x)$ & winning $j$ & $Q_2(x)$ below \\
+$1$ & $9$ & $7$ & $2^{15}$ \\
+$3$ & $12$ & $11$ & $2^{18}$ \\
+$5$ & $22$ & $17$ & $2^{33}$ \\
+$7$ & $12$ & $10$ & $2^{18}$ \\
+$9$ & $12$ & $11$ & $2^{18}$ \\
+$11$ & $13$ & $12$ & $2^{19}$ \\
+$13$ & $14$ & $9$ & $2^{21}$ \\
+$15$ & $22$ & $17$ & $2^{32}$ \\
+$17$ & $15$ & $13$ & $2^{23}$ \\
+$19$ & $17$ & $14$ & $2^{25}$ \\
+$21$ & $17$ & $12$ & $2^{25}$ \\
+$23$ & $16$ & $14$ & $2^{23}$ \\
+$25$ & $22$ & $17$ & $2^{32}$ \\
+$27$ & $15$ & $14$ & $2^{22}$ \\
+$29$ & $17$ & $16$ & $2^{25}$ \\
+$31$ & $17$ & $16$ & $2^{25}$ \\
+$33$ & $15$ & $13$ & $2^{22}$ \\
+$35$ & $22$ & $17$ & $2^{32}$ \\
+\end{tabular}
+\end{center}
+
+The cycle $27 \to 611 \to 27$ has $q = 181 < 2^{22}$.
+The cycle $35 \to 99 \to 35$ has $q = 181 < 2^{32}$.
+
+The powers of two above $Q_{3,*}(x)$ took under $1$\,s, and those above $Q_{2,*}(x)$ took under $1$\,s.
+The powers of two above $Q_{3,0}(x)$, the maximum over $0 \le j < 11000$, took $43$\,s.
+The table of $Q_2(x)$ took $47$\,s.
 
 \section{Open problems}
 \label{sec:open}
@@ -1077,7 +1181,7 @@ F.~Beukers, On the generalized Ramanujan--Nagell equation~I, Acta Arith.\ 38 (19
 Z.~Franco, Diophantine Approximation and the $qx+1$ Problem, PhD thesis, UC Berkeley, 1990.
 
 \bibitem{hackman-i}
-T.~Hackman, I. Cycles through 1 for the $qn+1$ map: no cycles with three odd steps, and constraints on longer cycles, companion paper.
+T.~Hackman, I. Cycles through 1 for the $qn+1$ map: no cycles of length $3$, and constraints on longer cycles, companion paper.
 
 \bibitem{ridout}
 D.~Ridout, The $p$-adic generalization of the Thue--Siegel--Roth theorem, Mathematika 5 (1958), 40--48, \doilink{10.1112/S0025579300001339}.

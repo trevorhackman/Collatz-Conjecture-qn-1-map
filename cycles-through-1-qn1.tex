@@ -44,7 +44,7 @@
   \label{#2}%
 }
 
-\title{I. Cycles through 1 for the $qn+1$ map: no cycles with three odd steps, and constraints on longer cycles}
+\title{I. Cycles through 1 for the $qn+1$ map: no cycles of length $3$, and constraints on longer cycles}
 \author{Trevor Hackman}
 \date{}
 
@@ -54,7 +54,7 @@
 \begin{abstract}
 \noindent
 For the $qn+1$ map with $q$ an odd integer at least $3$, we prove that $1$ never lies on a cycle with exactly three distinct odd numbers.
-This settles the three-step case of a conjecture of Santos (2020) that $1$ is periodic only for $q = 5$ and for Mersenne numbers $q = 2^e - 1$.
+This settles the case of length $3$ in a conjecture of Santos (2020) that $1$ lies on a cycle only for $q = 5$ and for Mersenne numbers $q = 2^e - 1$.
 We found that for every such $q$ at least $2^{22001}$, a lower bound and an upper bound cannot hold at the same time.
 Bauer and Bennett (2018) give an irrationality measure whose exponent, about $1.61487$, lies just below the golden ratio, the threshold at which these bounds conflict.
 Every smaller $q$ is ruled out by a direct computation.
@@ -77,7 +77,7 @@ When $q = 3$, $C$ is the odd-to-odd or accelerated form of the Collatz map, and 
 For $q = 3$ the number $1$ is fixed, since $3 \cdot 1 + 1 = 4$.
 For larger $q$, heuristic arguments suggest that most orbits grow without bound and that cycles are rare, although no orbit has been proved to diverge.
 
-We say that $1$ is periodic if its orbit returns to $1$, and ask for which $q$ this happens.
+We ask for which $q$ the number $1$ lies on a cycle of $C$.
 We classify the answers by the length $\ell$ of the cycle through $1$, that is, the number of distinct odd numbers on it.
 
 For $\ell = 1$ the cycle is $1 \to 1$, which happens exactly when $q+1$ is a power of $2$, that is $q = 2^e - 1$ (Proposition~15 of Santos (2020)).
@@ -85,7 +85,7 @@ For $\ell = 2$, the only $q$ is $5$, with $1 \to 3 \to 1$ (Proposition~16 of San
 Besides the Mersenne family $1 \to 1$, the only known cycle through $1$ is $1 \to 3 \to 1$ for $q = 5$.
 
 \begin{named}{Santos's conjecture (2020).}
-$1$ is periodic only for $q = 5$ and $q = 2^e - 1$.
+$1$ lies on a cycle of $C$ only for $q = 5$ and $q = 2^e - 1$.
 \end{named}
 
 \begin{named}{Theorem 1.}
@@ -127,7 +127,7 @@ x_0 \to x_1 \to \cdots \to x_{\ell-1} \to x_0.
 \]
 
 \topic{Cycles through 1.}
-An $\ell$-odd cycle through $1$ is a cycle of $C$ of length $\ell$ with $x_0 = 1$.
+A cycle of length $\ell$ through $1$ is a cycle of $C$ of length $\ell$ with $x_0 = 1$.
 It is written
 \[
 1 = x_0 \to x_1 \to \cdots \to x_{\ell-1} \to 1.
@@ -143,11 +143,11 @@ so $k_i = v_2(q \cdot x_{i-1} + 1)$.
 The total number of halvings is $h = k_1 + \cdots + k_\ell$, and $S_i = k_1 + \cdots + k_i$.
 
 \topic{The window.}
-On an $\ell$-odd cycle through $1$ with $h$ halvings in all, write $2^{h/\ell} = q + \delta$, so $\delta$ is the fractional part of $2^{h/\ell}$.
+On a cycle of length $\ell$ through $1$ with $h$ halvings in all, write $2^{h/\ell} = q + \delta$, so $\delta$ is the fractional part of $2^{h/\ell}$.
 The window is a lower bound and an upper bound on $\delta$.
 
 \topic{Near misses.}
-For an element $x_i$ other than $1$ on an $\ell$-odd cycle through $1$, set $n_i = ih - \ell S_i$.
+For an element $x_i$ other than $1$ on a cycle of length $\ell$ through $1$, set $n_i = ih - \ell S_i$.
 The near miss of $x_i$ is $2^{n_i/\ell}$.
 The relative error $\rho_i$ is defined by
 \[
@@ -173,16 +173,12 @@ For an odd positive integer $m$, the order of $2$ modulo $m$ is the smallest pos
 An implied constant in $O$, $\ll$, $\gg$, or $\asymp$ depends only on $\ell$.
 In a heuristic remark, $\lesssim$ and $\gtrsim$ mean at most or at least roughly, ignoring constants.
 
-\topic{Three odd steps.}
-For an $\ell$-odd cycle through $1$ with $\ell = 3$, write the cycle as $1 \to x \to y \to 1$.
-The element after $1$ is $x = x_1$.
-The element after $x$ is $y = x_2$.
-The three steps are
-\[
-q + 1 = 2^{k_1} x, \qquad qx + 1 = 2^{k_2} y, \qquad qy + 1 = 2^{k_3}.
-\]
+\topic{The three steps of length $3$.}
+On a cycle of length $3$ through $1$, the element after $1$ is $x = x_1$.
+The element after $x$ is $y = x_2$, so the cycle is $1 \to x \to y \to 1$.
+The three steps are $q + 1 = 2^{k_1} x$, $qx + 1 = 2^{k_2} y$, and $qy + 1 = 2^{k_3}$.
 
-\section{The structure of a three-step cycle}
+\section{The structure of a cycle of length $3$}
 \label{sec:structure}
 
 \begin{named}{Lemma 1.}
@@ -461,7 +457,7 @@ By Lemma~\ref{lem:near-x}, $|1 - x/2^{f/3}| \le 1.6/(2^a \cdot 2^{f/3})$, so
 With $h = f + 3a$, $m \ge a + j'$ and $j' \ge (f-2)/3$, step~1 gives $a > 0.20878\, f - 76.8$ and step~2 gives $a < 0.20496\, f + 47.2$.
 These are incompatible once $f \ge 32{,}461$, that is $j' \ge 10{,}820$.
 \end{enumerate}
-So any $3$-odd cycle through $1$ has $q < 2^{22001}$.
+So any cycle of length $3$ through $1$ has $q < 2^{22001}$.
 Lemma~\ref{lem:cube-window} gives $2^h < (q+1)^3$.
 Since $q$ is an integer, $q + 1 \le 2^{22001}$, so $2^h < 2^{66{,}003}$ and $h < 66{,}003$.
 Each such $h$ gives a single candidate $q = \lfloor 2^{h/3} \rfloor$.
@@ -490,7 +486,7 @@ Their stated exponent $1.62$ lies just above $\varphi$ and would leave room for 
 
 \begin{named}{Lemma 10 (the $\ell$-th power window).}
 \markstmt{10}{lem:power-window}
-For an $\ell$-odd cycle through $1$, let $\sigma = \sum_{i=1}^{\ell-1} 1/x_i$.
+For a cycle of length $\ell$ through $1$, let $\sigma = \sum_{i=1}^{\ell-1} 1/x_i$.
 Then
 \[
 2^h = (q+1) \prod_{i=1}^{\ell-1} \left( q + \frac{1}{x_i} \right).
@@ -774,10 +770,10 @@ The same finiteness, for a cycle that need not visit $1$, is Theorem~2 of that p
 The following were found along the way.
 They are not needed for Theorems~1, 2 and~3, and Corollaries~12 to~14; full statements and proofs are in the appendices indicated, and Appendix~\ref{app:history} has notes on the literature and the history of the work.
 \begin{itemize}
-\item \textbf{One and two odd steps through 1} (Appendix~\ref{app:one-two}).
-The two-step case, only $q = 5$, follows from the theorem of Beukers (1980/81) on $x^2 + D = 2^n$.
-\item \textbf{The order of $2$} (Appendix~\ref{sec:earlier}). $k_3 = d$ or $2d$, where $d$ is the order of $2$ modulo $q$; in particular $d < 3 \log_2 q$, and no Wieferich prime $q$ has a $3$-odd cycle through $1$, the same mechanism Franco and Pomerance use for Crandall's question of when orbits avoid $1$.
-\item \textbf{Finiteness for three steps via Ridout alone} (Appendix~\ref{sec:earlier}).
+\item \textbf{Cycles of length $1$ and $2$ through 1} (Appendix~\ref{app:one-two}).
+The case of length $2$, only $q = 5$, follows from the theorem of Beukers (1980/81) on $x^2 + D = 2^n$.
+\item \textbf{The order of $2$} (Appendix~\ref{sec:earlier}). $k_3 = d$ or $2d$, where $d$ is the order of $2$ modulo $q$; in particular $d < 3 \log_2 q$, and no Wieferich prime $q$ has a cycle of length $3$ through $1$, the same mechanism Franco and Pomerance use for Crandall's question of when orbits avoid $1$.
+\item \textbf{Finiteness for length $3$ via Ridout alone} (Appendix~\ref{sec:earlier}).
 Lemmas~5 and~\ref{lem:window} bound the window by about $q^{-1/2}$, and Ridout's theorem then gives finiteness through~$1$.
 This is the case $\ell = 3$ of Theorem~3.
 The companion paper gives the same range of lengths for cycles that need not visit~$1$, using the general form of Ridout's theorem.
@@ -789,17 +785,18 @@ The cases $t > k_1$ and $t = k_1$ are impossible, and the case $t < k_1$ is tigh
 \item \textbf{Small elements and an earlier bound on $y$} (Appendix~\ref{sec:earlier}).
 In fact $x \ge 5$ and $y \ge 7$.
 Before Lemma~6, the best result was $y \ge x$ or $y > (3q)^{1/3}$; this is the origin of the threshold $q \ge 71$ in earlier versions of the window lemma.
-\item \textbf{Work on four odd steps through 1} (Appendix~\ref{app:four}). The analogues of Lemmas~1 and~5: $k_4 \ge k_1 + 3$, $k_4 \ge 3k_1 - 1$, and $x > \sqrt{q/2}$. The same lower bounds for $y$ and $z$ were left open in two configurations; they are the missing inputs for Proposition~D.4. The companion paper gives ineffective finiteness for an arbitrary cycle of length~$4$.
+\item \textbf{Work on cycles of length $4$ through 1} (Appendix~\ref{app:four}). The analogues of Lemmas~1 and~5: $k_4 \ge k_1 + 3$, $k_4 \ge 3k_1 - 1$, and $x > \sqrt{q/2}$. The same lower bounds for $y$ and $z$ were left open in two configurations; they are the missing inputs for Proposition~D.4. The companion paper gives ineffective finiteness for an arbitrary cycle of length~$4$.
 \item \textbf{Work on any cycle length through 1} (Appendix~\ref{app:any}). The analogues of Lemmas~1 to~3: $k_\ell \ge k_1 + 3$ and $x_{\ell-1} \equiv 1 \pmod{2^{k_1}}$, the cycle equation $2^h = q^\ell + \sum_{j=0}^{\ell-1} 2^{S_j} q^{\ell-1-j}$ with $S_0 = 0$, and $q^\ell < 2^h < (q+1)^\ell$. Before Theorem~3, finiteness for $\ell$ odd steps through~$1$ was reduced to a power of $q$ for every element other than $1$. Theorem~3 makes that reduction unnecessary.
 \item \textbf{Computations} (Appendix~\ref{app:computations}).
-Searches over $h$ for cycles through $1$ with $\ell = 3$ to $15$, a search for an arbitrary cycle with $\ell = 2$ to $9$, a search at fixed $q = 5$ and at each odd $q$ from $7$ through $25$, verification of the Bauer--Bennett inputs, and the digit scan ruling out $q < 2^{1{,}071{,}999{,}953}$.
+Searches over $h$ for cycles through $1$ with $\ell = 3$ to $20$, verification of the Bauer--Bennett inputs, and the digit scan ruling out $q < 2^{1{,}071{,}999{,}953}$.
+Searches for an arbitrary cycle, and at a fixed $q$, are in the companion paper.
 \end{itemize}
 
 \section{Open problems}
 \label{sec:open}
 
 \begin{enumerate}
-\item \textbf{Four steps with $h$ odd.}
+\item \textbf{Length $4$ with $h$ odd.}
 The window and the near misses for $x_1$ and $x_3$ involve $2^{1/4}$ and $2^{3/4}$.
 Theorem~2 would finish the case given an effective exponent below $\varphi$ for these numbers with power-of-$2$ denominators.
 The Bauer--Bennett construction needs a fourth power exceptionally close to a power of $2$; among odd $a \le 3 \times 10^6$ the best is $19^4 = 2^{17} - 751$, of quality $\log_2(2^{17})/\log_2 751 \approx 1.78$, against $4.4$ for the cube case ($5^3 + 3 = 2^7$) and $5.3$ for $\sqrt{2}$ ($181^2 + 7 = 2^{15}$).
@@ -813,22 +810,22 @@ Franco's 1990 thesis on Diophantine approximation and the $qx+1$ problem could n
 
 \appendix
 
-\section{One and two odd steps through 1}
+\section{Cycles of length $1$ and $2$ through 1}
 \label{app:one-two}
 
-\begin{named}{Proposition A.1 (one odd step).}
-The only positive odd solution of a length-$1$ cycle is $x_0 = 1$ and $q = 2^h - 1$.
+\begin{named}{Proposition A.1 (length $1$).}
+The only positive odd solution of a cycle of length $1$ is $x_0 = 1$ and $q = 2^h - 1$.
 In particular the cycle through $1$ is $1 \to 1$ precisely when $q = 2^e - 1$ (Proposition~15 of Santos (2020)).
 \end{named}
 
 \begin{proof}
-A length-$1$ cycle is $C(x_0) = x_0$, so $x_0(2^h - q) = 1$.
+A cycle of length $1$ is $C(x_0) = x_0$, so $x_0(2^h - q) = 1$.
 Both factors are positive integers, so $x_0 = 1$ and $2^h - q = 1$.
 Thus $q = 2^h - 1$.
 Conversely, if $q = 2^e - 1$, then $q \cdot 1 + 1 = 2^e$, so $C(1) = 1$.
 \end{proof}
 
-\begin{named}{Proposition A.2 (two odd steps).}
+\begin{named}{Proposition A.2 (length $2$).}
 The only odd $q$ with $1$ on a cycle of $C$ of length $2$ is $q = 5$.
 \end{named}
 
@@ -846,7 +843,7 @@ For $k_1 = 1$, $D = 7$ is the Ramanujan--Nagell equation with $X \in \{1, 3, 5, 
 
 As a check, the argument of Lemma~B.2 below gives $2^{k_2} = qx + 1 < q^2 < 2^{2d}$ with $d$ the order of $2$ modulo $q$, so $k_2 = d$, and the cycle condition reads $q(q+1) = 2^{k_1}(2^d - 1)$; for $q = 5$, $d = 4$ and $5 \cdot 6 = 2 \cdot 15$.
 
-\section{Earlier results on three odd steps through 1}
+\section{Earlier results on cycles of length $3$ through 1}
 \label{sec:earlier}
 
 These results were found before Theorem~1 and are not needed for it.
@@ -881,7 +878,7 @@ Also $2^d \ge q + 1 > q$, so $q^3 < 2^{3d}$, and hence $k_3 < 3d$.
 \begin{named}{Corollary B.3 (Wieferich primes).}
 Let $F = (2^d - 1)/q$ and $k_3 = md$.
 Then $mF \equiv 2^{-k_2} \pmod{q}$, so $\gcd(F, q) = 1$.
-In particular no Wieferich prime $q$ ($q^2 \mid 2^{q-1} - 1$) has a $3$-odd cycle through $1$.
+In particular no Wieferich prime $q$ ($q^2 \mid 2^{q-1} - 1$) has a cycle of length $3$ through $1$.
 \end{named}
 
 \begin{proof}
@@ -895,7 +892,7 @@ Together with Lemma~\ref{lem:cube-window}, Lemma~B.2 determines everything from 
 
 \topic{Finiteness via Ridout's theorem.}
 \begin{named}{Proposition B.4.}
-Only finitely many odd $q$ have a $3$-odd cycle through $1$.
+Only finitely many odd $q$ have a cycle of length $3$ through $1$.
 \end{named}
 
 \begin{proof}
@@ -910,7 +907,7 @@ The result is ineffective, which is why Theorem~1 needs Theorem~(Bauer--Bennett 
 
 \topic{Elementary special cases.}
 \begin{named}{Proposition B.5 ($k_1 = k_2 = 1$).}
-No $3$-odd cycle through $1$ has $k_1 = k_2 = 1$.
+No cycle of length $3$ through $1$ has $k_1 = k_2 = 1$.
 Hence $q \not\equiv 1 \pmod{8}$.
 \end{named}
 
@@ -935,7 +932,7 @@ For the congruence: if $q \equiv 1 \pmod{8}$, then $k_1 = 1$ and $x \equiv 1 \pm
 The point $X = 84$ is a near miss: for $q = 41$, $q^3 + q^2 + 2q + 4$ is twice a perfect square, and the cycle fails only at the last step, since $41 \cdot 431 + 1 = 17{,}672 = 8 \cdot 47^2$.
 
 \begin{named}{Proposition B.6 ($k_1 = 1$, $k_2 = 2$).}
-No $3$-odd cycle through $1$ has $k_1 = 1$ and $k_2 = 2$.
+No cycle of length $3$ through $1$ has $k_1 = 1$ and $k_2 = 2$.
 Hence $q \not\equiv 13 \pmod{16}$.
 \end{named}
 
@@ -948,7 +945,7 @@ Both are superseded by Corollary~B.8, which rules out $k_1 = 1$ altogether.
 
 \topic{Effective bounds on $k_1$.}
 \begin{named}{Proposition B.7.}
-In any $3$-odd cycle through $1$, $2^{k_1} > q^{1/3}/2$.
+In any cycle of length $3$ through $1$, $2^{k_1} > q^{1/3}/2$.
 \end{named}
 
 \begin{proof}
@@ -980,7 +977,7 @@ Together with Proposition~B.7, $q^{1/3}/2 < 2^{k_1} < 2.01(q+1)^{2/5}$.
 
 \topic{The three cases of Lemma 4.}
 \begin{named}{Proposition B.10 ($t > k_1$ is impossible).}
-No $3$-odd cycle through $1$ has $t > k_1$.
+No cycle of length $3$ through $1$ has $t > k_1$.
 \end{named}
 
 \begin{proof}
@@ -997,7 +994,7 @@ For $2^{k_1} \le 4$, $q \le 451$, which the direct search covers.
 (Also checked in exact arithmetic for $k_1 < 400$.)
 
 \begin{named}{Proposition B.11 ($t = k_1$ is impossible).}
-No $3$-odd cycle through $1$ has $t = k_1$.
+No cycle of length $3$ through $1$ has $t = k_1$.
 \end{named}
 
 \begin{proof}
@@ -1038,7 +1035,7 @@ Propositions~B.10 and~B.11 leave only the case $t < k_1$; Theorem~1 makes the ca
 \topic{Small elements and an earlier bound on $y$.}
 \begin{named}{Remark (small elements).}
 The elements $x$ and $y$ are odd and different from $1$, so $x, y \ge 3$, and Lemma~7 gives $y \ge 5$.
-If $x = 3$, Lemma~5 gives $2^{k_1} \le 2(x-1) = 4$, so $q = 3 \cdot 2^{k_1} - 1 \in \{5, 11\}$, and neither has a $3$-odd cycle through $1$.
+If $x = 3$, Lemma~5 gives $2^{k_1} \le 2(x-1) = 4$, so $q = 3 \cdot 2^{k_1} - 1 \in \{5, 11\}$, and neither has a cycle of length $3$ through $1$.
 Hence $x \ge 5$ and $y \ge 7$.
 None of the proofs in the main text need more than $x \ge 3$ and $y > x$.
 \end{named}
@@ -1047,7 +1044,7 @@ Before Lemma~6 was found, the case $y < x$ could not be excluded, and the follow
 Lemma~7 shows that $y < x$ never happens, so the second alternative below is vacuous.
 
 \begin{named}{Proposition B.13.}
-In a $3$-odd cycle through $1$, either $y \ge x$ or
+In a cycle of length $3$ through $1$, either $y \ge x$ or
 \[
 y > \left( \frac{3q^2}{q+1} \right)^{1/3} \approx (3q)^{1/3}.
 \]
@@ -1070,11 +1067,11 @@ For the last claim, $y \equiv 1 \pmod{2^{k_1}}$ by Lemma~1; if $v_2(y-1) > k_1$,
 For $q \ge 71$ the cube root is the smaller of the two bounds, so this gave $y > 1.436\, q^{1/3}$ unconditionally, and for $q > 2{,}000{,}000$ it gave $y \ge 183$.
 The identity was also checked by computer algebra: substituting the cycle relations into both sides and expanding gives the same expression.
 
-\section{Work on four odd steps through 1}
+\section{Work on cycles of length $4$ through 1}
 \label{app:four}
 
 \topic{The first and last steps.}
-Write a $4$-odd cycle through $1$ as $1 \to x \to y \to z \to 1$, with
+Write a cycle of length $4$ through $1$ as $1 \to x \to y \to z \to 1$, with
 \[
 q + 1 = 2^{k_1} x, \qquad qx + 1 = 2^{k_2} y, \qquad qy + 1 = 2^{k_3} z, \qquad qz + 1 = 2^{k_4}.
 \]
@@ -1172,26 +1169,35 @@ Theorem~2 of the companion paper does not need them.
 The next three lemmas are Lemmas~1 to~3 for an arbitrary length.
 
 \begin{named}{Lemma D.1.}
-In an $\ell$-odd cycle through $1$ with $\ell \ge 2$, $k_\ell \ge k_1 + 3$ and $x_{\ell-1} \equiv 1 \pmod{2^{k_1}}$.
+Let $\ell \ge 2$.
+On a cycle of length $\ell$ through $1$, $k_\ell \ge k_1 + 3$ and $x_{\ell-1} \equiv 1 \pmod{2^{k_1}}$.
 \end{named}
 
 \begin{proof}
-The odd elements other than $1$ are at least $3$, so $x_1 \ge 3$ and $x_{\ell-1} \ge 3$.
-The first step is $q + 1 = 2^{k_1} x_1$, and therefore $q + 1 \ge 3 \cdot 2^{k_1}$, that is $q \ge 3 \cdot 2^{k_1} - 1$.
-The last step is $2^{k_\ell} = q x_{\ell-1} + 1$, so
+Each of $x_1$ and $x_{\ell-1}$ is an odd element other than $1$, so $x_1 \ge 3$ and $x_{\ell-1} \ge 3$.
+The first step is $q + 1 = 2^{k_1} x_1$, so $q + 1 \ge 3 \cdot 2^{k_1}$ and $q \ge 3 \cdot 2^{k_1} - 1$.
+The last step is $2^{k_\ell} = q x_{\ell-1} + 1$.
+Since $q \ge 3 \cdot 2^{k_1} - 1$ and $x_{\ell-1} \ge 3$,
 \[
-2^{k_\ell} \ge (3 \cdot 2^{k_1} - 1) \cdot 3 + 1 = 9 \cdot 2^{k_1} - 2.
+2^{k_\ell} = q x_{\ell-1} + 1 \ge \bigl(3 \cdot 2^{k_1} - 1\bigr) \cdot 3 + 1 = 9 \cdot 2^{k_1} - 2.
 \]
-Since $2^{k_1} \ge 2$, we have $9 \cdot 2^{k_1} - 2 \ge 8 \cdot 2^{k_1} = 2^{k_1 + 3}$, and hence $k_\ell \ge k_1 + 3$.
-From $q + 1 = 2^{k_1} x_1$ we also have $q \equiv -1 \pmod{2^{k_1}}$.
-Thus $q x_{\ell-1} + 1 \equiv 1 - x_{\ell-1} \pmod{2^{k_1}}$.
-But $q x_{\ell-1} + 1 = 2^{k_\ell}$ is divisible by $2^{k_1}$, because $k_\ell \ge k_1$, so $1 - x_{\ell-1} \equiv 0 \pmod{2^{k_1}}$, that is $x_{\ell-1} \equiv 1 \pmod{2^{k_1}}$.
+Since $q$ is odd, $q + 1$ is even, so $k_1 \ge 1$ and $2^{k_1} \ge 2$.
+Then $9 \cdot 2^{k_1} - 2 - 8 \cdot 2^{k_1} = 2^{k_1} - 2 \ge 0$, and therefore $9 \cdot 2^{k_1} - 2 \ge 8 \cdot 2^{k_1} = 2^{k_1 + 3}$.
+Hence $2^{k_\ell} \ge 2^{k_1 + 3}$, so $k_\ell \ge k_1 + 3$.
+
+From $q + 1 = 2^{k_1} x_1$, one has $q \equiv -1 \pmod{2^{k_1}}$.
+Since $k_\ell \ge k_1 + 3$, one has $k_\ell \ge k_1$, so $2^{k_\ell} \equiv 0 \pmod{2^{k_1}}$.
+The last step is $q x_{\ell-1} + 1 = 2^{k_\ell}$, so
+\[
+1 - x_{\ell-1} \equiv q x_{\ell-1} + 1 \equiv 2^{k_\ell} \equiv 0 \pmod{2^{k_1}}.
+\]
+Hence $x_{\ell-1} \equiv 1 \pmod{2^{k_1}}$.
 \end{proof}
 
 Lemma~1 is the case $\ell = 3$, and Lemma~C.1 is the case $\ell = 4$.
 
 \begin{named}{Lemma D.2 (cycle equation).}
-For an $\ell$-odd cycle through $1$, set $S_0 = 0$. Then
+For a cycle of length $\ell$ through $1$, set $S_0 = 0$. Then
 \[
 2^h = q^\ell + \sum_{j=0}^{\ell-1} 2^{S_j} q^{\ell-1-j}.
 \]
@@ -1221,7 +1227,7 @@ At $m = \ell$, one has $x_\ell = 1$ and $S_\ell = h$, so the left side is $2^h$ 
 Lemma~2 is the case $\ell = 3$.
 
 \begin{named}{Lemma D.3.}
-For an $\ell$-odd cycle through $1$ with $\ell \ge 2$,
+For a cycle of length $\ell$ through $1$ with $\ell \ge 2$,
 \[
 q^\ell < 2^h < (q+1)^\ell.
 \]
@@ -1248,39 +1254,34 @@ Before Theorem~3, finiteness for $\ell$ odd steps through~$1$ was reduced to a p
 
 \begin{named}{Proposition D.4 (reduction to lower bounds).}
 Fix $\ell$.
-If some $\theta > 0$ and $c > 0$ make every element other than $1$ of every $\ell$-odd cycle through $1$ at least $c \cdot q^\theta$, then only finitely many $q$ have such a cycle.
+Suppose there are fixed real numbers $\theta > 0$ and $c > 0$ such that, on every cycle of length $\ell$ through $1$, every element other than $1$ is at least $c \cdot q^\theta$.
+Then only finitely many $q$ have a cycle of length $\ell$ through $1$.
 \end{named}
 
 \begin{proof}
 As for Proposition~B.4, with $h = \ell m + r$, $\beta = 2^{r/\ell}$, $P = \ell q + 1$ and $Q = \ell \cdot 2^m$: Lemma~\ref{lem:power-window} gives $|\beta - P/Q| \ll Q^{-1-\theta}$, and Ridout's theorem applies with $S = \{2\} \cup \{\text{primes dividing }\ell\}$.
 \end{proof}
 
-Theorem~3 makes the reduction unnecessary: Lemma~\ref{lem:near-misses} already supplies those lower bounds.
+This is an earlier and weaker result than Theorem~3. It is conditional on the hypothesis that every element other than $1$ is at least $c \cdot q^\theta$ for fixed real numbers $\theta > 0$ and $c > 0$, whereas Theorem~3 is not.
 
 \section{Computations}
 \label{app:computations}
 
-Three searches are recorded below, and then the checks behind Theorem~1.
-Each search uses the same constraint on $q$.
-For an $\ell$-odd cycle through $1$ with $\ell \ge 2$, Lemma~\ref{lem:power-window} gives $q^\ell < 2^h < (q+1)^\ell$, so $\ell \nmid h$ and $q = \lfloor 2^{h/\ell}\rfloor$.
-The same conclusions hold for a cycle of length $\ell \ge 2$ that need not visit $1$.
-If its elements are $x_0, \ldots, x_{\ell-1}$, the product of the steps is $2^h = \prod_{i=0}^{\ell-1}(q + 1/x_i)$.
-Each factor is greater than $q$ and at most $q+1$.
-The elements are distinct odd positive integers, so some $x_i \ge 3$ and the corresponding factor is at most $q + 1/3$.
-Thus $q^\ell < 2^h < (q+1)^\ell$, and again $\ell \nmid h$ and $q = \lfloor 2^{h/\ell}\rfloor$.
+For a cycle of length $\ell$ through $1$ with $\ell \ge 2$, Lemma~\ref{lem:power-window} gives $q^\ell < 2^h < (q+1)^\ell$, so $\ell \nmid h$ and $q = \lfloor 2^{h/\ell}\rfloor$.
 Length $1$ is Proposition~A.1, and is not searched.
 A search of every $h \le H$ with $\ell \nmid h$ therefore excludes every such cycle with $q < 2^{\lfloor H/\ell \rfloor}$: it would have $2^h < (q+1)^\ell \le 2^{\ell \lfloor H/\ell \rfloor} \le 2^H$, so $h \le H$.
+Searches for a cycle that need not visit $1$, and searches at a fixed $q$, are in the companion paper~\cite{hackman-ii}.
 
 \topic{Cycles through $1$.}
 For each $\ell$ and each $h \le H$ with $\ell \nmid h$, the candidate $q = \lfloor 2^{h/\ell}\rfloor$ is tested by following the orbit of $1$ for $\ell$ odd steps.
 For $\ell = 3$, every $h \le 200{,}000$ was tested.
 Theorem~1 needs only $h < 66{,}003$: $q < 2^{22001}$ and Lemma~\ref{lem:cube-window} give $2^h < 2^{66{,}003}$.
-For each $\ell$ from $4$ to $15$, every $h \le 100{,}000$ was tested.
+For each $\ell$ from $4$ to $20$, every $h \le 100{,}000$ was tested.
 No cycle through $1$ was found.
 \begin{center}
 \begin{tabular}{ccc}
 \multicolumn{3}{c}{\textbf{Cycles through $1$}} \\[0.4em]
-odd steps $\ell$ & $h$ at most & no cycle through $1$ for $q$ below \\
+length $\ell$ & $h$ at most & no cycle through $1$ for $q$ below \\
 $3$ & $200{,}000$ & $2^{66{,}666}$ \\
 $4$ & $100{,}000$ & $2^{25{,}000}$ \\
 $5$ & $100{,}000$ & $2^{20{,}000}$ \\
@@ -1294,39 +1295,11 @@ $12$ & $100{,}000$ & $2^{8{,}333}$ \\
 $13$ & $100{,}000$ & $2^{7{,}692}$ \\
 $14$ & $100{,}000$ & $2^{7{,}142}$ \\
 $15$ & $100{,}000$ & $2^{6{,}666}$ \\
-\end{tabular}
-\end{center}
-
-\topic{Any cycle.}
-The same test, for odd elements that need not include $1$, was run for each $\ell$ from $2$ to $9$ and every $h$ up to the value in the table.
-The only cycles found are those of Conjecture~1 of the companion paper~\cite{hackman-ii}.
-\begin{center}
-\begin{tabular}{ccc}
-\multicolumn{3}{c}{\textbf{Any cycle: only those of Conjecture~1 in the companion paper}} \\[0.4em]
-odd steps $\ell$ & $h$ at most & for $q$ below \\
-$2$ & $9{,}000$ & $2^{4{,}500}$ \\
-$3$ & $7{,}000$ & $2^{2{,}333}$ \\
-$4$ & $5{,}500$ & $2^{1{,}375}$ \\
-$5$ & $4{,}500$ & $2^{900}$ \\
-$6$ & $1{,}400$ & $2^{233}$ \\
-$7$ & $950$ & $2^{135}$ \\
-$8$ & $470$ & $2^{58}$ \\
-$9$ & $320$ & $2^{35}$ \\
-\end{tabular}
-\end{center}
-
-\topic{A fixed $q$.}
-Here $q$ is fixed and the length varies.
-The only possible $h$ are the integers satisfying $q^\ell < 2^h < (q+1)^\ell$; if there is none, that length has no cycle.
-For $q = 5$, lengths $2$ through $20$ produce only $1 \to 3 \to 1$ and two cycles of length $3$.
-For each odd $q$ from $7$ through $25$, lengths $2$ through $16$ produce no cycle.
-The cycles at $q = 181$ were found in the length-$2$ search above, for $h \le 9{,}000$, not in this one.
-\begin{center}
-\begin{tabular}{ccc}
-\multicolumn{3}{c}{\textbf{Cycles at a fixed $q$}} \\[0.4em]
-$q$ & lengths & cycles found \\
-$5$ & $2$ through $20$ & $1 \to 3 \to 1$;\ $13 \to 33 \to 83$;\ $17 \to 43 \to 27$ \\
-$7,9,\ldots,25$ & $2$ through $16$ & none \\
+$16$ & $100{,}000$ & $2^{6{,}250}$ \\
+$17$ & $100{,}000$ & $2^{5{,}882}$ \\
+$18$ & $100{,}000$ & $2^{5{,}555}$ \\
+$19$ & $100{,}000$ & $2^{5{,}263}$ \\
+$20$ & $100{,}000$ & $2^{5{,}000}$ \\
 \end{tabular}
 \end{center}
 
@@ -1336,11 +1309,11 @@ Lemma~4 was also checked numerically for every $k_1 \le 7$ and every odd $x < 20
 In step~3 of the proof of Theorem~1, the two bounds on $a$ were compared for every $f$ from $33{,}000$ to $400{,}000$.
 
 \topic{Digits of $2^{1/3}$ and $2^{2/3}$.}
-A $3$-odd cycle through $1$ forces a long alternating block in the binary expansion of $2^{1/3}$ or of $2^{2/3}$.
+A cycle of length $3$ through $1$ forces a long alternating block in the binary expansion of $2^{1/3}$ or of $2^{2/3}$.
 The block is not present in the digits that were computed, except for $m < 100$, which the search over $h$ already covers.
 
 \begin{named}{Proposition E.1 (digit test).}
-In a $3$-odd cycle through $1$ with $q \ge 17$, write $h = 3m + r$ with $r \in \{1, 2\}$ and set $\beta = 2^{r/3}$.
+In a cycle of length $3$ through $1$ with $q \ge 17$, write $h = 3m + r$ with $r \in \{1, 2\}$ and set $\beta = 2^{r/3}$.
 Then $q = \lfloor 2^m \beta \rfloor$.
 Places $m+1$ through $m + \lfloor m/2 \rfloor - 2$ in the binary expansion of the fractional part of $\beta$ alternate $0, 1, 0, 1, \ldots$, beginning with $0$.
 In particular, for $m \ge 100$, places $m+1$ through $m+48$ alternate in the same way.
@@ -1377,7 +1350,7 @@ For $m \ge 100$, Proposition~E.1 requires places $m+1$ through $m+48$ to alterna
 No such block occurs for any $m$ with $m + 48 \le N$, that is $m \le N - 48$.
 Such an $m$ would give $q = \lfloor 2^m \beta \rfloor < 2^{m+1} \le 2^{N-47} = 2^{1{,}071{,}999{,}953}$, since $\beta < 2$.
 Every $m < 100$ has $h = 3m + r < 300$, which the search $h \le 200{,}000$ includes.
-Together these rule out every $3$-odd cycle through $1$ with $q < 2^{1{,}071{,}999{,}953}$.
+Together these rule out every cycle of length $3$ through $1$ with $q < 2^{1{,}071{,}999{,}953}$.
 
 \topic{Checking Bauer and Bennett (2018).}
 The results of this paper rely heavily on Bauer and Bennett (2018), so the steps that produce their inequality were checked.
@@ -1423,7 +1396,7 @@ What was not recomputed is that prime bound for $x > 2 \times 10^8$, Lemma~4 of 
 
 \topic{Literature.}
 \begin{itemize}
-\item Santos (2020) proves the one- and two-step cases (Propositions~15 and~16) and conjectures that $1$ is periodic only for $q = 5$ and $q = 2^e - 1$ (Conjecture~3).
+\item Santos (2020) proves the one- and two-step cases (Propositions~15 and~16) and conjectures that $1$ lies on a cycle of $C$ only for $q = 5$ and $q = 2^e - 1$ (Conjecture~3).
 His Remark~5 describes three or more odd steps as ``\ldots{} much more difficult to analyze and seems intractable''; Theorem~1 settles three steps.
 The same preprint claims a proof of the Collatz conjecture, which is not accepted; only its elementary propositions are relied on here.
 \item Crandall (1978) and Franco and Pomerance (1995) study when orbits of $qx+1$ maps avoid $1$; Corollary~B.3 matches their mechanism.
