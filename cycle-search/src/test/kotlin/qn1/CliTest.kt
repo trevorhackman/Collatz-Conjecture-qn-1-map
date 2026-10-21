@@ -60,6 +60,10 @@ class CliTest {
         assertEquals(SearchMode.DIGITS, digits.mode)
         assertEquals(DIGIT_PLACES, digits.places)
 
+        val sqrt2 = parseCli(arrayOf("--sqrt2", "--places", "1000"))
+        assertEquals(SearchMode.SQRT2, sqrt2.mode)
+        assertEquals(1000, sqrt2.places)
+
         val tables = parseCli(arrayOf("--tables", "through1"))
         assertEquals(SearchMode.TABLES, tables.mode)
         assertEquals("through1", tables.table)

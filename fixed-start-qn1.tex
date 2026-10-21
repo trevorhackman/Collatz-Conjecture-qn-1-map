@@ -65,6 +65,7 @@ For three odd numbers, once $q$ meets that bound, a lower bound and an upper bou
 Bauer and Bennett (2018) give an irrationality measure whose exponent, about $1.6149$, lies just below the golden ratio, the threshold at which these bounds conflict.
 Every smaller exponent is a finite check.
 For two odd numbers the same conflict uses their exponent $1.465$ for the square root of $2$ (2002).
+Evaluating their Theorem~1.5 at the exponent $1.617$, together with a search of every such cycle with $q < 2^{160{,}000}$, shows that every other cycle with two odd numbers has each of them greater than $2^{2559}$.
 When the fixed integer is $1$ and the cycle has three odd numbers, the bound is $q < 2^{17990}$, and the search in the companion paper already rules out every such cycle.
 \end{abstract}
 
@@ -141,7 +142,7 @@ Section~\ref{sec:computations} records $181 < Q_2(27)$ and $181 < Q_2(35)$.
 
 Section~\ref{sec:length-2} takes up cycles of length $2$ with no element fixed in advance.
 The three known cycles are the only ones with $D = 7$.
-Every other cycle of length $2$ has $q \ge 2^{160{,}000}$ and $t \ge 85{,}603$.
+Every other cycle of length $2$ has $q \ge 2^{160{,}000}$, $t \ge 85{,}603$, and every odd element greater than $2^{2559}$.
 
 Length $4$ with $h$ odd remains open, as in the companion paper: the roots are $2^{1/4}$ and $2^{3/4}$, and a fixed odd part does not supply an exponent below $\varphi$ for them.
 Corollary~\ref{cor:longer} covers the longer classes whose roots are only $\sqrt{2}$, or only the cube roots of $2$.
@@ -166,6 +167,15 @@ q x_{i-1} + 1 = 2^{k_i} x_i
 \]
 so $k_i = v_2(q \cdot x_{i-1} + 1)$.
 The total number of halvings is $h = k_1 + \cdots + k_\ell$, and $S_i = k_1 + \cdots + k_i$.
+
+\topic{Approximation exponents.}
+Let $\theta$ be irrational and let $\mathcal{D}$ be a set of positive integers.
+Then $\theta$ has effective approximation exponent $\mu$ with respect to $\mathcal{D}$ when there are explicit constants $c > 0$ and $d_0$ such that
+\[
+\left|\theta - \frac{p}{d}\right| > c \cdot d^{-\mu}
+\]
+for every integer $p$ and every $d \in \mathcal{D}$ with $d \ge d_0$.
+Write $\mathcal{D}_\ell$ for the set of denominators $2^j$ and $\ell \cdot 2^j$, where $j$ is a nonnegative integer.
 
 \topic{The golden ratio.}
 The golden ratio is $\varphi = (1 + \sqrt{5})/2$.
@@ -597,6 +607,19 @@ That conclusion does not change the formula for $Q_2(1)$.
 \section{Cycles of length $2$}
 \label{sec:length-2}
 
+The aim of the research in this section was to prove that the only cycles of length $2$ are $1 \to 3$, $35 \to 99$, and $27 \to 611$.
+That is more ambitious than Theorem~1 of the companion paper, which only rules out a cycle of length $3$ through $1$.
+Here the starting value may be any odd positive integer.
+A cycle of length $2$ was selected because it's the smallest non-trivial length, making it look like the easiest problem of this kind.
+
+For a fixed starting value, Theorem~\ref{thm:bound} bounds $q$, and a computation can finish the search.
+The bound grows with the starting value, so the same search does not cover every starting value at once.
+The best path found toward a proof for every starting value is a smaller effective approximation exponent for $\sqrt{2}$.
+Proposition~\ref{prop:exponent} shows that an effective approximation exponent of $1.317$ would give a bound on $q$ for every starting value.
+However, no method was found to improve the effective approximation exponent $1.465$ of Bauer and Bennett (2002)~\cite{bauer-bennett-2002}.
+
+The aim was not achieved, but this section records the properties of a cycle of length $2$, and large bounds that follow from those properties by a modest computation.
+
 Throughout this section, $x \to y \to x$ is a cycle of length $2$, and $x$ is its smallest element.
 The steps are $qx + 1 = 2^{k_1} y$ and $qy + 1 = 2^{k_2} x$, and $h = k_1 + k_2$.
 Lemma~\ref{lem:any-window} gives $q = \lfloor 2^{h/2} \rfloor$ and $h$ odd.
@@ -896,8 +919,154 @@ Combined with $x < 2q/D$ and $D > 2^{0.535 m + 1}$,
 and $x < 2^{0.465 m + 1/2}$.
 \end{proof}
 
+\begin{named}{Lemma 7.}
+\marklemma{7}{lem:onset-three}
+Any cycle of length $2$ other than $1 \to 3$, $35 \to 99$ and $27 \to 611$ has every odd element greater than $2^{2559}$.
+\end{named}
+
+\begin{proof}
+Suppose the cycle is other than those three, and suppose $x \le 2^{2559}$.
+
+Theorem~1.5 of Bauer and Bennett (2002)~\cite{bauer-bennett-2002} applies to the solution $181^2 + 7 = 2^{15}$, with base $2$, with $a = 1$, with the power of $2$ equal to $15$, with constant term $7$ and with $\alpha = 3$, taking the odd part to be $x$.
+In that theorem $\log$ is the natural logarithm.
+Let $\xi = 7/2^{15}$.
+Formula~(1.2) of that paper gives $r(3, \xi) = 0.250030044752$, and formula~(1.3) gives $F(r(3, \xi), 3, \xi) = 9.479962374117$.
+Table~(1.17) gives $c_1(3) = 2.458$ and $\log d_1(3) = -17.335$.
+The remaining parameters in that theorem are $\Delta_0 = 1$, $\kappa(7) = 4$, $\Omega = 2^{17}$, $m_1 = 17$, $\Omega_1 = 2^{17}$ and $\Delta_1 = 1$.
+Formulas~(1.13) and~(1.16) do not depend on $x$.
+They give
+\[
+\chi_1 = 4.968969066213, \qquad \chi_3 = 8.684694 \times 10^{15}
+\]
+and
+\[
+\lambda_1 = \frac{\log \chi_3}{2 \cdot 17 \cdot \log 2} = 1.5572763652.
+\]
+Let $\lambda_2 = 1.617$ be a fixed real number.
+Then $\lambda_2 < \varphi$.
+
+Let $c_2(x)$ be the constant in Theorem~1.5 at odd part $x$, and let $m_2(x)$ be the minimum in (1.15) at the prime $2$.
+Define the real numbers
+\[
+k(x) = \frac{\log\bigl(1/c_2(x)\bigr)}{(\lambda_2 - \lambda_1)\log 2}, \qquad k_0(x) = \max\bigl(m_2(x) - \tfrac12,\, k(x)\bigr).
+\]
+Theorem~1.5 gives, for every integer $p$ and every integer $j \ge m_2(x) - 1/2$,
+\[
+\Bigl| \sqrt{2} - \frac{p}{x\, 2^{j}} \Bigr| > c_2(x)\, 2^{-\lambda_1 j}.
+\]
+For every integer $j \ge k(x)$ one has $c_2(x)\, 2^{-\lambda_1 j} \ge 2^{-\lambda_2 j}$.
+Therefore, for every integer $p$ and every integer $j \ge k_0(x)$,
+\[
+\Bigl| \sqrt{2} - \frac{p}{x\, 2^{j}} \Bigr| > 2^{-\lambda_2 j}.
+\]
+Formula~(1.14), at $\alpha = 3$ and at odd part $x$, increases with $x$, and $c_2(x)$ decreases as $x$ increases.
+Both $m_2(x)$ and $k(x)$ increase with $x$, and so does $k_0(x)$.
+At $x = 1$ one has $k_0(1) = 2840.688\ldots$, so $|\sqrt{2} - p/2^{j}| > 2^{-\lambda_2 j}$ for every integer $j \ge 2841$.
+At $x = 2^{2559}$ one has $k_0(2^{2559}) = 77426.543\ldots$.
+Since $x \le 2^{2559}$, one has $k_0(x) \le k_0(2^{2559})$.
+
+Let $\gamma = 1 - \lambda_2 + 1/\lambda_2$ and
+\[
+A(x) = \frac{x}{2}\, 2^{1/2}
+\Biggl( \frac{1}{2^{1/2}\,(1+1/x)} \Biggr)^{1/\lambda_2},
+\qquad
+Q_*(x) = \Biggl( \frac{1/(2A(x)) + 2}{2^{1-\lambda_2}} \Biggr)^{1/\gamma}.
+\]
+Here $A(x)$ increases with $x$, so $Q_*(x)$ decreases with $x$, and $\log_2 Q_*(1) < 1651$.
+
+Lemma~\ref{lem:any-window} gives $2^{h/2} = q + \delta$ with $0 < \delta < 1$.
+Write $h = 2m + 1$ with $m$ a nonnegative integer, and let $j = m - k_1$.
+Lemma~\ref{lem:length-2} gives $k_1 = m - (t-1)/2$, so $j = (t-1)/2$ is a nonnegative integer and $h/2 - k_1 = j + 1/2$.
+From $qx + 1 = 2^{k_1} y$,
+\[
+\frac{y}{x\, 2^{j}} = 2^{1/2}(1 + \rho), \qquad \rho = \frac{1/x - \delta}{q + \delta}.
+\]
+Then $|\rho| < (1 + 1/x)/q$, and therefore $q < (1 + 1/x)/|\rho|$.
+
+If $j \ge k_0(x)$, the argument in the proof of Theorem~\ref{thm:bound} for length $2$ applies with $\lambda_2$ in place of $1.465$ and with $k_0(x)$ in place of $j_0(x)$.
+The constant in front of $2^{-\lambda_2 j}$ is $1$, and $1/(2A(x)) + 2$ is the one other element, divided by the length, plus the length.
+That argument gives $q < Q_*(x)$, so $q < 2^{1651}$.
+
+If $j < k_0(x)$, then $j \le 77426$.
+If $|y - x\, 2^{j}\, 2^{1/2}| > 1$, then $|\rho| > 1/(x\, 2^{j}\, 2^{1/2})$, so
+\[
+q < (1 + 1/x)\, x\, 2^{j}\, 2^{1/2} < 3\, x\, 2^{j} \le 3 \cdot 2^{2559 + 77426} < 2^{79987}.
+\]
+If $|y - x\, 2^{j}\, 2^{1/2}| \le 1$, then $y + x\, 2^{j}\, 2^{1/2} \le 2x\, 2^{j}\, 2^{1/2} + 1 < 4x\, 2^{j}$.
+The integers $y$ and $x\, 2^{j}$ satisfy $y^2 \ne 2x^2\, 4^{j}$, since $2^{1/2}$ is irrational.
+\[
+\Bigl| 2^{1/2} - \frac{y}{x\, 2^{j}} \Bigr| = \frac{|2x^2\, 4^{j} - y^2|}{x\, 2^{j}\, |y + x\, 2^{j}\, 2^{1/2}|} > \frac{1}{4x^2\, 4^{j}}.
+\]
+Hence $|\rho| > 1/(4 \cdot 2^{1/2}\, x^2\, 4^{j})$ and
+\[
+q < (1 + 1/x) \cdot 4 \cdot 2^{1/2}\, x^2\, 4^{j} \le 8 \cdot 2^{1/2}\, x^2\, 4^{j} < 12\, x^2\, 4^{j},
+\]
+so $\log_2 q < 2\log_2 x + 2j + 4 < 2\log_2 x + 2k_0(x) + 4$.
+The quantity $2\log_2 x + 2k_0(x) + 4$ increases with $x$, and at $x = 2^{2559}$ it is less than $160{,}000$.
+In both subcases $q < 2^{160{,}000}$.
+
+Section~\ref{sec:computations} excludes every cycle of length $2$ with $q < 2^{160{,}000}$ except $1 \to 3$, $35 \to 99$ and $27 \to 611$.
+Each of those has its odd elements in $\{1, 3, 27, 35, 99, 611\}$.
+The supposition $x \le 2^{2559}$ would make the cycle one of those three.
+Therefore $x > 2^{2559}$.
+Every odd element is at least $x$, so every odd element is greater than $2^{2559}$.
+\end{proof}
+
+\begin{named}{Proposition 6.}
+\markstmt{6}{prop:exponent}
+Let $\mu$ be a fixed real number with $1 < \mu \le 1.317$.
+Suppose that for every integer $m \ge 160{,}000$ and every integer $p$,
+\[
+\Bigl| \sqrt{2} - \frac{p}{2^{m}} \Bigr| > 2^{-\mu m}.
+\]
+Let the cycle be other than $1 \to 3$, $35 \to 99$, and $27 \to 611$, and write $h = 2m + 1$.
+Let $j$ be the largest integer such that $x \cdot 2^{-0.465 j} \ge 1/2$, and set
+\[
+B = \bigl(1 + 1/x\bigr)\, x\, 2^{1/2}\, 2^{j}.
+\]
+Then $B < q$.
+\end{named}
+
+\begin{proof}
+Proposition~\ref{prop:other-two} gives $m \ge 160{,}000$.
+Write $2^{h/2} = q + \delta$ with $0 < \delta < 1$.
+The hypothesis at $p = q$ gives $\lvert \sqrt{2} - q/2^{m} \rvert > 2^{-\mu m}$.
+Since that distance is $\delta/2^{m}$, one has $\delta > 2^{(1-\mu)m}$.
+Then $D = \delta(2q + \delta) > 2q\delta$, so
+\[
+\log_2 D > 1 + \log_2 q + (1-\mu)m.
+\]
+Lemma~\ref{lem:length-2} gives $x = (q + 2^{k_1})/D$ and $2^{k_1} \le q - 1$, so $x < 2q/D$ and
+\[
+\log_2 x < 1 + \log_2 q - \log_2 D < (\mu - 1)m.
+\]
+Since $\mu \le 1.317$, one has $\log_2 x < 0.317\, m$.
+The integer $j$ satisfies $j \le \log_2(2x)/0.465$, so $2^{j} \le (2x)^{1/0.465}$.
+Since $x \ge 1$, one has $1 + 1/x \le 2$, and
+\[
+\log_2 B \le 1 + \log_2 x + \tfrac12 + \frac{1 + \log_2 x}{0.465}.
+\]
+Hence, since $1/0.465 = 200/93$,
+\begin{align*}
+\log_2 B
+&< \tfrac32 + 0.317\, m + \frac{1 + 0.317\, m}{0.465} \\
+&= \tfrac32 + \frac{200}{93} + m \cdot \frac{317}{1000} \cdot \frac{293}{93} \\
+&= \frac{679}{186} + m \cdot \frac{92{,}881}{93{,}000}.
+\end{align*}
+Here $1 - 92881/93000 = 119/93000$, and
+\[
+m - \log_2 B > m \cdot \frac{119}{93{,}000} - \frac{679}{186} \ge 160{,}000 \cdot \frac{119}{93{,}000} - \frac{679}{186} > 200.
+\]
+The proof of Proposition~\ref{prop:other-two} records $q \ge 2^{m} + 1$, so $\log_2 q > m$.
+Therefore $\log_2 B < m < \log_2 q$, and $B < q$.
+
+The proof of Theorem~\ref{thm:bound} for length $2$ records that every such $j$ fails the inequality of Corollary~1.4 of Bauer and Bennett (2002), and that $Q_2(x)$ is at least $(1+1/x)\, x\, 2^{1/2}\, 2^{j}$ even when the distance from $x\, 2^{j}\sqrt{2}$ to an odd integer is $1$.
+That quantity is $B$, so $Q_2(x) \ge B$.
+\end{proof}
+
 The case that remains is $u \ge 3$.
-Proposition~\ref{prop:other-two} puts $q \ge 2^{160{,}000}$, $D \ge 15$, and $t \ge 85{,}603$, with $D$ dividing $2^t - 1$ and $(q + 2^{(h - t)/2})/D$ an odd integer at least $37$.
+Proposition~\ref{prop:other-two} puts $q \ge 2^{160{,}000}$, $D \ge 15$, and $t \ge 85{,}603$, with $D$ dividing $2^t - 1$ and $(q + 2^{(h - t)/2})/D$ an odd integer.
+Lemma~\ref{lem:onset-three} gives that this odd integer is greater than $2^{2559}$.
 Lemma~\ref{lem:linear-two} gives $k_1 < (1.465/2)\, m - (\log_2 3 - 1)/2$, $t > 0.535 m + \log_2 3$, and $x < 2^{0.465 m + 1/2}$.
 
 \section{Longer cycles}
@@ -1161,7 +1330,7 @@ Conjecture~\ref{conj:all} is open.
 Theorem~\ref{thm:finite} gives, for each $\ell \ge 2$, only finitely many $q$ with a cycle of length $\ell$, with no bound and no classification.
 A bound in terms of a fixed odd element, for lengths $2$ and $3$, is Theorem~\ref{thm:bound}, and for the classes in Corollary~\ref{cor:longer} it is that corollary.
 A uniform bound on $q$ remains open.
-For length $2$, Section~\ref{sec:length-2} leaves the case $u \ge 3$.
+For length $2$, Section~\ref{sec:length-2} leaves the case $u \ge 3$, with every odd element greater than $2^{2559}$.
 The heuristic of Section~\ref{sec:all-cycles} is not a proof, and the searches leave infinitely many pairs $(\ell, h)$ unchecked.
 \item \textbf{Novelty.}
 Franco's 1990 thesis~\cite{franco-thesis} on Diophantine approximation and the $qx+1$ problem could not be consulted and should be checked for overlap, including with Theorem~\ref{thm:finite}.

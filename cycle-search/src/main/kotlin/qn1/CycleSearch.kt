@@ -97,6 +97,9 @@ private val MIN_ODD_Q: BigInteger = BigInteger.valueOf(3)
  *
  * `--digits` scans the first [DIGIT_PLACES] binary places of 2^{1/3} and of 2^{2/3}.
  * `--places` scans fewer. The scan reports alternating blocks of length [DIGIT_BLOCK] for m >= [DIGIT_M_MIN].
+ *
+ * `--sqrt2` scans the first [SQRT2_PLACES] binary places of √2.
+ * `--places` scans fewer. The scan reports the longest zero run for m >= [SQRT2_M_MIN].
  */
 fun main(args: Array<String>) {
     val cli = try {
@@ -110,6 +113,7 @@ fun main(args: Array<String>) {
         SearchMode.BOUNDS -> runBounds(cli.bound!!, cli.x)
         SearchMode.TABLES -> runTables(cli.table!!, cli.length, cli.maxH, cli.q, cli.maxLength)
         SearchMode.DIGITS -> runDigits(cli.places!!)
+        SearchMode.SQRT2 -> runSqrt2(cli.places!!)
         SearchMode.ANY, SearchMode.THROUGH_1 -> runLengthSearch(cli)
     }
 }
@@ -137,6 +141,7 @@ internal fun usage(): Nothing {
     System.err.println("       --tables through1|any [--length N] [--max-h N]")
     System.err.println("       --tables q [--q N] [--max-length N]")
     System.err.println("       --digits [--places N]")
+    System.err.println("       --sqrt2 [--places N]")
     exitProcess(1)
 }
 

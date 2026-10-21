@@ -25,8 +25,9 @@ Each line is `./search …` from `cycle-search/`. An omitted option takes the de
 | `--bounds q2star [--x N]` | Powers of two above Q_{2,\*}(x) | odd x from 1 through 35 |
 | `--bounds q2 [--x N]` | Q_2(x) | odd x from 1 through 2043 |
 | `--digits [--places N]` | Binary places of 2^{1/3} and 2^{2/3} | 1072000000 places |
+| `--sqrt2 [--places N]` | Binary places of √2 | 1072000000 places |
 
-`--length` on a table selects that published row, and `--max-h` replaces its limit. `--tables any --length 6` is length 6 through h ≤ 1400. `--tables any --length 6 --max-h 100` stops at h ≤ 100. `--min-length` starts a fixed-q search at that length: `--q 1093 --min-length 201 --max-length 250` searches lengths 201 through 250. `--bounds q2 --x 1` prints Q_2(1). `--digits --places 10000` scans fewer places.
+`--length` on a table selects that published row, and `--max-h` replaces its limit. `--tables any --length 6` is length 6 through h ≤ 1400. `--tables any --length 6 --max-h 100` stops at h ≤ 100. `--min-length` starts a fixed-q search at that length: `--q 1093 --min-length 201 --max-length 250` searches lengths 201 through 250. `--bounds q2 --x 1` prints Q_2(1). `--digits --places 10000` and `--sqrt2 --places 10000` scan fewer places.
 
 `--through-1` follows the orbit of 1 and does not enumerate halving tuples, so its halving bound can sit far above an any-starting-value search. With no arguments it stops at h ≤ 66100. Theorem 1 needs only h < 66003. The printed through-1 table is `--tables through1`, and its length-3 row runs through h ≤ 200000.
 
@@ -62,6 +63,8 @@ Paper II, “Any cycle.” Odd elements that need not include 1. One row is `--l
 Length 2 is a faster search than the longer lengths. It has one free halving count, the power of 2 that matches \(-q\) modulo the gap, so the program doubles one residue. Length 3 still walks counts against a residue table on one thread, and lengths 4 through 9 store one half of the counts and walk the other.
 
 Length 2 was the length of interest, so its time limit was raised and the search was run further. Through \(h \le 160000\) it took 146 s. The same search through \(h \le 320000\) took 1360 s. Lengths 3 through 9 stay at a much smaller \(h\), where each takes about two or three minutes.
+
+That search and Theorem 1.5 of Bauer and Bennett (2002), at \(\alpha = 3\) with the equation \(181^2 + 7 = 2^{15}\) and exponent \(1.617\), give that every other length-2 cycle has every odd element greater than \(2^{2559}\). For odd part \(1\) the inequality with exponent \(1.617\) holds from \(j = 2841\). Paper II records the constants.
 
 | ℓ | h searched | No other cycle for | Exceptions | Time |
 |---|---|---|---|---|
@@ -106,6 +109,12 @@ Paper I, “Cycles through 1.” Length 2 is not a search bound: Beukers's theor
 `./search --digits`
 
 Paper I, “Digits of 2^{1/3} and 2^{2/3}.” Both roots are scanned. With no alternating block of length 48 from m = 100 through m = 1071999952, that rules out every cycle of length 3 through 1 with q < 2^1071999953. Every m < 100 has h = 3m+r < 300 and is covered by the length-3 row. The scan took 170 s.
+
+### Digits of √2
+
+`./search --sqrt2`
+
+Paper II, length 2. Place 1 is the bit of √2 just below the integer bit, and the bits of {2^m √2} are places m+1 onward. The length-2 search through h ≤ 320000 covers every m below 160000, since h = 2m+1. The scan reports the longest run of zeros at or after that m. If that run has length R, then δ ≥ 2^{-(R+1)} and the smallest element of a cycle at such an m is below 2^{R+1}.
 
 ### Fixed q
 
