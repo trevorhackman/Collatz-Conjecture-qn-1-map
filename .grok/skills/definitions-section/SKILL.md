@@ -6,7 +6,11 @@ description: >
   lemmas or theorems, and no notation that has not been introduced yet.
   Use when the user asks for a definitions section, a notation section, or
   to define a term, or when a definition mentions lemmas, proofs, or symbols
-  defined later. Also /definitions-section.
+  defined later, or when prose uses a word this section does not define,
+  such as empty or emptiness, or when a new symbol has no type, such as
+  an explicit constant \(c\). Set the type of every new symbol. Constant
+  takes a type: a constant real number, a constant integer, or a constant
+  rational. Also /definitions-section.
 ---
 
 # Definitions section
@@ -21,6 +25,7 @@ Each entry defines one term a reader needs before the proofs. Write it so someon
 
 ## An entry does not contain
 
+- An English word standing in for a fact. This is a maths paper not an english essay or email. Define the word in this section, or write the fact and do not use the word. "Emptiness" is not a term. "No such cycle exists" is the fact.
 - A proof, a derivation, or an existence claim.
 - A lemma, theorem, proposition, corollary, or section from later in the paper.
 - The numerical bounds. Those belong in the statements that prove them.
@@ -31,6 +36,14 @@ Each entry defines one term a reader needs before the proofs. Write it so someon
 One term per block. A blank line in the source is not a visible gap when the paragraph skip is zero, so put an explicit vertical space between terms.
 
 State each quantity in its own sentence. Do not start in words, interrupt the sentence with a display, and continue with "where".
+
+## Type every new symbol
+
+A new symbol has a type in the sentence that introduces it. An inequality is not a type. Constant alone is not a type. Say a constant real number, a constant integer, or a constant rational. Explicit is not a type.
+
+Not: "there are explicit constants \(c > 0\) and \(d_0\) such that \(\lvert\theta - p/d\rvert > c \cdot d^{-\mu}\)."
+
+Write: "there exist an explicit constant real number \(c > 0\) and an explicit constant positive integer \(d_0\) such that, for every integer \(p\) and every positive integer \(d \in \mathcal{D}\) with \(d \ge d_0\), \(\lvert\theta - p/d\rvert > c \cdot d^{-\mu}\)." Here \(c\) is a constant real number, and \(d_0\) is a constant positive integer.
 
 When the user corrects the meaning, use their words. For this paper, \(\delta\) is the fractional part of \(2^{h/\ell}\), and the window is a lower bound and an upper bound on \(\delta\):
 
