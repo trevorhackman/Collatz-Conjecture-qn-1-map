@@ -5,29 +5,29 @@ Two papers on cycles of the qn+1 map, and the searches behind their tables.
 ## Contents
 
 - `cycles-through-1-qn1.tex`, built PDF `out/cycles-through-1-qn1.pdf` — Paper I. No cycles of length 3, and constraints on longer cycles through 1.
-- `fixed-start-qn1.tex`, built PDF `out/fixed-start-qn1.pdf` — Paper II. Finiteness for each length, and an explicit bound on q when a fixed odd element lies on a cycle of length 2 or 3.
+- `fixed-start-qn1.tex`, built PDF `out/fixed-start-qn1.pdf` — Paper II. Finiteness for each length, and an explicit bound on q when a constant odd element lies on a cycle of length 2 or 3.
 - `cycle-search/` — Gradle Kotlin project. Run the commands below from that directory.
 
 ## Commands
 
 Each line is `./search …` from `cycle-search/`. An omitted option takes the default in the last column. The `--tables` commands run every published row.
 
-| Command | Search | Default |
-|---|---|---|
-| `--length N --max-h N` | One length, every odd starting value | `--length 6 --max-h 1500` |
-| `--through-1 --length N --max-h N` | One length, orbit of 1 only | `--length 3 --max-h 66100` |
-| `--q N [--min-length N] --max-length N` | One odd q, from the minimum length through N | `--q 5 --max-length 20`, minimum 2 |
-| `--tables any [--length N] [--max-h N]` | The any-cycle table | every published row |
-| `--tables through1 [--length N] [--max-h N]` | The through-1 table | every published row |
-| `--tables q [--q N] [--max-length N]` | The fixed-q table | q = 5 through length 20, then odd q from 7 through 25 through length 16 |
-| `--bounds q3star [--x N]` | Powers of two above Q_{3,\*}(x) | odd x from 1 through 35 |
-| `--bounds q30 [--x N]` | Powers of two above Q_{3,0}(x) | odd x from 1 through 35 |
-| `--bounds q2star [--x N]` | Powers of two above Q_{2,\*}(x) | odd x from 1 through 35 |
-| `--bounds q2 [--x N]` | Q_2(x) | odd x from 1 through 2043 |
-| `--digits [--places N]` | Binary places of 2^{1/3} and 2^{2/3} | 1072000000 places |
-| `--sqrt2 [--places N]` | Binary places of √2 | 1072000000 places |
+| Command                                      | Search                                       | Default                                                                 |
+| -------------------------------------------- | -------------------------------------------- | ----------------------------------------------------------------------- |
+| `--length N --max-h N`                       | One length, every odd starting value         | `--length 6 --max-h 1500`                                               |
+| `--through-1 --length N --max-h N`           | One length, orbit of 1 only                  | `--length 3 --max-h 66100`                                              |
+| `--q N [--min-length N] --max-length N`      | One odd q, from the minimum length through N | `--q 5 --max-length 20`, minimum 2                                      |
+| `--tables any [--length N] [--max-h N]`      | The any-cycle table                          | every published row                                                     |
+| `--tables through1 [--length N] [--max-h N]` | The through-1 table                          | every published row                                                     |
+| `--tables q [--q N] [--max-length N]`        | The constant-q table                            | q = 5 through length 20, then odd q from 7 through 25 through length 16 |
+| `--bounds q3star [--x N]`                    | Powers of two above Q_{3,\*}(x)                | odd x from 1 through 35                                                 |
+| `--bounds q30 [--x N]`                       | Powers of two above Q_{3,0}(x)               | odd x from 1 through 35                                                 |
+| `--bounds q2star [--x N]`                    | Powers of two above Q_{2,\*}(x)                | odd x from 1 through 35                                                 |
+| `--bounds q2 [--x N]`                        | Q_2(x)                                       | odd x from 1 through 2043                                               |
+| `--digits cbrt2 [--places N]`                | Binary places of 2^{1/3} and 2^{2/3}         | 1072000000 places                                                       |
+| `--digits sqrt2 [--places N]`                | Binary places of √2                          | 1072000000 places                                                       |
 
-`--length` on a table selects that published row, and `--max-h` replaces its limit. `--tables any --length 6` is length 6 through h ≤ 1400. `--tables any --length 6 --max-h 100` stops at h ≤ 100. `--min-length` starts a fixed-q search at that length: `--q 1093 --min-length 201 --max-length 250` searches lengths 201 through 250. `--bounds q2 --x 1` prints Q_2(1). `--digits --places 10000` and `--sqrt2 --places 10000` scan fewer places.
+`--length` on a table selects that published row, and `--max-h` replaces its limit. `--tables any --length 6` is length 6 through h ≤ 1400. `--tables any --length 6 --max-h 100` stops at h ≤ 100. `--min-length` starts a constant-q search at that length: `--q 1093 --min-length 201 --max-length 250` searches lengths 201 through 250. `--bounds q2 --x 1` prints Q_2(1). `--digits cbrt2 --places 10000` and `--digits sqrt2 --places 10000` scan fewer places.
 
 `--through-1` follows the orbit of 1 and does not enumerate halving tuples, so its halving bound can sit far above an any-starting-value search. With no arguments it stops at h ≤ 66100. Theorem 1 needs only h < 66003. The printed through-1 table is `--tables through1`, and its length-3 row runs through h ≤ 200000.
 
@@ -39,13 +39,73 @@ The runs below were done one at a time on a MacBook Pro with an Apple M4 Pro, 14
 
 Author: Trevor Hackman
 
-Paper I proves that 1 never lies on a cycle with exactly three odd numbers, for odd q ≥ 3. For every such q at least 2^22001, a lower bound and an upper bound cannot hold at the same time. Every smaller q has h < 66003. The length-3 search through h ≤ 200000 rules those out, and the digit scan rules out q < 2^1071999953. For each longer length, only finitely many q have 1 on a cycle, and that finiteness gives no bound. When the roots of 2 for that length have an approximation exponent below the golden ratio, the same comparison produces a bound that a finite search can finish.
+Paper I proves that 1 never lies on a cycle with exactly three odd numbers, for odd q ≥ 3. For every such q at least 2^22001, a lower bound and an upper bound cannot hold at the same time. Every smaller q has h < 66003. The length-3 search through h ≤ 200000 rules those out, and the digit scan rules out q < 2^1071999953. For each longer length, only finitely many q have 1 on a cycle, and that finiteness gives no bound. When the roots of 2 for that length have a restricted irrationality exponent below the golden ratio, the same comparison produces a bound that a finite search can finish.
 
-Paper II proves that each length at least 2 has only finitely many odd q with a cycle of that length, again with no bound. If a fixed odd positive integer x lies on a cycle of length 2 or 3, then q lies below an explicit bound depending only on x. For x = 1 and length 3 that bound is q < 2^17990, which the search in Paper I already covers.
+Paper II proves that each length at least 2 has only finitely many odd q with a cycle of that length, again with no bound. If a constant odd positive integer x lies on a cycle of length 2 or 3, then q lies below an explicit bound depending only on x. For x = 1 and length 3 that bound is q < 2^17990, which the search in Paper I already covers.
+
+## Non-English letters
+
+\(\ell\) is the script form of l. The second column is the English name. A subscript or a prime only labels that same letter, so \(\mu_2\) is mu and \(\theta_i\) is theta. Phi is printed in the open form \(\varphi\), and epsilon in the form \(\varepsilon\). Mu is said mew, phi is said fie, theta is said thay-tuh, eta is said ay-tuh, rho is said row, tau rhymes with cow, lambda is said lam-duh, kappa is said kap-uh, chi is said kye, xi is said ksigh, and omega is said oh-may-guh.
+
+| Symbol | Name | In these papers |
+| --- | --- | --- |
+| \(\ell\) | ell | The length of a cycle: how many distinct odd numbers lie on it. |
+| \(\alpha\) | alpha | An algebraic irrational, in the statement of Ridout's theorem. In Paper II it is also the positive real \(\mu(\mu-1)/\gamma\). |
+| \(\beta\) | beta | In Paper I, the root \(2^{r/\ell}\), including \(2^{1/3}\) and \(2^{2/3}\). In Paper II, the positive real \(\mu(\mu-1)\). |
+| \(\gamma\) | gamma | The positive real \(1 - \mu + 1/\mu\). It is positive when \(\mu\) lies below the golden ratio. The labels \(\gamma_2\) and \(\gamma_3\) are this quantity at lengths 2 and 3. |
+| \(\delta\) | delta | The fractional part of \(2^{h/\ell}\), so \(2^{h/\ell} = q + \delta\) with \(0 < \delta < 1\). |
+| \(\Delta\) | capital delta | The parameters \(\Delta_0\) and \(\Delta_1\) in Theorem 1.5 of Bauer and Bennett (2002). In the application here both equal 1. |
+| \(\varepsilon\) | epsilon | A positive real. In Ridout's theorem it is the extra room in the exponent of an approximation. In Paper I, \(\varepsilon_i\) is the factor in \(x_i \, 2^{S_i} = q^i(1 + \varepsilon_i)\). |
+| \(\eta\) | eta | A positive real. Ridout's theorem supplies it as a lower bound on certain distances and gives no formula for its value. |
+| \(\theta\) | theta | An irrational real number, in the definition of a restricted irrationality exponent. On a cycle it is often the root \(2^{r/\ell}\), and \(\theta_i = 2^{ir/\ell}\). In two estimates it is also a constant positive real used as an exponent. |
+| \(\Theta\) | capital theta | The set of real numbers \(2^{t/\ell}\) with \(1 \le t \le \ell(\ell-1)\) and with \(\ell\) not dividing \(t\). |
+| \(\kappa\) | kappa | The parameter \(\kappa(7)\) in Theorem 1.5 of Bauer and Bennett (2002). In the application here it equals 4. |
+| \(\lambda\) | lambda | The real numbers \(\lambda_1\) and \(\lambda_2\) from Bauer and Bennett (2002). Here \(\lambda_2\) is the constant real 1.617. |
+| \(\Lambda\) | capital lambda | A linear form in logarithms in Bauer and Bennett (2018). Beukers's lemma is that one choice of this form is nonzero. In Paper II the same letter is also a logarithm used to bound \(q\). |
+| \(\mu\) | mu | A restricted irrationality exponent of an irrational \(\theta\): a real \(\mu\) for which \(\theta\) stays at least \(c \cdot d^{-\mu}\) away from every fraction \(p/d\) whose denominator \(d\) lies in a given set. The labels \(\mu_2\) and \(\mu_3\) are the exponents used at lengths 2 and 3. |
+| \(\xi\) | xi | The rational \(7/2^{15}\), a parameter in Theorem 1.5 of Bauer and Bennett (2002). |
+| \(\Pi\) | capital pi | A product built from Padé approximants in Bauer and Bennett (2018). |
+| \(\prod\) | capital pi | The product sign. Both papers use it to multiply a run of factors, including the product that equals \(2^h\). |
+| \(\rho\) | rho | The relative error of a near miss. In Paper I, \(x_i = 2^{n_i/\ell}(1+\rho_i)\). In Paper II, \(x_i = x \, 2^{n_i/\ell}(1+\rho_i)\). |
+| \(\sigma\) | sigma | The sum of the reciprocals of the odd numbers on the cycle. |
+| \(\sum\) | capital sigma | The summation sign. Both papers use it to add a run of terms, including the sum of reciprocals that defines \(\sigma\). |
+| \(\tau\) | tau | The input to an auxiliary function \(F\) in Bauer and Bennett (2018). |
+| \(\varphi\) | phi | The golden ratio \((1 + \sqrt{5})/2\). |
+| \(\chi\) | chi | The parameters \(\chi_1\), \(\chi_2\), and \(\chi_3\) in Theorem 1.5 of Bauer and Bennett (2002). |
+| \(\Omega\) | capital omega | The parameters \(\Omega\) and \(\Omega_1\) in Theorem 1.5 of Bauer and Bennett (2002). In the application here both equal \(2^{17}\). |
+
+## Predicted mathematical strength & relevance of the results of paper I and II
+
+Mathematical Strength ranks a general theorem above the special case it implies, and a proof that constrains every q above a search that only pushes a numerical fence. Novelty ranks how much of the conclusion was not already in Santos, Beukers, Franco, Ridout, or Bauer and Bennett.
+
+### Mathematical Strength
+
+1. **Paper II Theorem 3**, in the cases **Paper II Corollary 6** and **Paper II Corollary 7.** A named odd x on a cycle of length 3 forces q < Q_3(x), and on a cycle of length 2 forces q < Q_2(x).
+2. **Paper I Theorem 2.** A restricted irrationality exponent below the golden ratio puts every cycle through 1 of that length under a computable bound.
+3. **Paper I Theorem 1.** The number 1 lies on no cycle of length 3. This is Paper I Theorem 2 at length 3, with the finite check finished.
+4. **Paper II Theorem 2.** Each length at least 2 occurs for only finitely many odd q, for a cycle through any elements. No bound.
+5. **Paper II Corollary 15.** The same explicit bound on q, for a named odd element, when ℓ = 2^a and h ≡ ℓ/2 (mod ℓ), or ℓ = 3 · 2^a and h ≡ ℓ/3 or 2ℓ/3 (mod ℓ).
+6. **Paper I Corollary 12**, **Paper I Corollary 13**, and **Paper I Corollary 14.** Those classes for cycles through 1. Paper I Corollary 12 shows that no such q exists.
+7. **Paper I Theorem 3.** Each length at least 2 occurs for only finitely many odd q with 1 on the cycle. No bound.
+8. **Paper II Proposition 13.** Every other length-2 cycle has q ≥ 2^1071999971 and every odd element greater than 2^17631663.
+9. **Paper I Proposition A.1** and **Paper I Proposition A.2.** Length 1 is exactly q = 2^e − 1. Length 2 through 1 is exactly q = 5.
+
+### Novelty
+
+1. **Paper I Theorem 1.** No cycle of length 3 through 1, using Bauer and Bennett’s unrounded exponent below the golden ratio.
+2. **Paper I Theorem 2.** The golden-ratio criterion for an arbitrary length through 1.
+3. **Paper II Corollary 6**, from **Paper II Theorem 3** and **Paper II, Lemma 5 (constant odd part).** A named odd x on a length-3 cycle has q < Q_3(x). The constant-odd-part lemma is the cube-root measure for an arbitrary odd part.
+4. **Paper II Proposition 13.** The length-2 lower bound. Franco already excludes every other period-2 orbit with |q| < 10^11.
+5. **Paper II Corollary 7.** A named odd x on a length-2 cycle has q < Q_2(x).
+6. **Paper I Corollary 12**, **Paper I Corollary 13**, and **Paper I Corollary 14.** The length-4 case through 1 with h ≡ 2 (mod 4) has no such q, and the other two classes through 1 have a computable bound.
+7. **Paper II Corollary 15.** Those same classes with a named odd element, and q under an explicit bound.
+8. **Paper II Theorem 2.** Finitely many q for each length, with no bound.
+9. **Paper I Theorem 3.** Finitely many q for each length through 1, with no bound.
+10. **Paper I Proposition A.1** and **Paper I Proposition A.2.** Length 1 is $1 \to 1$ for a Mersenne number, and length 2 through 1 is only q = 5.
 
 ## Known cycles
 
-- Through 1: 1→1 for Mersenne q = 2^e − 1, and 1→3→1 for q=5
+- Through 1: 1→1 for a Mersenne number, and 1→3→1 for q=5
 - Not through 1: 13→33→83 and 17→43→27 for q=5; 27→611 and 35→99 for q=181
 
 Length 1 is classified: C(x₀)=x₀ forces x₀(2^h−q)=1, so the only positive odd cycle is 1→1 with q=2^h−1. Every cycle of length ℓ≥2 has q = floor(2^{h/ℓ}) with ℓ not dividing h. Paper II conjectures that the cycles above are all of them.
@@ -106,21 +166,21 @@ Paper I, “Cycles through 1.” Length 2 is not a search bound: Beukers's theor
 
 ### Digits of 2^{1/3} and 2^{2/3}
 
-`./search --digits`
+`./search --digits cbrt2`
 
-Paper I, “Digits of 2^{1/3} and 2^{2/3}.” Both roots are scanned. With no alternating block of length 48 from m = 100 through m = 1071999952, that rules out every cycle of length 3 through 1 with q < 2^1071999953. Every m < 100 has h = 3m+r < 300 and is covered by the length-3 row. The scan took 170 s.
+Paper I, “Digits of 2^{1/3} and 2^{2/3}.” For m from 1 through 1071999999, the longest alternating run in 2^{1/3} has length 32, at m = 684454163, and in 2^{2/3} has length 31, at m = 1024436159. The scan took 183 s.
 
 ### Digits of √2
 
-`./search --sqrt2`
+`./search --digits sqrt2`
 
-Paper II, length 2. Place 1 is the bit of √2 just below the integer bit, and the bits of {2^m √2} are places m+1 onward. The length-2 search through h ≤ 320000 covers every m below 160000, since h = 2m+1. The scan reports the longest run of zeros at or after that m. If that run has length R, then δ ≥ 2^{-(R+1)} and the smallest element of a cycle at such an m is below 2^{R+1}.
+Paper II, “Digits of √2.” For m from 1 through 1071999999, the longest zero run has length 29, at m = 1005210007. The scan took 143 s.
 
-### Fixed q
+### Constant q
 
 `./search --tables q`
 
-Paper II, “A fixed q.” Lengths run from 2 up, and the only values of h are those with that q. One q is `--q 5 --max-length 20`. The paper prints one row for each odd q from 7 through 25 because each of those searches found no cycle. Length 10 and above, for a general q, is limited by the through-1 table. For these odd q it is also limited by the rows below. The cycles at q = 181 were found by `--tables any`, at length 2, not by this search.
+Paper II, “A constant q.” Lengths run from 2 up, and the only values of h are those with that q. One q is `--q 5 --max-length 20`. The paper prints one row for each odd q from 7 through 25 because each of those searches found no cycle. Length 10 and above, for a general q, is limited by the through-1 table. For these odd q it is also limited by the rows below. The cycles at q = 181 were found by `--tables any`, at length 2, not by this search.
 
 | q | lengths searched | Cycles | Time |
 |---|---|---|---|
