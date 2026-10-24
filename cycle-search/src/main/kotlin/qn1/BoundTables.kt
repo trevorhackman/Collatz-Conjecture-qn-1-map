@@ -61,7 +61,7 @@ private fun log2C3(sPrime: Int): BigDecimal {
     return BigDecimal(-5).subtract(pow).subtract(log2(BigInteger.valueOf(sPrime.toLong())))
 }
 
-/** s'_near = x / gcd(x, 3). s'_win is x itself. */
+/** s' = x / gcd(x, 3). */
 internal fun sNear(x: Int): Int = x / gcdInt(x, 3)
 
 private fun gcdInt(a: Int, b: Int): Int = if (b == 0) a else gcdInt(b, a % b)

@@ -56,12 +56,14 @@ class CliTest {
         assertEquals(MIN_CYCLE_LENGTH, fixed.minLength)
         assertEquals(Q_DEFAULT_MAX_LENGTH, fixed.maxLength)
 
-        val digits = parseCli(arrayOf("--digits"))
+        val digits = parseCli(arrayOf("--digits", "cbrt2"))
         assertEquals(SearchMode.DIGITS, digits.mode)
+        assertEquals("cbrt2", digits.digits)
         assertEquals(DIGIT_PLACES, digits.places)
 
-        val sqrt2 = parseCli(arrayOf("--sqrt2", "--places", "1000"))
-        assertEquals(SearchMode.SQRT2, sqrt2.mode)
+        val sqrt2 = parseCli(arrayOf("--digits", "sqrt2", "--places", "1000"))
+        assertEquals(SearchMode.DIGITS, sqrt2.mode)
+        assertEquals("sqrt2", sqrt2.digits)
         assertEquals(1000, sqrt2.places)
 
         val tables = parseCli(arrayOf("--tables", "through1"))
@@ -106,6 +108,13 @@ class CliTest {
     fun boundsRejectsAnEvenElement() {
         assertFailsWith<IllegalArgumentException> {
             parseCli(arrayOf("--bounds", "q2", "--x", "2"))
+        }
+    }
+
+    @Test
+    fun digitsNeedsARoot() {
+        assertFailsWith<IllegalArgumentException> {
+            parseCli(arrayOf("--digits", "all"))
         }
     }
 

@@ -7,14 +7,13 @@ internal enum class SearchMode {
     BOUNDS,
     TABLES,
     DIGITS,
-    SQRT2,
 }
 
 /**
  * One invocation of the search.
  * [length] and [maxH] are set for [SearchMode.ANY] and [SearchMode.THROUGH_1].
  * [q], [minLength], and [maxLength] are set for [SearchMode.FIXED_Q].
- * [places] is set for [SearchMode.DIGITS] and [SearchMode.SQRT2].
+ * [places] and [digits] are set for [SearchMode.DIGITS].
  * [bound] is set for [SearchMode.BOUNDS].
  * [table] is set for [SearchMode.TABLES]. The other fields stay unset when the flag was omitted.
  */
@@ -29,10 +28,12 @@ internal data class Cli(
     val places: Int? = null,
     val bound: String? = null,
     val table: String? = null,
+    val digits: String? = null,
 )
 
-private val VALUE_FLAGS = setOf("q", "length", "max-h", "min-length", "max-length", "x", "places", "bounds", "tables")
-private val SWITCHES = setOf("through-1", "digits", "sqrt2")
+private val VALUE_FLAGS = setOf("q", "length", "max-h", "min-length", "max-length", "x", "places", "bounds", "tables", "digits")
+private val SWITCHES = setOf("through-1")
+private val DIGIT_ROOTS = setOf("cbrt2", "sqrt2")
 
 /** Reads `--name value` and `--name=value`. A bare word is rejected. */
 internal fun parseCli(args: Array<String>): Cli {
@@ -72,13 +73,12 @@ private fun interpret(values: Map<String, String>, switches: Set<String>): Cli {
     val modes = buildList {
         if ("through-1" in switches) add(SearchMode.THROUGH_1)
         if ("bounds" in values) add(SearchMode.BOUNDS)
-        if ("digits" in switches) add(SearchMode.DIGITS)
-        if ("sqrt2" in switches) add(SearchMode.SQRT2)
+        if ("digits" in values) add(SearchMode.DIGITS)
         if ("tables" in values) add(SearchMode.TABLES)
         if ("q" in values && "tables" !in values) add(SearchMode.FIXED_Q)
     }
     if (modes.size > 1) {
-        throw IllegalArgumentException("choose one of --q, --through-1, --bounds, --tables, --digits, --sqrt2")
+        throw IllegalArgumentException("choose one of --q, --through-1, --bounds, --tables, --digits")
     }
     val mode = modes.singleOrNull() ?: SearchMode.ANY
     val length = optionalInt(values, "length")
@@ -90,14 +90,15 @@ private fun interpret(values: Map<String, String>, switches: Set<String>): Cli {
     val places = optionalInt(values, "places")
     val bound = values["bounds"]
     val table = values["tables"]
+    val digits = values["digits"]
     when (mode) {
         SearchMode.ANY -> {
-            reject(values, switches, "q", "min-length", "max-length", "x", "places", "tables", "through-1", "bounds", "digits", "sqrt2")
+            reject(values, switches, "q", "min-length", "max-length", "x", "places", "tables", "through-1", "bounds", "digits")
             requireRange(length ?: DEFAULT_LENGTH, maxH ?: DEFAULT_MAX_H)
             return Cli(mode, length = length ?: DEFAULT_LENGTH, maxH = maxH ?: DEFAULT_MAX_H)
         }
         SearchMode.THROUGH_1 -> {
-            reject(values, switches, "q", "min-length", "max-length", "x", "places", "tables", "bounds", "digits", "sqrt2")
+            reject(values, switches, "q", "min-length", "max-length", "x", "places", "tables", "bounds", "digits")
             requireRange(length ?: THROUGH1_DEFAULT_LENGTH, maxH ?: THROUGH1_DEFAULT_MAX_H)
             return Cli(
                 mode,
@@ -106,7 +107,7 @@ private fun interpret(values: Map<String, String>, switches: Set<String>): Cli {
             )
         }
         SearchMode.FIXED_Q -> {
-            reject(values, switches, "length", "max-h", "x", "places", "tables", "through-1", "bounds", "digits", "sqrt2")
+            reject(values, switches, "length", "max-h", "x", "places", "tables", "through-1", "bounds", "digits")
             val multiplier = q ?: Q_DEFAULT
             val first = minLength ?: MIN_CYCLE_LENGTH
             val longest = maxLength ?: Q_DEFAULT_MAX_LENGTH
@@ -116,25 +117,20 @@ private fun interpret(values: Map<String, String>, switches: Set<String>): Cli {
             return Cli(mode, q = multiplier, minLength = first, maxLength = longest)
         }
         SearchMode.BOUNDS -> {
-            reject(values, switches, "q", "length", "max-h", "min-length", "max-length", "places", "tables", "through-1", "digits", "sqrt2")
+            reject(values, switches, "q", "length", "max-h", "min-length", "max-length", "places", "tables", "through-1", "digits")
             if (x != null && (x < 1 || x % 2 == 0)) throw IllegalArgumentException("--x must be a positive odd integer")
             if (bound !in BOUND_TABLES) throw IllegalArgumentException("--bounds must be q3star, q30, q2star, or q2")
             return Cli(mode, x = x, bound = bound)
         }
         SearchMode.DIGITS -> {
-            reject(values, switches, "q", "length", "max-h", "min-length", "max-length", "x", "tables", "through-1", "bounds", "sqrt2")
+            reject(values, switches, "q", "length", "max-h", "min-length", "max-length", "x", "tables", "through-1", "bounds")
+            if (digits !in DIGIT_ROOTS) throw IllegalArgumentException("--digits must be cbrt2 or sqrt2")
             val count = places ?: DIGIT_PLACES
             if (count < 1) throw IllegalArgumentException("--places must be positive")
-            return Cli(mode, places = count)
-        }
-        SearchMode.SQRT2 -> {
-            reject(values, switches, "q", "length", "max-h", "min-length", "max-length", "x", "tables", "through-1", "bounds", "digits")
-            val count = places ?: SQRT2_PLACES
-            if (count < 1) throw IllegalArgumentException("--places must be positive")
-            return Cli(mode, places = count)
+            return Cli(mode, places = count, digits = digits)
         }
         SearchMode.TABLES -> {
-            reject(values, switches, "min-length", "x", "places", "through-1", "bounds", "digits", "sqrt2")
+            reject(values, switches, "min-length", "x", "places", "through-1", "bounds", "digits")
             when (table) {
                 "through1", "any" -> {
                     reject(values, switches, "q", "max-length")

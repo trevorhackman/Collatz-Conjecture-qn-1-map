@@ -95,11 +95,10 @@ private val MIN_ODD_Q: BigInteger = BigInteger.valueOf(3)
  * `--tables through1`, `--tables any`, and `--tables q` rerun the Paper I computation tables.
  * `--length` or `--q` selects one published row. `--max-h` or `--max-length` overrides that row's limit.
  *
- * `--digits` scans the first [DIGIT_PLACES] binary places of 2^{1/3} and of 2^{2/3}.
- * `--places` scans fewer. The scan reports alternating blocks of length [DIGIT_BLOCK] for m >= [DIGIT_M_MIN].
- *
- * `--sqrt2` scans the first [SQRT2_PLACES] binary places of √2.
- * `--places` scans fewer. The scan reports the longest zero run for m >= [SQRT2_M_MIN].
+ * `--digits cbrt2` scans the first [DIGIT_PLACES] binary places of 2^{1/3} and of 2^{2/3}.
+ * `--digits sqrt2` scans the first [SQRT2_PLACES] binary places of √2.
+ * `--places` scans fewer. Both scans begin at m = 1.
+ * The cube-root scan reports the longest alternating run, and the square-root scan reports the longest zero run.
  */
 fun main(args: Array<String>) {
     val cli = try {
@@ -112,8 +111,11 @@ fun main(args: Array<String>) {
         SearchMode.FIXED_Q -> searchFixedQ(cli.q!!, cli.maxLength!!, cli.minLength!!)
         SearchMode.BOUNDS -> runBounds(cli.bound!!, cli.x)
         SearchMode.TABLES -> runTables(cli.table!!, cli.length, cli.maxH, cli.q, cli.maxLength)
-        SearchMode.DIGITS -> runDigits(cli.places!!)
-        SearchMode.SQRT2 -> runSqrt2(cli.places!!)
+        SearchMode.DIGITS -> when (cli.digits) {
+            "cbrt2" -> runDigits(cli.places!!)
+            "sqrt2" -> runSqrt2(cli.places!!)
+            else -> error("digits ${cli.digits}")
+        }
         SearchMode.ANY, SearchMode.THROUGH_1 -> runLengthSearch(cli)
     }
 }
@@ -140,8 +142,7 @@ internal fun usage(): Nothing {
     System.err.println("       --bounds q3star|q30|q2star|q2 [--x N]")
     System.err.println("       --tables through1|any [--length N] [--max-h N]")
     System.err.println("       --tables q [--q N] [--max-length N]")
-    System.err.println("       --digits [--places N]")
-    System.err.println("       --sqrt2 [--places N]")
+    System.err.println("       --digits cbrt2|sqrt2 [--places N]")
     exitProcess(1)
 }
 

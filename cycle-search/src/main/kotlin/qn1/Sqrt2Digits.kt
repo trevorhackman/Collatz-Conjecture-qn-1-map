@@ -7,11 +7,8 @@ import kotlin.system.measureTimeMillis
 /** Binary places of √2. Same machine limit as [DIGIT_PLACES]. */
 internal const val SQRT2_PLACES = DIGIT_PLACES
 
-/**
- * Smallest m reported.
- * The length-2 search through h ≤ 320000 has h = 2m+1, so it covers every m below this.
- */
-internal const val SQRT2_M_MIN = 160_000
+/** First m whose places are scanned. */
+internal const val SQRT2_M_MIN = 1
 
 /** Longest zero run in the fractional bits, and the first starts m of the runs that attain it. */
 internal data class ZeroRunHits(val longest: Int, val count: Int, val first: List<Int>)
@@ -30,7 +27,7 @@ internal data class Sqrt2Digits(
     val xBelowExponent: Int get() = runs.longest + 1
 
     fun line(): String {
-        val upper = mUpper
+        val upper = places - 1
         val range = if (upper < SQRT2_M_MIN) {
             "no m >= $SQRT2_M_MIN"
         } else {
@@ -42,8 +39,7 @@ internal data class Sqrt2Digits(
             "longest zero run ${runs.longest} at m=${runs.first.joinToString(",")}" +
                 if (runs.count > runs.first.size) " (${runs.count} total)" else ""
         }
-        val bound = if (upper >= SQRT2_M_MIN) ", x below 2^$xBelowExponent" else ""
-        return "sqrt(2): $where for $range$bound"
+        return "sqrt(2): $where for $range"
     }
 }
 

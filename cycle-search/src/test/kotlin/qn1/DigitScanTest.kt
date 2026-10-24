@@ -11,7 +11,7 @@ class DigitScanTest {
     fun publishedPlaceCountIsTheAppendixScan() {
         assertEquals(1_072_000_000, DIGIT_PLACES)
         assertEquals(48, DIGIT_BLOCK)
-        assertEquals(100, DIGIT_M_MIN)
+        assertEquals(1, DIGIT_M_MIN)
         assertEquals(1_071_999_953, DIGIT_PLACES - DIGIT_BLOCK + 1)
         assertTrue(digitsFit(DIGIT_PLACES))
     }
@@ -98,12 +98,12 @@ class DigitScanTest {
     fun scannerAgreesWithReadingEachPlace() {
         val places = 240
         for (r in 1..2) {
-            val root = scanRootDigits(places, r)
-            assertEquals(0, root.hits.count)
             val value = floorCubeRootPowerOfTwo(3L * places + r)
-            for (m in DIGIT_M_MIN..(places - DIGIT_BLOCK)) {
-                assertEquals(bruteBlock(value, places, m), false, "r=$r m=$m")
-            }
+            val runs = alternatingRuns(value, places)
+            val (longest, starts) = bruteAlternating(value, places, DIGIT_M_MIN)
+            assertEquals(longest, runs.longest, "r=$r")
+            assertEquals(starts, runs.first, "r=$r")
+            assertEquals(starts.size, runs.count, "r=$r")
         }
     }
 
@@ -119,6 +119,27 @@ class DigitScanTest {
         assertTrue(bruteBlock(planted, places, m))
         assertEquals(false, bruteBlock(planted, places, m - 1))
     }
+}
+
+private fun bruteAlternating(root: BigInteger, places: Int, mMin: Int): Pair<Int, List<Int>> {
+    var longest = 0
+    val starts = ArrayList<Int>()
+    for (m in mMin until places) {
+        var length = 0
+        while (m + 1 + length <= places) {
+            val bit = if (root.testBit(places - (m + 1 + length))) 1 else 0
+            if (bit != length % 2) break
+            length++
+        }
+        if (length > longest) {
+            longest = length
+            starts.clear()
+            starts += m
+        } else if (length == longest && length > 0) {
+            starts += m
+        }
+    }
+    return longest to starts
 }
 
 private fun bruteBlock(value: BigInteger, places: Int, m: Int): Boolean {

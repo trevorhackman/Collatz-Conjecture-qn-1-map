@@ -9,7 +9,7 @@ class Sqrt2DigitsTest {
     @Test
     fun publishedPlaceCountMatchesTheCubeScan() {
         assertEquals(DIGIT_PLACES, SQRT2_PLACES)
-        assertEquals(160_000, SQRT2_M_MIN)
+        assertEquals(1, SQRT2_M_MIN)
         assertEquals(1_073_741_822, maxSqrt2Places())
         assertTrue(sqrt2PlacesFit(SQRT2_PLACES))
     }

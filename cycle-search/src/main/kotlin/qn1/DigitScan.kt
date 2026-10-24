@@ -7,11 +7,11 @@ import kotlin.system.measureTimeMillis
 /** Binary places of 2^{1/3} and 2^{2/3} in the computations appendix. */
 internal const val DIGIT_PLACES = 1_072_000_000
 
-/** Alternating block required once m >= 100. */
+/** Alternating block 0,1,0,1,… of this length is the one named in Paper I. */
 internal const val DIGIT_BLOCK = 48
 
-/** Smaller m is covered by the search over h. */
-internal const val DIGIT_M_MIN = 100
+/** First m whose places are scanned. */
+internal const val DIGIT_M_MIN = 1
 
 private const val NATIVE_DIV_LIMIT = 100_000L
 
@@ -30,29 +30,31 @@ private val PATTERN: Long = ((BigInteger.ONE.shiftLeft(DIGIT_BLOCK) - BigInteger
 /** Alternating blocks of [DIGIT_BLOCK], and the first few starting places \(m\). */
 internal data class BlockHits(val count: Int, val first: List<Int>)
 
+/** Longest alternating run 0,1,0,1,…, and the starts m that attain it. */
+internal data class AlternatingRunHits(val longest: Int, val count: Int, val first: List<Int>)
+
 internal data class DigitRoot(
     val places: Int,
     val r: Int,
-    val hits: BlockHits,
+    val runs: AlternatingRunHits,
 ) {
     /** Power of two in the computations appendix: q < 2^{N-47}. */
     val qBelowExponent: Int get() = places - DIGIT_BLOCK + 1
 
     fun line(): String {
-        val upper = places - DIGIT_BLOCK
+        val upper = places - 1
         val range = if (upper < DIGIT_M_MIN) {
             "no m >= $DIGIT_M_MIN"
         } else {
             "m from $DIGIT_M_MIN through $upper"
         }
-        val blocks = if (hits.count == 0) {
-            "0 alternating blocks"
+        val where = if (runs.count == 0) {
+            "longest alternating run 0"
         } else {
-            "alternating blocks at m=${hits.first.joinToString(",")}" +
-                if (hits.count > hits.first.size) " (${hits.count} total)" else ""
+            "longest alternating run ${runs.longest} at m=${runs.first.joinToString(",")}" +
+                if (runs.count > runs.first.size) " (${runs.count} total)" else ""
         }
-        val bound = if (hits.count == 0 && upper >= DIGIT_M_MIN) ", q below 2^$qBelowExponent" else ""
-        return "2^{$r/3}: verified, $blocks of length $DIGIT_BLOCK for $range$bound"
+        return "2^{$r/3}: $where for $range"
     }
 }
 
@@ -86,7 +88,7 @@ internal fun scanRootDigits(places: Int, r: Int, onProgress: (String) -> Unit = 
     val exponent = 3L * places + r
     val root = floorCubeRootPowerOfTwo(exponent) { onProgress("2^{$r/3} $it") }
     check(root.bitLength() == places + 1) { "2^{$r/3} has bit length ${root.bitLength()}" }
-    return DigitRoot(places, r, alternatingBlocks(root, places))
+    return DigitRoot(places, r, alternatingRuns(root, places))
 }
 
 /**
@@ -154,6 +156,57 @@ internal fun floorDivPowerOfTwo(
     val reduced = exponent - dropped
     val approximate = coarseQuotient(reduced, high, onProgress)
     return if (snap) snapToFloorQuotient(approximate, divisor, exponent) else approximate
+}
+
+/**
+ * Longest run of places m+1, m+2, … equal to 0,1,0,1,…, for m >= [mMin].
+ * A start two places into a longer run is omitted: that run is shorter.
+ * Place 1 is the bit just below the integer bit.
+ */
+internal fun alternatingRuns(
+    root: BigInteger,
+    places: Int,
+    mMin: Int = DIGIT_M_MIN,
+): AlternatingRunHits {
+    require(root.signum() > 0)
+    require(root.bitLength() == places + 1)
+    require(mMin >= 0)
+    val bytes = root.toByteArray()
+    val padding = bytes.size * 8 - root.bitLength()
+    fun bit(place: Int): Int {
+        val index = padding + place
+        val bite = bytes[index ushr 3].toInt() and 0xFF
+        return (bite ushr (7 - (index and 7))) and 1
+    }
+    var longest = 0
+    var count = 0
+    val first = ArrayList<Int>(8)
+    fun consider(m: Int, length: Int) {
+        if (m < mMin || length <= 0) return
+        if (length > longest) {
+            longest = length
+            count = 1
+            first.clear()
+            first += m
+        } else if (length == longest) {
+            count++
+            if (first.size < 32) first += m
+        }
+    }
+    var place = 1
+    while (place <= places) {
+        val bit = bit(place)
+        val extends = place >= 3 && bit(place - 2) == 0 && bit(place - 1) == 1
+        if (bit != 0 || extends) {
+            place++
+            continue
+        }
+        var length = 0
+        while (place + length <= places && bit(place + length) == length % 2) length++
+        consider(place - 1, length)
+        place += length
+    }
+    return AlternatingRunHits(longest, count, first)
 }
 
 /**
