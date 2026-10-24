@@ -1,5 +1,7 @@
-# LaTeX scratch next to the .tex. Copies under out/ are tracked.
+# LaTeX scratch next to the .tex. Built copies under out/ are tracked.
+# The LuaTeX font cache is not: it is rebuilt from the fonts on this machine.
 *.aux
 *.log
 *.out
 *.synctex.gz
+out/texmf-var/
