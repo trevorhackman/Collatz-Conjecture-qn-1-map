@@ -1,0 +1,20 @@
+\contentsline {section}{\numberline {1}Introduction}{2}{section.1}%
+\contentsline {statement}{Conjecture 1}{2}{section*.2}%
+\contentsline {section}{\numberline {2}Definitions and notation}{3}{section.2}%
+\contentsline {section}{\numberline {3}Ineffective finiteness}{4}{section.3}%
+\contentsline {statement}{Theorem 2}{7}{section*.3}%
+\contentsline {section}{\numberline {4}The integer $Q_\ell (x)$}{8}{section.4}%
+\contentsline {statement}{Theorem 3}{8}{section*.4}%
+\contentsline {statement}{Proposition 4}{11}{section*.5}%
+\contentsline {section}{\numberline {5}Cube roots with a constant odd part}{13}{section.5}%
+\contentsline {section}{\numberline {6}The integer $Q_3(x)$}{14}{section.6}%
+\contentsline {section}{\numberline {7}The integer $Q_2(x)$}{16}{section.7}%
+\contentsline {section}{\numberline {8}Cycles of length $2$}{17}{section.8}%
+\contentsline {statement}{Proposition 11}{20}{section*.6}%
+\contentsline {statement}{Proposition 13}{23}{section*.7}%
+\contentsline {section}{\numberline {9}Longer cycles}{25}{section.9}%
+\contentsline {section}{\numberline {10}A heuristic}{26}{section.10}%
+\contentsline {section}{\numberline {11}Open problems}{27}{section.11}%
+\contentsline {section}{\numberline {A}Restrictions on the denominator of any cycle}{27}{appendix.A}%
+\contentsline {section}{\numberline {B}Finiteness past Theorem 2}{29}{appendix.B}%
+\contentsline {section}{\numberline {C}Computations}{34}{appendix.C}%
