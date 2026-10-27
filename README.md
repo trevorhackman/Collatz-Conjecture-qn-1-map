@@ -62,7 +62,7 @@ Paper II proves that each length at least 2 has only finitely many odd q with a 
 | \(\kappa\) | kappa | The parameter \(\kappa(7)\) in Theorem 1.5 of Bauer and Bennett (2002). In the application here it equals 4. |
 | \(\lambda\) | lambda | The real numbers \(\lambda_1\) and \(\lambda_2\) from Bauer and Bennett (2002). Here \(\lambda_2\) is the constant real 1.617. |
 | \(\Lambda\) | capital lambda | A linear form in logarithms in Bauer and Bennett (2018). Beukers's lemma is that one choice of this form is nonzero. In Paper II the same letter is also a logarithm used to bound \(q\). |
-| \(\mu\) | mu | A restricted irrationality exponent of an irrational \(\theta\): a real \(\mu\) for which \(\theta\) stays at least \(c \cdot d^{-\mu}\) away from every fraction \(p/d\) whose denominator \(d\) lies in a given set. The labels \(\mu_2\) and \(\mu_3\) are the exponents used at lengths 2 and 3. |
+| \(\mu\) | mu | A restricted irrationality exponent of an irrational \(\theta\) for a finite set \(S\) of positive integers: \(\lvert\theta - p/(s \cdot 2^j)\rvert > c \cdot 2^{-\mu j}\) for every \(s \in S\), with an explicit constant real number \(c > 0\) and an explicit constant integer \(j_0 \ge 0\). The labels \(\mu_2\) and \(\mu_3\) are the exponents used at lengths 2 and 3. |
 | \(\xi\) | xi | The rational \(7/2^{15}\), a parameter in Theorem 1.5 of Bauer and Bennett (2002). |
 | \(\Pi\) | capital pi | A product built from Padé approximants in Bauer and Bennett (2018). |
 | \(\prod\) | capital pi | The product sign. Both papers use it to multiply a run of factors, including the product that equals \(2^h\). |
@@ -80,25 +80,25 @@ Mathematical Strength ranks a general theorem above the special case it implies,
 
 ### Mathematical Strength
 
-1. **Paper II Theorem 3**, in the cases **Paper II Corollary 6** and **Paper II Corollary 7.** A named odd x on a cycle of length 3 forces q < Q_3(x), and on a cycle of length 2 forces q < Q_2(x).
+1. **Paper II Theorem 3**, in the cases **Paper II Corollary 5** and **Paper II Corollary 6.** A named odd x on a cycle of length 3 forces q < Q_3(x), and on a cycle of length 2 forces q < Q_2(x).
 2. **Paper I Theorem 2.** A restricted irrationality exponent below the golden ratio puts every cycle through 1 of that length under a computable bound.
 3. **Paper I Theorem 1.** The number 1 lies on no cycle of length 3. This is Paper I Theorem 2 at length 3, with the finite check finished.
 4. **Paper II Theorem 2.** Each length at least 2 occurs for only finitely many odd q, for a cycle through any elements. No bound.
-5. **Paper II Corollary 15.** The same explicit bound on q, for a named odd element, when ℓ = 2^a and h ≡ ℓ/2 (mod ℓ), or ℓ = 3 · 2^a and h ≡ ℓ/3 or 2ℓ/3 (mod ℓ).
+5. **Paper II Corollary 14.** The same explicit bound on q, for a named odd element, when ℓ = 2^a and h ≡ ℓ/2 (mod ℓ), or ℓ = 3 · 2^a and h ≡ ℓ/3 or 2ℓ/3 (mod ℓ).
 6. **Paper I Corollary 12**, **Paper I Corollary 13**, and **Paper I Corollary 14.** Those classes for cycles through 1. Paper I Corollary 12 shows that no such q exists.
 7. **Paper I Theorem 3.** Each length at least 2 occurs for only finitely many odd q with 1 on the cycle. No bound.
-8. **Paper II Proposition 13.** Every other length-2 cycle has q ≥ 2^1071999971 and every odd element greater than 2^17631663.
+8. **Paper II Proposition 12.** Every other length-2 cycle has q ≥ 2^1071999971 and every odd element greater than 2^17631663.
 9. **Paper I Proposition A.1** and **Paper I Proposition A.2.** Length 1 is exactly q = 2^e − 1. Length 2 through 1 is exactly q = 5.
 
 ### Novelty
 
 1. **Paper I Theorem 1.** No cycle of length 3 through 1, using Bauer and Bennett’s unrounded exponent below the golden ratio.
 2. **Paper I Theorem 2.** The golden-ratio criterion for an arbitrary length through 1.
-3. **Paper II Corollary 6**, from **Paper II Theorem 3** and **Paper II, Lemma 5 (constant odd part).** A named odd x on a length-3 cycle has q < Q_3(x). The constant-odd-part lemma is the cube-root measure for an arbitrary odd part.
-4. **Paper II Proposition 13.** The length-2 lower bound. Franco already excludes every other period-2 orbit with |q| < 10^11.
-5. **Paper II Corollary 7.** A named odd x on a length-2 cycle has q < Q_2(x).
+3. **Paper II Corollary 5**, from **Paper II Theorem 3** and **Paper II, Lemma 4 (constant odd part).** A named odd x on a length-3 cycle has q < Q_3(x). The constant-odd-part lemma is the cube-root measure for an arbitrary odd part.
+4. **Paper II Proposition 12.** The length-2 lower bound. Franco already excludes every other period-2 orbit with |q| < 10^11.
+5. **Paper II Corollary 6.** A named odd x on a length-2 cycle has q < Q_2(x).
 6. **Paper I Corollary 12**, **Paper I Corollary 13**, and **Paper I Corollary 14.** The length-4 case through 1 with h ≡ 2 (mod 4) has no such q, and the other two classes through 1 have a computable bound.
-7. **Paper II Corollary 15.** Those same classes with a named odd element, and q under an explicit bound.
+7. **Paper II Corollary 14.** Those same classes with a named odd element, and q under an explicit bound.
 8. **Paper II Theorem 2.** Finitely many q for each length, with no bound.
 9. **Paper I Theorem 3.** Finitely many q for each length through 1, with no bound.
 10. **Paper I Proposition A.1** and **Paper I Proposition A.2.** Length 1 is $1 \to 1$ for a Mersenne number, and length 2 through 1 is only q = 5.
@@ -118,18 +118,20 @@ A length whose window q^ℓ < 2^h < (q+1)^ℓ contains no integer h has no cycle
 
 `./search --tables any`
 
-Paper II, “Any cycle.” Odd elements that need not include 1. One row is `--length 2 --max-h 320000`.
+Paper II, “Any cycle.” Odd elements that need not include 1. One row is `--length 2 --max-h 320000`. Another is `--length 3 --max-h 100000`.
 
-Length 2 is a faster search than the longer lengths. It has one free halving count, the power of 2 that matches \(-q\) modulo the gap, so the program doubles one residue. Length 3 still walks counts against a residue table on one thread, and lengths 4 through 9 store one half of the counts and walk the other.
+Length 2 doubles the residue \(2^k\) modulo the gap. Length 3 halves the residue \(q^2 2^{-k}\) modulo the gap, which is odd, and matches it against those powers of 2. The run through \(h \le 100000\) used 5 threads. Lengths 4 through 9 store one half of the counts and walk the other.
 
-Length 2 was the length of interest, so its time limit was raised and the search was run further. Through \(h \le 160000\) it took 146 s. The same search through \(h \le 320000\) took 1360 s. Lengths 3 through 9 stay at a much smaller \(h\), where each takes about two or three minutes.
+Through \(h \le 160000\) the length-2 search took 146 s. The same search through \(h \le 320000\) took 1360 s. Length 3 through \(h \le 100000\) took 2681 s. Lengths 4 through 9 stay at a much smaller \(h\), where each takes about two or three minutes.
 
 That search and Theorem 1.5 of Bauer and Bennett (2002), at \(\alpha = 3\) with the equation \(181^2 + 7 = 2^{15}\) and exponent \(1.617\), give that every other length-2 cycle has every odd element greater than \(2^{2559}\). For odd part \(1\) the inequality with exponent \(1.617\) holds from \(j = 2841\). Paper II records the constants.
+
+The length-3 row and the zero runs of \(2^{1/3}\) and \(2^{2/3}\) leave only the two cycles at \(q = 5\) below a much higher line. For \(m \le 1071999972\), places \(m+1\) through \(m+28\) of either cube root are not all zero, so \(\delta \ge 2^{-28}\). For \(q \ge 5\) the smallest odd element is then below \(2^{29}\). Every odd starting value below \(2^{29}\) forces \(q < 2^{33333}\) on a length-3 cycle, and the search finds only \(13 \to 33 \to 83\) and \(17 \to 43 \to 27\). Every other length-3 cycle has \(q \ge 2^{1071999973}\) and its smallest odd element at least \(2^{29}\).
 
 | ℓ | h searched | No other cycle for | Exceptions | Time |
 |---|---|---|---|---|
 | 2 | h ≤ 320000 | q < 2^160000 | q=5: 1→3; q=181: 27→611 and 35→99 | 1360 s |
-| 3 | h ≤ 7000 | q < 2^2333 | q=5: 13→33→83 and 17→43→27 | 158 s |
+| 3 | h ≤ 100000 | q < 2^33333 | q=5: 13→33→83 and 17→43→27 | 2681 s |
 | 4 | h ≤ 5500 | q < 2^1375 | none | 140 s |
 | 5 | h ≤ 4500 | q < 2^900 | none | 136 s |
 | 6 | h ≤ 1400 | q < 2^233 | none | 147 s |
@@ -168,7 +170,7 @@ Paper I, “Cycles through 1.” Length 2 is not a search bound: Beukers's theor
 
 `./search --digits cbrt2`
 
-Paper I, “Digits of 2^{1/3} and 2^{2/3}.” For m from 1 through 1071999999, the longest alternating run in 2^{1/3} has length 32, at m = 684454163, and in 2^{2/3} has length 31, at m = 1024436159. The scan took 183 s.
+Paper I, “Digits of 2^{1/3} and 2^{2/3}.” For m from 1 through 1071999999, the longest alternating run in 2^{1/3} has length 32, at m = 684454163, and in 2^{2/3} has length 31, at m = 1024436159. The longest zero run in 2^{1/3} has length 27, at m = 31318881 and m = 955995734, and in 2^{2/3} has length 26, at m = 71965347, 111843987, 307341593, 496232916, 611035374, and 1013171868. The scan took 192 s.
 
 ### Digits of √2
 
