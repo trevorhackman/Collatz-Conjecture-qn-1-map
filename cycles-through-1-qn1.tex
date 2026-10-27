@@ -131,10 +131,10 @@
 
 \begin{abstract}
 \noindent
-For the $qn+1$ map with $q$ an odd integer at least $3$, we prove that $1$ never lies on a cycle with exactly three distinct odd numbers.
-This settles the case of length $3$ in a conjecture of Santos (2020) that $1$ lies on a cycle only for $q = 5$ and for a Mersenne number.
+For the $qn+1$ map with $q$ an odd integer at least $3$, we prove that no cycle with exactly three distinct odd numbers has starting value $1$.
+This settles the case of length $3$ in a conjecture of Santos (2020) that a cycle has starting value $1$ only when $q = 5$ or when $q$ is a Mersenne number.
 We found that for every such $q$ at least $2^{22001}$, a lower bound and an upper bound cannot hold at the same time.
-Bauer and Bennett (2018) give a restricted irrationality exponent of about $1.61487$, which lies just below the golden ratio, the threshold at which these bounds conflict.
+Bauer and Bennett (2018) give the exponent $\mu \approx 1.61487$, which lies just below the golden ratio, the threshold at which these bounds conflict.
 Every smaller $q$ is ruled out by a direct computation.
 \end{abstract}
 
@@ -147,7 +147,7 @@ Every smaller $q$ is ruled out by a direct computation.
 \section{Introduction}
 \label{sec:introduction}
 
-This paper studies cycles of the $qn+1$ map through $1$.
+This paper studies cycles of the $qn+1$ map with starting value $1$.
 It is followed by the broader paper~\cite{hackman-ii}, which studies cycles of the same map for any starting value.
 
 Fix an odd integer $q \ge 3$.
@@ -158,41 +158,41 @@ C(n) = \frac{qn+1}{2^v}.
 \]
 The orbit of $n$ is the sequence $n$, $C(n)$, $C(C(n))$, \ldots.
 When $q = 3$, $C$ is the odd-to-odd form of the Collatz map, also called the Syracuse function, and the Collatz conjecture, posed by Lothar Collatz in 1937 and still open, asserts that every orbit eventually reaches $1$.
-For $q = 3$ the number $1$ is fixed, since $3 \cdot 1 + 1 = 4$.
-For larger $q$, heuristic arguments suggest that most orbits grow without bound and that cycles are rare, although no orbit has been proved to diverge.
+For $q = 3$, heuristic arguments suggest that almost all orbits eventually reach $1$.
+However, for $q \ge 5$, heuristic arguments suggest that almost all orbits grow without bound and that cycles are rare, although no orbit has been proved to diverge.
 
-We ask for which $q$ the number $1$ lies on a cycle of $C$.
-We classify the answers by the length $\ell$ of the cycle through $1$, that is, the number of distinct odd numbers on it.
+We ask for which $q$ a cycle of $C$ has starting value $1$.
+We classify the answers by the length $\ell$ of the cycle with starting value $1$, that is, the number of distinct odd numbers on it.
 
 For $\ell = 1$ the cycle is $1 \to 1$, which happens exactly when $q$ is a Mersenne number (\hyperref[prop:a1]{Proposition~A.1}).
 For $\ell = 2$, the only $q$ is $5$, with $1 \to 3 \to 1$ (\hyperref[prop:a2]{Proposition~A.2}).
-Besides $1 \to 1$ for a Mersenne number, the only known cycle through $1$ is $1 \to 3 \to 1$ for $q = 5$.
+Besides $1 \to 1$ when $q$ is a Mersenne number, the only known cycle with starting value $1$ is $1 \to 3 \to 1$ for $q = 5$.
 
 \begin{named}{Santos's conjecture (2020).}
-$1$ lies on a cycle of $C$ only for $q = 5$ and for a Mersenne number.
+A cycle of $C$ has starting value $1$ only when $q = 5$ or when $q$ is a Mersenne number.
 \end{named}
 
 \begin{named}{Theorem 1.}
-No odd $q \ge 3$ has $1$ on a cycle of $C$ of length $3$.
+No odd $q \ge 3$ has a cycle of $C$ of length $3$ with starting value $1$.
 \end{named}
 
 \begin{named}{Outline of Theorem 2 (golden-ratio criterion).}
-Fix $\ell \ge 2$, and suppose the roots of $2$ that this length produces have a restricted irrationality exponent below the golden ratio.
-Then any $q$ with $1$ on a cycle of $C$ of length $\ell$ lies below a bound we can compute.
+Fix $\ell \ge 2$, and suppose that, for every integer $r$ with $1 \le r \le \ell-1$, $2^{r/\ell}$ has a restricted irrationality exponent below the golden ratio.
+Then any $q$ that has a cycle of length $\ell$ with starting value $1$ lies below a bound we can compute.
 Checking every candidate up to that bound finds every such $q$, or shows that none exist.
 The precise statement is in Section~\ref{sec:longer}.
 \end{named}
 
-\begin{named}{Theorem 3 (finiteness through 1).}
-For each $\ell \ge 2$, only finitely many odd $q$ have $1$ on a cycle of $C$ of length $\ell$.
+\begin{named}{Theorem 3 (finiteness for starting value $1$).}
+For each $\ell \ge 2$, only finitely many odd $q$ have a cycle of $C$ of length $\ell$ with starting value $1$.
 \end{named}
 
 Theorem~3 is ineffective: it rests on the $S$-unit form of Ridout's theorem in Section~\ref{sec:ineffective}, and gives no bound on $q$.
 (A finiteness result is called effective if its proof gives an explicit bound on any exception, so that a finite computation can find them all, and ineffective if it gives no such bound.)
 Theorem~1 is effective and is completed by computation.
 The proof of Theorem~3, in Section~\ref{sec:ineffective}, uses only the $S$-unit form of Ridout's theorem and Theorem~2.
-Cycles that need not visit $1$ are treated in the companion paper~\cite{hackman-ii}.
-For a cycle of length $2$ or $3$ through a constant odd element, that paper gives a bound on $q$ depending only on the element (Theorem~3), and for the longer classes of Corollaries~12 to~14 the same bound is Corollary~14 of that paper.
+Cycles with any starting value are treated in the companion paper~\cite{hackman-ii}.
+For a cycle of length $2$ or $3$ with a constant odd starting value, that paper gives a bound on $q$ depending only on the element (Theorem~3), and for Corollaries~12 to~14 the same bound is Corollary~14 of that paper.
 
 \section{Definitions and notation}
 \label{sec:definitions}
@@ -203,19 +203,26 @@ Throughout, $q \ge 3$ is an odd integer and $C$ is the map defined in Section~1.
 Let $e \ge 2$ be an integer.
 A Mersenne number is the integer $2^e - 1$.
 
+\topic{Divides.}
+The symbol $\mid$ means divides, and the symbol $\nmid$ means does not divide.
+Let $a$ and $b$ be integers, with $a \ne 0$.
+Write $a \mid b$ when there exists an integer $k$ such that $b = ak$.
+Write $a \nmid b$ when no such integer $k$ exists.
+
 \topic{The $2$-adic valuation.}
 For a nonzero integer $n$, $v_2(n)$ is the largest integer $v$ such that $2^v$ divides $n$.
 
 \topic{Cycles.}
 A cycle of $C$ of length $\ell$ consists of $\ell$ distinct odd positive integers.
-The smallest element is $x_0$.
+The starting value is the smallest element $x_0$.
 Applying $C$ repeatedly, starting at $x_0$, produces
 \[
-x_0 \to x_1 \to \cdots \to x_{\ell-1} \to x_0.
+x_0 \to x_1 \to \cdots \to x_{\ell-1} \to x_0,
 \]
+where the indices are read modulo $\ell$.
 
-\topic{Cycles through 1.}
-A cycle of length $\ell$ through $1$ is a cycle of $C$ of length $\ell$ with $x_0 = 1$.
+\topic{Starting value $1$.}
+A cycle with starting value $1$ is a cycle of $C$ of length $\ell$ with $x_0 = 1$.
 It is written
 \[
 1 = x_0 \to x_1 \to \cdots \to x_{\ell-1} \to 1.
@@ -230,12 +237,14 @@ q x_{i-1} + 1 = 2^{k_i} x_i
 so $k_i = v_2(q \cdot x_{i-1} + 1)$.
 The total number of halvings is $h = k_1 + \cdots + k_\ell$, and $S_i = k_1 + \cdots + k_i$.
 
-\topic{The window.}
-On a cycle of length $\ell$ through $1$ with total number of halvings $h$, write $2^{h/\ell} = q + \delta$, so $\delta$ is the fractional part of $2^{h/\ell}$.
-The window is a lower bound and an upper bound on $\delta$.
+\topic{The $\delta$ window.}
+Let $\ell \ge 2$ be an integer.
+On a cycle of length $\ell$ with total number of halvings $h$, the number $\delta$ is the fractional part of $2^{h/\ell}$.
+The integer $q$ equals $\lfloor 2^{h/\ell} \rfloor$, so $2^{h/\ell} = q + \delta$ and $0 < \delta < 1$.
+The $\delta$ window is a lower bound and an upper bound on $\delta$.
 
 \topic{Near misses.}
-For an element $x_i$ other than $1$ on a cycle of length $\ell$ through $1$, set $n_i = ih - \ell S_i$.
+For an element $x_i$ other than $1$ on a cycle of length $\ell$ with starting value $1$, set $n_i = ih - \ell S_i$.
 The near miss of $x_i$ is $2^{n_i/\ell}$.
 The relative error $\rho_i$ is defined by
 \[
@@ -243,33 +252,51 @@ x_i = 2^{n_i/\ell}(1 + \rho_i).
 \]
 
 \topic{The restricted irrationality exponent.}
-Let $\theta$ be an irrational real number and let $\mathcal{D}$ be a set of positive integers.
-A real number $\mu$ is a restricted irrationality exponent of $\theta$ with respect to $\mathcal{D}$ when there exist an explicit constant real number $c > 0$ and an explicit constant positive integer $d_0$ such that, for every integer $p$ and every positive integer $d \in \mathcal{D}$ with $d \ge d_0$,
+Let $\theta$ be an irrational real number, and let $S$ be a finite set of positive integers.
+A real number $\mu$ is a restricted irrationality exponent of $\theta$ for $S$ when there exists an explicit constant real number $c > 0$ and there exists an explicit constant integer $j_0 \ge 0$ such that, for every positive integer $s \in S$, every integer $p$, and every integer $j \ge j_0$,
 \[
-\left|\theta - \frac{p}{d}\right| > c \cdot d^{-\mu}.
+\left|\theta - \frac{p}{s \cdot 2^j}\right| > c \cdot 2^{-\mu j}.
 \]
-Write $\mathcal{D}_\ell$ for the set of denominators $2^j$ and $\ell \cdot 2^j$, where $j$ is a nonnegative integer.
 
 \topic{The golden ratio.}
-$\varphi = (1 + \sqrt{5})/2$.
+The golden ratio is $\varphi = (1 + \sqrt{5})/2$.
 
 \topic{The order of $2$.}
 For an odd positive integer $m$, the order of $2$ modulo $m$ is the smallest positive integer $d$ such that $2^d \equiv 1 \pmod{m}$.
 
-\topic{Other conventions.}
-An implied constant in $O$, $\ll$, $\gg$, or $\asymp$ depends only on $\ell$.
-In a heuristic remark, $\lesssim$ and $\gtrsim$ mean at most or at least roughly, ignoring constants.
+\topic{Big $O$.}
+Big $O$ is the Bachmann--Landau symbol $O$.
+Let $f$ and $g$ be real-valued functions of a real variable $t$, with $g(t) \ne 0$ for every large $t$.
+Write $f(t) = O(g(t))$ when there exists a constant real number $C > 0$, independent of $t$, and there exists a constant real number $t_0$, such that $|f(t)| \le C\,|g(t)|$ for every $t \ge t_0$.
+The expression $O(g(t))$ stands for a real number of absolute value at most $C\,|g(t)|$.
+An equation $A = B + O(g(t))$ means $A - B = O(g(t))$.
+
+\topic{Vinogradov's symbols.}
+Vinogradov's symbols are $\ll$ and $\gg$.
+Let $f$ and $g$ be real-valued functions of a real variable $t$.
+Write $f \ll g$ when $f = O(g)$.
+Write $f \gg g$ when $g \ll f$.
+
+\topic{Hardy's symbol.}
+Hardy's symbol is $\asymp$.
+Write $f \asymp g$ when $f \ll g$ and $g \ll f$.
+
+\topic{Less than or similar to.}
+The symbol $\lesssim$ means less than or similar to, and the symbol $\gtrsim$ means greater than or similar to.
+Let $f$ and $g$ be positive real numbers.
+Write $f \lesssim g$ when $f$ is at most a constant real number times $g$, and that constant is not named.
+Write $f \gtrsim g$ when $g \lesssim f$.
 
 \section{The structure of a cycle of length $3$}
 \label{sec:structure}
 
 \topic{The three steps of length $3$.}
-On a cycle of length $3$ through $1$, the element after $1$ is $x = x_1$.
-The element after $x$ is $y = x_2$, so the cycle is $1 \to x \to y \to 1$.
+On a cycle of length $3$ with starting value $1$, write $x$ for $x_1$ and $y$ for $x_2$.
+The cycle is $1 \to x \to y \to 1$.
 The three steps are $q + 1 = 2^{k_1} x$, $qx + 1 = 2^{k_2} y$, and $qy + 1 = 2^{k_3}$.
 
-\begin{named}{Lemma 1.}
-$k_3 \ge k_1 + 3$, and $y \equiv 1 \pmod{2^{k_1}}$.
+\begin{named}{Lemma 1 (lower bound for $k_3$).}
+$k_3 \ge k_1 + 3$.
 \end{named}
 
 \begin{proof}
@@ -280,9 +307,6 @@ The third step is $2^{k_3} = qy + 1$, so
 2^{k_3} \ge (3 \cdot 2^{k_1} - 1) \cdot 3 + 1 = 9 \cdot 2^{k_1} - 2.
 \]
 Since $2^{k_1} \ge 2$, we have $9 \cdot 2^{k_1} - 2 \ge 8 \cdot 2^{k_1} = 2^{k_1 + 3}$, and hence $k_3 \ge k_1 + 3$.
-From $q + 1 = 2^{k_1} x$ we also have $q \equiv -1 \pmod{2^{k_1}}$.
-Thus $qy + 1 \equiv 1 - y \pmod{2^{k_1}}$.
-But $qy + 1 = 2^{k_3}$ is divisible by $2^{k_1}$, because $k_3 \ge k_1$, so $1 - y \equiv 0 \pmod{2^{k_1}}$, that is $y \equiv 1 \pmod{2^{k_1}}$.
 \end{proof}
 
 \begin{named}{Lemma 2 (cycle equation).}
@@ -310,26 +334,37 @@ The first step is $q + 1 = 2^{k_1} x$, so
 \]
 \end{proof}
 
-\begin{named}{Lemma 3 (cube window).}
+\begin{named}{Lemma 3 (between consecutive cubes).}
 \markstmt{3}{lem:cube-window}
 $q^3 < 2^h < (q+1)^3$.
 Hence $3$ does not divide $h$ and $q = \lfloor 2^{h/3} \rfloor$.
 \end{named}
 
 \begin{proof}
-The lower bound is immediate from Lemma~2.
-Since $2^{k_1 + k_2} = (q(q+1) + 2^{k_1})/y \le (q+1)(3q+1)/9$ by $y \ge 3$, and $2^{k_1} \le (q+1)/3$,
+Lemma~2 gives $2^h = q^3 + q^2 + 2^{k_1} q + 2^{k_1 + k_2}$.
+The terms $q^2$, $2^{k_1} q$, and $2^{k_1 + k_2}$ are positive, so $2^h > q^3$.
+
+Since $h = k_1 + k_2 + k_3$,
 \[
-2^h - q^3
-\le q^2 + \frac{q(q+1)}{3} + \frac{(q+1)(3q+1)}{9}
-= \frac{15q^2 + 7q + 1}{9}
-< (q+1)^3 - q^3.
+2^h = 2^{k_1} \cdot 2^{k_2} \cdot 2^{k_3}.
 \]
+The three steps give $2^{k_1} = (q+1)/x$, $2^{k_2} = (qx+1)/y$, and $2^{k_3} = qy + 1$, so
+\[
+2^h = \frac{q+1}{x} \cdot \frac{qx+1}{y} \cdot (qy + 1) = (q+1) \cdot \frac{qx+1}{x} \cdot \frac{qy+1}{y}.
+\]
+Since $(qx+1)/x = q + 1/x$ and $(qy+1)/y = q + 1/y$,
+\[
+2^h = (q+1)\left(q + \frac{1}{x}\right)\left(q + \frac{1}{y}\right).
+\]
+The elements $x$ and $y$ are distinct from the starting value $1$, so $x > 1$ and $y > 1$.
+Hence $1/x < 1$ and $1/y < 1$, so $q + 1/x < q + 1$ and $q + 1/y < q + 1$, and $2^h < (q+1)^3$.
+
 A power of $2$ strictly between consecutive cubes is not a cube, so $3 \nmid h$.
+Since $q^3 < 2^h < (q+1)^3$, $q = \lfloor 2^{h/3} \rfloor$.
 \end{proof}
 
 \begin{named}{Lemma 4 ($2$-adic valuation of $x-1$).}
-Let $t = v_2(x-1)$ and $s = (x-1)/2^t$.
+Let $t$ be the integer $v_2(x-1)$, and let $s$ be the odd positive integer $(x-1)/2^t$.
 Then either $t = 2k_1$, or $t < k_1$ and $k_1 = t + v_2(s+1)$, or $t = k_1$.
 \end{named}
 
@@ -349,8 +384,13 @@ Since $x$ is odd, $v_2(2^{k_1} x^2) = k_1$, while $v_2(x-1) = t > k_1$, so
 and $x^2 - 2^{t-k_1}s$ is odd, since $x^2$ is odd and $2^{t-k_1}s$ is even.
 Thus the $2$-adic valuation of $2^{k_2} y$ is $k_1$. Since $y$ is odd, $k_2 = k_1$, so $2^{k_1} y = 2^{k_1} x^2 - (x-1)$.
 
-Let $w = (x-1)/2^{k_1}$. Then $w$ is even, since $t > k_1$, and $y = x^2 - w$.
-Substituting $x = 1 + 2^{k_1} w$,
+Let $w = (x-1)/2^{k_1}$. Then $w$ is even, since $t > k_1$, and $x = 1 + 2^{k_1} w$.
+Also $y = x^2 - w$, so
+\[
+y = (1 + 2^{k_1} w)^2 - w = 1 + w(2^{k_1+1} - 1) + 2^{2k_1} w^2.
+\]
+The first step gives $q = 2^{k_1} x - 1 = 2^{k_1} + 2^{2k_1} w - 1$.
+Multiplying these expressions for $q$ and $y$ and adding $1$ gives
 \[
 qy + 1 = 2^{k_1} + w(1 - 3 \cdot 2^{k_1}) + 2^{2k_1} w(3 - 2w) + 3 \cdot 2^{3k_1} w^2 + 2^{4k_1} w^3.
 \]
@@ -359,39 +399,50 @@ Hence $v_2(w) = k_1$, that is $t = 2k_1$.
 
 Suppose $t < k_1$.
 Then $2^{k_2} y = 2^{k_1} x^2 - 2^t s = 2^t\bigl(2^{k_1-t}x^2 - s\bigr)$.
-The factor $2^{k_1-t}x^2 - s$ is odd, since $2^{k_1-t}x^2$ is even and $s$ is odd, so $k_2 = t$, $y = 2^{k_1-t}x^2 - s$, and
+The factor $2^{k_1-t}x^2 - s$ is odd, since $2^{k_1-t}x^2$ is even and $s$ is odd, so $k_2 = t$ and $y = 2^{k_1-t}x^2 - s$.
+Since $x = 1 + 2^t s$, we have $q = 2^{k_1} x - 1 = (2^{k_1} - 1) + 2^{k_1 + t} s$, and therefore
+\[
+qy + 1 = (2^{k_1}-1)y + 2^{k_1 + t} s y + 1.
+\]
+Substitute $y = 2^{k_1-t}x^2 - s$:
 \[
 qy + 1 = (2^{k_1}-1)\, 2^{k_1-t} x^2 + (1+s) - 2^{k_1} s + 2^{k_1 + t} s y.
 \]
 Now $2^{k_1} s$ and $2^{k_1 + t} s y$ are divisible by $2^{k_1}$, and $v_2\bigl((2^{k_1}-1)\, 2^{k_1-t} x^2\bigr) = k_1 - t$, since $2^{k_1}-1$ and $x$ are odd. If $v_2(s+1) \ne k_1 - t$, then $v_2(qy + 1) < k_1$, contradicting Lemma~1.
+Hence $v_2(s+1) = k_1 - t$, that is $k_1 = t + v_2(s+1)$.
+
+If $t = k_1$, that is the remaining case.
 \end{proof}
 
-\begin{named}{Lemma 5.}
+\begin{named}{Lemma 5 (lower bound for $x$).}
 $2^{k_1} \le 2(x-1)$ and $x > \sqrt{q/2}$.
 \end{named}
 
 \begin{proof}
-In the three cases of Lemma~4: $2^{2k_1} = 2^t \le x - 1$; or $2^{k_1} = 2^t \cdot 2^{v_2(s+1)} \le 2^t(s+1) = (x-1) + 2^t \le 2(x-1)$; or $2^{k_1} = 2^t \le x - 1$.
+If $t = 2k_1$, then $2^{2k_1} = 2^t \le x - 1$, so $2^{k_1} \le x - 1 \le 2(x-1)$.
+If $t < k_1$ and $k_1 = t + v_2(s+1)$, then $2^{k_1} = 2^t \cdot 2^{v_2(s+1)} \le 2^t(s+1) = (x-1) + 2^t \le 2(x-1)$.
+If $t = k_1$, then $2^{k_1} = 2^t \le x - 1 \le 2(x-1)$.
+In every case $2^{k_1} \le 2(x-1)$.
 The first step is $q + 1 = 2^{k_1} x$, so
 \[
 q + 1 \le 2x(x-1) = 2x^2 - 2x.
 \]
-Hence $q < 2x^2$, that is $x > \sqrt{q/2}$.
+Hence $q < 2x^2$, so $x > \sqrt{q/2}$.
 \end{proof}
 
 \begin{named}{Lemma 6.}
 Let $\ell \ge 2$.
 Let $i$ be an integer with $1 \le i \le \ell - 1$.
-On a cycle of length $\ell$ through $1$,
+On a cycle of length $\ell$ with starting value $1$,
 \[
 2^{k_{i+1}} x_{i-1}\, x_{i+1} - 2^{k_i} x_i^2 = x_{i-1} - x_i.
 \]
-If $x_{i-1} \ne x_i$, then $|x_{i-1} - x_i| \ge 2^{\min(k_i, k_{i+1})}$.
+Also $|x_{i-1} - x_i| \ge 2^{\min(k_i, k_{i+1})}$.
 If $k_i \le k_{i+1}$, then $x_i > q$ when $x_i < x_{i-1}$, and $x_i^2 > q\, x_{i-1}$ when $x_i > x_{i-1}$.
 \end{named}
 
 \begin{proof}
-Since $q x_i + 1 = 2^{k_{i+1}} x_{i+1}$, one has $q = (2^{k_{i+1}} x_{i+1} - 1)/x_i$.
+Since $q x_i + 1 = 2^{k_{i+1}} x_{i+1}$, we have $q = (2^{k_{i+1}} x_{i+1} - 1)/x_i$.
 Substitute $q = (2^{k_{i+1}} x_{i+1} - 1)/x_i$ into $q x_{i-1} + 1 = 2^{k_i} x_i$ and multiply by $x_i$:
 \[
 2^{k_{i+1}} x_{i-1}\, x_{i+1} - x_{i-1} + x_i = 2^{k_i} x_i^2,
@@ -403,12 +454,12 @@ The $2$-adic valuation of $2^{k_{i+1}} x_{i-1} x_{i+1}$ is $k_{i+1}$, and the $2
 If $k_i \ne k_{i+1}$, the $2$-adic valuation of $2^{k_{i+1}} x_{i-1} x_{i+1} - 2^{k_i} x_i^2$ is $\min(k_i, k_{i+1})$.
 If $k_i = k_{i+1}$, then $x_{i-1} x_{i+1} - x_i^2$ is even, since it is a difference of two odd integers, so the $2$-adic valuation of $2^{k_i}(x_{i-1} x_{i+1} - x_i^2)$ is at least $k_i$.
 In either case $2^{\min(k_i, k_{i+1})}$ divides $x_{i-1} - x_i$.
-If $x_{i-1} \ne x_i$, then $|x_{i-1} - x_i| \ge 2^{\min(k_i, k_{i+1})}$.
+The elements of the cycle are distinct, so $x_{i-1} \ne x_i$ and $|x_{i-1} - x_i| \ge 2^{\min(k_i, k_{i+1})}$.
 
 Suppose $k_i \le k_{i+1}$.
 Then $|x_{i-1} - x_i| \ge 2^{k_i} = (q x_{i-1} + 1)/x_i$.
 If $x_i > x_{i-1}$, then $x_i(x_i - x_{i-1}) \ge q x_{i-1} + 1$.
-Since $x_{i-1} \ge 1$, one has $x_i^2 > x_i(x_i - x_{i-1})$, and therefore $x_i^2 > q x_{i-1}$.
+Since $x_{i-1} \ge 1$, we have $x_i^2 > x_i(x_i - x_{i-1})$, and therefore $x_i^2 > q x_{i-1}$.
 If $x_i < x_{i-1}$ and $x_i \le q$, then $x_{i-1} x_i \le q x_{i-1}$, so
 \[
 x_i(x_{i-1} - x_i) = x_{i-1} x_i - x_i^2 \le q x_{i-1} - x_i^2 < q x_{i-1} + 1.
@@ -424,19 +475,31 @@ In particular $2^{k_2} < q + 1$, so $2^{k_1 + k_2} \le 2^{k_1} q$.
 
 \begin{proof}
 Apply Lemma~6 with $i = 2$. Then $x_1 = x$, $x_2 = y$, and $x_3 = 1$.
-If $k_3 < k_2$, then $|x - y| \ge 2^{k_3}$.
-Since $qy + 1 = 2^{k_3}$, one has $2^{k_3} = qy + 1 > y$, so $x > qy > q$.
-Since $q + 1 = 2^{k_1} x$ and $k_1 \ge 1$, one has $x \le (q+1)/2$, a contradiction.
-So $k_2 \le k_3$.
-If $y < x$, Lemma~6 gives $y > q > x$, a contradiction.
-Hence $y > x$ and $y^2 > qx$.
-Finally $2^{k_2} = (qx + 1)/y < (qx + 1)/x < q + 1$, and $2^{k_2}$ is even while $q$ is odd.
+Suppose $k_3 < k_2$. Lemma~6 gives $|x - y| \ge 2^{k_3}$.
+The third step is $qy + 1 = 2^{k_3}$, so $|x - y| \ge qy + 1$.
+If $y > x$, then $y - x \ge qy + 1$, and $y(1-q) \ge x + 1 > 0$.
+Here $q \ge 3$ and $y > 0$, so $y(1-q) < 0$, a contradiction.
+Thus $x > y$, and $x - y \ge qy + 1$, so $x \ge (q+1)y + 1 > qy$.
+The element $y$ is an odd integer at least $3$, so $x > 3q$.
+The first step is $q + 1 = 2^{k_1} x$ with $k_1 \ge 1$, so $x \le (q+1)/2$.
+Since $q \ge 3$, we have $3q > (q+1)/2$, and therefore $x > (q+1)/2 \ge x$, a contradiction.
+Thus $k_2 \le k_3$.
+
+If $y < x$, Lemma~6 gives $y > q$.
+Also $x = (q+1)/2^{k_1} \le (q+1)/2 < q$, so $y > q > x$, a contradiction.
+The elements of the cycle are distinct, so $y \ne x$.
+Hence $y > x$, and Lemma~6 gives $y^2 > qx$.
+Since $y > x$,
+\[
+2^{k_2} = \frac{qx + 1}{y} < \frac{qx + 1}{x} = q + \frac{1}{x} < q + 1.
+\]
+The integer $2^{k_2}$ is at most $q$, so $2^{k_1 + k_2} \le 2^{k_1} q$.
 \end{proof}
 
-\section{The window and the near miss for $x$}
+\section{The $\delta$ window and the near miss for $x$}
 \label{sec:window}
 
-\begin{named}{Lemma 8 (the window).}
+\begin{named}{Lemma 8 (the $\delta$ window).}
 \markstmt{8}{lem:window}
 Let $N = 27 \cdot 2^h - (3q+1)^3$.
 Then
@@ -450,9 +513,27 @@ N = 9q(3 \cdot 2^{k_1}-1) + 27 \cdot 2^{k_1 + k_2} - 1,
 \end{named}
 
 \begin{proof}
-The formula for $N$ follows from Lemma~2 by expanding $(3q+1)^3$.
-Since $2^{k_1} \ge 2$, $N \ge 45q - 1 > 0$, and $2^{k_1 + k_2} \le 2^{k_1} q$ (Lemma~7) gives $N < 54 \cdot 2^{k_1} q$.
-Finally $N = 27\bigl[(q+\delta)^3 - (q + 1/3)^3\bigr]$; as $N > 0$ we have $\delta > 1/3$, and then $N \ge 81q^2(\delta - 1/3)$.
+Lemma~2 gives $2^h = q^3 + q^2 + 2^{k_1} q + 2^{k_1 + k_2}$.
+Expanding $(3q+1)^3 = 27q^3 + 27q^2 + 9q + 1$ and subtracting from $27 \cdot 2^h$ gives
+\[
+N = 9q(3 \cdot 2^{k_1}-1) + 27 \cdot 2^{k_1 + k_2} - 1.
+\]
+Since $2^{k_1} \ge 2$, the formula gives $N \ge 9q(3 \cdot 2 - 1) - 1 = 45q - 1 > 0$.
+Lemma~7 gives $2^{k_1 + k_2} \le 2^{k_1} q$, so
+\[
+N < 9q(3 \cdot 2^{k_1}) + 27 \cdot 2^{k_1} q = 54 \cdot 2^{k_1} q.
+\]
+Since $2^{h/3} = q + \delta$ and $(3q+1)^3 = 27(q + 1/3)^3$,
+\[
+N = 27\bigl[(q+\delta)^3 - (q + 1/3)^3\bigr].
+\]
+The factor $(q+\delta)^3 - (q + 1/3)^3$ equals $(\delta - 1/3)$ times $(q+\delta)^2 + (q+\delta)(q + 1/3) + (q + 1/3)^2$.
+Each of those three terms is greater than $q^2$, so their sum is greater than $3q^2$.
+Thus $N > 0$ gives $\delta > 1/3$, and $N \ge 81q^2(\delta - 1/3)$, so $\delta - 1/3 \le N/(81q^2)$.
+Also
+\[
+\frac{N}{81q^2} < \frac{54 \cdot 2^{k_1} q}{81q^2} = \frac{2^{k_1+1}}{3q}.
+\]
 \end{proof}
 
 \begin{named}{Lemma 9 (near miss for $x$).}
@@ -467,7 +548,7 @@ Then $3 \nmid f$, and
 \end{named}
 
 \begin{proof}
-Since $q + 1 = 2^{k_1} x$, one has $2^{3k_1} x^3 = (q+1)^3$.
+Since $q + 1 = 2^{k_1} x$, we have $2^{3k_1} x^3 = (q+1)^3$.
 
 Let $E = 2q^2 + (3 - 2^{k_1})q + 1 - 2^{k_1 + k_2}$.
 Lemma~2 gives $2^h = q^3 + q^2 + 2^{k_1} q + 2^{k_1 + k_2}$, so
@@ -489,7 +570,7 @@ Dividing by $2^{3k_1}$ gives $\bigl|x^3 - 2^f\bigr| < 3.2\, x^2/2^{k_1}$, and in
 \[
 \bigl|x^3 - 2^f\bigr| \le \frac{3.2\, x^2}{2^{k_1}}.
 \]
-Since $f = h - 3k_1$, one has $f \equiv h \pmod{3}$.
+Since $f = h - 3k_1$, we have $f \equiv h \pmod{3}$.
 Lemma~3 says that $3$ does not divide $h$, so $3$ does not divide $f$.
 
 \[
@@ -501,12 +582,12 @@ For every real number $z$, $\bigl|x^3 - z^3\bigr|$ increases as $z$ moves away f
 \bigl|x^3 - 2^f\bigr| \ge \min\bigl(x^3 - (x-1)^3,\ (x+1)^3 - x^3\bigr) = 3x^2 - 3x + 1,
 \]
 because $(x+1)^3 - x^3 = 3x^2 + 3x + 1 > 3x^2 - 3x + 1$.
-Since $x \ge 3$, one has $3x^2 - 3x + 1 \ge 2x^2$.
-Since $2^{k_1} \ge 2$, one has $3.2\, x^2/2^{k_1} \le 1.6 x^2 < 2x^2$.
+Since $x \ge 3$, we have $3x^2 - 3x + 1 \ge 2x^2$.
+Since $2^{k_1} \ge 2$, we have $3.2\, x^2/2^{k_1} \le 1.6 x^2 < 2x^2$.
 So $\bigl|x^3 - 2^f\bigr| \ge 2x^2$ and $\bigl|x^3 - 2^f\bigr| < 2x^2$, which is impossible.
 
 Hence $\bigl|x - 2^{f/3}\bigr| < 1$, so $2^{f/3} > x - 1$.
-Since $x \ge 3$, one has $x - 1 \ge 2x/3$, and therefore $2^{f/3} > 2x/3$.
+Since $x \ge 3$, we have $x - 1 \ge 2x/3$, and therefore $2^{f/3} > 2x/3$.
 Then
 \[
 x^2 + x \cdot 2^{f/3} + 2^{2f/3} > x^2 + \frac{2x^2}{3} + \frac{4x^2}{9} = \frac{19}{9}x^2 > 2x^2,
@@ -521,9 +602,9 @@ In particular $\bigl|x - 2^{f/3}\bigr| \le 1.6/2^{k_1}$.
 \section{Proof of Theorem 1}
 \label{sec:proof}
 
-We use the following inequality, obtained in the proof of Theorem~2.1 of Bauer and Bennett (2018) from their inequality~(5.3), Lemma~4.1 and Proposition~5.1, before they round the restricted irrationality exponent to $2^{-1.62k}$ in~(2.1).
+We use the following inequality, obtained in the proof of Theorem~2.1 of Bauer and Bennett (2018) from their inequality~(5.3), Lemma~4.1 and Proposition~5.1, before they round the exponent to $2^{-1.62k}$ in~(2.1).
 
-\begin{named}{Theorem (Bauer--Bennett (2018)).}
+\begin{named}{Theorem (Bauer and Bennett (2018)).}
 Let $j \ge 11000$, $r \in \{1, 2\}$, $s \in \{1, 3\}$ and $n = 3j + r$.
 For every integer $p$,
 \[
@@ -536,7 +617,7 @@ For every integer $p$,
 \end{named}
 
 The factor $2^{-5}$ is a weakening of the contour bound behind their inequality~(5.3). The denominator of~(5.3) contributes $1/(1.26 \cdot 2^{14/3}) = 2^{-5.00009\ldots}$, and the contour estimate for $|P_{n_1,\delta}|$ has constant $1.2528\ldots$ in place of $1.26$, so that $1.2528\ldots \cdot 2^{14/3}$ has base-$2$ logarithm $4.9918 < 5$. The formula they display omits the factor, though it is absorbed in their final statement.
-Per unit of $j$ the restricted irrationality exponent is $\mu = 3 \log_2(16166467234)/63 \approx 1.61487$.
+Per unit of $j$ the exponent is $\mu = 3 \log_2(16166467234)/63 \approx 1.61487$.
 
 \begin{proof}[Proof of Theorem~1]
 Suppose $q \ge 2^{22001}$.
@@ -552,24 +633,28 @@ Hence $x \ge 2^{j'}+1$ and $q = 2^a x - 1 \ge 2^{a+j'} + 2^a - 1 \ge 2^{a+j'} + 
 From Lemma~\ref{lem:cube-window}, $2^h > q^3$, so $2^{h/3} > q > 2^{a+j'}$ and $m + r/3 > a + j'$.
 As $r \le 2$, this forces $m \ge a + j' \ge 11000$.
 \begin{enumerate}
-\item \textbf{The window.}
-Apply Theorem~(Bauer--Bennett (2018)) with $s = 3$, $p = 3q + 1$, $j = m$.
-Here $1 - p/(3 \cdot 2^{h/3}) = (\delta - 1/3)/2^{h/3}$, so $\delta - 1/3 > 2^m \cdot 2^{-5} \cdot 16166467234^{-(h+77)/63}$.
+\item \textbf{The $\delta$ window.}
+Apply Theorem~(Bauer and Bennett (2018)) with $s = 3$, $p = 3q + 1$, $j = m$.
+Since $2^{h/3} = q + \delta$,
+\[
+1 - \frac{3q+1}{3 \cdot 2^{h/3}} = \frac{3(q+\delta) - (3q+1)}{3 \cdot 2^{h/3}} = \frac{\delta - 1/3}{2^{h/3}},
+\]
+so $\delta - 1/3 > 2^m \cdot 2^{-5} \cdot 16166467234^{-(h+77)/63}$.
 With Lemma~\ref{lem:window} and $q \ge 2^m$,
 \[
 2^a > 1.5 \cdot 2^{2m-5} \cdot 16166467234^{-(h+77)/63}.
 \]
 \item \textbf{The near miss for $x$.}
-Apply Theorem~(Bauer--Bennett (2018)) with $s = 1$, $p = x$, $j = j'$.
+Apply Theorem~(Bauer and Bennett (2018)) with $s = 1$, $p = x$, $j = j'$.
 By Lemma~\ref{lem:near-x}, $|1 - x/2^{f/3}| \le 1.6/(2^a \cdot 2^{f/3})$, so
 \[
 2^a < 1.6 \cdot 2^{5 - f/3} \cdot 16166467234^{(f+77)/63}.
 \]
 \item \textbf{Combining.}
-With $h = f + 3a$, $m \ge a + j'$ and $j' \ge (f-2)/3$, the window gives $a > 0.20878\, f - 76.8$ and the near miss for $x$ gives $a < 0.20496\, f + 47.2$.
+With $h = f + 3a$, $m \ge a + j'$ and $j' \ge (f-2)/3$, the $\delta$ window gives $a > 0.20878\, f - 76.8$ and the near miss for $x$ gives $a < 0.20496\, f + 47.2$.
 These are incompatible once $f \ge 32{,}461$, that is $j' \ge 10{,}820$.
 \end{enumerate}
-So any cycle of length $3$ through $1$ has $q < 2^{22001}$.
+So any cycle of length $3$ with starting value $1$ has $q < 2^{22001}$.
 Lemma~\ref{lem:cube-window} gives $2^h < (q+1)^3$.
 Since $q$ is an integer, $q + 1 \le 2^{22001}$, so $2^h < 2^{66{,}003}$ and $h < 66{,}003$.
 Each such $h$ gives a single candidate $q = \lfloor 2^{h/3} \rfloor$.
@@ -577,28 +662,28 @@ Appendix~\ref{app:computations} tests every $h \le 200{,}000$ and finds no cycle
 \end{proof}
 
 \topic{Why the golden ratio appears.}
-The proof squeezes $x$ between two bounds, both governed by the restricted irrationality exponent $\mu$ in Theorem~(Bauer--Bennett (2018)).
+The proof squeezes $x$ between two bounds, both governed by the exponent $\mu$ in Theorem~(Bauer and Bennett (2018)).
 \begin{itemize}
-\item \textbf{The window keeps $x$ small.}
+\item \textbf{The $\delta$ window keeps $x$ small.}
 By Lemma~\ref{lem:window}, $2^{h/3}$ exceeds $q + 1/3$ by about $1/(3x)$, so $(3q+1)/(3 \cdot 2^m)$ approximates $2^{r/3}$ with error about $1/(xq)$.
-Theorem~(Bauer--Bennett (2018)) forbids errors below about $q^{-\mu}$, so $x \lesssim q^{\mu-1}$.
+Theorem~(Bauer and Bennett (2018)) forbids errors below about $q^{-\mu}$, so $x \lesssim q^{\mu-1}$.
 \item \textbf{The near miss for $x$ keeps $x$ large.}
 By Lemma~\ref{lem:near-x}, $x/2^{j'}$ approximates $2^{r'/3}$ with error about $1/q$, where $2^{j'} \asymp x$.
-Theorem~(Bauer--Bennett (2018)) forbids errors below about $x^{-\mu}$, so $x \gtrsim q^{1/\mu}$.
+Theorem~(Bauer and Bennett (2018)) forbids errors below about $x^{-\mu}$, so $x \gtrsim q^{1/\mu}$.
 \end{itemize}
 Both bounds can hold only if $1/\mu \le \mu - 1$, that is $\mu^2 - \mu - 1 \ge 0$, whose positive root is $\varphi = (1 + \sqrt{5})/2$.
-With $\mu = 1.61487$ the bounds read $q^{0.6192} \lesssim x \lesssim q^{0.6149}$, which are incompatible once $q$ is large; the explicit constants in the window, the near miss for $x$, and the comparison of those two bounds make this precise for $q \ge 2^{22001}$.
-The two bounds are tied together by $q + 1 = 2^{k_1} x$: a large $x$ makes the window's approximation too good, while a small $x$ forces $2^{k_1}$ to be large and makes $x$'s own approximation too good.
+With $\mu = 1.61487$ the bounds read $q^{0.6192} \lesssim x \lesssim q^{0.6149}$, which are incompatible once $q$ is large; the explicit constants in the $\delta$ window, the near miss for $x$, and the comparison of those two bounds make this precise for $q \ge 2^{22001}$.
+The two bounds are tied together by $q + 1 = 2^{k_1} x$. If $x$ is large, then $2^{k_1}$ is small, and the error in $(3q+1)/(3 \cdot 2^m)$ as an approximation to $2^{r/3}$ falls below the bound forbidden by Theorem~(Bauer and Bennett (2018)). If $x$ is small, then $2^{k_1}$ is large, and the error in $x/2^{j'}$ as an approximation to $2^{r'/3}$ falls below that same bound.
 
-The threshold $\varphi$ comes from this argument; the restricted irrationality exponent comes from Bauer and Bennett, who needed only a restricted irrationality exponent below $2$ for their own purposes.
+The threshold $\varphi$ comes from this argument; the exponent $\mu$ comes from Bauer and Bennett (2018), who needed only an exponent below $2$ for their own purposes.
 Their stated value $1.62$ lies just above $\varphi$ and would leave room for $x$; the unrounded $1.61487$ lies just below it.
 
 \section{Longer cycles}
 \label{sec:longer}
 
-\begin{named}{Lemma 10 (the $\ell$-th power window).}
+\begin{named}{Lemma 10 (between consecutive $\ell$-th powers).}
 \markstmt{10}{lem:power-window}
-For a cycle of length $\ell$ through $1$, let $\sigma = \sum_{i=1}^{\ell-1} 1/x_i$.
+For a cycle of length $\ell$ with starting value $1$, let $\sigma = \sum_{i=1}^{\ell-1} 1/x_i$.
 Then
 \[
 2^h = (q+1) \prod_{i=1}^{\ell-1} \left( q + \frac{1}{x_i} \right).
@@ -624,7 +709,7 @@ q^\ell < (q+1)\, q^{\ell-1} < (q+1) \prod_{i=1}^{\ell-1} \left( q + \frac{1}{x_i
 The product $(q+1) \prod_{i=1}^{\ell-1} (q + 1/x_i)$ equals $2^h$, so $q^\ell < 2^h < (q+1)^\ell$.
 A power of $2$ strictly between consecutive $\ell$-th powers is not an $\ell$-th power, so $\ell$ does not divide $h$, and $q = \lfloor 2^{h/\ell} \rfloor$.
 
-Since $2^{h/\ell} = q + \delta$, one has $(q+\delta)^\ell = 2^h$.
+Since $2^{h/\ell} = q + \delta$, we have $(q+\delta)^\ell = 2^h$.
 Dividing by $q^\ell$ gives
 \[
 \left(1 + \frac{\delta}{q}\right)^\ell = \left(1 + \frac{1}{q}\right) \prod_{i=1}^{\ell-1} \left(1 + \frac{1}{q x_i}\right).
@@ -635,17 +720,17 @@ Thus
 \left(1 + \frac{1}{q}\right)\left(1 + \frac{\sigma}{q} + O(1/q^2)\right) = 1 + \frac{1+\sigma}{q} + O(1/q^2).
 \]
 Since $0 < \delta < 1$, the binomial expansion gives $(1 + \delta/q)^\ell = 1 + \ell\delta/q + O(1/q^2)$.
-From $1 + \ell\delta/q + O(1/q^2) = 1 + (1+\sigma)/q + O(1/q^2)$ one has $\ell\delta/q = (1+\sigma)/q + O(1/q^2)$, so $\delta - 1/\ell = \sigma/\ell + O(1/q)$.
+From $1 + \ell\delta/q + O(1/q^2) = 1 + (1+\sigma)/q + O(1/q^2)$ we have $\ell\delta/q = (1+\sigma)/q + O(1/q^2)$, so $\delta - 1/\ell = \sigma/\ell + O(1/q)$.
 \end{proof}
 
-\begin{named}{Lemma 11 (every element is a near miss).}
+\begin{named}{Lemma 11 (the relative error $\rho_i$).}
 \markstmt{11}{lem:near-misses}
 For $1 \le i \le \ell - 1$, let
 \[
 \varepsilon_i = \frac{1}{q} + \sum_{u=1}^{i-1} \frac{1 + \varepsilon_u}{q x_u}.
 \]
 Then $x_i \, 2^{S_i} = q^i (1 + \varepsilon_i)$.
-Since $n_i = ih - \ell S_i$, one has $x_i = 2^{n_i/\ell}(1 + \rho_i)$.
+Since $n_i = ih - \ell S_i$, we have $x_i = 2^{n_i/\ell}(1 + \rho_i)$.
 For $q \ge \ell$,
 \[
 -\frac{i}{q+1} < \rho_i \le \frac{2i+1}{3q}.
@@ -655,7 +740,7 @@ If $q \ge \ell$ and $\ell$ divides $n_i$, then $x_i \ge q/(\ell-1) - 1$.
 \end{named}
 
 \begin{proof}
-For $i = 1$, one has $\varepsilon_1 = 1/q$ and $x_1 2^{k_1} = q + 1 = q(1 + 1/q)$.
+For $i = 1$, we have $\varepsilon_1 = 1/q$ and $x_1 2^{k_1} = q + 1 = q(1 + 1/q)$.
 
 Suppose $i \ge 2$ and $x_{i-1} 2^{S_{i-1}} = q^{i-1}(1 + \varepsilon_{i-1})$.
 Since $2^{k_i} x_i = q x_{i-1} + 1$ and $S_i = S_{i-1} + k_i$,
@@ -678,9 +763,9 @@ If $\varepsilon_u \le 1$ for every $u < i$, then $(1 + \varepsilon_u)/(q x_u) \l
 \[
 \varepsilon_i \le \frac{1}{q} + \frac{2}{q}\cdot\frac{i-1}{3} = \frac{2i+1}{3q}.
 \]
-For $q \ge \ell$ and $i \le \ell - 1$, one has $(2i+1)/(3q) \le (2\ell - 1)/(3\ell) < 1$, so $\varepsilon_i \le 1$.
+For $q \ge \ell$ and $i \le \ell - 1$, we have $(2i+1)/(3q) \le (2\ell - 1)/(3\ell) < 1$, so $\varepsilon_i \le 1$.
 Thus $\varepsilon_i \le (2i+1)/(3q)$ for every $i \le \ell - 1$.
-Since $0 < \delta < 1$, one has $\bigl(q/(q+1)\bigr)^i < \bigl(q/(q+\delta)\bigr)^i$, and $\bigl(q/(q+1)\bigr)^i = \bigl(1 - 1/(q+1)\bigr)^i \ge 1 - i/(q+1)$.
+Since $0 < \delta < 1$, we have $\bigl(q/(q+1)\bigr)^i < \bigl(q/(q+\delta)\bigr)^i$, and $\bigl(q/(q+1)\bigr)^i = \bigl(1 - 1/(q+1)\bigr)^i \ge 1 - i/(q+1)$.
 Also $\bigl(q/(q+\delta)\bigr)^i \le 1$ and $1 + \varepsilon_i \le 1 + (2i+1)/(3q)$, so
 \[
 1 - \frac{i}{q+1} \le \left(1 - \frac{1}{q+1}\right)^i < \left(\frac{q}{q+\delta}\right)^i (1 + \varepsilon_i) \le 1 + \frac{2i+1}{3q}.
@@ -703,11 +788,7 @@ The outline in the introduction is the case $R = \{1, \ldots, \ell-1\}$.
 
 \begin{named}{Theorem 2.}
 Let $\ell \ge 2$, let $R \subseteq \{1, \ldots, \ell-1\}$, and let $\varphi = (1 + \sqrt{5})/2$.
-Suppose that there are real numbers $0 < \mu < \varphi$, $c > 0$ and $j_0$ such that
-\[
-\left| 2^{r/\ell} - \frac{p}{s \cdot 2^j} \right| > c \cdot 2^{-\mu j}
-\]
-for all $r \in R$, $s \in \{1, \ell\}$, $p \in \mathbb{Z}$ and integers $j \ge j_0$.
+Suppose that $0 < \mu < \varphi$ and that, for every $r \in R$, $\mu$ is a restricted irrationality exponent of $2^{r/\ell}$ for the set $\{1, \ell\}$, with the same explicit constant real number $c > 0$ and the same explicit constant integer $j_0 \ge 0$.
 Then there is a number $Q$, computable from $\ell$, $\mu$, $c$ and $j_0$, with the following property.
 If $q > Q$ is odd and $1 = x_0 \to x_1 \to \cdots \to x_{\ell-1} \to 1$ is a cycle of $C$ of length $\ell$, with $q \cdot x_{i-1} + 1 = 2^{k_i} \cdot x_i$ for $1 \le i \le \ell$ (where $x_\ell = 1$), then some multiple of $h = k_1 + \cdots + k_\ell$ has a nonzero residue modulo $\ell$ outside $R$.
 \end{named}
@@ -715,7 +796,7 @@ If $q > Q$ is odd and $1 = x_0 \to x_1 \to \cdots \to x_{\ell-1} \to 1$ is a cyc
 \begin{proof}[Proof of Theorem~2]
 Suppose that every multiple of $h$ has its nonzero residues modulo $\ell$ in $R$.
 Write $h = \ell m + r$ with $r \in R$, and assume $q \ge 2(\ell-1)$, so Lemma~\ref{lem:near-misses} gives $|\rho_i| \le 1/2$.
-The window uses $2^{r/\ell}$, and $x_i$ uses $2^{n_i/\ell}$ with $n_i \equiv ir \pmod{\ell}$, so every root below has its residue in $R$.
+The $\delta$ window uses $2^{r/\ell}$, and $x_i$ uses $2^{n_i/\ell}$ with $n_i \equiv ir \pmod{\ell}$, so the residue modulo $\ell$ of each of these exponents lies in $R$.
 Set
 \[
 A = 2^{1/\ell - 1}\Bigl(\frac{c}{2(\ell-1)}\Bigr)^{1/\mu},
@@ -725,7 +806,7 @@ A = 2^{1/\ell - 1}\Bigl(\frac{c}{2(\ell-1)}\Bigr)^{1/\mu},
 the last because $\mu^2 - \mu - 1 < 0$.
 
 If $q < 2^{j_0+1}$, stop: this is already a bound.
-If $q \ge 2^{j_0+1}$, then $2^m = (q+\delta)/2^{r/\ell} > q/2 \ge 2^{j_0}$, so $m \ge j_0$ and the hypothesis applies to the window.
+If $q \ge 2^{j_0+1}$, then $2^m = (q+\delta)/2^{r/\ell} > q/2 \ge 2^{j_0}$, so $m \ge j_0$ and the hypothesis applies to the $\delta$ window.
 \[
 \Bigl|\delta - \frac1\ell\Bigr|
 = 2^m \Bigl| 2^{r/\ell} - \frac{\ell q + 1}{\ell \cdot 2^m} \Bigr|
@@ -746,9 +827,9 @@ If $j \ge j_0$, the hypothesis and $|\rho_i| \le (\ell-1)/q$ give $c \cdot 2^{-\
 x_i \ge 2^{1/\ell-1}\, 2^j \ge A\, q^{1/\mu}.
 \]
 If $\ell \mid n_i$, then $x_i \ge q/(\ell-1) - 1 \ge q/(2(\ell-1))$.
-Thus every $x_i$ is at least $A q^{1/\mu}$ once $q$ is large enough that $A q^{1/\mu} \le q/(2(\ell-1))$, and
+Once $q > Q_0$, every $x_i$ is at least $\min\bigl(A q^{1/\mu},\ q/(2(\ell-1))\bigr)$, so
 \[
-\sigma \le (\ell-1) A^{-1} q^{-1/\mu}.
+\sigma \le (\ell-1)\, A^{-1} q^{-1/\mu} + \frac{2(\ell-1)^2}{q}.
 \]
 
 Expanding the product in Lemma~\ref{lem:power-window},
@@ -763,70 +844,165 @@ Comparing with the binomial expansion of the left side, and using $\sigma \le (\
 \le \frac{\sigma}{\ell q} + \frac{\rho(q+1)}{\ell} + \frac{\ell\, e^{\ell/q}}{q}
 \le \frac{4\ell}{q}.
 \]
-Hence $|\delta - 1/\ell| \le A^{-1} q^{-1/\mu} + 4\ell/q$.
-For $\mu \ge 1$ the second term is at most $4\ell\, q^{-1/\mu}$, so the right-hand side is at most $(A^{-1} + 4\ell)\, q^{-1/\mu}$.
-
-If $\mu > 1$, the two bounds on $|\delta - 1/\ell|$ conflict once $c\, 2^{1-\mu} q^{1-\mu} > (A^{-1} + 4\ell)\, q^{-1/\mu}$, that is
+Hence
 \[
-q > Q_* := \Biggl( \frac{A^{-1} + 4\ell}{c\, 2^{1-\mu}} \Biggr)^{1/\gamma}.
+\bigl|\delta - \frac1\ell\bigr|
+\le A^{-1} q^{-1/\mu} + \Biggl(\frac{2(\ell-1)^2}{\ell} + 4\ell\Biggr)\frac1q.
 \]
-If $\mu \le 1$, they conflict once $c/2 > (A^{-1} + 4\ell)\, q^{-1/\mu}$, that is $q > \bigl(2(A^{-1} + 4\ell)/c\bigr)^\mu$; use this as $Q_*$ instead.
 
+If $\mu > 1$, then $1/q \le q^{-1/\mu}$ for every integer $q \ge 1$, so
+\[
+\bigl|\delta - \frac1\ell\bigr|
+\le \Biggl(A^{-1} + \frac{2(\ell-1)^2}{\ell} + 4\ell\Biggr) q^{-1/\mu}.
+\]
+Let $Q_*$ be the positive real number
+\[
+Q_* = \Biggl( \frac{A^{-1} + 2(\ell-1)^2/\ell + 4\ell}{c\, 2^{1-\mu}} \Biggr)^{1/\gamma}.
+\]
 Take $Q = \max\bigl(2(\ell-1),\ 2^{j_0+1},\ Q_0,\ Q_*\bigr)$.
+If $q > Q$, then $\bigl|\delta - 1/\ell\bigr| > c\, 2^{1-\mu} q^{1-\mu}$ and $\bigl|\delta - 1/\ell\bigr| \le \bigl(A^{-1} + 2(\ell-1)^2/\ell + 4\ell\bigr) q^{-1/\mu}$ cannot both hold.
+
+If $\mu \le 1$, then $q^{-1/\mu} \le 1/q$ for every integer $q \ge 1$, so
+\[
+\bigl|\delta - \frac1\ell\bigr|
+\le \Biggl(A^{-1} + \frac{2(\ell-1)^2}{\ell} + 4\ell\Biggr)\frac1q.
+\]
+Let $Q_*$ be the positive real number
+\[
+Q_* = \frac2c\Biggl(A^{-1} + \frac{2(\ell-1)^2}{\ell} + 4\ell\Biggr).
+\]
+Take $Q = \max\bigl(2(\ell-1),\ 2^{j_0+1},\ Q_0,\ Q_*\bigr)$.
+If $q > Q$, then $\bigl|\delta - 1/\ell\bigr| > c/2$ and $\bigl|\delta - 1/\ell\bigr| \le \bigl(A^{-1} + 2(\ell-1)^2/\ell + 4\ell\bigr)/q$ cannot both hold.
 \end{proof}
 
-For $R = \{1, \ldots, \ell-1\}$ the conclusion is that no $q > Q$ has $1$ on a cycle of length $\ell$.
+If the lower bound is a power of the whole denominator, the multiplier contributes only a constant real number. Suppose there exists an explicit constant real number $c_0 > 0$ and there exists an explicit constant integer $j_0 \ge 0$ such that, for every integer $r$ with $1 \le r \le \ell - 1$, every integer $p$, every $s \in \{1, \ell\}$, and every integer $j \ge j_0$,
+\[
+\left| 2^{r/\ell} - \frac{p}{s \cdot 2^j} \right| > c_0 \bigl(s \cdot 2^j\bigr)^{-\mu}.
+\]
+Since $\mu > 0$ and $1 \le s \le \ell$, we have $s^{-\mu} \ge \ell^{-\mu}$. The displayed inequality therefore yields the hypothesis of Theorem~2 with the explicit constant real number $c = c_0 \ell^{-\mu}$. The exponent of $2$ remains $\mu$. Ridout's theorem gives a lower bound of this form with $\mu = 1+\varepsilon$ and with the power on the whole denominator $s \cdot 2^j$. It gives no explicit $c_0$ or $j_0$.
+
+For $R = \{1, \ldots, \ell-1\}$ the conclusion is that no $q > Q$ has a cycle of length $\ell$ with starting value $1$.
 For $\ell = 4$ and $R = \{2\}$, the multiples of $h$ avoid the residues $1$ and $3$ exactly when $h$ is even, so the conclusion is that $h$ is odd.
 
-For $\ell = 3$, Theorem~(Bauer--Bennett (2018)) supplies the hypothesis of Theorem~2 with $R = \{1, 2\}$, $\mu \approx 1.61487$ and $j_0 = 11000$.
+For $\ell = 3$, Theorem~(Bauer and Bennett (2018)) supplies the hypothesis of Theorem~2 with $R = \{1, 2\}$, $\mu \approx 1.61487$ and $j_0 = 11000$.
 So Theorem~1 is the case $\ell = 3$ of Theorem~2; Section~\ref{sec:proof} carries out this case with explicit constants.
 
 \begin{named}{Corollary 12.}
-No odd $q$ has $1$ on a cycle of $C$ of length $4$ whose total number of halvings is $\equiv 2 \pmod{4}$.
+No cycle of length $4$ with starting value $1$ has total number of halvings $\equiv 2 \pmod{4}$.
 \end{named}
 
 \begin{proof}
-This is Theorem~2 with $\ell = 4$ and $R = \{2\}$, with explicit constants.
-Write $h = 4m + 2$.
-Then $n_1 \equiv n_3 \equiv 2$ and $n_2 \equiv 0 \pmod{4}$, so only $\sqrt{2}$ and powers of $2$ occur, and the window approximates $\sqrt{2}$ by $(4q+1)/2^{m+2}$.
-Bauer and Bennett's Corollary~1.6 (2002) gives $|\sqrt{2} - p/2^j| > 2^{-1.48 j}$ for every $j > 2$ with $j \notin \{3, 7, 8\}$.
-\begin{itemize}
-\item By Lemma~\ref{lem:near-misses}, $x_2 \ge q/3.1$, and $x_1$, $x_3$ are near $\sqrt{2} \cdot 2^j$, so $4.3/q > (x/1.41)^{-1.48}$, giving $x_1, x_3 \ge (0.387q)^{0.6757}$.
-\item Corollary~1.6 gives $|\delta - 1/4| > 0.152(q+1)^{-0.48}$, while expanding the product in Lemma~\ref{lem:power-window} explicitly gives $|\delta - 1/4| \le \sigma/4 + 1.75/q \le 0.95\, q^{-0.6757} + 2.53/q$.
-\end{itemize}
-For $q \ge 10^5$ every such $j$ exceeds $8$, so Corollary~1.6 applies, and the two bounds are then incompatible (the inequalities already conflict from $q = 2 \times 10^4$). The search over $h$ covers $\ell = 4$ for $q < 2^{25{,}000}$.
+Write $h = 4m + 2$ for an integer $m \ge 0$.
+Then $n_1 \equiv n_3 \equiv 2 \pmod{4}$ and $n_2 \equiv 0 \pmod{4}$.
+For $i \in \{1, 3\}$, let $j$ be the integer $(n_i - 2)/4$, so $x_i = \sqrt{2}\, 2^{j}(1+\rho_i)$.
+Also $2^m \sqrt{2} = q + \delta$, and
+\[
+\Bigl|\delta - \frac14\Bigr| = 2^m \Bigl|\sqrt{2} - \frac{4q+1}{2^{m+2}}\Bigr|.
+\]
+Bauer and Bennett's Corollary~1.6 (2002) gives $|\sqrt{2} - p/2^j| > 2^{-1.48 j}$ for every integer $j > 2$ with $j \notin \{3, 7, 8\}$.
+
+Let $q \ge 10^5$.
+Lemma~\ref{lem:near-misses} gives $|\rho_i| \le 3/q$.
+Since $\sqrt{2} < 99/70$, we have $3\sqrt{2} < 297/70 < 4.3$, so $3\sqrt{2}/q < 4.3/q$.
+If $j \le 8$ and $|\rho_i| \le 3/q$, then $|x_i - 2^j \sqrt{2}| \le 3 \cdot 10^{-5} \cdot 2^8 \cdot 99/70 < 0.011$.
+Hence $|x_i^2 - 2^{2j+1}| < 0.011\bigl(2 \cdot 2^8 \cdot 99/70 + 0.011\bigr) < 8$, so $|x_i^2 - 2^{2j+1}| \le 7$.
+The element $x_i$ is an odd integer at least $3$.
+For any two distinct odd integers $y$ and $z$ at least $3$, we have $|y^2 - z^2| \ge 16$.
+Thus, for this integer $j$, at most one odd integer $x \ge 3$ satisfies $|x^2 - 2^{2j+1}| \le 7$.
+Comparing $2^{2j+1}$ with those squares for $0 \le j \le 8$ leaves the pairs $(x_i, j) = (3, 0)$, $(3, 1)$, $(5, 2)$, $(11, 3)$ and $(181, 7)$.
+For $181$ and $j = 7$, we have $2^{15} - 181^2 = 7$ and $2^{15/2} < 128 \cdot 99/70 < 181.03$, so
+\[
+\bigl|181 \cdot 2^{-15/2} - 1\bigr| = \frac{7}{2^{15/2}(181 + 2^{15/2})} > \frac{7}{70000} = 10^{-4} > \frac{3}{q}.
+\]
+For the other four pairs, $j \le 3$, $|x_i - 2^j \sqrt{2}| > 1/10$ and $2^j \sqrt{2} < 12$, so $|\rho_i| > 1/120 > 3/q$.
+Thus $j \ge 9$.
+Also $2^m = (q+\delta)/\sqrt{2} > 70q/99 > 2^{16}$, so $m \ge 17$ and $m+2 \ge 19$.
+Corollary~1.6 therefore applies to $(4q+1)/2^{m+2}$ and to $x_i/2^j$.
+
+Since $2^m < (q+1)/\sqrt{2}$,
+\[
+\Bigl|\delta - \frac14\Bigr| > 2^m \cdot 2^{-1.48(m+2)} > 2^{-2.72}(q+1)^{-0.48}.
+\]
+Also $\rho_i > -3/(q+1)$.
+Since $\sqrt{2} > 41/29$ and $q \ge 10^5$, we have $\sqrt{2}\bigl(1 - 3/(q+1)\bigr) > (41/29)(1 - 3/10^5)$.
+Here $41 \cdot 99997 > 141 \cdot 29 \cdot 1000$, so $(41/29)(1 - 3/10^5) > 1.41$, and therefore $2^j < x_i/1.41$.
+Combined with $\sqrt{2}\,|\rho_i| \le 3\sqrt{2}/q < 4.3/q$,
+\[
+\frac{4.3}{q} > \Bigl(\frac{x_i}{1.41}\Bigr)^{-1.48},
+\]
+so $x_i > 1.41\,(q/4.3)^{1/1.48}$.
+Lemma~\ref{lem:near-misses} gives $x_2 \ge q/3 - 1$.
+For $q > 93$ we have $q/3 - 1 > q/3.1$, so $1/x_2 < 3.1/q$.
+With $\sigma = 1/x_1 + 1/x_2 + 1/x_3$,
+\[
+\frac{\sigma}{4} < \frac{4.3^{1/1.48}}{2 \cdot 1.41}\, q^{-1/1.48} + \frac{0.775}{q} < 0.951\, q^{-1/1.48} + \frac{0.775}{q},
+\]
+where $4.3^{1/1.48}/(2 \cdot 1.41) < 0.951$.
+
+Each $x_i \ge 3$, so $(q+\delta)^4 = (q+1)\prod_{i=1}^{3}(q + 1/x_i) \le (q+1)(q+1/3)^3$.
+The difference $(q+1/2)^4 - (q+1)(q+1/3)^3 = q^2/6 + 7q/54 + 11/432$ is positive, so $\delta < 1/2$.
+Write $\prod_{i=1}^{3}(1 + 1/(q x_i)) = 1 + \sigma/q + \rho$, where $\rho$ is the sum of the products of two or three factors $1/(q x_i)$.
+Then $0 < \rho \le 1/(3q^2) + 1/(27q^3)$, and Lemma~\ref{lem:power-window} gives
+\[
+\delta - \frac14 - \frac{\sigma}{4} = \frac{q\rho}{4}\Bigl(1+\frac1q\Bigr) + \frac{\sigma}{4q} - \frac{3\delta^2}{2q} - \frac{\delta^3}{q^2} - \frac{\delta^4}{4q^3}.
+\]
+Since $\sigma \le 1$ and $\delta < 1/2$, for $q \ge 10^5$ the absolute value of the right-hand side is at most
+\[
+\frac{1+1/q}{12q} + \frac{1+1/q}{108q^2} + \frac{1}{4q} + \frac{3}{8q} + \frac{1}{8q^2} + \frac{1}{64q^3} < \frac{0.71}{q}.
+\]
+Thus
+\[
+\Bigl|\delta - \frac14\Bigr| < 0.951\, q^{-1/1.48} + \frac{1.49}{q}.
+\]
+At $q = 10^5$ we have $2^{-2.72}(q+1)^{-0.48} > 6.04 \times 10^{-4}$ and $0.951\, q^{-1/1.48} + 1.49/q < 4.13 \times 10^{-4}$.
+Dividing the two bounds by $(q+1)^{-0.48}$ leaves the constant $2^{-2.72}$ on the left.
+Each term on the right then has the form $c(q+1)^{0.48} q^{-a}$, with a positive real number $c$ and a real number $a > 0.48$, so its logarithmic derivative $0.48/(q+1) - a/q$ is negative.
+The right side decreases for $q \ge 10^5$, and the inequality persists.
+Appendix~\ref{app:computations} searches every $h \le 100{,}000$, and therefore every $q < 2^{25{,}000}$.
 \end{proof}
 
 \begin{named}{Corollary 13.}
 Let $\ell = 2^a$ with $a \ge 2$.
-Only finitely many odd $q$ have $1$ on a cycle of $C$ of length $\ell$ whose total number of halvings is $\equiv \ell/2 \pmod{\ell}$, and a bound is computable from Bauer and Bennett's Corollary~1.6 (2002).
+Only finitely many odd $q$ have a cycle of $C$ of length $\ell$ with starting value $1$ whose total number of halvings is $\equiv \ell/2 \pmod{\ell}$, and a bound is computable from Bauer and Bennett's Corollary~1.6 (2002).
 For $\ell = 4$ every such $q$ is ruled out by Corollary~12.
 \end{named}
 
 \begin{proof}
 Write $h = \ell m + \ell/2$.
-Every multiple of $h$ is congruent to $0$ or $\ell/2$ modulo $\ell$, so the only root that occurs is $2^{1/2}$.
-A denominator $s \cdot 2^j$ with $s \in \{1, \ell\}$ is a power of $2$, because $\ell$ is.
-Bauer and Bennett's Corollary~1.6 (2002) therefore gives the hypothesis of Theorem~2 with $R = \{\ell/2\}$, $\mu = 1.48 < \varphi$, $c = 1$ and $j_0 = 9$: the finitely many excluded $j \in \{1, 2, 3, 7, 8\}$ contribute only a constant factor depending on $\ell$.
+Every multiple of $h$ is congruent to $0$ or $\ell/2$ modulo $\ell$, so for an integer $t$ every $2^{t/\ell}$ that occurs is an integer power of $2$ or equals $2^{1/2}$.
+Let $s$ be an integer in $\{1, \ell\}$, let $p$ be an integer, and let $j \ge 9$ be an integer.
+Let $v$ be the integer in $\{0, a\}$ with $v = 0$ when $s = 1$ and $v = a$ when $s = \ell$.
+Since $\ell = 2^a$, we have $s \cdot 2^j = 2^{j+v}$.
+Then $j+v \ge 9$, so $j+v > 2$ and $j+v \notin \{3, 7, 8\}$.
+Bauer and Bennett's Corollary~1.6 (2002) therefore gives
+\[
+\Bigl|\sqrt{2} - \frac{p}{2^{j+v}}\Bigr| > 2^{-1.48(j+v)} = 2^{-1.48 v} \cdot 2^{-1.48 j}.
+\]
+Since $s \cdot 2^j = 2^{j+v}$ and $v \le a$, we have $2^{-1.48 v} \ge 2^{-1.48 a}$, and
+\[
+\Bigl|\sqrt{2} - \frac{p}{s \cdot 2^j}\Bigr| > 2^{-1.48 a} \cdot 2^{-1.48 j}.
+\]
+Let $r$ be the positive integer $\ell/2$. Then $2^{r/\ell} = 2^{1/2}$.
+The hypothesis of Theorem~2 therefore holds with $R = \{\ell/2\}$, the real number $\mu = 1.48 < \varphi$, the positive real number $c = 2^{-1.48 a}$ and the positive integer $j_0 = 9$.
 The bound is then the $Q$ in the proof of Theorem~2 for these values.
 The case $\ell = 4$ is Corollary~12.
 \end{proof}
 
 \begin{named}{Corollary 14.}
 Let $\ell = 3 \cdot 2^a$ with $a \ge 1$.
-Only finitely many odd $q$ have $1$ on a cycle of $C$ of length $\ell$ whose total number of halvings is $\equiv \ell/3$ or $2\ell/3 \pmod{\ell}$, and a bound is computable from Theorem~(Bauer--Bennett (2018)).
+Only finitely many odd $q$ have a cycle of $C$ of length $\ell$ with starting value $1$ whose total number of halvings is $\equiv \ell/3$ or $2\ell/3 \pmod{\ell}$, and a bound is computable from Theorem~(Bauer and Bennett (2018)).
 The length $3$ is Theorem~1, which rules out every such $q$.
 \end{named}
 
 \begin{proof}
 Write $h = \ell m + r_0$ with $r_0 \in \{\ell/3,\, 2\ell/3\}$.
-Every multiple of $h$ is congruent to $0$, $\ell/3$, or $2\ell/3$ modulo $\ell$, so the only irrational roots that occur are $2^{1/3}$ and $2^{2/3}$.
-In the proof of Theorem~2 the window fraction is $(\ell q + 1)/(\ell \cdot 2^m)$.
-Its numerator is coprime to $\ell$, and $\ell \cdot 2^m = 3 \cdot 2^{m+a}$, so this is a fraction of the shape in Theorem~(Bauer--Bennett (2018)) with $s = 3$ and $j = m+a$.
-Each near miss is $x_i/2^j$ with $x_i$ odd, so Theorem~(Bauer--Bennett (2018)) applies with $s = 1$.
-Both give the restricted irrationality exponent $\mu = 3\log_2(16166467234)/63 \approx 1.61487 < \varphi$ once $j$ in Theorem~(Bauer--Bennett (2018)) is at least $11000$.
-The shift by $a$, and the constant factors in Theorem~(Bauer--Bennett (2018)), contribute only a constant depending on $\ell$.
-The fractions used in the proof of Theorem~2 therefore satisfy its hypothesis with $R = \{\ell/3,\, 2\ell/3\}$, this $\mu$, a $c > 0$ read from Theorem~(Bauer--Bennett (2018)), and $j_0 = 11000$.
+Every multiple of $h$ is congruent to $0$, $\ell/3$, or $2\ell/3$ modulo $\ell$, so for an integer $t$ the only irrational values of $2^{t/\ell}$ that occur are $2^{1/3}$ and $2^{2/3}$.
+In the proof of Theorem~2 the fraction is $(\ell q + 1)/(\ell \cdot 2^m)$.
+Its numerator is coprime to $\ell$, and $\ell \cdot 2^m = 3 \cdot 2^{m+a}$, so this is a fraction of the shape in Theorem~(Bauer and Bennett (2018)) with $s = 3$ and $j = m+a$.
+Each fraction $x_i/2^j$ has odd numerator $x_i$, so Theorem~(Bauer and Bennett (2018)) applies with $s = 1$.
+Both give the exponent $\mu = 3\log_2(16166467234)/63 \approx 1.61487 < \varphi$ once $j$ in Theorem~(Bauer and Bennett (2018)) is at least $11000$.
+The shift by $a$, and the constant factors in Theorem~(Bauer and Bennett (2018)), contribute only a constant depending on $\ell$.
+The fractions used in the proof of Theorem~2 therefore satisfy its hypothesis with $R = \{\ell/3,\, 2\ell/3\}$, this $\mu$, a $c > 0$ read from Theorem~(Bauer and Bennett (2018)), and $j_0 = 11000$.
 The bound is then the $Q$ in the proof of Theorem~2 for these values.
 The length $3$ is Theorem~1.
 \end{proof}
@@ -846,24 +1022,59 @@ This form gives no bound on the exceptional fractions.
 Since $\alpha$ is irrational, the finitely many fractions that meet it for a constant $\alpha$ lie at a positive distance from $\alpha$, and these distances have a positive minimum.
 This is why Theorem~3, which uses this form in place of a restricted irrationality exponent, gives no bound on $q$.
 
-\begin{named}{Theorem 3 (finiteness through 1).}
-For each $\ell \ge 2$, only finitely many odd $q$ have $1$ on a cycle of $C$ of length $\ell$.
+\begin{named}{Theorem 3 (finiteness for starting value $1$).}
+For each $\ell \ge 2$, only finitely many odd $q$ have a cycle of $C$ of length $\ell$ with starting value $1$.
 \end{named}
 
-The argument below uses only the $S$-unit form of Ridout's theorem and Theorem~2.
+The argument below uses only the $S$-unit form of Ridout's theorem and the proof of Theorem~2.
+The constants supplied by Ridout's theorem are not explicit, so the resulting bound on $q$ is not computed.
 
 \begin{proof}
-Let $r \in \{1, \ldots, \ell-1\}$ and let $S$ consist of $2$ and the prime factors of $\ell$.
-Then $2^{r/\ell}$ is an algebraic irrational.
-A fraction $p/(s \cdot 2^j)$ with $s \in \{1, \ell\}$, written in lowest terms, has every prime factor of its denominator in $S$.
-Ridout's theorem therefore gives, for any $\varepsilon > 0$,
+Let $\varepsilon$ be a constant positive real number such that $1 + \varepsilon < \varphi$.
+Let $S$ be the finite set consisting of the prime $2$ and the prime factors of $\ell$.
+Let $c$ be the constant positive real number $\ell^{-1-\varepsilon}$.
+For each integer $r$ with $1 \le r \le \ell - 1$, the real number $2^{r/\ell}$ is an algebraic irrational.
+Ridout's theorem, applied to $2^{r/\ell}$ with this $S$ and this $\varepsilon$, allows only finitely many reduced fractions $p/Q$, with $Q > 0$ and with every prime factor of $Q$ in $S$, such that
 \[
-\left| 2^{r/\ell} - \frac{p}{s \cdot 2^j} \right| > (s \cdot 2^j)^{-1-\varepsilon}
+\left| 2^{r/\ell} - \frac{p}{Q} \right| < Q^{-1-\varepsilon}.
 \]
-for all but finitely many such fractions.
-The proof of Theorem~2 runs with this inequality in place of a restricted irrationality exponent, and with $\mu = 1 + \varepsilon < \varphi$.
-Each exceptional fraction has a positive constant distance from $2^{r/\ell}$.
-For an element $x_i$ this fixes $x_i$ and its relative error, which Lemma~\ref{lem:near-misses} allows only for bounded $q$, and for the window it is incompatible with $|\delta - 1/\ell| \to 0$.
+The same theorem with $\varepsilon/2$ in place of $\varepsilon$ allows only finitely many reduced fractions with
+\[
+\left| 2^{r/\ell} - \frac{p}{Q} \right| < Q^{-1-\varepsilon/2}.
+\]
+Every reduced fraction satisfies $\bigl|2^{r/\ell} - p/Q\bigr| > 0$.
+If $Q > 1$ and $\bigl|2^{r/\ell} - p/Q\bigr| \le Q^{-1-\varepsilon}$, then $Q^{-1-\varepsilon} < Q^{-1-\varepsilon/2}$, so the fraction is one of those given by Ridout's theorem with $\varepsilon/2$.
+The reduced fractions with $Q = 1$ are integers $p$.
+Since $1 < 2^{r/\ell} < 2$, the inequality $\bigl|2^{r/\ell} - p\bigr| \le 1$ holds for at most the integers $p = 1$ and $p = 2$.
+Thus only finitely many reduced fractions $p_1/Q_1$ satisfy $\bigl|2^{r/\ell} - p_1/Q_1\bigr| \le Q_1^{-1-\varepsilon}$.
+
+Let $p/(s \cdot 2^j)$ be a fraction with an integer $p$, with $s \in \{1, \ell\}$, and with an integer $j \ge 0$.
+Let $p_1/Q_1$ be that fraction written in lowest terms, so $Q_1$ is a positive integer, $Q_1$ divides $s \cdot 2^j$, and every prime factor of $Q_1$ lies in $S$.
+If $\bigl|2^{r/\ell} - p_1/Q_1\bigr| > Q_1^{-1-\varepsilon}$, then $Q_1 \le s \cdot 2^j$ gives
+\[
+\left| 2^{r/\ell} - \frac{p}{s \cdot 2^j} \right|
+> Q_1^{-1-\varepsilon}
+\ge (s \cdot 2^j)^{-1-\varepsilon}
+= s^{-1-\varepsilon}\, 2^{-(1+\varepsilon)j}
+\ge c \cdot 2^{-(1+\varepsilon)j}.
+\]
+The fractions $p_1/Q_1$ that remain, those with $\bigl|2^{r/\ell} - p_1/Q_1\bigr| \le Q_1^{-1-\varepsilon}$, are finite in number for each $r$, and there are finitely many integers $r$ with $1 \le r \le \ell - 1$.
+For each such fraction and each $s \in \{1, \ell\}$, the inequality $(s \cdot 2^j)^{-1-\varepsilon} < \bigl|2^{r/\ell} - p_1/Q_1\bigr|$ holds for every sufficiently large integer $j$.
+Hence there exists a constant integer $j_0 \ge 1$ such that, for every integer $r$ with $1 \le r \le \ell - 1$, every integer $p$, every $s \in \{1, \ell\}$, and every integer $j \ge j_0$,
+\[
+\left| 2^{r/\ell} - \frac{p}{s \cdot 2^j} \right| > c \cdot 2^{-(1+\varepsilon)j}.
+\]
+Ridout's theorem does not list the fractions $p_1/Q_1$, so this $j_0$ is not computed.
+
+Let $\mu$ be the real number $1 + \varepsilon$.
+Then $\mu < \varphi$.
+The inequality displayed above is the inequality in the definition of a restricted irrationality exponent of $2^{r/\ell}$ for the set $\{1, \ell\}$, for every integer $r$ with $1 \le r \le \ell - 1$.
+The constants $c$ and $j_0$ are not explicit, so $\mu$ is not a restricted irrationality exponent in that definition.
+The proof of Theorem~2 uses only the inequality, with $R = \{1, \ldots, \ell-1\}$ and with these values of $\mu$, $c$, and $j_0$.
+That proof produces a real number $Q$.
+It does not compute $Q$.
+If $q > Q$, the same proof yields a contradiction.
+Hence $q \le Q$.
 \end{proof}
 
 \emph{Theorem~3 fails for $\ell = 1$.}
@@ -871,36 +1082,35 @@ A Mersenne number gives the cycle $1 \to 1$.
 Mathematically, for $\ell \ge 2$ an odd element other than $1$ puts a factor strictly between $q$ and $q+1$, so $\ell$ does not divide $h$ and $2^{r/\ell}$ is irrational.
 Ridout's theorem then applies.
 For $\ell = 1$ that product has no factors and equals $1$, so the same identity becomes $2^h = q + 1$, and the three conclusions of Lemma~\ref{lem:power-window} fail.
-The root is the integer $2^h$, and Ridout's theorem does not apply.
+Here $2^{h/\ell} = 2^h$ is an integer, and Ridout's theorem does not apply.
 
-Cycles that need not visit $1$ are treated in the companion paper~\cite{hackman-ii}.
-The same finiteness, for a cycle that need not visit $1$, is Theorem~2 of that paper.
+Cycles with any starting value are treated in the companion paper~\cite{hackman-ii}.
+The same finiteness, for a cycle with any starting value, is Theorem~2 of that paper.
 
 \section{Open problems}
 \label{sec:open}
 
 \begin{enumerate}
 \item \textbf{Length $4$ with $h$ odd.}
-The window and the near misses for $x_1$ and $x_3$ involve $2^{1/4}$ and $2^{3/4}$.
-Theorem~2 would finish the case given a restricted irrationality exponent below $\varphi$ for these numbers with power-of-$2$ denominators.
-The Bauer--Bennett construction needs a fourth power exceptionally close to a power of $2$; among odd $a \le 3 \times 10^6$ the best is $19^4 = 2^{17} - 751$, of quality $\log_2(2^{17})/\log_2 751 \approx 1.78$, against $4.4$ for the cube case ($5^3 + 3 = 2^7$) and $5.3$ for $\sqrt{2}$ ($181^2 + 7 = 2^{15}$).
+The $\delta$ window and the near misses for $x_1$ and $x_3$ involve $2^{1/4}$ and $2^{3/4}$.
+Write $h = 4m + r$ with an integer $m \ge 0$ and $r \in \{1, 3\}$. The denominator in the $\delta$ window is $4 \cdot 2^m = 2^{m+2}$.
+Theorem~2 would finish the case given a restricted irrationality exponent below $\varphi$ of $2^{1/4}$ and of $2^{3/4}$, for the set $\{1, 4\}$.
+The construction of Bauer and Bennett (2002, 2018) needs a fourth power exceptionally close to a power of $2$; among odd $a \le 3 \times 10^6$ the best is $19^4 = 2^{17} - 751$, of quality $\log_2(2^{17})/\log_2 751 \approx 1.78$, against $4.4$ for the cube case ($5^3 + 3 = 2^7$) and $5.3$ for $\sqrt{2}$ ($181^2 + 7 = 2^{15}$).
 A different construction is likely needed.
 \item \textbf{Effective results for larger $\ell$.}
-Theorem~2 turns any such restricted irrationality exponent for the roots $2^{r/\ell}$ into a complete answer for that $\ell$.
-Santos's conjecture (2020) in full would need this for every $\ell$, or a bound uniform in $\ell$.
-\item \textbf{Novelty.}
-Franco's 1990 thesis on Diophantine approximation and the $qx+1$ problem could not be consulted and should be checked for overlap, including with Theorems~1, 2 and~3.
+For a general length $\ell$, Theorem~2 needs $\mu$ to be a restricted irrationality exponent of $2^{r/\ell}$ for the set $\{1, \ell\}$, for every integer $r$ with $1 \le r \le \ell-1$. The case $S = \{1\}$ of that definition gives the denominators $2^j$. Let $v \ge 0$ be an integer. When $\ell = 2^v$, we have $\ell \cdot 2^j = 2^{j+v}$, so that case also gives the denominators $\ell \cdot 2^j$, and $2^{-\mu v}$ is a constant real number.
+Santos's conjecture (2020) in full would need the hypothesis of Theorem~2 for every $\ell$, or a bound uniform in $\ell$.
 \end{enumerate}
 
 \appendix
 
-\section{Cycles of length $1$ and $2$ through 1}
+\section{Cycles of length $1$ and $2$ with starting value 1}
 \label{app:one-two}
 
 \phantomsection\label{prop:a1}
 \begin{named}{Proposition A.1 (length $1$).}
-The only positive odd solution of a cycle of length $1$ is $x_0 = 1$ and $q = 2^h - 1$.
-In particular the cycle through $1$ is $1 \to 1$ precisely when $q$ is a Mersenne number.
+The only cycle of length $1$ has starting value $1$ and $q = 2^h - 1$.
+In particular the cycle with starting value $1$ is $1 \to 1$ precisely when $q$ is a Mersenne number.
 \end{named}
 
 \begin{proof}
@@ -912,7 +1122,7 @@ Conversely, if $q$ is a Mersenne number, then $q = 2^e - 1$ for an integer $e \g
 
 \phantomsection\label{prop:a2}
 \begin{named}{Proposition A.2 (length $2$).}
-The only odd $q$ with $1$ on a cycle of $C$ of length $2$ is $q = 5$.
+The only odd $q$ that has a cycle of length $2$ with starting value $1$ is $q = 5$.
 \end{named}
 
 \begin{proof}
@@ -927,14 +1137,14 @@ These give $q = 0$ and $q = 2^{k_1} - 1$, the cycle $1 \to 1$ traversed twice, s
 For $k_1 = 1$, $D = 7$ is the Ramanujan--Nagell equation with $X \in \{1, 3, 5, 11, 181\}$, and only $X = 11$ gives an odd $q$ other than $1$: $q = 5$, with $1 \to 3 \to 1$.
 \end{proof}
 
-As a check, the argument of Lemma~B.2 below gives $2^{k_2} = qx + 1 < q^2 < 2^{2d}$ with $d$ the order of $2$ modulo $q$, so $k_2 = d$, and the cycle condition reads $q(q+1) = 2^{k_1}(2^d - 1)$; for $q = 5$, $d = 4$ and $5 \cdot 6 = 2 \cdot 15$.
+As a check, the argument of Lemma~B.2 below gives $2^{k_2} = qx + 1 < q^2 < 2^{2d}$ with $d$ the order of $2$ modulo $q$, so $k_2 = d$, and $q(q+1) = 2^{k_1}(2^d - 1)$; for $q = 5$, $d = 4$ and $5 \cdot 6 = 2 \cdot 15$.
 
-\section{Earlier results on cycles of length $3$ through 1}
+\section{Earlier results on cycles of length $3$ with starting value 1}
 \label{sec:earlier}
 
 These results were found before Theorem~1 and are not needed for it.
 Notation is as in Sections~\ref{sec:structure} to~\ref{sec:proof}.
-Bauer and Bennett's headline inequality, $|x^3 - 2^n| \ge x^{4/3}$ unless $x^3 = 2^n$ or $(x, n) = (5, 7)$, and their Corollary~4, $|x^3 - 27 \cdot 2^n| \ge 3^{5/3} x^{4/3}$ unless $x^3 = 27 \cdot 2^n$ or $x \in \{4, 5, 8, 15, 19, 38, 121\}$, are used throughout; both were also checked numerically for $n < 200$ and $n < 70$ respectively.
+Bauer and Bennett's headline inequality (2018), $|x^3 - 2^n| \ge x^{4/3}$ unless $x^3 = 2^n$ or $(x, n) = (5, 7)$, and their Corollary~4 (2018), $|x^3 - 27 \cdot 2^n| \ge 3^{5/3} x^{4/3}$ unless $x^3 = 27 \cdot 2^n$ or $x \in \{4, 5, 8, 15, 19, 38, 121\}$, are used throughout; both were also checked numerically for $n < 200$ and $n < 70$ respectively.
 
 \topic{Factorization and the order of $2$.}
 \begin{named}{Lemma B.1 (factorization).}
@@ -948,7 +1158,7 @@ With $q = 2^{k_1} x - 1$,
 The factors are $q$ and $qx + 1$, and $q(qx + 1) = q \cdot 2^{k_2} y = 2^{k_2}(2^{k_3} - 1)$.
 \end{proof}
 
-Completing the square in $qx + 1 = 2^{k_2} y$ gives $(2q+1)^2 + (2^{k_1+2} - 1) = 2^{k_1+k_2+2} \cdot y$, so a cycle of length $3$ through $1$ gives the equation of Proposition~A.2 with an odd cofactor $y$, tied to $q$ by $qy + 1 = 2^{k_3}$.
+Completing the square in $qx + 1 = 2^{k_2} y$ gives $(2q+1)^2 + (2^{k_1+2} - 1) = 2^{k_1+k_2+2} \cdot y$, so a cycle of length $3$ with starting value $1$ gives the equation of Proposition~A.2 with an odd cofactor $y$, tied to $q$ by $qy + 1 = 2^{k_3}$.
 
 \begin{named}{Lemma B.2 (order of $2$).}
 $k_3 = d$ or $k_3 = 2d$, where $d$ is the order of $2$ modulo $q$.
@@ -964,21 +1174,21 @@ Also $2^d \ge q + 1 > q$, so $q^3 < 2^{3d}$, and hence $k_3 < 3d$.
 \begin{named}{Corollary B.3 (Wieferich primes).}
 Let $F = (2^d - 1)/q$ and $k_3 = md$.
 Then $mF \equiv 2^{-k_2} \pmod{q}$, so $\gcd(F, q) = 1$.
-In particular no Wieferich prime $q$ ($q^2 \mid 2^{q-1} - 1$) has a cycle of length $3$ through $1$.
+In particular no Wieferich prime $q$ ($q^2 \mid 2^{q-1} - 1$) has a cycle of length $3$ with starting value $1$.
 \end{named}
 
 \begin{proof}
 Since $2^d \equiv 1 \pmod{q}$, $y = (2^{md} - 1)/q = F\bigl(1 + 2^d + \cdots + 2^{(m-1)d}\bigr) \equiv mF \pmod{q}$.
 Reducing $2^{k_2} y = qx + 1 \bmod q$ gives $2^{k_2} \cdot mF \equiv 1$.
-For a Wieferich prime, the lifting-the-exponent lemma shows that $q^2$ divides $2^d - 1$, since $q^2$ divides $2^{q-1} - 1$ and $q$ does not divide $(q-1)/d$; so $q \mid F$.
+For a Wieferich prime, the lifting-the-exponent lemma of Lucas (1878) shows that $q^2$ divides $2^d - 1$, since $q^2$ divides $2^{q-1} - 1$ and $q$ does not divide $(q-1)/d$; so $q \mid F$.
 \end{proof}
 
-This is the mechanism Franco and Pomerance use for Crandall's question of when orbits avoid $1$.
+This is the mechanism Franco and Pomerance (1995) use for the question, posed by Crandall (1978), of when $1$ is not a term of the orbit.
 Together with Lemma~\ref{lem:cube-window}, Lemma~B.2 determines everything from $q$: $k_1 = v_2(q+1)$, $h$ is the unique integer with $q^3 < 2^h < (q+1)^3$, $k_3 \in \{d, 2d\}$ and $k_2 = h - k_1 - k_3$.
 
 \topic{Finiteness via Ridout's theorem.}
 \begin{named}{Proposition B.4.}
-Only finitely many odd $q$ have a cycle of length $3$ through $1$.
+Only finitely many odd $q$ have a cycle of length $3$ with starting value $1$.
 \end{named}
 
 \begin{proof}
@@ -989,11 +1199,11 @@ The reduced fraction still has a denominator built from $2$ and $3$, so Ridout's
 
 This is the case $\ell = 3$ of Theorem~3, and Theorem~1 supersedes it.
 The power $3/2$ in $|\beta - P/Q| < 4.6\, Q^{-3/2}$ comes from the lower bounds $x > \sqrt{q/2}$ and $y > x$; with only $x, y \ge 3$ the error is of order $1/Q$ and Ridout's theorem gives nothing.
-The result is ineffective, which is why Theorem~1 needs Theorem~(Bauer--Bennett (2018)) instead.
+The result is ineffective, which is why Theorem~1 needs Theorem~(Bauer and Bennett (2018)) instead.
 
 \topic{Elementary special cases.}
 \begin{named}{Proposition B.5 ($k_1 = k_2 = 1$).}
-No cycle of length $3$ through $1$ has $k_1 = k_2 = 1$.
+No cycle of length $3$ with starting value $1$ has $k_1 = k_2 = 1$.
 Hence $q \not\equiv 1 \pmod{8}$.
 \end{named}
 
@@ -1015,30 +1225,64 @@ Using Sage (passagemath) with proofs enabled, $E$ has rank $2$ and trivial torsi
 For the congruence: if $q \equiv 1 \pmod{8}$, then $k_1 = 1$ and $x \equiv 1 \pmod{4}$, so $t > k_1$ in Lemma~4, and its proof forces $k_2 = k_1 = 1$.
 \end{proof}
 
-The point $X = 84$ is a near miss: for $q = 41$, $q^3 + q^2 + 2q + 4$ is twice a perfect square, and $qy + 1$ is not a power of $2$, since $41 \cdot 431 + 1 = 17{,}672 = 8 \cdot 47^2$.
+For $q = 41$, $q^3 + q^2 + 2q + 4$ is twice a square, and $qy + 1$ is not a power of $2$, since $41 \cdot 431 + 1 = 17{,}672 = 8 \cdot 47^2$.
 
 \begin{named}{Proposition B.6 ($k_1 = 1$, $k_2 = 2$).}
-No cycle of length $3$ through $1$ has $k_1 = 1$ and $k_2 = 2$.
+No cycle of length $3$ with starting value $1$ has $k_1 = 1$ and $k_2 = 2$.
 Hence $q \not\equiv 13 \pmod{16}$.
 \end{named}
 
 \begin{proof}
-Lemma~2 gives $2^h = q^3 + q^2 + 2q + 8 = (q+2)(q^2 - q + 4)$, and $q+2$ is an odd number at least $5$.
-For $k_1 = 1$, $k_2 = 2$ holds exactly when $x \equiv 7 \pmod{8}$, that is $q \equiv 13 \pmod{16}$.
+Suppose $k_1 = 1$ and $k_2 = 2$.
+Lemma~2 gives $2^h = q^3 + q^2 + 2q + 8$.
+Multiplying,
+\[
+(q+2)(q^2 - q + 4) = q^3 - q^2 + 4q + 2q^2 - 2q + 8 = q^3 + q^2 + 2q + 8,
+\]
+so $q+2$ divides $2^h$.
+Lemma~1 gives $q \ge 3 \cdot 2^{k_1} - 1$.
+With $k_1 = 1$ this is $q \ge 5$, and $q$ is odd, so $q+2$ is an odd integer at least $7$.
+The only positive odd divisor of $2^h$ is $1$.
+
+For the congruence: if $q \equiv 13 \pmod{16}$, then $q+1 \equiv 14 \pmod{16}$, so $v_2(q+1) = 1$.
+The first step is $q+1 = 2^{k_1} x$ with $x$ odd, so $k_1 = 1$ and $x = (q+1)/2 \equiv 7 \pmod{8}$.
+The second step is $qx + 1 = 2^{k_2} y$.
+Substituting $q = 2x - 1$ gives $qx + 1 = 2x^2 - x + 1$.
+Since $x \equiv 7 \pmod{8}$, we have $x \equiv -1 \pmod{8}$, and
+\[
+2x^2 - x + 1 \equiv 2(1) - (-1) + 1 = 4 \pmod{8}.
+\]
+Since $2x^2 - x + 1 \equiv 4 \pmod{8}$, let $m$ be the integer $(2x^2 - x + 1 - 4)/8$. Then $2x^2 - x + 1 = 4(2m+1)$ with $2m+1$ odd, so $v_2(qx + 1) = 2$.
+Since $y$ is odd, $k_2 = 2$.
+Lemma~2 then gives $2^h = q^3 + q^2 + 2q + 8 = (q+2)(q^2 - q + 4)$, and Lemma~1 gives $q \ge 5$, so $q+2$ is an odd integer at least $7$ dividing $2^h$.
+Hence $q \not\equiv 13 \pmod{16}$.
 \end{proof}
 
 Both are superseded by Corollary~B.8, which rules out $k_1 = 1$ altogether.
 
 \topic{Effective bounds on $k_1$.}
 \begin{named}{Proposition B.7.}
-In any cycle of length $3$ through $1$, $2^{k_1} > q^{1/3}/2$.
+In any cycle of length $3$ with starting value $1$, $2^{k_1} > q^{1/3}/2$.
 \end{named}
 
 \begin{proof}
-Apply Bauer and Bennett's Corollary~4 with $x = 3q + 1$ and $n = h$.
-The exceptional values of $x$ give $q \in \{1, 6, 40\}$, which are excluded, and $N > 0$ by Lemma~\ref{lem:window}, so $N \ge 3^{5/3}(3q+1)^{4/3} > 27\, q^{4/3}$.
+Apply Bauer and Bennett's Corollary~4 (2018) with $x = 3q + 1$ and $n = h$.
+If $(3q+1)^3 = 27 \cdot 2^h$, then $3$ divides $3q+1$.
+Since $3q+1 \equiv 1 \pmod{3}$, we have $3 \nmid 3q+1$.
+The only integers in $\{4, 5, 8, 15, 19, 38, 121\}$ congruent to $1$ modulo $3$ are $4$, $19$, and $121$, and these give $q = 1$, $q = 6$, and $q = 40$.
+Here $q = 1$ fails $q \ge 3$, and $q = 6$ and $q = 40$ are even.
+For an odd integer $q \ge 3$, neither case occurs.
+
+Lemma~\ref{lem:window} gives $N = 27 \cdot 2^h - (3q+1)^3 > 0$, so
+\[
+N = \bigl|(3q+1)^3 - 27 \cdot 2^h\bigr| \ge 3^{5/3}(3q+1)^{4/3}.
+\]
+Since $3q+1 > 3q$,
+\[
+3^{5/3}(3q+1)^{4/3} > 3^{5/3}(3q)^{4/3} = 27\, q^{4/3}.
+\]
 By Lemma~\ref{lem:window}, $N < 54 \cdot 2^{k_1} q$.
-Comparing, $54 \cdot 2^{k_1} q > 27\, q^{4/3}$.
+Hence $54 \cdot 2^{k_1} q > 27\, q^{4/3}$, and therefore $2^{k_1} > q^{1/3}/2$.
 \end{proof}
 
 \begin{named}{Corollary B.8.}
@@ -1055,7 +1299,7 @@ $2^{k_1} \le 3.2\, x^{2/3}$, and hence $2^{k_1} < 2.01(q+1)^{2/5}$.
 
 \begin{proof}
 By Lemma~\ref{lem:near-x}, $\bigl|x^3 - 2^f\bigr| \le 3.2\, x^2/2^{k_1}$ and $\bigl|x - 2^{f/3}\bigr| \le 1.6/2^{k_1} < 1$, so $x^3 \ne 2^f$.
-Bauer and Bennett's headline inequality gives $\bigl|x^3 - 2^f\bigr| \ge x^{4/3}$, and therefore $2^{3k_1} x^{4/3} \le 3.2 \cdot 2^{2k_1} x^2$.
+Bauer and Bennett's headline inequality (2018) gives $\bigl|x^3 - 2^f\bigr| \ge x^{4/3}$, and therefore $2^{3k_1} x^{4/3} \le 3.2 \cdot 2^{2k_1} x^2$.
 The exception $x = 5$ forces $q \le 39$ by Lemma~5.
 \end{proof}
 
@@ -1063,7 +1307,7 @@ Together with Proposition~B.7, $q^{1/3}/2 < 2^{k_1} < 2.01(q+1)^{2/5}$.
 
 \topic{The three cases of Lemma 4.}
 \begin{named}{Proposition B.10 ($t > k_1$ is impossible).}
-No cycle of length $3$ through $1$ has $t > k_1$.
+No cycle of length $3$ with starting value $1$ has $t > k_1$.
 \end{named}
 
 \begin{proof}
@@ -1080,7 +1324,7 @@ For $2^{k_1} \le 4$, $q \le 451$, which the direct search covers.
 (Also checked in exact arithmetic for $k_1 < 400$.)
 
 \begin{named}{Proposition B.11 ($t = k_1$ is impossible).}
-No cycle of length $3$ through $1$ has $t = k_1$.
+No cycle of length $3$ with starting value $1$ has $t = k_1$.
 \end{named}
 
 \begin{proof}
@@ -1092,7 +1336,7 @@ Expanding the cycle equation,
 \qquad
 R = 3 \cdot 2^{4k_1} s^2(2^{k_1}-1) + 3 \cdot 2^{2k_1} s(2^{k_1}-1)^2 + (2^{k_1}-1)^3 + q^2 + 2^{k_1} q + 2^{k_1 + k_2},
 \]
-using $q < 2 \cdot 2^{2k_1} s$ and $2^{k_2} < q$ ($2^{k_1} \ge 4$). Bauer and Bennett's headline inequality gives $2^g - s^3 \ge s^{4/3}$, so $2^{k_1} \le 6\, s^{2/3}$, while Proposition~B.7 gives $8 \cdot 2^{3k_1} > q > 2^{2k_1} s$, so $2^{k_1} > s/8$.
+using $q < 2 \cdot 2^{2k_1} s$ and $2^{k_2} < q$ ($2^{k_1} \ge 4$). Bauer and Bennett's headline inequality (2018) gives $2^g - s^3 \ge s^{4/3}$, so $2^{k_1} \le 6\, s^{2/3}$, while Proposition~B.7 gives $8 \cdot 2^{3k_1} > q > 2^{2k_1} s$, so $2^{k_1} > s/8$.
 Hence $s < 48^3$ and $2^{k_1} \le 13{,}824$, so $q < 2 \cdot 2^{2k_1} s < 5 \times 10^{13}$, which the computations cover.
 The exception $s = 5$ gives $q < 4 \times 10^6$ through Proposition~B.9.
 \end{proof}
@@ -1111,7 +1355,7 @@ Expanding,
 \le \frac{3u^2 \cdot 2^{k_2}}{2^{k_1}},
 \]
 since the terms after the first are negative in total and $\delta' < 2^{k_1 + k_2}$.
-Bauer and Bennett's headline inequality gives $u^3 - 2^g \ge u^{4/3}$.
+Bauer and Bennett's headline inequality (2018) gives $u^3 - 2^g \ge u^{4/3}$.
 The exceptions are $u = 1$, where $x \le 2^{k_1}$ and Proposition~B.9 forces $2^{k_1} \le 32$, and $u = 5$, where it forces $q < 4 \times 10^6$.
 \end{proof}
 
@@ -1121,7 +1365,7 @@ Propositions~B.10 and~B.11 leave only the case $t < k_1$; Theorem~1 makes the ca
 \topic{Small elements and an earlier bound on $y$.}
 \begin{named}{Remark (small elements).}
 The elements $x$ and $y$ are odd and different from $1$, so $x, y \ge 3$, and Lemma~7 gives $y \ge 5$.
-If $x = 3$, Lemma~5 gives $2^{k_1} \le 2(x-1) = 4$, so $q = 3 \cdot 2^{k_1} - 1 \in \{5, 11\}$, and neither has a cycle of length $3$ through $1$.
+If $x = 3$, Lemma~5 gives $2^{k_1} \le 2(x-1) = 4$, so $q = 3 \cdot 2^{k_1} - 1 \in \{5, 11\}$, and neither has a cycle of length $3$ with starting value $1$.
 Hence $x \ge 5$ and $y \ge 7$.
 None of the proofs in the main text need more than $x \ge 3$ and $y > x$.
 \end{named}
@@ -1130,7 +1374,7 @@ Before Lemma~6 was found, the case $y < x$ could not be excluded, and the follow
 Lemma~7 shows that $y < x$ never happens, so the second alternative below is vacuous.
 
 \begin{named}{Proposition B.13.}
-In a cycle of length $3$ through $1$, either $y \ge x$ or
+In a cycle of length $3$ with starting value $1$, either $y \ge x$ or
 \[
 y > \left( \frac{3q^2}{q+1} \right)^{1/3} \approx (3q)^{1/3}.
 \]
@@ -1147,29 +1391,31 @@ C = 2^{k_1} y^2 - y + 1.
 If $2^{k_3}$ divides $C$, then $C \ge 2^{k_3} = qy + 1$, which simplifies to $2^{k_1} y \ge q + 1$, that is $y \ge x$.
 Otherwise the first two terms are divisible by a higher power of $2$ than $C$, so $v_2(C) = k_1 + k_2$ and $2^{k_1+k_2} \le C < 2^{k_1} y^2$.
 Since the left side exceeds $2^{2k_3} > q^2 y^2$, this gives $q^2 y^2 < 2^{k_1+k_2} y^3 < 2^{k_1} y^5$, so $q^2 < 2^{k_1} y^3 \le (q+1) y^3 / 3$.
-For the last claim, $y \equiv 1 \pmod{2^{k_1}}$ by Lemma~1; if $v_2(y-1) > k_1$, then $v_2(C) = k_1$, forcing $k_2 = 0$, which is impossible.
+For the last claim, the first step $q + 1 = 2^{k_1} x$ gives $q \equiv -1 \pmod{2^{k_1}}$.
+Lemma~1 gives $k_3 \ge k_1$, so $qy + 1 = 2^{k_3} \equiv 0 \pmod{2^{k_1}}$ and $y \equiv 1 \pmod{2^{k_1}}$.
+If $v_2(y-1) > k_1$, then $v_2(C) = k_1$, forcing $k_2 = 0$, which is impossible.
 \end{proof}
 
 For $q \ge 71$ the cube root is the smaller of the two bounds, so this gave $y > 1.436\, q^{1/3}$ unconditionally, and for $q > 2{,}000{,}000$ it gave $y \ge 183$.
 The identity was also checked by computer algebra: substituting the cycle relations into both sides and expanding gives the same expression.
 
-\section{Work on cycles of length $4$ through 1}
+\section{Work on cycles of length $4$ with starting value 1}
 \label{app:four}
 
 \topic{The equations of the cycle.}
-Write a cycle of length $4$ through $1$ as $1 \to x \to y \to z \to 1$, with
+Write a cycle of length $4$ with starting value $1$ as $1 \to x \to y \to z \to 1$, with
 \[
 q + 1 = 2^{k_1} x, \qquad qx + 1 = 2^{k_2} y, \qquad qy + 1 = 2^{k_3} z, \qquad qz + 1 = 2^{k_4}.
 \]
-The next three lemmas are Lemma~1 and Lemma~5 for a cycle of length $4$ through $1$, together with the gain from a larger $x$ in $qz + 1 = 2^{k_4}$. They constrain $k_4$ and $x$, not $y$ or $z$.
+The next three lemmas are Lemma~1 and Lemma~5 for a cycle of length $4$ with starting value $1$, together with the gain from a larger $x$ in $qz + 1 = 2^{k_4}$. They constrain $k_4$ and $x$, not $y$ or $z$.
 
-\begin{named}{Lemma C.1.}
+\begin{named}{Lemma C.1 (lower bound for $k_4$).}
 $k_4 \ge k_1 + 3$, and $z \equiv 1 \pmod{2^{k_1}}$.
 \end{named}
 
 \begin{proof}
 The odd elements other than $1$ are at least $3$, so $x \ge 3$ and $z \ge 3$.
-Since $q + 1 = 2^{k_1} x$, one has $q + 1 \ge 3 \cdot 2^{k_1}$, that is $q \ge 3 \cdot 2^{k_1} - 1$.
+Since $q + 1 = 2^{k_1} x$, we have $q + 1 \ge 3 \cdot 2^{k_1}$, that is $q \ge 3 \cdot 2^{k_1} - 1$.
 Since $2^{k_4} = qz + 1$,
 \[
 2^{k_4} \ge (3 \cdot 2^{k_1} - 1) \cdot 3 + 1 = 9 \cdot 2^{k_1} - 2.
@@ -1206,8 +1452,8 @@ $k_4 \ge 2k_1 + 1$ and $k_4 \ge 3k_1 - 1$.
 
 \begin{proof}
 By Lemma~C.2, $x \ge 2^{k_1-1} + 1$.
-Since $z \ge 3$, one has $qz + 1 = 2^{k_4} \ge 3q + 1$.
-Since $q = 2^{k_1} x - 1$, one has $3q + 1 = 3 \cdot 2^{k_1} x - 2$, and therefore
+Since $z \ge 3$, we have $qz + 1 = 2^{k_4} \ge 3q + 1$.
+Since $q = 2^{k_1} x - 1$, we have $3q + 1 = 3 \cdot 2^{k_1} x - 2$, and therefore
 \[
 2^{k_4} \ge 3 \cdot 2^{2k_1-1} + 3 \cdot 2^{k_1} - 2 > 2^{2k_1},
 \]
@@ -1246,22 +1492,22 @@ If $k_3 \le k_4$ and $z < y$, then $z > q$; if $z > y$, then $z^2 > qy$.
 Lemma~C.4 bounds $y$ only when $k_2 \le k_3$, and $z$ only when $k_3 \le k_4$.
 It leaves open $k_3 < k_2$ with $y < x$, where $y$ could be small, and $k_4 < k_3$, where $z$ could be small.
 Those two lower bounds are the missing inputs for Proposition~D.4.
-Theorem~2 of the companion paper does not need them.
+Theorem~2 of the companion paper~\cite{hackman-ii} does not need them.
 
-\section{Work on any cycle length through 1}
+\section{Work on a cycle of any length with starting value 1}
 \label{app:any}
 
 \topic{The structure of a cycle.}
 The next three lemmas are Lemmas~1 to~3 for an arbitrary length.
 
-\begin{named}{Lemma D.1.}
+\begin{named}{Lemma D.1 (lower bound for $k_\ell$).}
 Let $\ell \ge 2$.
-On a cycle of length $\ell$ through $1$, $k_\ell \ge k_1 + 3$ and $x_{\ell-1} \equiv 1 \pmod{2^{k_1}}$.
+On a cycle of length $\ell$ with starting value $1$, $k_\ell \ge k_1 + 3$ and $x_{\ell-1} \equiv 1 \pmod{2^{k_1}}$.
 \end{named}
 
 \begin{proof}
 Each of $x_1$ and $x_{\ell-1}$ is an odd element other than $1$, so $x_1 \ge 3$ and $x_{\ell-1} \ge 3$.
-Since $q + 1 = 2^{k_1} x_1$, one has $q + 1 \ge 3 \cdot 2^{k_1}$ and $q \ge 3 \cdot 2^{k_1} - 1$.
+Since $q + 1 = 2^{k_1} x_1$, we have $q + 1 \ge 3 \cdot 2^{k_1}$ and $q \ge 3 \cdot 2^{k_1} - 1$.
 Also $2^{k_\ell} = q x_{\ell-1} + 1$.
 Since $q \ge 3 \cdot 2^{k_1} - 1$ and $x_{\ell-1} \ge 3$,
 \[
@@ -1271,8 +1517,8 @@ Since $q$ is odd, $q + 1$ is even, so $k_1 \ge 1$ and $2^{k_1} \ge 2$.
 Then $9 \cdot 2^{k_1} - 2 - 8 \cdot 2^{k_1} = 2^{k_1} - 2 \ge 0$, and therefore $9 \cdot 2^{k_1} - 2 \ge 8 \cdot 2^{k_1} = 2^{k_1 + 3}$.
 Hence $2^{k_\ell} \ge 2^{k_1 + 3}$, so $k_\ell \ge k_1 + 3$.
 
-From $q + 1 = 2^{k_1} x_1$, one has $q \equiv -1 \pmod{2^{k_1}}$.
-Since $k_\ell \ge k_1 + 3$, one has $k_\ell \ge k_1$, so $2^{k_\ell} \equiv 0 \pmod{2^{k_1}}$.
+From $q + 1 = 2^{k_1} x_1$, we have $q \equiv -1 \pmod{2^{k_1}}$.
+Since $k_\ell \ge k_1 + 3$, we have $k_\ell \ge k_1$, so $2^{k_\ell} \equiv 0 \pmod{2^{k_1}}$.
 Since $q x_{\ell-1} + 1 = 2^{k_\ell}$,
 \[
 1 - x_{\ell-1} \equiv q x_{\ell-1} + 1 \equiv 2^{k_\ell} \equiv 0 \pmod{2^{k_1}}.
@@ -1280,10 +1526,10 @@ Since $q x_{\ell-1} + 1 = 2^{k_\ell}$,
 Hence $x_{\ell-1} \equiv 1 \pmod{2^{k_1}}$.
 \end{proof}
 
-Lemma~1 is the case $\ell = 3$, and Lemma~C.1 is the case $\ell = 4$.
+The inequality $k_\ell \ge k_1 + 3$ is Lemma~1 when $\ell = 3$, and it is the first conclusion of Lemma~C.1 when $\ell = 4$.
 
 \begin{named}{Lemma D.2 (cycle equation).}
-For a cycle of length $\ell$ through $1$, set $S_0 = 0$. Then
+For a cycle of length $\ell$ with starting value $1$, set $S_0 = 0$. Then
 \[
 2^h = q^\ell + \sum_{j=0}^{\ell-1} 2^{S_j} q^{\ell-1-j}.
 \]
@@ -1307,13 +1553,13 @@ Substituting the equation for $m-1$ gives
 \[
 2^{S_m} x_m = q\left(q^{m-1} + \sum_{j=0}^{m-2} 2^{S_j} q^{m-2-j}\right) + 2^{S_{m-1}} = q^m + \sum_{j=0}^{m-1} 2^{S_j} q^{m-1-j}.
 \]
-At $m = \ell$, one has $x_\ell = 1$ and $S_\ell = h$, so the left side is $2^h$ and the right side is $q^\ell + \sum_{j=0}^{\ell-1} 2^{S_j} q^{\ell-1-j}$.
+At $m = \ell$, we have $x_\ell = 1$ and $S_\ell = h$, so the left side is $2^h$ and the right side is $q^\ell + \sum_{j=0}^{\ell-1} 2^{S_j} q^{\ell-1-j}$.
 \end{proof}
 
 Lemma~2 is the case $\ell = 3$.
 
 \begin{named}{Lemma D.3.}
-For a cycle of length $\ell$ through $1$ with $\ell \ge 2$,
+For a cycle of length $\ell$ with starting value $1$ and $\ell \ge 2$,
 \[
 q^\ell < 2^h < (q+1)^\ell.
 \]
@@ -1336,16 +1582,58 @@ Thus $q < 2^{h/\ell} < q+1$, and $q = \lfloor 2^{h/\ell} \rfloor$.
 Lemma~3 is the case $\ell = 3$. Lemma~\ref{lem:power-window} includes these bounds.
 
 \topic{Reduction to lower bounds.}
-Before Theorem~3, finiteness for a cycle of length $\ell$ through~$1$ was reduced to the hypothesis that every element other than $1$ is at least $c \cdot q^\theta$ for constant real numbers $\theta > 0$ and $c > 0$.
+Before Theorem~3, finiteness for a cycle of length $\ell$ with starting value~$1$ was reduced to the hypothesis that every element other than $1$ is at least $c \cdot q^\theta$ for constant real numbers $\theta > 0$ and $c > 0$.
 
 \begin{named}{Proposition D.4 (reduction to lower bounds).}
-Fix $\ell$.
-Suppose there are constant real numbers $\theta > 0$ and $c > 0$ such that, on every cycle of length $\ell$ through $1$, every element other than $1$ is at least $c \cdot q^\theta$.
-Then only finitely many $q$ have a cycle of length $\ell$ through $1$.
+Let $\ell \ge 2$.
+Suppose there are constant real numbers $\theta > 0$ and $c > 0$ such that, on every cycle of length $\ell$ with starting value $1$, every element other than $1$ is at least $c \cdot q^\theta$.
+Then only finitely many $q$ have a cycle of length $\ell$ with starting value $1$.
 \end{named}
 
 \begin{proof}
-As for Proposition~B.4, with $h = \ell m + r$, $\beta = 2^{r/\ell}$, $P = \ell q + 1$ and $Q = \ell \cdot 2^m$: Lemma~\ref{lem:power-window} gives $|\beta - P/Q| \ll Q^{-1-\theta}$, and Ridout's theorem applies with $S = \{2\} \cup \{\text{primes dividing }\ell\}$.
+On such a cycle, Lemma~\ref{lem:power-window} gives $\ell \nmid h$.
+Write $h = \ell m + r$ with an integer $m \ge 0$ and an integer $r$ satisfying $1 \le r \le \ell-1$.
+Set $\beta = 2^{r/\ell}$, $P = \ell q + 1$ and $Q = \ell \cdot 2^m$.
+Then $2^m \beta = q + \delta$, so
+\[
+\left|\beta - \frac{P}{Q}\right| = \frac{|\delta - 1/\ell|}{2^m}.
+\]
+Lemma~\ref{lem:power-window} gives $\delta - 1/\ell = \sigma/\ell + O(1/q)$.
+Thus there exist a constant real number $C > 0$ and a constant integer $q_0 \ge 3$ such that $|\delta - 1/\ell - \sigma/\ell| \le C/q$ for every $q \ge q_0$.
+For every integer $i$ with $1 \le i \le \ell-1$, $x_i \ge c \cdot q^\theta$, so $\sigma \le (\ell-1) c^{-1} q^{-\theta}$.
+Let $\eta = \min(\theta, 1)$. Then $\eta$ is a constant real number and $\eta > 0$.
+For $q \ge 1$, both $q^{-\theta} \le q^{-\eta}$ and $q^{-1} \le q^{-\eta}$, so
+\[
+\left|\delta - \frac1\ell\right| \le \left(\frac{\ell-1}{\ell c} + C\right) q^{-\eta}
+\]
+whenever $q \ge q_0$.
+Since $2^{1/\ell} \le \beta < 2$ and $0 < \delta < 1$, we have $q/2 < 2^m < q+1$.
+Hence $Q = \ell \cdot 2^m > \ell q/2$. For $q \ge 1$ we have $q+1 \le 2q$, so $Q < 2\ell q$ and $q^{-1-\eta} < (2\ell)^{1+\eta} Q^{-1-\eta}$.
+Let $K = 2\bigl((\ell-1)/(\ell c) + C\bigr) (2\ell)^{1+\eta}$. Then $K$ is a constant real number, and
+\[
+\left|\beta - \frac{P}{Q}\right| < K\, Q^{-1-\eta}
+\]
+for every $q \ge q_0$.
+Let $p/Q_1$ be the fraction $P/Q$ written in lowest terms, with an integer $Q_1 > 0$.
+Every prime factor of $Q_1$ lies in the finite set $S$ consisting of $2$ and the prime factors of $\ell$.
+Since $Q_1 \le Q$ and $-1-\eta < 0$,
+\[
+\left|\beta - \frac{p}{Q_1}\right| < K\, Q_1^{-1-\eta}.
+\]
+Let $\varepsilon = \eta/2$. Then $\varepsilon$ is a constant real number and $\varepsilon > 0$.
+For every $Q_1 > K^{1/\varepsilon}$,
+\[
+\left|\beta - \frac{p}{Q_1}\right| < Q_1^{-1-\varepsilon}.
+\]
+Ridout's theorem, with this $S$ and this $\varepsilon$, allows only finitely many fractions $p/Q_1$ satisfying $\bigl|\beta - p/Q_1\bigr| < Q_1^{-1-\varepsilon}$.
+The number $\beta$ is irrational, so each of those fractions satisfies $\bigl|\beta - p/Q_1\bigr| > 0$.
+As $q \to \infty$, we have $|\beta - P/Q| < K\, Q^{-1-\eta} \to 0$, so each equals $P/Q$ for only finitely many $q$.
+If instead $Q_1 \le K^{1/\varepsilon}$, then $Q_1$ is a positive integer at most $K^{1/\varepsilon}$, so only finitely many such $Q_1$ occur.
+For each of them, only finitely many integers $p$ satisfy $\bigl|\beta - p/Q_1\bigr| < 1$, and $\beta$ irrational gives $\bigl|\beta - p/Q_1\bigr| > 0$.
+Let $\gamma$ be the minimum of those finitely many positive real numbers $\bigl|\beta - p/Q_1\bigr|$. Then $\gamma$ is a positive real number.
+For every $q$ large enough that $K\, Q^{-1-\eta} < \gamma$, we have $\bigl|\beta - P/Q\bigr| < \gamma$, so $P/Q \ne p/Q_1$ for every such pair.
+Every odd integer $q < q_0$ is one of finitely many integers.
+Hence only finitely many $q$ have a cycle of length $\ell$ with starting value $1$.
 \end{proof}
 
 This is an earlier and weaker result than Theorem~3. It is conditional on the hypothesis that every element other than $1$ is at least $c \cdot q^\theta$ for constant real numbers $\theta > 0$ and $c > 0$, whereas Theorem~3 is not.
@@ -1353,21 +1641,21 @@ This is an earlier and weaker result than Theorem~3. It is conditional on the hy
 \section{Computations}
 \label{app:computations}
 
-For a cycle of length $\ell$ through $1$ with $\ell \ge 2$, Lemma~\ref{lem:power-window} gives $q^\ell < 2^h < (q+1)^\ell$, so $\ell \nmid h$ and $q = \lfloor 2^{h/\ell}\rfloor$.
+For a cycle of length $\ell$ with starting value $1$ and $\ell \ge 2$, Lemma~\ref{lem:power-window} gives $q^\ell < 2^h < (q+1)^\ell$, so $\ell \nmid h$ and $q = \lfloor 2^{h/\ell}\rfloor$.
 Length $1$ is Proposition~A.1, and is not searched.
 A search of every $h \le H$ with $\ell \nmid h$ therefore excludes every such cycle with $q < 2^{\lfloor H/\ell \rfloor}$: it would have $2^h < (q+1)^\ell \le 2^{\ell \lfloor H/\ell \rfloor} \le 2^H$, so $h \le H$.
-Searches for a cycle that need not visit $1$, and searches at a constant $q$, are in the companion paper~\cite{hackman-ii}.
+Searches for a cycle with any starting value, and searches at a constant $q$, are in the companion paper~\cite{hackman-ii}.
 
-\topic{Cycles through $1$.}
+\topic{Cycles with starting value $1$.}
 For each $\ell$ and each $h \le H$ with $\ell \nmid h$, the candidate $q = \lfloor 2^{h/\ell}\rfloor$ is tested by applying $C$ to $1$, $\ell$ times.
 For $\ell = 3$, every $h \le 200{,}000$ was tested.
 Theorem~1 needs only $h < 66{,}003$: $q < 2^{22001}$ and Lemma~\ref{lem:cube-window} give $2^h < 2^{66{,}003}$.
 For each $\ell$ from $4$ to $20$, every $h \le 100{,}000$ was tested.
-No cycle through $1$ was found.
+No cycle with starting value $1$ was found.
 \begin{center}
 \begin{tabular}{ccc}
-\multicolumn{3}{c}{\textbf{Cycles through $1$}} \\[0.4em]
-length $\ell$ & $h$ at most & no cycle through $1$ for $q$ below \\
+\multicolumn{3}{c}{\textbf{Cycles with starting value $1$}} \\[0.4em]
+length $\ell$ & $h$ at most & no cycle with starting value $1$ for $q$ below \\
 $3$ & $200{,}000$ & $2^{66{,}666}$ \\
 $4$ & $100{,}000$ & $2^{25{,}000}$ \\
 $5$ & $100{,}000$ & $2^{20{,}000}$ \\
@@ -1395,11 +1683,11 @@ Lemma~4 was also checked numerically for every $k_1 \le 7$ and every odd $x < 20
 In the proof of Theorem~1, the two bounds on $a$ were compared for every $f$ from $33{,}000$ to $400{,}000$.
 
 \topic{Digits of $2^{1/3}$ and $2^{2/3}$.}
-A cycle of length $3$ through $1$ forces places in the binary expansion of $2^{1/3}$ or of $2^{2/3}$ to alternate $0, 1, 0, 1, \ldots$, beginning with $0$.
+A cycle of length $3$ with starting value $1$ forces places in the binary expansion of $2^{1/3}$ or of $2^{2/3}$ to alternate $0, 1, 0, 1, \ldots$, beginning with $0$.
 Those places do not alternate in that way in the digits that were computed, except for $m < 100$, which the search over $h$ already covers.
 
 \begin{named}{Proposition E.1 (digit scan).}
-In a cycle of length $3$ through $1$ with $q \ge 17$, write $h = 3m + r$ with $r \in \{1, 2\}$ and set $\beta = 2^{r/3}$.
+In a cycle of length $3$ with starting value $1$ and $q \ge 17$, write $h = 3m + r$ with $r \in \{1, 2\}$ and set $\beta = 2^{r/3}$.
 Then $q = \lfloor 2^m \beta \rfloor$.
 Places $m+1$ through $m + \lfloor m/2 \rfloor - 2$ in the binary expansion of the fractional part of $\beta$ alternate $0, 1, 0, 1, \ldots$, beginning with $0$.
 In particular, for $m \ge 100$, places $m+1$ through $m+48$ alternate in the same way.
@@ -1407,14 +1695,14 @@ In particular, for $m \ge 100$, places $m+1$ through $m+48$ alternate in the sam
 
 \begin{proof}
 Lemma~3 gives $q = \lfloor 2^{h/3} \rfloor$.
-Since $h = 3m + r$, one has $2^{h/3} = 2^m \beta$, so $q = \lfloor 2^m \beta \rfloor$.
+Since $h = 3m + r$, we have $2^{h/3} = 2^m \beta$, so $q = \lfloor 2^m \beta \rfloor$.
 The fractional part of $2^m \beta$ is $\delta$, and its binary digits are the digits of the fractional part of $\beta$ from place $m+1$ on.
 Lemma~8 gives $0 < \delta - 1/3 < 2^{k_1+1}/(3q)$; the upper bound uses $2^{k_1+k_2} \le 2^{k_1} q$ from Lemma~7.
-Since $q + 1 = 2^{k_1} x$, and Lemma~5 gives $x > \sqrt{q/2}$, one has $2^{k_1} < (q+1)\sqrt{2/q}$ and
+Since $q + 1 = 2^{k_1} x$, and Lemma~5 gives $x > \sqrt{q/2}$, we have $2^{k_1} < (q+1)\sqrt{2/q}$ and
 \[
 0 < \delta - \frac{1}{3} < \frac{2\sqrt{2}}{3}\left(1 + \frac{1}{q}\right) q^{-1/2}.
 \]
-For $q \ge 17$ one has $1 + 1/q \le 18/17$, so $\frac{2\sqrt{2}}{3}\bigl(1 + \frac{1}{q}\bigr) \le 12\sqrt{2}/17 < 1$, because $\sqrt{2} < 17/12$.
+For $q \ge 17$ we have $1 + 1/q \le 18/17$, so $\frac{2\sqrt{2}}{3}\bigl(1 + \frac{1}{q}\bigr) \le 12\sqrt{2}/17 < 1$, because $\sqrt{2} < 17/12$.
 Thus $\delta - 1/3 < q^{-1/2}$.
 Also $\beta > 1$, so $q = \lfloor 2^m \beta \rfloor \ge 2^m$ and $q^{-1/2} \le 2^{-m/2}$.
 Let $k = \lfloor m/2 \rfloor$. Then $m/2 \ge k$, so $2^{-m/2} \le 2^{-k}$, and
@@ -1425,7 +1713,7 @@ In binary, $1/3 = 0.010101\ldots{}_2$: place $2j-1$ is $0$ and place $2j$ is $1$
 Adding a positive amount less than $2^{-k}$ can change place $k$, and the carry stops at place $k-1$, because each $1$ in this expansion is preceded by a $0$.
 Places $1$ through $k-2$ of $\delta$ therefore alternate $0, 1, 0, 1, \ldots$, beginning with $0$.
 These are places $m+1$ through $m + k - 2$ of the fractional part of $\beta$.
-For $m \ge 100$ one has $k - 2 \ge 48$, so places $m+1$ through $m+48$ alternate in the same way.
+For $m \ge 100$ we have $k - 2 \ge 48$, so places $m+1$ through $m+48$ alternate in the same way.
 \end{proof}
 
 Let $N = 1{,}072{,}000{,}000$.
@@ -1436,17 +1724,17 @@ For $m \ge 100$, Proposition~E.1 requires places $m+1$ through $m+48$ to alterna
 Places $m+1$ through $m+48$ do not alternate in that way for any $m$ with $m + 48 \le N$, that is $m \le N - 48$.
 Such an $m$ would give $q = \lfloor 2^m \beta \rfloor < 2^{m+1} \le 2^{N-47} = 2^{1{,}071{,}999{,}953}$, since $\beta < 2$.
 Every $m < 100$ has $h = 3m + r < 300$, which the search $h \le 200{,}000$ includes.
-Together these rule out every cycle of length $3$ through $1$ with $q < 2^{1{,}071{,}999{,}953}$.
+Together these rule out every cycle of length $3$ with starting value $1$ and $q < 2^{1{,}071{,}999{,}953}$.
 
 \topic{Checking Bauer and Bennett (2018).}
 The results of this paper rely heavily on Bauer and Bennett (2018), so the argument that produces their inequality was checked.
 The labels below are those of the published paper.
-In the author's preprint the same results are Theorem~3, inequality~(21), Lemma~7, Proposition~8 and Lemma~9.
+In the preprint of Bauer and Bennett (2018) the same results are Theorem~3, inequality~(21), Lemma~7, Proposition~8 and Lemma~9.
 
-Theorem~(Bauer--Bennett (2018)) is the inequality in the proof of their Theorem~2.1, before the restricted irrationality exponent is rounded.
+Theorem~(Bauer and Bennett (2018)) is the inequality in the proof of their Theorem~2.1, before the exponent is rounded.
 The constant $16166467234$ in that inequality is the integer just above $9 \cdot 2^{28} \cdot F(\tau)/1.79$, where $F$ is their auxiliary function: $F(\tau) = 11.97804\ldots$ at $\tau = 0.20305\ldots$, and the product equals $16166467233.3\ldots$.
 The denominator of their inequality~(5.3) contributes $1/(1.26 \cdot 2^{14/3}) = 2^{-5.00009\ldots}$, and the formula they display omits this factor.
-The factor $2^{-5}$ in Theorem~(Bauer--Bennett (2018)) is a weakening of the contour bound for $|P_{n_1,\delta}|$, which has constant $1.2528\ldots$ in place of $1.26$: then $1.2528\ldots \cdot 2^{14/3}$ has base-$2$ logarithm $4.9918 < 5$.
+The factor $2^{-5}$ in Theorem~(Bauer and Bennett (2018)) is a weakening of the contour bound for $|P_{n_1,\delta}|$, which has constant $1.2528\ldots$ in place of $1.26$: then $1.2528\ldots \cdot 2^{14/3}$ has base-$2$ logarithm $4.9918 < 5$.
 The sentence before the proof of Theorem~1 records the same comparison, and the factor is absorbed in their final bound $2^{-1.62k}$.
 
 Their Lemma~4.1 was checked at $3000$-digit precision for every parameter $n_1$ from $2$ to $60$ and both values of each of $\delta$ and $r$.
@@ -1455,7 +1743,7 @@ With
 \[
 f_{\delta,r}(v) = \frac{v^{4+r/3-\delta}(1-v)^{1-r/3}}{\bigl(1 - 3(1-v)/128\bigr)^{5-\delta}},
 \]
-one has $\max f_{\delta,r} = 0.31999\ldots < 1/3$, and $F(\tau) < 12$.
+we have $\max f_{\delta,r} = 0.31999\ldots < 1/3$, and $F(\tau) < 12$.
 
 Their Proposition~5.1 states that a product $\Pi$, built from their Pad\'e approximants, satisfies $\Pi > 1.8^{n_1}$ for every integer $n_1 \ge 497$.
 It was recomputed as follows.
@@ -1469,11 +1757,11 @@ It reproduces their values $\exp(L(2, 3319)/3319) = 1.897735\ldots$ and $\exp(L(
 The bound exceeds $\log 1.8$ except for $43$ pairs $(n_1, r)$, all with $n_1 \le 830$.
 For those pairs $\Pi$ was computed exactly for both values of $\delta$, and the minimum of $\Pi^{1/n_1}$ is $1.80767$, at $n_1 = 497$.
 For $1000 < n_1 < 10^6$ the minimum of $\exp(L(r, n_1)/n_1)$ is $1.8422$.
-\item For $n_1 \ge 10^6$ the analytic lower estimates of $\log \Pi$ in the author's preprint were recomputed: $0.59197\, n_1$ when $10^6 \le n_1 \le 2 \times 10^9$, and $0.59035\, n_1$ when $n_1 > 2 \times 10^9$.
+\item For $n_1 \ge 10^6$ the analytic lower estimates of $\log \Pi$ in the preprint of Bauer and Bennett (2018) were recomputed: $0.59197\, n_1$ when $10^6 \le n_1 \le 2 \times 10^9$, and $0.59035\, n_1$ when $n_1 > 2 \times 10^9$.
 Both exceed $\log 1.8 \cdot n_1 = 0.58779\, n_1$.
 Those estimates use the preprint's prime-error bound, in which $1.798158\sqrt{x}$ and $0.00144\, x/\log x$ meet at $x = 641{,}239{,}200.2$.
 The journal states the coefficient $0.001$ and splits this argument at $3 \times 10^9$.
-The constant $1.798158$, from Bennett, Martin, O'Bryant and Rechnitzer, was spot-checked for $x \le 2 \times 10^8$, and the largest ratio found is $1.79628$.
+The constant $1.798158$, from Bennett, Martin, O'Bryant and Rechnitzer (2018), was spot-checked for $x \le 2 \times 10^8$, and the largest ratio found is $1.79628$.
 \end{itemize}
 What was not recomputed is that prime bound for $x > 2 \times 10^8$, Lemma~4 of Beukers (1980/81), where one choice of $\delta$ gives $\Lambda \ne 0$, and Lemma~4.5 of Chudnovsky (1983), which Lemma~6.1 uses.
 
@@ -1482,25 +1770,23 @@ What was not recomputed is that prime bound for $x > 2 \times 10^8$, Lemma~4 of 
 
 \topic{Literature.}
 \begin{itemize}
-\item Santos (2020) studies cycles of $C$ through $1$, the same question as this paper.
-Propositions~15 and~16 there are the cases of length $1$ and length $2$, and Conjecture~3 is that $1$ lies on a cycle of $C$ only for $q = 5$ and for a Mersenne number.
+\item Santos (2020) studies cycles of $C$ with starting value $1$, the same question as this paper.
+Propositions~15 and~16 there are the cases of length $1$ and length $2$, and Conjecture~3 is that a cycle of $C$ has starting value $1$ only when $q = 5$ or when $q$ is a Mersenne number.
 His Remark~5 describes a cycle of length $3$ or more as ``\ldots{} much more difficult to analyze and seems intractable''; Theorem~1 is the case of length $3$.
 The same preprint claims a proof of the Collatz conjecture, which is not accepted.
-\item Crandall (1978) and Franco and Pomerance (1995) study when orbits of $qx+1$ maps avoid $1$; Corollary~B.3 matches their mechanism.
-\item Franco's 1990 thesis uses Diophantine approximation for the $qx+1$ problem.
-Only its title was available, and it is the most important item to check for overlap.
+\item Crandall (1978) and Franco and Pomerance (1995) study when $1$ is not a term of an orbit of a $qx+1$ map; Corollary~B.3 matches their mechanism.
 \item Steiner (1977, 1981) rules out one-block ``circuits'' for $q = 3$, $5$, $7$ with Baker's method, a related use of Diophantine approximation for cycles.
 \item The deep inputs are Bauer and Bennett (2002, 2018) on restricted irrationality exponents, Beukers (1980/81) on $X^2 + D = 2^n$, and Ridout (1958) on approximation with $S$-unit denominators.
 \end{itemize}
 
 \topic{History of the results.}
-The work began with the window (Lemma~\ref{lem:window}), which pins down $q$ from $h$ and makes a search over $h$ far faster than a search over $q$.
+The work began with the $\delta$ window (Lemma~\ref{lem:window}), which pins down $q$ from $h$ and makes a search over $h$ far faster than a search over $q$.
 Lower bounds on $x$ and $y$ (Lemmas~4 to~7, preceded by the weaker Proposition~B.13, which allowed $y < x$ with $y > (3q)^{1/3}$) then gave finiteness through Ridout's theorem (Proposition~B.4), but no bound.
-Residue-class arguments settled special cases (Propositions~B.5 and~B.6), and the effective inequality of Bauer and Bennett gave the lower bound on $k_1$ (Proposition~B.7) and most of the case analysis of Lemma~4 (Appendix~\ref{sec:earlier}). Playing the window against the near miss for $x$ then gave Theorem~1, once it was noticed that Bauer and Bennett's unrounded restricted irrationality exponent lies below the golden ratio.
-The near-miss principle (Lemma~\ref{lem:near-misses}) extended this to Theorem~2, Corollaries~12 to~14, and Theorem~3.
+Residue-class arguments settled special cases (Propositions~B.5 and~B.6), and the effective inequality of Bauer and Bennett (2018) gave the lower bound on $k_1$ (Proposition~B.7) and most of the case analysis of Lemma~4 (Appendix~\ref{sec:earlier}). Playing the $\delta$ window against the near miss for $x$ then gave Theorem~1, once it was noticed that the unrounded exponent of Bauer and Bennett (2018) lies below the golden ratio.
+Lemma~\ref{lem:near-misses} extended this to Theorem~2, Corollaries~12 to~14, and Theorem~3.
 The digit scan (Appendix~\ref{app:computations}) was computational evidence found along the way.
-Cycles that need not visit $1$ are treated in the companion paper.
-The final verification found and corrected a dropped constant in a displayed formula of Bauer and Bennett and confirmed their Proposition~5.1 for every $n_1 \ge 497$.
+Cycles with any starting value are treated in the companion paper~\cite{hackman-ii}.
+The final verification found and corrected a dropped constant in a displayed formula of Bauer and Bennett (2018) and confirmed their Proposition~5.1 for every $n_1 \ge 497$.
 
 \begin{thebibliography}{99}
 \bibitem{bauer-bennett-2002}
@@ -1521,14 +1807,14 @@ G.~V.~Chudnovsky, On the method of Thue--Siegel, Ann.\ of Math.\ 117 (1983), 325
 \bibitem{crandall}
 R.~E.~Crandall, On the ``$3x+1$'' problem, Math.\ Comp.\ 32 (1978), 1281--1292, \doilink{10.1090/S0025-5718-1978-0480321-3}.
 
-\bibitem{franco-thesis}
-Z.~Franco, Diophantine Approximation and the $qx+1$ Problem, PhD thesis, UC Berkeley, 1990.
-
 \bibitem{franco-pomerance}
 Z.~Franco and C.~Pomerance, On a conjecture of Crandall concerning the $qx+1$ problem, Math.\ Comp.\ 64 (1995), 1333--1336, \doilink{10.1090/S0025-5718-1995-1297468-4}.
 
 \bibitem{hackman-ii}
 T.~Hackman, II. Cycles beyond $1$ for the $qn+1$ map: finiteness for each length, and an explicit bound on $q$ for a constant odd element, companion paper.
+
+\bibitem{lucas}
+\'E.~Lucas, Th\'eorie des fonctions num\'eriques simplement p\'eriodiques, Amer.\ J.\ Math.\ 1 (1878), 184--240, 289--321.
 
 \bibitem{ridout}
 D.~Ridout, The $p$-adic generalization of the Thue--Siegel--Roth theorem, Mathematika 5 (1958), 40--48, \doilink{10.1112/S0025579300001339}.

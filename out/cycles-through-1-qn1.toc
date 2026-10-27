@@ -3,17 +3,16 @@
 \contentsline {statement}{Theorem 1}{2}{section*.3}%
 \contentsline {section}{\numberline {2}Definitions and notation}{3}{section.2}%
 \contentsline {section}{\numberline {3}The structure of a cycle of length $3$}{4}{section.3}%
-\contentsline {section}{\numberline {4}The window and the near miss for $x$}{6}{section.4}%
-\contentsline {section}{\numberline {5}Proof of Theorem 1}{7}{section.5}%
-\contentsline {section}{\numberline {6}Longer cycles}{9}{section.6}%
-\contentsline {statement}{Theorem 2}{11}{section*.4}%
-\contentsline {section}{\numberline {7}Ineffective finiteness}{13}{section.7}%
-\contentsline {statement}{Theorem 3 (finiteness through 1)}{14}{section*.5}%
-\contentsline {section}{\numberline {8}Other results}{14}{section.8}%
-\contentsline {section}{\numberline {9}Open problems}{15}{section.9}%
-\contentsline {section}{\numberline {A}Cycles of length $1$ and $2$ through 1}{15}{appendix.A}%
-\contentsline {section}{\numberline {B}Earlier results on cycles of length $3$ through 1}{16}{appendix.B}%
-\contentsline {section}{\numberline {C}Work on cycles of length $4$ through 1}{20}{appendix.C}%
-\contentsline {section}{\numberline {D}Work on any cycle length through 1}{22}{appendix.D}%
-\contentsline {section}{\numberline {E}Computations}{23}{appendix.E}%
-\contentsline {section}{\numberline {F}Notes on the literature and history}{26}{appendix.F}%
+\contentsline {section}{\numberline {4}The $\mitdelta $ window and the near miss for $x$}{7}{section.4}%
+\contentsline {section}{\numberline {5}Proof of Theorem 1}{9}{section.5}%
+\contentsline {section}{\numberline {6}Longer cycles}{10}{section.6}%
+\contentsline {statement}{Theorem 2}{12}{section*.4}%
+\contentsline {section}{\numberline {7}Ineffective finiteness}{16}{section.7}%
+\contentsline {statement}{Theorem 3 (finiteness for starting value $1$)}{17}{section*.5}%
+\contentsline {section}{\numberline {8}Open problems}{18}{section.8}%
+\contentsline {section}{\numberline {A}Cycles of length $1$ and $2$ with starting value 1}{18}{appendix.A}%
+\contentsline {section}{\numberline {B}Earlier results on cycles of length $3$ with starting value 1}{19}{appendix.B}%
+\contentsline {section}{\numberline {C}Work on cycles of length $4$ with starting value 1}{23}{appendix.C}%
+\contentsline {section}{\numberline {D}Work on a cycle of any length with starting value 1}{25}{appendix.D}%
+\contentsline {section}{\numberline {E}Computations}{27}{appendix.E}%
+\contentsline {section}{\numberline {F}Notes on the literature and history}{30}{appendix.F}%
