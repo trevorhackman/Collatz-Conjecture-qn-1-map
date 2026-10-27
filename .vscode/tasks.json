@@ -4,7 +4,7 @@
     {
       "label": "Generate pdf from tex",
       "type": "shell",
-      "command": "mkdir -p out && /Library/TeX/texbin/lualatex -output-directory=out -interaction=nonstopmode cycles-through-1-qn1.tex && /Library/TeX/texbin/lualatex -output-directory=out -interaction=nonstopmode cycles-through-1-qn1.tex && /Library/TeX/texbin/lualatex -output-directory=out -interaction=nonstopmode fixed-start-qn1.tex && /Library/TeX/texbin/lualatex -output-directory=out -interaction=nonstopmode fixed-start-qn1.tex && open out/cycles-through-1-qn1.pdf out/fixed-start-qn1.pdf",
+      "command": "mkdir -p out && /Library/TeX/texbin/lualatex -output-directory=out -interaction=nonstopmode cycles-through-1-qn1.tex && /Library/TeX/texbin/lualatex -output-directory=out -interaction=nonstopmode cycles-through-1-qn1.tex && /Library/TeX/texbin/lualatex -output-directory=out -interaction=nonstopmode fixed-start-qn1.tex && /Library/TeX/texbin/lualatex -output-directory=out -interaction=nonstopmode fixed-start-qn1.tex && bash .vscode/reload-skim.sh \"$PWD/out/cycles-through-1-qn1.pdf\" \"$PWD/out/fixed-start-qn1.pdf\"",
       "options": {
         "cwd": "${workspaceFolder}"
       },
