@@ -7,17 +7,23 @@ description: >
   another claim in the same statement. A real argument belongs in the proof.
   A remark that points at a later section, a special case, or how the result
   is used comes after the proof, not in the statement.
-  Use when writing or revising a theorem, lemma, proposition, corollary, or
-  proof, or when a statement contains part of its own argument or a remark.
-  Name each formula in the sentence that uses it. Do not use a word this paper
+  An outline is informal. It is not the theorem it says is stated later.
+  Use when writing or revising a theorem, lemma, proposition, corollary,
+  outline, or proof, or when a statement contains part of its own argument or a remark,
+  or when a proof states a fact and then changes subject before that fact
+  is used, or when a rearrangement is called the defined equation it came
+  from, or when a statement uses a defined symbol for a different formula. Name each formula in the sentence that uses it. Do not use a word this paper
   does not define, such as empty or emptiness. Do not use a term the
   definitions section has not already defined, such as reduced length.
   Do not rename a defined
-  term. Define a symbol before later lines use it. Do not mix setup and
-  results in one comma-separated list. Set the type of every new variable.
-  Constant takes a type: a constant real number, a constant integer, or a
-  constant rational. Constant alone is not a type. This applies in a
-  definition as well as in a statement. Also /statement-proof.
+  term. A definition states what the term means. It is not a usage note.
+  Define a symbol before later lines use it. Do not mix setup and
+  results in one comma-separated list.   Set the type of every new variable, including an index. A sum or a
+  quantifier does not define the index. Name the index and its range in a
+  sentence before the formula. Constant takes a type: a constant real
+  number, a constant integer, or a constant rational. Constant alone is
+  not a type. This applies in a definition as well as in a statement.
+  Also /statement-proof.
 ---
 
 # Statement, then proof, then remarks
@@ -25,6 +31,14 @@ description: >
 The order is the statement, then the proof, then optional remarks.
 
 The statement says what is proved. The proof is the argument. A remark says how the result is used, which section computes a special case, or what the result becomes for a particular length. A remark is not a claim of the statement and not a step of the proof.
+
+## Outline
+
+An outline is informal. It gives the shape of a result in ordinary words and says that the precise statement comes later. That later statement is the theorem. The outline is not the theorem.
+
+Informal means the outline may name the result before the precise inequality is written. The hypotheses, the quantifiers, and the displays belong in the later statement. Do not copy them back into the outline.
+
+Definitions should obviously not be usage notes. A definition states what the term or symbol means. A fact about how one estimate uses a symbol stays next to that estimate, or in a remark after the proof. See the definitions-section skill.
 
 When the proof is in a later section, the statement may be followed by one sentence saying where the proof is. The remarks still come after the proof.
 
@@ -38,6 +52,7 @@ A cited theorem with no proof in this paper may be followed by its remarks at on
 - Setup and results are not items of one comma-separated list. A hypothesis or a range is its own sentence. The next sentence is the claims. Two results may share a sentence. Setup may not.
 - Do not restate notation already defined earlier in the paper. The setup sentence names the hypothesis only.
 - A term in the statement has already been defined in the definitions section. A name coined for this argument is not yet a term. Do not write it in the statement, and do not define it in the sentence before the statement in order to use it there. Write the formula.
+- A statement that uses a defined term uses that definition. Do not write a different formula for the same symbol. If the hypothesis and the definition disagree, fix the definition or name the defined term in the hypothesis. The conclusions stay. The proved bound, the cases, and the objects ruled out stay as they are.
 
 Not: "For a cycle of length \(\ell\) through \(1\) with \(\ell \ge 2\), \(k_\ell \ge k_1 + 3\), and \(x_{\ell-1} \equiv 1 \pmod{2^{k_1}}\)." The bound \(\ell \ge 2\) is setup. The other two items are results.
 
@@ -51,6 +66,11 @@ Write: "Fix an integer \(V \ge 2\). Only finitely many cycles satisfy \(\ell/\gc
 
 - Every step that is not immediate: an intermediate inequality, a rearrangement, a multiplication, a hypothesis, or an earlier result.
 - The proof reaches the last claim, including an immediate one. One sentence is enough for that claim.
+- Put a fact in the sentence that uses it. Do not state it and then carry out an unrelated calculation before it is used.
+
+Not: state \(x > 1\) and \(y > 1\), then derive \(2^h = 2^{k_1} \cdot 2^{k_2} \cdot 2^{k_3}\) from \(h = k_1 + k_2 + k_3\), and only later use \(x > 1\) and \(y > 1\) to compare \(q + 1/x\) with \(q + 1\).
+
+Write: derive the product first. When the comparison begins, state \(x > 1\) and \(y > 1\), and apply them in the next sentence.
 
 ## Name the object
 
@@ -68,6 +88,10 @@ Not: "with the bracket odd." Write: "\(x^2 - 2^{t-k_1}s\) is odd."
 
 Not: "Thus the difference has valuation \(k_1\)." Write: "Thus the 2-adic valuation of \(2^{k_2} y\) is \(k_1\)."
 
+A rearrangement is not the equation it came from. The three steps are \(q + 1 = 2^{k_1} x\), \(qx + 1 = 2^{k_2} y\), and \(qy + 1 = 2^{k_3}\).
+
+Not: "The three steps are \(2^{k_1} = (q+1)/x\), \(2^{k_2} = (qx+1)/y\), and \(2^{k_3} = qy + 1\)." Write: "The three steps give \(2^{k_1} = (q+1)/x\), \(2^{k_2} = (qx+1)/y\), and \(2^{k_3} = qy + 1\)."
+
 ## Define a symbol first
 
 A symbol that later lines use is defined before it appears. "\(y = x^2 - w\) with \(w = (x-1)/2^{k_1}\)" uses \(w\) and only then says what it is. Write "Let \(w = (x-1)/2^{k_1}\). Then \(y = x^2 - w\)."
@@ -75,6 +99,12 @@ A symbol that later lines use is defined before it appears. "\(y = x^2 - w\) wit
 "With \(w = \ldots\)" is for a label used in that one formula and nowhere later.
 
 A new variable has a type in the sentence that introduces it: an integer, a rational, a real number, a positive integer, a constant real number, a constant integer, or a constant rational. An inequality is not a type. Constant alone is not a type. Explicit is not a type. \(\theta > 0\) does not say whether \(\theta\) is an integer, a rational, or a real number. This applies in a definition as well as in a statement.
+
+An index is a variable. A sum, a product, or a quantifier does not define it. The sentence before the formula names the index, says it is an integer, and gives the range.
+
+Not: "\(x_0 = \sum_{j=0}^{\ell-1} 2^{\lceil j\alpha\rceil - j\alpha}\)." The letter \(j\) has no definition.
+
+Write: "Let \(j\) be an integer with \(0 \le j \le \ell-1\). Then \(x_0 = \sum_{j=0}^{\ell-1} 2^{\lceil j\alpha\rceil - j\alpha}\)."
 
 A real number may vary with the cycle or with \(q\). A constant real number is chosen once and does not. Those are different types. If the same value is used for every cycle, the type is a constant real number.
 
@@ -100,6 +130,7 @@ Not: ending a theorem with "The integer \(Q_2(x)\) of Section 7 is this maximum 
 - Put a remark in the statement, or between the statement and the proof.
 - Mix setup and results in one comma-separated list.
 - Introduce a new variable without its type. An inequality such as \(\theta > 0\) is not a type. Constant alone is not a type: say a constant real number, a constant integer, or a constant rational. Explicit is not a type. A real number that may vary is not a constant real number.
+- Use an index that no sentence has defined. The subscript on a sum is not a definition. Name the index, its type, and its range before the formula.
 
 ## Numbering
 
