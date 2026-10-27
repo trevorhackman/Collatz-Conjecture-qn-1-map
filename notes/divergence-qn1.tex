@@ -1,0 +1,412 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb}
+\usepackage{unicode-math}
+\usepackage[skip=\baselineskip]{parskip}
+\relpenalty=100
+\binoppenalty=200
+\usepackage[bookmarks=false,colorlinks,linkcolor=black,citecolor=black,urlcolor=blue]{hyperref}
+\newcommand{\doilink}[1]{\href{https://doi.org/#1}{\nolinkurl{doi:#1}}}
+\newcommand{\topic}[1]{\par\noindent\textbf{#1}}
+
+\title{Notes on divergent orbits of the $qn+1$ map}
+\author{Trevor Hackman}
+\date{}
+
+\begin{document}
+\maketitle
+
+This note explains three choices of the odd integer \(q \ge 3\) in the odd-to-odd map below.
+The aim in each case is one odd positive integer \(n\) whose orbit diverges.
+No such \(n\) is obtained.
+The file is a note in \texttt{notes/}.
+It is not one of the two papers in this repository, and it contains no numbered statement.
+
+Fix an odd integer \(q \ge 3\).
+For an odd positive integer \(n\), let \(v_2(qn+1)\) be the largest integer \(v\) such that \(2^v\) divides \(qn+1\).
+The map \(C\) sends \(n\) to
+\[
+C(n) = \frac{qn+1}{2^{v_2(qn+1)}}.
+\]
+The orbit of \(n\) is the sequence \(n\), \(C(n)\), \(C(C(n))\), \ldots.
+The orbit diverges when no positive integer is greater than or equal to every term.
+The same formula still makes sense if \(q\) is even.
+Then, for odd \(n\), the integer \(qn+1\) is odd, so the exponent of \(2\) is \(0\) and \(C(n) = qn + 1 > n\).
+Every orbit diverges.
+The two papers take \(q\) odd, and so does the rest of this note.
+An integer \(e \ge 2\) determines the Mersenne number \(2^e - 1\).
+For that value of \(q\), one has \(C(1) = 1\).
+
+A cycle of length \(\ell \ge 1\) is a list of \(\ell\) distinct odd positive integers \(x_0, \ldots, x_{\ell-1}\) with \(C(x_i) = x_{i+1}\) for \(0 \le i \le \ell-2\) and \(C(x_{\ell-1}) = x_0\).
+On a cycle of length \(\ell \ge 2\), write \(h\) for the total number of factors of \(2\) removed in one passage around the cycle, and write \(S_j\) for the sum of the first \(j\) of those factors, with \(S_0 = 0\).
+The second paper in this repository, \texttt{fixed-start-qn1.tex}, records the identity
+\[
+x_0(2^h - q^\ell) = \sum_{j=0}^{\ell-1} 2^{S_j} q^{\ell-1-j}
+\]
+for the term \(x_0\) at the start of that passage.
+If the same factors occur at every later passage, that identity forces the starting term to equal the right-hand side divided by \(2^h - q^\ell\).
+The map that applies \(C\) once for each factor in the passage fixes this rational number.
+When the rational number is an odd positive integer, the orbit is a cycle.
+A divergent orbit does not repeat the same factors at every passage.
+The constant sequence, in which every factor equals \(1\), is the simplest case.
+For \(q \ge 3\) and \(\ell \ge 1\) one has \(q^\ell > 2^\ell\), so
+\[
+\frac{1}{2^\ell - q^\ell}\sum_{j=0}^{\ell-1} 2^{j} q^{\ell-1-j}
+\]
+is negative.
+No odd positive integer has \(v_2(qn+1) = 1\) at every term.
+
+A longer block is the same identity.
+The block may contain a step with \(C(n) < n\), so long as the factors in the block still satisfy \(q^\ell > 2^h\).
+Then \(2^h - q^\ell\) is negative, and so is the rational number determined by the identity.
+No odd positive integer carries that block at every later passage.
+For \(q = 5\) the only pair of valuations that can repair a decrease in the immediate next step is \((3,1)\), since \(2^5 = 32 > 25 = 5^2\) and \(2^4 = 16 < 25\).
+It does so for \(n \equiv 27 \pmod{32}\), as in \(27 \to 17 \to 43\), and it fails for \(n \equiv 11 \pmod{32}\), as in \(43 \to 27 \to 17\).
+A finite list of repairing blocks does not avoid the identity.
+A residue modulo a fixed power of \(2\) that selects one block from the list, and then the next block, takes values in a finite set, so the sequence of blocks eventually repeats.
+One period is one longer block.
+
+The three choices below do not look for such a repeating sequence.
+
+Let \(L = \lfloor \log_2 q \rfloor + 1\).
+If \(v_2(qn+1) \le L - 1\), then \(2^{v_2(qn+1)} < q\), so \(C(n) > n\).
+If \(v_2(qn+1) \ge L\), then \(2^{v_2(qn+1)} \ge q + 1\).
+For \(n > 1\), and for \(n = 1\) when \(q + 1\) is not a power of \(2\), one has \(C(n) < n\).
+The inequality \(v_2(qn+1) \ge L\) is the single congruence
+\[
+n \equiv -q^{-1} \pmod{2^L}.
+\]
+There are \(2^{L-1}\) odd residues modulo \(2^L\), and \(2^{L-1} = 2^{\lfloor \log_2 q \rfloor}\) lies strictly between \(q/2\) and \(q\).
+A sequence of valuations, repeating or not, in which every term is at most \(L - 1\) would make every step increase, and the orbit would diverge.
+No such sequence is proved here for any odd \(q \ge 3\) and any odd positive starting value.
+Replacing \(q\) by \(2^A + p\), with \(A \ge 2\) an integer and \(p\) an odd integer, \(1 \le p < 2^A\), moves that congruence to the condition \(v_2(pn+1) = A\).
+It is still one class modulo \(2^{A+1}\).
+
+If successive odd terms were independent and uniform among the odd residues modulo \(2^L\), the wait until a term with \(C(n) < n\) would be on the order of \(q\).
+Section~\ref{sec:power} records waits of that size for \(q = 2^A + 1\).
+The model is not a proof that every orbit meets the class.
+It does say what a divergent orbit in the heuristic looks like: the class is met, most meetings have valuation only a little larger than \(L - 1\), and the product of the factors \(q/2^{v_2(qn+1)}\) still tends to infinity because the mean valuation is \(2\).
+An orbit that never meets the class would be a proof, and it would be a stricter event than that heuristic.
+
+The second paper records that a random odd input has mean valuation \(2\), while a cycle of length \(\ell\) needs those \(\ell\) valuations to have mean about \(\log_2 q\).
+For every odd \(q \ge 5\), one has \(\log_2 q > 2\).
+The heuristic in that paper is then that almost all orbits diverge.
+A proof for one orbit needs one of two facts: every term \(n\) on the orbit satisfies \(C(n) > n\), or the orbit enters no cycle.
+A large factor on the steps with small valuation gives neither fact.
+The three sections try to obtain one of them for a named \(q\).
+
+The first takes a \(q\) with \(10^{10} + 1\) decimal digits, so that a step with small valuation is a large multiplication, and so that the orbit cannot be computed term by term.
+Let \(A \ge 2\) be an integer.
+The second takes \(q = 2^A + 1\), small enough that the first terms from \(1\) have a formula and the later terms can be computed.
+The third takes a Wieferich prime.
+There the literature already keeps \(1\) off every cycle, so the absence of every cycle would make every orbit diverge.
+
+\section{A large multiplier}
+\label{sec:large}
+
+If \(v_2(qn+1) \le \lfloor \log_2 q \rfloor\), then \(C(n) > n\).
+The ratio \(C(n)/n\) grows with \(q\) when the valuation stays that small.
+A very large \(q\) therefore makes one step a large multiplication, and the orbit of a small starting value, such as \(1\), would diverge if every later term kept a valuation at most \(\lfloor \log_2 q \rfloor\).
+The integer chosen here has \(10^{10} + 1\) decimal digits, so that multiplication is enormous on any step that does stay small.
+Nothing proved below forces the valuation to stay at most \(\lfloor \log_2 q \rfloor\).
+The same size that makes the factor large also makes the orbit of \(1\) impossible to compute term by term.
+
+Let \(q = 10^{10^{10}} + 1\).
+Then \(q - 1 = 2^{10^{10}} \cdot 5^{10^{10}}\).
+Let \(A = v_2(q-1)\), so \(A = 10^{10}\), and write \(q = t \cdot 2^A + 1\) with the odd positive integer \(t = 5^{10^{10}}\).
+
+\topic{Where a term can fall.}
+Let \(n\) be an odd positive integer, and write \(n + 1 = 2^v u\) with \(u\) an odd positive integer and \(v \ge 1\).
+
+If \(v < A\), then
+\[
+qn + 1 = 2^v \bigl(t \cdot 2^{A-v} n + u\bigr),
+\]
+and the second factor is odd, so \(v_2(qn+1) = v\).
+Here \(2^v \le 2^{A-1} < q\), so \(C(n) > n\).
+
+If \(v > A\), then
+\[
+qn + 1 = 2^A \bigl(t n + 2^{v-A} u\bigr),
+\]
+and the second factor is odd, so \(v_2(qn+1) = A\).
+Here \(2^A < q\), so \(C(n) > n\).
+
+If \(v = A\), then \(tn + u = t \cdot 2^A u + (u - t)\).
+Both \(u\) and \(t\) are odd, so \(u - t\) is even and \(v_2(qn+1) \ge A + 1\).
+
+Thus \(C(n) < n\) can hold only when \(v = A\), that is, only when
+\[
+n \equiv 2^A - 1 \pmod{2^{A+1}}.
+\]
+For this \(q\) one has \(2^{A+1} < q\), so a valuation equal to \(A + 1\) still gives \(C(n) > n\).
+A term in the congruence class satisfies \(C(n) < n\) only when \(v_2(tn + u)\) is large enough that \(2^{v_2(qn+1)} > q\).
+The integer \(q\) has \(10^{10} + 1\) decimal digits.
+The orbit of \(1\) is not computed in this note.
+The congruence class is necessary for a term with \(C(n) < n\), and it is not sufficient.
+No argument here keeps every term of an orbit out of the class.
+
+\topic{A modulus that fixes the valuation.}
+Let \(R\) be an integer greater than \(\lfloor \log_2 q \rfloor\).
+Suppose an odd residue modulo \(2^R\) determined both the valuation and one next residue.
+The orbit of that residue would be eventually periodic, since there are only finitely many residues, and the valuations would repeat.
+The identity above would then make the orbit a cycle, or, when every step satisfies \(C(n) > n\), would make the formal starting term negative.
+A modulus that certifies \(C(n) > n\) at every step cannot determine the next residue.
+The search allows every residue in the image.
+The same necessary condition was tested for small odd \(q\), where a finite modulus can be searched.
+Let \(L = \lfloor \log_2 q \rfloor\).
+Call an odd residue \(r\) modulo \(2^R\) admissible when \(v_2(qr + 1) \le L\).
+Then \(v_2(qr + 1) < R\), so every odd positive integer congruent to \(r\) modulo \(2^R\) has that same valuation, and \(C\) sends it to an integer strictly larger than itself.
+Write \(v = v_2(qr + 1)\).
+The image of \(r\) is the set of odd residues \(s\) modulo \(2^R\) satisfying
+\[
+s \equiv \frac{qr + 1}{2^v} \pmod{2^{R-v}}.
+\]
+Begin with every admissible residue.
+Delete a residue when its image meets a residue that is no longer present, and repeat.
+For each
+\[
+q \in \{5, 7, 9, 17, 21, 33, 65\}
+\]
+and each integer \(R\) with \(L < R \le 14\), no residue remains.
+These \(q\) already have the shape \(q = t \cdot 2^A + 1\) with \(A = v_2(q-1)\) and \(t\) odd.
+The integer \(10^{10^{10}} + 1\) is of that shape as well, and the search supplies no modulus for it.
+
+\section{One more than a power of two}
+\label{sec:power}
+
+Section~\ref{sec:large} uses a \(q\) too large to iterate.
+The same shape with small \(A\) can be iterated, and the first terms from \(1\) can be written in closed form.
+A Mersenne number gives the cycle \(1 \to 1\).
+The integer \(q = 2^A + 1\) is the nearby choice for which \(1\) moves: \(q + 1\) is divisible by \(2\) only once, so \(C(1) = 2^{A-1} + 1 > 1\).
+For odd \(A \ge 3\) the first \(A\) steps from \(1\) are given below, and the term after those steps is greater than \(2^{A(A-2)}\).
+If that description applied to every later term, the orbit of \(1\) would diverge.
+It applies only to those \(A\) steps.
+The integer \(q\) is small enough to iterate, and the iteration meets later terms with \(C(n) < n\), which Section~\ref{sec:large} could not compute.
+
+Let \(A \ge 2\) be an integer and let \(q = 2^A + 1\).
+Then \(q + 1 = 2(2^{A-1} + 1)\) with \(2^{A-1} + 1\) odd, so \(v_2(q + 1) = 1\) and
+\[
+C(1) = 2^{A-1} + 1.
+\]
+In particular \(C(1) \ne 1\).
+This is the case \(t = 1\) of the shape in Section~\ref{sec:large}, so \(C(n) < n\) can hold only for
+\[
+n \equiv 2^A - 1 \pmod{2^{A+1}}.
+\]
+For this \(q\) one has \(\lfloor \log_2 q \rfloor = A\) and \(2^{A+1} > q\).
+Every odd positive integer in that congruence class satisfies \(C(n) < n\).
+
+\topic{The valuation of \(n+1\).}
+Let \(n\) be an odd positive integer and write \(v = v_2(n+1)\), so \(n + 1 = 2^v u\) with \(u\) an odd positive integer.
+The orbit increases at every step if and only if no term has \(v = A\).
+The step valuation may vary. It does not have to repeat.
+
+If \(v > A\), then \(n\) is odd and \(2^{v-A} u\) is even, so
+\[
+qn + 1 = 2^A\bigl(n + 2^{v-A} u\bigr)
+\]
+has valuation exactly \(A\).
+Since \(2^A < q\), one has \(C(n) > n\).
+The same division gives \(C(n) = n + u \cdot 2^{v-A}\), hence
+\[
+C(n) + 1 = u q \cdot 2^{v-A}
+\]
+and \(v_2(C(n)+1) = v - A\).
+
+Let \(k\) be a positive integer.
+If \(v = kA\), then \(k - 1\) steps of this kind produce a term with \(v_2 = A\), and the next step satisfies \(C(n) < n\).
+If \(v = kA + r\) for an integer \(r\) with \(1 \le r \le A - 1\), the same \(k\) steps leave valuation \(r\), and each of them still increases.
+From a valuation in \(\{1, \ldots, A-1\}\) the next valuation is not determined by that integer alone.
+It depends on \(u\).
+An orbit that increased at every step would have to remain in that set forever.
+A repeating sequence of such valuations cannot: each is at most \(A - 1\), so \(q^\ell > 2^{v_1 + \cdots + v_\ell}\) and the rational number in the cycle identity is negative.
+Section~\ref{sec:large} already found no odd residue modulo \(2^R\), for \(R \le 14\) and for \(q \in \{17, 33, 65\}\), whose every lift stays among the residues with \(C(n) > n\).
+
+\topic{The first \(A\) terms, for odd \(A\).}
+Let \(A \ge 3\) be odd.
+For an integer \(m\) with \(0 \le m \le A\), define the rational number
+\[
+x_m = \frac{2^{A-m} q^m - 1}{2^A - 1}.
+\]
+Then \(x_0 = 1\).
+Since \(2^A \equiv 1 \pmod{2^A - 1}\) and \(q = 2^A + 1\),
+\[
+2^{A-m} q^m - 1 \equiv 2^{A-m} \cdot 2^m - 1 = 2^A - 1 \pmod{2^A - 1},
+\]
+so \(x_m\) is an integer.
+For \(m < A\) the power \(2^{A-m}\) is even, \(q^m\) is odd, and the denominator is odd, so \(x_m\) is odd.
+
+For \(0 \le m \le A - 1\),
+\begin{align*}
+qx_m + 1
+&= \frac{(2^A + 1)\bigl(2^{A-m} q^m - 1\bigr) + (2^A - 1)}{2^A - 1} \\
+&= \frac{2\bigl(2^{2A - m - 1} q^m + 2^{A - m - 1} q^m - 1\bigr)}{2^A - 1}.
+\end{align*}
+If \(m \le A - 2\), then \(A - m - 1 \ge 1\), so the second factor in the numerator is odd.
+Thus \(v_2(qx_m + 1) = 1\), and
+\[
+C(x_m) = \frac{2^{A-m-1} q^{m+1} - 1}{2^A - 1} = x_{m+1}.
+\]
+The two numerators agree because \(q - 1 = 2^A\).
+The orbit of \(1\) therefore begins \(x_0, x_1, \ldots, x_{A-1}\), and each of those \(A - 1\) steps removes one factor of \(2\).
+
+At \(m = A - 1\),
+\[
+qx_{A-1} + 1 = \frac{2(q^A - 1)}{2^A - 1}.
+\]
+Expanding the power gives
+\[
+(1 + 2^A)^A - 1 = 2^A \Bigl(A + \binom{A}{2} 2^A + \cdots\Bigr).
+\]
+The denominator \(2^A - 1\) is odd, so
+\[
+v_2\Bigl(\frac{q^A - 1}{2^A - 1}\Bigr) = A + v_2\Bigl(A + \binom{A}{2} 2^A + \cdots\Bigr).
+\]
+Every term after \(A\) in the parentheses is even.
+Since \(A\) is odd, the integer in parentheses is odd, and the valuation equals \(A\).
+Hence \(v_2(qx_{A-1} + 1) = A + 1\) and
+\[
+C(x_{A-1}) = \frac{q^A - 1}{2^A(2^A - 1)} = \frac{(2^A + 1)^A - 1}{2^A(2^A - 1)}.
+\]
+That integer is odd.
+It is greater than \(2^{A(A-2)}\).
+
+Since \(q - 2 = 2^A - 1\), the value \(C(x_{A-1})\) equals \((q^A - 1)/(2^A(q - 2))\).
+For \(A \in \{5, 7, 9\}\), the following term of the orbit was compared with \((q^r - 1)/(2^s(q - 2))\) for every integer \(r\) with \(1 \le r \le 40\) and every nonnegative integer \(s\).
+It equals none of them.
+
+\topic{Later terms with \(v_2(n+1) = A\).}
+The orbit of \(1\) was computed by iterating \(C\).
+For \(A = 9\), the condition \(v_2(n+1) = 9\) holds at steps \(8\), \(296\), \(422\), and \(678\) among the first \(800\) steps.
+For \(A = 11\), it holds at steps \(10\) and \(326\) among the first \(500\) steps.
+For \(A = 15\), it holds at step \(14\) among the first \(300\) steps.
+Each of those terms satisfies \(C(n) < n\).
+Between them the terms grow.
+The runs stop after finitely many steps, so they do not prove that the orbit diverges.
+
+\topic{Other starting values.}
+The same iteration was started at odd \(n\) other than \(1\).
+It is not a command in \texttt{cycle-search}.
+For \(A = 2, 3, 4, 5\), every odd \(n < 20000\) reaches a term with \(v_2(n+1) = A\).
+The longest waits in that range are \(48\) steps at \(n = 17415\), \(64\) steps at \(n = 15805\), \(148\) steps at \(n = 19473\), and \(273\) steps at \(n = 19921\).
+
+For larger \(A\), a small \(n\) can increase for a long time with every step removing fewer than \(A\) factors of \(2\), and then hit \(v_2(n+1) = A\).
+For \(A = 11\) and \(n = 5\), that hit is at step \(1982\), where the term has \(17946\) bits.
+For \(A = 14\) and \(n = 9\), it is at step \(5264\), at \(63290\) bits.
+For \(A = 15\) and \(n = 5\), it is at step \(19084\), at \(248454\) bits.
+For \(A = 16\) and \(n = 9\), the first \(20000\) steps reach \(280038\) bits with no term satisfying \(v_2(n+1) = 16\).
+One of those steps removes exactly \(16\) factors of \(2\) and still increases, by the rule \(v > A\) above.
+The run does not prove that a later term avoids \(v_2(n+1) = 16\).
+These waits sit on the scale of \(q\): \(1982\) steps for \(q = 2^{11} + 1 = 2049\), \(5264\) steps for \(q = 2^{14} + 1 = 16385\), and \(19084\) steps for \(q = 2^{15} + 1 = 32769\).
+A larger \(A\) delays the term with \(v_2(n+1) = A\).
+It does not show that the term never arrives.
+
+\section{A Wieferich prime}
+\label{sec:wieferich}
+
+The first two sections try to keep every valuation small, so that every step satisfies \(C(n) > n\).
+A Wieferich prime is a different route to the same conclusion.
+Crandall (1978) already treated \(q = 1093\) as the case in which an orbit reaches \(1\) only in a single step, and \(1\) itself is not such a step.
+Franco and Pomerance (1995) extend that fact to every Wieferich prime.
+If that \(q\) also had no cycle, then every orbit would diverge, and the pair \((q, 1)\) would be one example.
+The second paper conjectures that there is no cycle, and the searches already rule out lengths \(2\) through \(9\).
+What remains is a cycle of larger length that does not contain \(1\).
+A bound on the least term of such a cycle, taken from how close \(2^{h/\ell}\) is to \(q\), only shortens that list.
+It does not remove every length, so it does not produce a divergent orbit.
+
+A Wieferich prime is a prime \(q\) such that \(q^2\) divides \(2^{q-1} - 1\).
+The known Wieferich primes are \(1093\) and \(3511\).
+Franco and Pomerance (1995) use a wider class, which they call Wieferich numbers.
+Every Wieferich prime is one, and the smallest they list is \(21\).
+The same constraint on reaching \(1\) applies to that class.
+A cycle that does not contain \(1\) is still not ruled out.
+Let \(d\) be the order of \(2\) modulo \(q\), the least positive integer such that \(q\) divides \(2^d - 1\).
+For \(q = 1093\), one has \(d = 364\).
+Franco and Pomerance (1995), following Crandall (1978), prove that if \(q\) is a Wieferich prime and \(C^j(m) = 1\) for a positive integer \(j\) and an odd positive integer \(m\), then \(j = 1\) and
+\[
+m = \frac{2^{kd} - 1}{q}
+\]
+for some positive integer \(k\).
+If \(C(C(m)) = 1\), then \(qm + 1\) is divisible by \((2^{kd} - 1)/q\).
+For a Wieferich prime, \(q\) divides that quotient, while \(qm + 1\) is coprime to \(q\).
+If \(j \ge 2\), some earlier term \(m'\) in the orbit satisfies \(C(C(m')) = 1\).
+
+For \(q = 1093\), one has \(1093 + 1 = 2 \cdot 547\) with \(547\) odd, so \(C(1) = 547\).
+Thus \(C(1) \ne 1\).
+A cycle of length \(1\) is a fixed point of \(C\), and the only odd \(q \ge 3\) with \(C(1) = 1\) is a Mersenne number.
+Combined with the result of Franco and Pomerance (1995) quoted above, \(1\) lies on no cycle for \(q = 1093\).
+
+If the orbit of an odd positive integer does not diverge, some positive integer is greater than or equal to every term, so the orbit meets only finitely many odd positive integers.
+Some term then repeats, and the orbit from that term is a cycle.
+If \(q = 1093\) had no cycle of length at least \(2\), every orbit would diverge.
+The second paper conjectures that no such cycle exists, for this \(q\) among others, and does not prove the conjecture.
+
+The search recorded in the README of this repository excludes a cycle of each length \(\ell\) with \(2 \le \ell \le 9\) for every odd \(q < 2^{35}\).
+Since \(1093 < 2^{11}\), those lengths do not occur for \(q = 1093\).
+Every larger length remains open.
+The result quoted above removes every cycle that contains \(1\).
+It leaves open a cycle that does not contain \(1\).
+
+\topic{A bound on the least term.}
+Suppose the odd positive integers \(x_0, \ldots, x_{\ell-1}\) lie on a cycle of length \(\ell \ge 2\), and \(h\) is the total number of factors of \(2\) removed in one passage.
+Then
+\[
+2^h = \prod_{i=0}^{\ell-1}\Bigl(q + \frac{1}{x_i}\Bigr),
+\]
+so \(q^\ell < 2^h < (q+1)^\ell\).
+Write \(2^{h/\ell} = q + \delta\) with \(\delta\) a positive real number and \(\delta < 1\).
+Let \(\sigma = \sum_{i=0}^{\ell-1} 1/x_i\), a positive rational number.
+The binomial theorem gives \((q+\delta)^\ell - q^\ell \ge \ell q^{\ell-1} \delta\).
+The same difference equals \(\sum_{j \ge 1} e_j q^{\ell-j}\), where \(e_j\) is the \(j\)-th elementary symmetric function of the real numbers \(1/x_i\).
+In particular \(e_1 = \sigma\).
+In the expansion of \(\sigma^j\), each product of \(j\) distinct factors occurs \(j!\) times, so \(e_j \le \sigma^j/j!\).
+Hence
+\[
+(q+\delta)^\ell - q^\ell \le \sum_{j \ge 1} \frac{\sigma^j}{j!}\, q^{\ell-j} \le q^{\ell-1} \sigma \, e^{\sigma/q}.
+\]
+Comparing the two bounds on \((q+\delta)^\ell - q^\ell\) gives \(\ell \delta \le \sigma \, e^{\sigma/q}\).
+
+Let \(X\) be a positive real number.
+If \(x_i \ge X\) for every index \(i\), then \(\sigma \le \ell/X\), so
+\[
+\delta \le \frac{1}{X} \exp\Bigl(\frac{\ell}{Xq}\Bigr).
+\]
+If \(\delta > \exp(\ell/(3q))/3\), the inequality fails for every real number \(X \ge 3\).
+Some term is then an odd positive integer strictly less than \(3\), so that term equals \(1\).
+For \(q = 1093\), the term \(1\) does not lie on a cycle.
+On a cycle, the least term is at most the largest positive real number \(X\) for which the displayed inequality holds.
+
+\topic{Continued fractions of \(\log_2 1093\).}
+A length \(\ell\) can have a large least term only when \(\delta\) is small, hence only when the rational number \(h/\ell\) is close to \(\log_2 1093\).
+The continued fraction of the real number \(\log_2 1093\) was computed in floating point, through denominators at most \(2 \cdot 10^5\).
+Among the principal convergents \(h/\ell\) lying in the interval \(\ell \log_2 q < h < \ell \log_2(q+1)\), the largest such real \(X\) occurred at the integers \(\ell = 98036\) and \(h = 989583\).
+For that pair, the integers \(2^h\) and \(q^\ell\) were compared exactly, and \(2^h > q^\ell\).
+With eighty decimal places of precision, \(\delta = 5.772 \cdot 10^{-8}\) when rounded to four significant figures, and the corresponding real number \(X\) is \(1.732 \cdot 10^{7}\) when rounded to four significant figures.
+The inequality does not fail for \(X = 3\).
+That pair is not ruled out.
+The floating-point list does not include the intermediate convergents.
+
+A cycle requires only \(0 < \delta < 1\).
+Let \(\log\) denote the natural logarithm.
+A lower bound for the positive real number \(\lvert h \log 2 - \ell \log q \rvert\) of the strength proved by Laurent, Mignotte, and Nesterenko (1995) is, for large \(\ell\), smaller than the upper bound implied by \(\delta < 1\).
+The lower bound does not remove the lengths \(\ell > 2 \cdot 10^5\).
+No divergent orbit is obtained for \(q = 1093\).
+
+\begin{thebibliography}{99}
+
+\bibitem{crandall}
+R.~E.~Crandall, On the ``$3x+1$'' problem, Math.\ Comp.\ 32 (1978), 1281--1292, \doilink{10.1090/S0025-5718-1978-0480321-3}.
+
+\bibitem{franco-pomerance}
+Z.~Franco and C.~Pomerance, On a conjecture of Crandall concerning the $qx+1$ problem, Math.\ Comp.\ 64 (1995), 1333--1336, \doilink{10.1090/S0025-5718-1995-1297468-4}.
+
+\bibitem{laurent-mignotte-nesterenko}
+M.~Laurent, M.~Mignotte, and Y.~Nesterenko, Formes lin\'eaires en deux logarithmes et d\'eterminants d'interpolation, J.\ Number Theory 55 (1995), 285--321.
+
+\end{thebibliography}
+
+\end{document}
