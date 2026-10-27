@@ -67,6 +67,18 @@ class CycleSearchTest {
     }
 
     @Test
+    fun length3ScanAgreesWithTheWalk() {
+        for (h in 1..160) {
+            val adm = admissible(h, 3) ?: continue
+            val walk = walkVectors(3, h, adm.q, adm.gap)
+            val scan = linkedSetOf<String>()
+            forEachLength3(h, adm.q, adm.gap) { ks -> scan.add(ks.joinToString(",")) }
+            if (walk == scan) continue
+            fail("h=$h walk=$walk scan=$scan")
+        }
+    }
+
+    @Test
     fun lengthThreeThroughFortyFindsTheTwoKnownCycles() {
         assertEquals(
             setOf(

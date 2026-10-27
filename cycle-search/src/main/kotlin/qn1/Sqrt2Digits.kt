@@ -102,7 +102,7 @@ internal fun floorSqrtPowerOfTwo(exponent: Long, onProgress: (String) -> Unit = 
 
 /**
  * Zero runs in the fractional part of [root], for starts m >= [mMin].
- * [root] is floor(2^[places] · √2), so its high bit is the integer bit.
+ * [root] is floor(2^[places] · θ) with 1 < θ < 2, so its high bit is the integer bit.
  * The reported length is the longest run whose first bit is place m+1.
  */
 internal fun zeroRuns(

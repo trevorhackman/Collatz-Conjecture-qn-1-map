@@ -104,6 +104,8 @@ class DigitScanTest {
             assertEquals(longest, runs.longest, "r=$r")
             assertEquals(starts, runs.first, "r=$r")
             assertEquals(starts.size, runs.count, "r=$r")
+            val zeros = zeroRuns(value, places, DIGIT_M_MIN)
+            assertEquals(bruteZero(value, places, DIGIT_M_MIN), zeros.longest, "r=$r zeros")
         }
     }
 
@@ -119,6 +121,20 @@ class DigitScanTest {
         assertTrue(bruteBlock(planted, places, m))
         assertEquals(false, bruteBlock(planted, places, m - 1))
     }
+}
+
+private fun bruteZero(root: BigInteger, places: Int, mMin: Int): Int {
+    var longest = 0
+    for (m in mMin until places) {
+        var run = 0
+        var place = m + 1
+        while (place <= places && !root.testBit(places - place)) {
+            run++
+            place++
+        }
+        if (run > longest) longest = run
+    }
+    return longest
 }
 
 private fun bruteAlternating(root: BigInteger, places: Int, mMin: Int): Pair<Int, List<Int>> {

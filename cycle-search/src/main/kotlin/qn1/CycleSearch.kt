@@ -32,7 +32,6 @@ private const val WALK_MAX_LENGTH = 3
 private const val DEEP_RIGHT_COUNT = 7
 
 private const val PARALLEL_PROGRESS_STRIDE = 25
-private const val SEQUENTIAL_PROGRESS_STRIDE = 500
 private const val THROUGH1_PROGRESS_STRIDE = 1000
 
 /** A partial sum uses at most this many bits, so one value of h is at most [MAX_PACKED_H]. */
@@ -45,7 +44,7 @@ private const val MAX_PACKED_H = 1 shl SUM_BIT_LIMIT
  */
 private const val LEFT_STATE_BYTES = 96.0
 
-/** Live left-half tables stay under this, inside the 24g run heap. */
+/** Live tables for one batch of h stay under this, inside the 24g run heap. */
 private const val TABLE_BUDGET_BYTES = 12.0 * 1024 * 1024 * 1024
 
 /**
@@ -98,7 +97,8 @@ private val MIN_ODD_Q: BigInteger = BigInteger.valueOf(3)
  * `--digits cbrt2` scans the first [DIGIT_PLACES] binary places of 2^{1/3} and of 2^{2/3}.
  * `--digits sqrt2` scans the first [SQRT2_PLACES] binary places of √2.
  * `--places` scans fewer. Both scans begin at m = 1.
- * The cube-root scan reports the longest alternating run, and the square-root scan reports the longest zero run.
+ * The cube-root scan reports the longest alternating run and the longest zero run.
+ * The square-root scan reports the longest zero run.
  */
 fun main(args: Array<String>) {
     val cli = try {
@@ -162,7 +162,6 @@ data class Cycle(
  * The same cycle is stored once, starting at its least element.
  */
 fun searchLength(length: Int, hMax: Int): Set<Cycle> {
-    if (length == 3) return searchLengthSequential(length, hMax)
     val threads = poolSize(length, hMax)
     val found = linkedSetOf<Cycle>()
     val done = AtomicInteger()
@@ -180,7 +179,7 @@ fun searchLength(length: Int, hMax: Int): Set<Cycle> {
     return found
 }
 
-/** One admissible value of h, the total number of halvings. Several of these run at once. Length 3 stays on one thread. */
+/** One admissible value of h, the total number of halvings. Several of these run at once. */
 private class SearchAtH(
     private val length: Int,
     private val h: Int,
@@ -209,22 +208,28 @@ private class SearchAtH(
     }
 }
 
-private fun searchLengthSequential(length: Int, hMax: Int): Set<Cycle> {
-    val found = linkedSetOf<Cycle>()
-    for (h in 1..hMax) {
-        if (h % SEQUENTIAL_PROGRESS_STRIDE == 0) System.err.println("L=$length h=$h/$hMax cycles=${found.size}")
-        val adm = admissible(h, length) ?: continue
-        found += cyclesAt(length, h, adm.q, adm.gap)
-    }
-    return found
+/**
+ * Bytes for the length-3 residue tables at this h.
+ * q is below 2^{h/3+1}, so the gap 2^h - q^3 is below 3 q^2 and has fewer than 2h/3 + 8 bits.
+ * Two power tables and the residue map each keep one value per count.
+ */
+private fun walkTableBytes(h: Int): Double {
+    val gapBits = 2.0 * h / 3.0 + 8
+    val one = gapBits / 8.0 + 48
+    return h * one * 3 + h * 80.0
 }
 
 /**
- * Several left-half tables are live at once. Each one stores the partial sums
- * that can still keep `x0` least. Stay inside the 24g run heap.
+ * Several values of h are live at once. A split search stores partial sums.
+ * Length 3 stores a residue modulo the gap for every count, and that gap is below 3 q^2.
+ * Stay inside the 24g run heap.
  */
 private fun poolSize(length: Int, hMax: Int): Int {
-    val perH = estimatedLeftStates(length, hMax, storedHalfCount(length, hMax)) * LEFT_STATE_BYTES
+    val perH = if (length == 3) {
+        walkTableBytes(hMax)
+    } else {
+        estimatedLeftStates(length, hMax, storedHalfCount(length, hMax)) * LEFT_STATE_BYTES
+    }
     val byMemory = if (!perH.isFinite()) 1 else (TABLE_BUDGET_BYTES / perH).toInt().coerceAtLeast(1)
     return minOf(Runtime.getRuntime().availableProcessors(), byMemory)
 }
@@ -394,6 +399,7 @@ private fun cyclesAt(length: Int, h: Int, q: BigInteger, gap: BigInteger): List<
     val found = mutableListOf<Cycle>()
     val accept = CycleRecorder(found, length, h, q, gap)
     if (length == 2) forEachLength2(h, q, gap, accept)
+    else if (length == 3) forEachLength3(h, q, gap, accept)
     else if (length <= WALK_MAX_LENGTH) forEachWalk(length, h, q, gap, accept)
     else forEachSplit(length, h, q, gap, accept)
     return found
@@ -542,6 +548,59 @@ internal fun forEachLength2(h: Int, q: BigInteger, gap: BigInteger, block: (IntA
     }
 }
 
+/**
+ * Length 3. The free count is k1, and 2^{k2} ≡ -q - q^2 2^{-k1} modulo the gap.
+ * The gap is odd, so each later k1 is a halving of that power.
+ */
+internal fun forEachLength3(h: Int, q: BigInteger, gap: BigInteger, block: (IntArray) -> Unit) {
+    if (h < 3) return
+    val cap = maxHalvings(q, BigInteger.ONE, 0)
+    val lastK = minOf(cap, h - 2)
+    if (lastK < 1) return
+    val width = (gap.bitLength() + 32) ushr 5
+    val gapLimbs = limbsOf(gap, width)
+    val qMod = if (q.compareTo(gap) < 0) q else q.mod(gap)
+    val qLimbs = limbsOf(qMod, width)
+    val product = q.multiply(q.add(BigInteger.ONE))
+    val productBits = product.bitLength()
+    var highestZero = -1
+    for (bit in productBits - 1 downTo 0) {
+        if (!product.testBit(bit)) {
+            highestZero = bit
+            break
+        }
+    }
+    val w = limbsOf(qMod.multiply(qMod).mod(gap), width)
+    halfMod(w, gapLimbs)
+    val powers = PowerIndex(width, h)
+    val pow = IntArray(width)
+    pow[0] = 1
+    for (k in 1 until h) {
+        doubleMod(pow, gapLimbs)
+        powers.add(pow, k)
+    }
+    val prefix = IntArray(2)
+    val sum = IntArray(width)
+    val target = IntArray(width)
+    for (k1 in 1..lastK) {
+        addMod(qLimbs, w, gapLimbs, sum)
+        negateMod(sum, gapLimbs, target)
+        val solvedCap = if (k1 >= productBits) {
+            0
+        } else {
+            val len = if (k1 > highestZero) productBits + 1 else productBits
+            len - 1 - k1
+        }
+        powers.forEachMatch(target) { k2 ->
+            if (k1 + k2 >= h || k2 > solvedCap) return@forEachMatch
+            prefix[0] = k1
+            prefix[1] = k2
+            if (respectsMinimum(q, prefix, h - k1 - k2)) block(prefix)
+        }
+        halfMod(w, gapLimbs)
+    }
+}
+
 /** `2 * limb` modulo [gap]. The residue starts below the gap, so the product needs at most one subtraction. */
 private fun doubleMod(limb: IntArray, gap: IntArray) {
     var carry = 0L
@@ -563,6 +622,134 @@ private fun doubleMod(limb: IntArray, gap: IntArray) {
         }
     }
     check(borrow == carry)
+}
+
+/** `limb / 2` modulo [gap]. [gap] is odd, so an odd residue adds [gap] before the shift. */
+private fun halfMod(limb: IntArray, gap: IntArray) {
+    if ((limb[0] and 1) != 0) {
+        var carry = 0L
+        for (i in limb.indices) {
+            val sum = u32(limb[i]) + u32(gap[i]) + carry
+            limb[i] = sum.toInt()
+            carry = sum ushr 32
+        }
+        check(carry == 0L)
+    }
+    var incoming = 0
+    for (i in limb.lastIndex downTo 0) {
+        val cur = limb[i]
+        limb[i] = (cur ushr 1) or (incoming shl 31)
+        incoming = cur and 1
+    }
+}
+
+/** Sum of two residues modulo [gap], written to [dest]. */
+private fun addMod(a: IntArray, b: IntArray, gap: IntArray, dest: IntArray) {
+    var carry = 0L
+    for (i in a.indices) {
+        val sum = u32(a[i]) + u32(b[i]) + carry
+        dest[i] = sum.toInt()
+        carry = sum ushr 32
+    }
+    check(carry == 0L)
+    if (lessThan(dest, gap)) return
+    var borrow = 0L
+    for (i in a.indices) {
+        val diff = u32(dest[i]) - u32(gap[i]) - borrow
+        if (diff < 0) {
+            dest[i] = (diff + LIMB).toInt()
+            borrow = 1
+        } else {
+            dest[i] = diff.toInt()
+            borrow = 0
+        }
+    }
+    check(borrow == 0L)
+}
+
+/** Additive inverse modulo [gap]. Zero stays zero. */
+private fun negateMod(src: IntArray, gap: IntArray, dest: IntArray) {
+    for (bits in src) {
+        if (bits == 0) continue
+        var borrow = 0L
+        for (i in src.indices) {
+            val diff = u32(gap[i]) - u32(src[i]) - borrow
+            if (diff < 0) {
+                dest[i] = (diff + LIMB).toInt()
+                borrow = 1
+            } else {
+                dest[i] = diff.toInt()
+                borrow = 0
+            }
+        }
+        check(borrow == 0L)
+        return
+    }
+    dest.fill(0)
+}
+
+/**
+ * 2^k modulo one gap, for k = 1, 2, … .
+ * A lookup compares the stored limbs, so a shared hash does not merge two residues.
+ */
+private class PowerIndex(private val width: Int, count: Int) {
+    private val slots = nextPow2(count * 2)
+    private val mask = slots - 1
+    private val used = BooleanArray(slots)
+    private val keys = IntArray(slots * width)
+    private val head = IntArray(slots) { -1 }
+    private val ks = IntArray(count)
+    private val next = IntArray(count)
+    private var stored = 0
+
+    fun add(limbs: IntArray, k: Int) {
+        var slot = (hashLimbs(limbs) ushr 1).toInt() and mask
+        while (used[slot]) {
+            if (same(slot, limbs)) {
+                push(slot, k)
+                return
+            }
+            slot = (slot + 1) and mask
+        }
+        used[slot] = true
+        limbs.copyInto(keys, slot * width)
+        push(slot, k)
+    }
+
+    inline fun forEachMatch(limbs: IntArray, visit: (Int) -> Unit) {
+        var slot = (hashLimbs(limbs) ushr 1).toInt() and mask
+        while (used[slot]) {
+            if (same(slot, limbs)) {
+                var index = head[slot]
+                while (index >= 0) {
+                    visit(ks[index])
+                    index = next[index]
+                }
+                return
+            }
+            slot = (slot + 1) and mask
+        }
+    }
+
+    private fun push(slot: Int, k: Int) {
+        val index = stored
+        stored = index + 1
+        ks[index] = k
+        next[index] = head[slot]
+        head[slot] = index
+    }
+
+    private fun same(slot: Int, limbs: IntArray): Boolean {
+        val base = slot * width
+        for (i in 0 until width) if (keys[base + i] != limbs[i]) return false
+        return true
+    }
+}
+
+private fun nextPow2(n: Int): Int {
+    var p = 1
+    while (p < n) p = p shl 1
+    return p
 }
 
 /**

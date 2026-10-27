@@ -37,25 +37,32 @@ internal data class DigitRoot(
     val places: Int,
     val r: Int,
     val runs: AlternatingRunHits,
+    val zeros: ZeroRunHits,
 ) {
     /** Power of two in the computations appendix: q < 2^{N-47}. */
     val qBelowExponent: Int get() = places - DIGIT_BLOCK + 1
 
-    fun line(): String {
+    /** Last m whose next [ZeroRunHits.longest] + 1 places lie inside the expansion. */
+    val zeroMUpper: Int get() = places - zeros.longest - 1
+
+    fun lines(): List<String> {
         val upper = places - 1
         val range = if (upper < DIGIT_M_MIN) {
             "no m >= $DIGIT_M_MIN"
         } else {
             "m from $DIGIT_M_MIN through $upper"
         }
-        val where = if (runs.count == 0) {
-            "longest alternating run 0"
-        } else {
-            "longest alternating run ${runs.longest} at m=${runs.first.joinToString(",")}" +
-                if (runs.count > runs.first.size) " (${runs.count} total)" else ""
-        }
-        return "2^{$r/3}: $where for $range"
+        return listOf(
+            "2^{$r/3}: ${runPhrase("alternating", runs.longest, runs.count, runs.first)} for $range",
+            "2^{$r/3}: ${runPhrase("zero", zeros.longest, zeros.count, zeros.first)} for $range",
+        )
     }
+}
+
+private fun runPhrase(kind: String, longest: Int, count: Int, first: List<Int>): String {
+    if (count == 0) return "longest $kind run 0"
+    val total = if (count > first.size) " (${count} total)" else ""
+    return "longest $kind run $longest at m=${first.joinToString(",")}$total"
 }
 
 internal fun runDigits(places: Int) {
@@ -66,7 +73,7 @@ internal fun runDigits(places: Int) {
     val ms = measureTimeMillis {
         for (r in 1..2) {
             val root = scanRootDigits(places, r) { System.err.println(it) }
-            println(root.line())
+            for (text in root.lines()) println(text)
         }
     }
     println("digit scan in ${ms / 1000.0}s")
@@ -88,7 +95,12 @@ internal fun scanRootDigits(places: Int, r: Int, onProgress: (String) -> Unit = 
     val exponent = 3L * places + r
     val root = floorCubeRootPowerOfTwo(exponent) { onProgress("2^{$r/3} $it") }
     check(root.bitLength() == places + 1) { "2^{$r/3} has bit length ${root.bitLength()}" }
-    return DigitRoot(places, r, alternatingRuns(root, places))
+    return DigitRoot(
+        places,
+        r,
+        alternatingRuns(root, places),
+        zeroRuns(root, places, DIGIT_M_MIN),
+    )
 }
 
 /**
