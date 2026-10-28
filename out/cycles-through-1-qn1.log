@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.24.0 (TeX Live 2026)  (format=lualatex 2026.3.1)  27 OCT 2026 12:40
+This is LuaHBTeX, Version 1.24.0 (TeX Live 2026)  (format=lualatex 2026.3.1)  27 OCT 2026 20:16
  restricted system commands enabled.
 **cycles-through-1-qn1.tex
 (./cycles-through-1-qn1.tex
@@ -986,14 +986,14 @@ L3 programming layer <2026-01-19>
 Here is how much of LuaTeX's memory you used:
  18647 strings out of 476076
  125086,953878 words of node,token memory allocated
- 1875 words of node memory still in use:
+ 1867 words of node memory still in use:
    7 hlist, 2 vlist, 2 rule, 1 local_par, 4 glue, 4 kern, 1 penalty, 1 margin_ke
-rn, 4 glyph, 330 attribute, 56 glue_spec, 330 attribute_list, 1 write, 3 pdf_act
+rn, 4 glyph, 328 attribute, 56 glue_spec, 328 attribute_list, 1 write, 3 pdf_act
 ion nodes
-   avail lists: 1:1,2:748,3:427,4:185,5:664,6:88,7:7343,8:72,9:1061,10:19,11:383
+   avail lists: 1:1,2:818,3:452,4:192,5:611,6:88,7:8032,8:72,9:1061,10:19,11:427
 
  40770 multiletter control sequences out of 65536+600000
- 96 fonts using 32033719 bytes
+ 96 fonts using 32033583 bytes
  90i,9n,89p,1016b,619s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2026basic/texmf-dist/fonts/opentype/public/lm/lmmono10-regul
 ar.otf></usr/local/texlive/2026basic/texmf-dist/fonts/opentype/public/lm/lmroman
@@ -1008,7 +1008,7 @@ ve/2026basic/texmf-dist/fonts/opentype/public/lm/lmroman12-regular.otf></usr/loc
 al/texlive/2026basic/texmf-dist/fonts/opentype/public/lm-math/latinmodern-math.o
 tf></usr/local/texlive/2026basic/texmf-dist/fonts/opentype/public/lm/lmroman17-r
 egular.otf>
-Output written on cycles-through-1-qn1.pdf (32 pages, 235078 bytes).
+Output written on cycles-through-1-qn1.pdf (32 pages, 232064 bytes).
 
 PDF statistics: 366 PDF objects out of 1000 (max. 8388607)
  296 compressed objects within 3 object streams
