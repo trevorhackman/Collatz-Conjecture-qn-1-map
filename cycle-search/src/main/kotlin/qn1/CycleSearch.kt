@@ -88,9 +88,6 @@ private val MIN_ODD_Q: BigInteger = BigInteger.valueOf(3)
  * start up to that bound is followed.
  * Omitted values are [Q_DEFAULT], [MIN_CYCLE_LENGTH], and [Q_DEFAULT_MAX_LENGTH].
  *
- * `--bounds q3star`, `--bounds q30`, `--bounds q2star`, and `--bounds q2` each print one Paper II table.
- * `--x` selects one odd element; omitted, the odds from 1 through 35.
- *
  * `--tables through1`, `--tables any`, and `--tables q` rerun the Paper I computation tables.
  * `--length` or `--q` selects one published row. `--max-h` or `--max-length` overrides that row's limit.
  *
@@ -109,7 +106,6 @@ fun main(args: Array<String>) {
     }
     when (cli.mode) {
         SearchMode.FIXED_Q -> searchFixedQ(cli.q!!, cli.maxLength!!, cli.minLength!!)
-        SearchMode.BOUNDS -> runBounds(cli.bound!!, cli.x)
         SearchMode.TABLES -> runTables(cli.table!!, cli.length, cli.maxH, cli.q, cli.maxLength)
         SearchMode.DIGITS -> when (cli.digits) {
             "cbrt2" -> runDigits(cli.places!!)
@@ -139,7 +135,6 @@ internal fun usage(): Nothing {
     System.err.println("usage: --length N --max-h N")
     System.err.println("       --through-1 --length N --max-h N")
     System.err.println("       --q N [--min-length N] --max-length N")
-    System.err.println("       --bounds q3star|q30|q2star|q2 [--x N]")
     System.err.println("       --tables through1|any [--length N] [--max-h N]")
     System.err.println("       --tables q [--q N] [--max-length N]")
     System.err.println("       --digits cbrt2|sqrt2 [--places N]")

@@ -94,34 +94,9 @@ class CliTest {
     }
 
     @Test
-    fun boundsNamesOneTable() {
-        val cli = parseCli(arrayOf("--bounds", "q2", "--x", "1"))
-        assertEquals(SearchMode.BOUNDS, cli.mode)
-        assertEquals("q2", cli.bound)
-        assertEquals(1, cli.x)
-        for (name in listOf("q3star", "q30", "q2star")) {
-            assertEquals(name, parseCli(arrayOf("--bounds", name)).bound)
-        }
-    }
-
-    @Test
-    fun boundsRejectsAnEvenElement() {
-        assertFailsWith<IllegalArgumentException> {
-            parseCli(arrayOf("--bounds", "q2", "--x", "2"))
-        }
-    }
-
-    @Test
     fun digitsNeedsARoot() {
         assertFailsWith<IllegalArgumentException> {
             parseCli(arrayOf("--digits", "all"))
-        }
-    }
-
-    @Test
-    fun boundsNeedsATable() {
-        assertFailsWith<IllegalArgumentException> {
-            parseCli(arrayOf("--bounds", "all"))
         }
     }
 
