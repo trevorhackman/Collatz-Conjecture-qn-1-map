@@ -168,7 +168,7 @@ For $\ell = 1$ the cycle is $1 \to 1$, which happens exactly when $q$ is a Merse
 For $\ell = 2$, the only $q$ is $5$, with $1 \to 3 \to 1$ (\hyperref[prop:a2]{Proposition~A.2}).
 Besides $1 \to 1$ when $q$ is a Mersenne number, the only known cycle with starting value $1$ is $1 \to 3 \to 1$ for $q = 5$.
 
-\begin{named}{Santos's conjecture (2020).}
+\begin{named}{Conjecture 1 (Santos (2020)).}
 A cycle of $C$ has starting value $1$ only when $q = 5$ or when $q$ is a Mersenne number.
 \end{named}
 
@@ -177,7 +177,7 @@ No odd $q \ge 3$ has a cycle of $C$ of length $3$ with starting value $1$.
 \end{named}
 
 \begin{named}{Outline of Theorem 2 (golden-ratio criterion).}
-Fix $\ell \ge 2$, and suppose that, for every integer $r$ with $1 \le r \le \ell-1$, $2^{r/\ell}$ has a restricted irrationality exponent below the golden ratio.
+Fix $\ell \ge 2$, and suppose that length $\ell$ has a restricted irrationality exponent below the golden ratio.
 Then any $q$ that has a cycle of length $\ell$ with starting value $1$ lies below a bound we can compute.
 Checking every candidate up to that bound finds every such $q$, or shows that none exist.
 The precise statement is in Section~\ref{sec:longer}.
@@ -192,7 +192,7 @@ Theorem~3 is ineffective: it rests on the $S$-unit form of Ridout's theorem in S
 Theorem~1 is effective and is completed by computation.
 The proof of Theorem~3, in Section~\ref{sec:ineffective}, uses only the $S$-unit form of Ridout's theorem and Theorem~2.
 Cycles with any starting value are treated in the companion paper~\cite{hackman-ii}.
-For a cycle of length $2$ or $3$ with a constant odd starting value, that paper gives a bound on $q$ depending only on the element (Theorem~3), and for Corollaries~12 to~14 the same bound is Corollary~14 of that paper.
+For a cycle of length $2$ or $3$ with a constant odd starting value, that paper gives a bound on $q$ depending only on the element and the length (Theorem~3), and for Corollaries~12 to~14 the same bound is Corollary~14 of that paper.
 
 \section{Definitions and notation}
 \label{sec:definitions}
@@ -252,10 +252,10 @@ x_i = 2^{n_i/\ell}(1 + \rho_i).
 \]
 
 \topic{The restricted irrationality exponent.}
-Let $\theta$ be an irrational real number, and let $S$ be a finite set of positive integers.
-A real number $\mu$ is a restricted irrationality exponent of $\theta$ for $S$ when there exists an explicit constant real number $c > 0$ and there exists an explicit constant integer $j_0 \ge 0$ such that, for every positive integer $s \in S$, every integer $p$, and every integer $j \ge j_0$,
+Fix an integer $\ell \ge 2$.
+A real number $\mu$ is a restricted irrationality exponent for length $\ell$ when, for each odd positive integer $x$, there is a positive real number $c(x)$ and there is a nonnegative integer $j_0(x)$ such that, for every integer $r$ with $1 \le r \le \ell - 1$, every integer $p$, and every integer $j \ge j_0(x)$,
 \[
-\left|\theta - \frac{p}{s \cdot 2^j}\right| > c \cdot 2^{-\mu j}.
+\left| 2^{r/\ell} - \frac{p}{\ell x \cdot 2^j} \right| > c(x) \cdot 2^{-\mu j}.
 \]
 
 \topic{The golden ratio.}
@@ -619,6 +619,10 @@ For every integer $p$,
 The factor $2^{-5}$ is a weakening of the contour bound behind their inequality~(5.3). The denominator of~(5.3) contributes $1/(1.26 \cdot 2^{14/3}) = 2^{-5.00009\ldots}$, and the contour estimate for $|P_{n_1,\delta}|$ has constant $1.2528\ldots$ in place of $1.26$, so that $1.2528\ldots \cdot 2^{14/3}$ has base-$2$ logarithm $4.9918 < 5$. The formula they display omits the factor, though it is absorbed in their final statement.
 Per unit of $j$ the exponent is $\mu = 3 \log_2(16166467234)/63 \approx 1.61487$.
 
+\begin{named}{Theorem 1.}
+No odd $q \ge 3$ has a cycle of $C$ of length $3$ with starting value $1$.
+\end{named}
+
 \begin{proof}[Proof of Theorem~1]
 Suppose $q \ge 2^{22001}$.
 Write $a = k_1$, $h = 3m + r$ and $f = h - 3a = 3j' + r'$, where $r, r' \in \{1, 2\}$ by Lemmas~\ref{lem:cube-window} and~\ref{lem:near-x}.
@@ -787,47 +791,51 @@ Hence $|\rho_i| \ge (1 - |\rho_i|)/x_i$, so $x_i \ge 1/|\rho_i| - 1 \ge q/(\ell-
 The outline in the introduction is the case $R = \{1, \ldots, \ell-1\}$.
 
 \begin{named}{Theorem 2.}
-Let $\ell \ge 2$, let $R \subseteq \{1, \ldots, \ell-1\}$, and let $\varphi = (1 + \sqrt{5})/2$.
-Suppose that $0 < \mu < \varphi$ and that, for every $r \in R$, $\mu$ is a restricted irrationality exponent of $2^{r/\ell}$ for the set $\{1, \ell\}$, with the same explicit constant real number $c > 0$ and the same explicit constant integer $j_0 \ge 0$.
-Then there is a number $Q$, computable from $\ell$, $\mu$, $c$ and $j_0$, with the following property.
-If $q > Q$ is odd and $1 = x_0 \to x_1 \to \cdots \to x_{\ell-1} \to 1$ is a cycle of $C$ of length $\ell$, with $q \cdot x_{i-1} + 1 = 2^{k_i} \cdot x_i$ for $1 \le i \le \ell$ (where $x_\ell = 1$), then some multiple of $h = k_1 + \cdots + k_\ell$ has a nonzero residue modulo $\ell$ outside $R$.
+Let $\ell \ge 2$ and let $\varphi = (1 + \sqrt{5})/2$.
+Suppose that $0 < \mu < \varphi$ and that $\mu$ is a restricted irrationality exponent for length $\ell$.
+Then there is a number $Q$, computed from $\ell$, $\mu$, $c(1)$ and $j_0(1)$, such that every cycle of length $\ell$ with starting value $1$ has $q < Q$.
 \end{named}
 
 \begin{proof}[Proof of Theorem~2]
+Let $R = \{1, \ldots, \ell-1\}$.
+Let $c$ be the positive real number $c(1)$, and let $j_0$ be the nonnegative integer $j_0(1)$.
+The finitely many integers $j$ with $0 \le j < j_0$ are covered by replacing $c$ with a smaller positive real number, so the inequality holds for every integer $j \ge 0$.
+Let $c'$ be the positive real number $c\, \ell^{-\mu}$.
 Suppose that every multiple of $h$ has its nonzero residues modulo $\ell$ in $R$.
 Write $h = \ell m + r$ with $r \in R$, and assume $q \ge 2(\ell-1)$, so Lemma~\ref{lem:near-misses} gives $|\rho_i| \le 1/2$.
 The $\delta$ window uses $2^{r/\ell}$, and $x_i$ uses $2^{n_i/\ell}$ with $n_i \equiv ir \pmod{\ell}$, so the residue modulo $\ell$ of each of these exponents lies in $R$.
+The definition at $x = 1$ gives, for every integer $p$ and every integer $j \ge 0$,
+\[
+\left| 2^{r/\ell} - \frac{p}{\ell \cdot 2^j} \right| > c \cdot 2^{-\mu j}.
+\]
+The same lower bound holds for the denominator $2^j$, since $p/2^j = (\ell p)/(\ell \cdot 2^j)$.
 Set
 \[
-A = 2^{1/\ell - 1}\Bigl(\frac{c}{2(\ell-1)}\Bigr)^{1/\mu},
+A = 2^{1/\ell - 1}\Bigl(\frac{c'}{2(\ell-1)}\Bigr)^{1/\mu},
 \qquad
 \gamma = 1 - \mu + \frac1\mu > 0,
 \]
 the last because $\mu^2 - \mu - 1 < 0$.
 
-If $q < 2^{j_0+1}$, stop: this is already a bound.
-If $q \ge 2^{j_0+1}$, then $2^m = (q+\delta)/2^{r/\ell} > q/2 \ge 2^{j_0}$, so $m \ge j_0$ and the hypothesis applies to the $\delta$ window.
+Since $2^m = (q+\delta)/2^{r/\ell} > q/2$, the definition applies to the $\delta$ window.
 \[
 \Bigl|\delta - \frac1\ell\Bigr|
 = 2^m \Bigl| 2^{r/\ell} - \frac{\ell q + 1}{\ell \cdot 2^m} \Bigr|
-> c \cdot 2^{(1-\mu)m}.
+> c' \cdot 2^{(1-\mu)m}.
 \]
-If $\mu > 1$ then $2^m < q+1$ gives $|\delta - 1/\ell| > c(q+1)^{1-\mu} \ge c\, 2^{1-\mu} q^{1-\mu}$.
-If $\mu \le 1$ then $2^m > q/2$ gives $|\delta - 1/\ell| > c(q/2)^{1-\mu} \ge c/2$.
+If $\mu > 1$ then $2^m < q+1$ gives $|\delta - 1/\ell| > c'(q+1)^{1-\mu} \ge c'\, 2^{1-\mu} q^{1-\mu}$.
+If $\mu \le 1$ then $2^m > q/2$ gives $|\delta - 1/\ell| > c'(q/2)^{1-\mu} \ge c'/2$.
 
 For each $x_i$ with $\ell \nmid n_i$, write $n_i = \ell j + r'$ and $x_i/2^j = 2^{r'/\ell}(1+\rho_i)$, so $|2^{r'/\ell} - x_i/2^j| = 2^{r'/\ell}|\rho_i|$.
 Also $x_i/3 \le 2^j \le 2x_i$.
-If $j < j_0$, then $x_i < 3 \cdot 2^{j_0}$.
-The finitely many triples $(r', j, x)$ with $r' \in R$, $0 \le j < j_0$ and $x$ odd, $3 \le x < 3 \cdot 2^{j_0}$, each have a positive $|\rho| = |x \cdot 2^{-j-r'/\ell} - 1|$, and Lemma~\ref{lem:near-misses} forces $q \le (\ell-1)/|\rho|$.
-Let $Q_0$ be the maximum of those finitely many values.
-If $j \ge j_0$, the hypothesis and $|\rho_i| \le (\ell-1)/q$ give $c \cdot 2^{-\mu j} < 2(\ell-1)/q$, so
+The inequality for the denominator $2^j$ and $|\rho_i| \le (\ell-1)/q$ give $c' \cdot 2^{-\mu j} < 2(\ell-1)/q$, so
 \[
-2^j > \Bigl(\frac{cq}{2(\ell-1)}\Bigr)^{1/\mu},
+2^j > \Bigl(\frac{c'q}{2(\ell-1)}\Bigr)^{1/\mu},
 \qquad
 x_i \ge 2^{1/\ell-1}\, 2^j \ge A\, q^{1/\mu}.
 \]
 If $\ell \mid n_i$, then $x_i \ge q/(\ell-1) - 1 \ge q/(2(\ell-1))$.
-Once $q > Q_0$, every $x_i$ is at least $\min\bigl(A q^{1/\mu},\ q/(2(\ell-1))\bigr)$, so
+Every $x_i$ is at least $\min\bigl(A q^{1/\mu},\ q/(2(\ell-1))\bigr)$, so
 \[
 \sigma \le (\ell-1)\, A^{-1} q^{-1/\mu} + \frac{2(\ell-1)^2}{q}.
 \]
@@ -857,10 +865,10 @@ If $\mu > 1$, then $1/q \le q^{-1/\mu}$ for every integer $q \ge 1$, so
 \]
 Let $Q_*$ be the positive real number
 \[
-Q_* = \Biggl( \frac{A^{-1} + 2(\ell-1)^2/\ell + 4\ell}{c\, 2^{1-\mu}} \Biggr)^{1/\gamma}.
+Q_* = \Biggl( \frac{A^{-1} + 2(\ell-1)^2/\ell + 4\ell}{c'\, 2^{1-\mu}} \Biggr)^{1/\gamma}.
 \]
-Take $Q = \max\bigl(2(\ell-1),\ 2^{j_0+1},\ Q_0,\ Q_*\bigr)$.
-If $q > Q$, then $\bigl|\delta - 1/\ell\bigr| > c\, 2^{1-\mu} q^{1-\mu}$ and $\bigl|\delta - 1/\ell\bigr| \le \bigl(A^{-1} + 2(\ell-1)^2/\ell + 4\ell\bigr) q^{-1/\mu}$ cannot both hold.
+Take $Q = \max\bigl(2(\ell-1),\ Q_*\bigr)$.
+If $q > Q$, then $\bigl|\delta - 1/\ell\bigr| > c'\, 2^{1-\mu} q^{1-\mu}$ and $\bigl|\delta - 1/\ell\bigr| \le \bigl(A^{-1} + 2(\ell-1)^2/\ell + 4\ell\bigr) q^{-1/\mu}$ cannot both hold.
 
 If $\mu \le 1$, then $q^{-1/\mu} \le 1/q$ for every integer $q \ge 1$, so
 \[
@@ -869,23 +877,16 @@ If $\mu \le 1$, then $q^{-1/\mu} \le 1/q$ for every integer $q \ge 1$, so
 \]
 Let $Q_*$ be the positive real number
 \[
-Q_* = \frac2c\Biggl(A^{-1} + \frac{2(\ell-1)^2}{\ell} + 4\ell\Biggr).
+Q_* = \frac{2}{c'}\Biggl(A^{-1} + \frac{2(\ell-1)^2}{\ell} + 4\ell\Biggr).
 \]
-Take $Q = \max\bigl(2(\ell-1),\ 2^{j_0+1},\ Q_0,\ Q_*\bigr)$.
-If $q > Q$, then $\bigl|\delta - 1/\ell\bigr| > c/2$ and $\bigl|\delta - 1/\ell\bigr| \le \bigl(A^{-1} + 2(\ell-1)^2/\ell + 4\ell\bigr)/q$ cannot both hold.
+Take $Q = \max\bigl(2(\ell-1),\ Q_*\bigr)$.
+If $q > Q$, then $\bigl|\delta - 1/\ell\bigr| > c'/2$ and $\bigl|\delta - 1/\ell\bigr| \le \bigl(A^{-1} + 2(\ell-1)^2/\ell + 4\ell\bigr)/q$ cannot both hold.
 \end{proof}
-
-If the lower bound is a power of the whole denominator, the multiplier contributes only a constant real number. Suppose there exists an explicit constant real number $c_0 > 0$ and there exists an explicit constant integer $j_0 \ge 0$ such that, for every integer $r$ with $1 \le r \le \ell - 1$, every integer $p$, every $s \in \{1, \ell\}$, and every integer $j \ge j_0$,
-\[
-\left| 2^{r/\ell} - \frac{p}{s \cdot 2^j} \right| > c_0 \bigl(s \cdot 2^j\bigr)^{-\mu}.
-\]
-Since $\mu > 0$ and $1 \le s \le \ell$, we have $s^{-\mu} \ge \ell^{-\mu}$. The displayed inequality therefore yields the hypothesis of Theorem~2 with the explicit constant real number $c = c_0 \ell^{-\mu}$. The exponent of $2$ remains $\mu$. Ridout's theorem gives a lower bound of this form with $\mu = 1+\varepsilon$ and with the power on the whole denominator $s \cdot 2^j$. It gives no explicit $c_0$ or $j_0$.
 
 For $R = \{1, \ldots, \ell-1\}$ the conclusion is that no $q > Q$ has a cycle of length $\ell$ with starting value $1$.
 For $\ell = 4$ and $R = \{2\}$, the multiples of $h$ avoid the residues $1$ and $3$ exactly when $h$ is even, so the conclusion is that $h$ is odd.
 
-For $\ell = 3$, Theorem~(Bauer and Bennett (2018)) supplies the hypothesis of Theorem~2 with $R = \{1, 2\}$, $\mu \approx 1.61487$ and $j_0 = 11000$.
-So Theorem~1 is the case $\ell = 3$ of Theorem~2; Section~\ref{sec:proof} carries out this case with explicit constants.
+For $\ell = 3$, the inequality used in the proof of Theorem~2, at $x = 1$, is the inequality supplied by Theorem~(Bauer and Bennett (2018)) for the fractions that appear. Section~\ref{sec:proof} carries out that case with explicit constants.
 
 \begin{named}{Corollary 12.}
 No cycle of length $4$ with starting value $1$ has total number of halvings $\equiv 2 \pmod{4}$.
@@ -983,8 +984,8 @@ Since $s \cdot 2^j = 2^{j+v}$ and $v \le a$, we have $2^{-1.48 v} \ge 2^{-1.48 a
 \Bigl|\sqrt{2} - \frac{p}{s \cdot 2^j}\Bigr| > 2^{-1.48 a} \cdot 2^{-1.48 j}.
 \]
 Let $r$ be the positive integer $\ell/2$. Then $2^{r/\ell} = 2^{1/2}$.
-The hypothesis of Theorem~2 therefore holds with $R = \{\ell/2\}$, the real number $\mu = 1.48 < \varphi$, the positive real number $c = 2^{-1.48 a}$ and the positive integer $j_0 = 9$.
-The bound is then the $Q$ in the proof of Theorem~2 for these values.
+The inequality used in the proof of Theorem~2, at $x = 1$ and at this root, holds with $\mu = 1.48$ and with $c' = 2^{-1.48 a}$.
+That proof gives the bound $Q$.
 The case $\ell = 4$ is Corollary~12.
 \end{proof}
 
@@ -1002,8 +1003,8 @@ Its numerator is coprime to $\ell$, and $\ell \cdot 2^m = 3 \cdot 2^{m+a}$, so t
 Each fraction $x_i/2^j$ has odd numerator $x_i$, so Theorem~(Bauer and Bennett (2018)) applies with $s = 1$.
 Both give the exponent $\mu = 3\log_2(16166467234)/63 \approx 1.61487 < \varphi$ once $j$ in Theorem~(Bauer and Bennett (2018)) is at least $11000$.
 The shift by $a$, and the constant factors in Theorem~(Bauer and Bennett (2018)), contribute only a constant depending on $\ell$.
-The fractions used in the proof of Theorem~2 therefore satisfy its hypothesis with $R = \{\ell/3,\, 2\ell/3\}$, this $\mu$, a $c > 0$ read from Theorem~(Bauer and Bennett (2018)), and $j_0 = 11000$.
-The bound is then the $Q$ in the proof of Theorem~2 for these values.
+The inequality used in the proof of Theorem~2, at $x = 1$ and at these roots, holds with this $\mu$ and with a positive real number $c'$ read from that theorem.
+That proof gives the bound $Q$.
 The length $3$ is Theorem~1.
 \end{proof}
 
@@ -1068,10 +1069,11 @@ Ridout's theorem does not list the fractions $p_1/Q_1$, so this $j_0$ is not com
 
 Let $\mu$ be the real number $1 + \varepsilon$.
 Then $\mu < \varphi$.
-The inequality displayed above is the inequality in the definition of a restricted irrationality exponent of $2^{r/\ell}$ for the set $\{1, \ell\}$, for every integer $r$ with $1 \le r \le \ell - 1$.
-The constants $c$ and $j_0$ are not explicit, so $\mu$ is not a restricted irrationality exponent in that definition.
-The proof of Theorem~2 uses only the inequality, with $R = \{1, \ldots, \ell-1\}$ and with these values of $\mu$, $c$, and $j_0$.
-That proof produces a real number $Q$.
+The inequality displayed above is not the definition of a restricted irrationality exponent for length $\ell$.
+It gives one positive real number $c$ and one nonnegative integer $j_0$ for the denominators $s \cdot 2^j$ with $s \in \{1, \ell\}$.
+The definition requires a positive real number $c(x)$ and a nonnegative integer $j_0(x)$ for each odd positive integer $x$.
+The comparisons in the proof of Theorem~2, at $x = 1$, use only this inequality.
+That argument produces a real number $Q$.
 It does not compute $Q$.
 If $q > Q$, the same proof yields a contradiction.
 Hence $q \le Q$.
@@ -1094,12 +1096,12 @@ The same finiteness, for a cycle with any starting value, is Theorem~2 of that p
 \item \textbf{Length $4$ with $h$ odd.}
 The $\delta$ window and the near misses for $x_1$ and $x_3$ involve $2^{1/4}$ and $2^{3/4}$.
 Write $h = 4m + r$ with an integer $m \ge 0$ and $r \in \{1, 3\}$. The denominator in the $\delta$ window is $4 \cdot 2^m = 2^{m+2}$.
-Theorem~2 would finish the case given a restricted irrationality exponent below $\varphi$ of $2^{1/4}$ and of $2^{3/4}$, for the set $\{1, 4\}$.
+Theorem~2 would finish the case given a restricted irrationality exponent below $\varphi$ for length $4$.
 The construction of Bauer and Bennett (2002, 2018) needs a fourth power exceptionally close to a power of $2$; among odd $a \le 3 \times 10^6$ the best is $19^4 = 2^{17} - 751$, of quality $\log_2(2^{17})/\log_2 751 \approx 1.78$, against $4.4$ for the cube case ($5^3 + 3 = 2^7$) and $5.3$ for $\sqrt{2}$ ($181^2 + 7 = 2^{15}$).
 A different construction is likely needed.
 \item \textbf{Effective results for larger $\ell$.}
-For a general length $\ell$, Theorem~2 needs $\mu$ to be a restricted irrationality exponent of $2^{r/\ell}$ for the set $\{1, \ell\}$, for every integer $r$ with $1 \le r \le \ell-1$. The case $S = \{1\}$ of that definition gives the denominators $2^j$. Let $v \ge 0$ be an integer. When $\ell = 2^v$, we have $\ell \cdot 2^j = 2^{j+v}$, so that case also gives the denominators $\ell \cdot 2^j$, and $2^{-\mu v}$ is a constant real number.
-Santos's conjecture (2020) in full would need the hypothesis of Theorem~2 for every $\ell$, or a bound uniform in $\ell$.
+For a general length $\ell$, Theorem~2 needs $\mu$ to be a restricted irrationality exponent for that length.
+Conjecture~1 in full would need the hypothesis of Theorem~2 for every $\ell$, or a bound uniform in $\ell$.
 \end{enumerate}
 
 \appendix
