@@ -30,14 +30,16 @@ A displayed statement of someone else's result uses that form as its heading.
 
 ```latex
 \begin{named}{Ridout's theorem (1958).}
-\begin{named}{Santos's conjecture (2020).}
+\begin{named}{Conjecture 1 (Santos (2020)).}
 ```
+
+A conjecture this paper states is numbered, and the attribution keeps the name and the year. Santos's conjecture is Conjecture 1.
 
 The year is the year in the bibliography. A preprint still has one. Santos's preprint is arXiv:2005.00346, so the year is 2020, and the bibliography entry carries 2020.
 
 ## Not this
 
-- Conjecture (Santos). The parentheses are for the year, not the name.
+- Conjecture (Santos). The parentheses are for the year, not the name. A number does not drop the year: Conjecture 1 (Santos (2020)).
 - (Santos, Proposition 15). The name has no year.
 - Bauer and Bennett 2002. The year is in parentheses.
 - A `\cite` in place of the year. The sentence still says the name and the year. `\cite` may follow them. It does not replace them.

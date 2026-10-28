@@ -47,7 +47,7 @@ Do not attach a new name by claiming a fact about an object already in view. Tha
 
 Not: "The element after \(1\) is \(x = x_1\)." Write: "Write \(x\) for \(x_1\)." "Let \(x = x_1\)" is also a definition. "Write" and "let" are examples, not the only openings.
 
-Definitions should obviously not be usage notes. A definition states what the term or symbol means. It does not record how this paper happens to use it. See the definitions-section skill.
+Definitions should obviously not be usage notes. A definition states what the term or symbol means and then stops. It does not record how this paper happens to use it, and it does not state a bound, a threshold, or a sentence of the form "if this holds, then ...". See the definitions-section skill.
 
 ## Types
 

@@ -38,7 +38,7 @@ An outline is informal. It gives the shape of a result in ordinary words and say
 
 Informal means the outline may name the result before the precise inequality is written. The hypotheses, the quantifiers, and the displays belong in the later statement. Do not copy them back into the outline.
 
-Definitions should obviously not be usage notes. A definition states what the term or symbol means. A fact about how one estimate uses a symbol stays next to that estimate, or in a remark after the proof. See the definitions-section skill.
+Definitions should obviously not be usage notes. A definition states what the term or symbol means. It does not state a theorem, a bound, a threshold, or a sentence of the form "if this holds, then ...". A fact about how one estimate uses a symbol stays next to that estimate, or in a remark after the proof. See the definitions-section skill.
 
 When the proof is in a later section, the statement may be followed by one sentence saying where the proof is. The remarks still come after the proof.
 

@@ -4,7 +4,9 @@ description: >
   Write or fix the table of contents of a mathematics paper. Sections, and
   the paper's own conjectures, theorems, and propositions. The entry for a
   repeated statement is the statement followed by its proof, not the
-  announcement in the introduction. Use when adding or editing a table of
+  announcement in the introduction. A theorem stated only in the
+  introduction, with the proof in a later section, is the wrong entry.
+  Use when adding or editing a table of
   contents, \tableofcontents, a contents entry for a theorem, or when the
   user says the contents list is wrong. Also /table-of-contents.
 ---
@@ -17,9 +19,11 @@ Not in the list: a lemma, a corollary, an outline, a theorem quoted from someone
 
 ## Which occurrence
 
-The introduction may announce a theorem that is stated again later, immediately before its proof. The contents entry is that later statement. The announcement in the introduction is not an entry.
+The introduction may announce a theorem. When the proof is in a later section, state the theorem again immediately before that proof, with the same heading. The contents entry is that later statement. The announcement in the introduction is not an entry.
 
-A statement that occurs once is that one place. A conjecture has no proof; its single statement is the entry.
+Not: Theorem 1 stated only in the introduction, and the proof in a later section with no second statement. The contents link then opens the introduction. The statement immediately before the proof is the entry.
+
+A statement that occurs once, and whose proof follows it, is that one place. A conjecture has no proof; its single statement is the entry.
 
 One heading, one entry. When the same heading occurs twice, keep the last occurrence. Record the count in the aux file. Write the contents line only when this occurrence's number equals the total from the previous run. The first run after the change does not yet know the total.
 

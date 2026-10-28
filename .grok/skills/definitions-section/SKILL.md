@@ -11,7 +11,9 @@ description: >
   constant in \(O\) depend on \(\ell\), or when prose uses a word this
   section does not define, such as empty or emptiness, or when a new symbol
   has no type, such as an explicit constant \(c\), or when the same symbol is
-  used for a second formula. Set the type of every
+  used for a second formula, or when a definition is followed by a
+  consequence, such as a bound or a threshold, or when the same symbol has
+  a different definition in the companion paper. Set the type of every
   new symbol. Constant takes a type: a constant real number, a constant
   integer, or a constant rational. Also
   /definitions-section.
@@ -19,9 +21,11 @@ description: >
 
 # Definitions section
 
-Each entry defines one term a reader needs before the proofs. Write it so someone who stops at this section can use the term. Every later use of that term is this definition. A theorem, a remark, or the other paper does not get a second version.
+Each entry defines one term a reader needs before the proofs. Write it so someone who stops at this section can use the term. Every later use of that term is this definition. A theorem, a remark, or the companion paper does not get a second version. The same symbol has this same definition in both papers.
 
 A definition is one definition. The term means that entry. The symbol in the entry means that entry. Later text uses that meaning, or it does not use the symbol for another formula. Do not add a factor, a denominator, a quantifier, or a hypothesis and keep the symbol.
+
+A definition is only the definition. It states what the term means. It does not state a theorem, a bound, a threshold, or a sentence of the form "if this holds, then ...". Those are conclusions. They belong in a theorem. When the user asks for a definition, the reply is the definition and then stops.
 
 When a theorem and a definition give the same symbol two formulas, one of them is wrong. Change the definition, or change the theorem so that it uses the definition. Do not change what the theorem concludes. The proved bound, the cases, and the objects it rules out stay as they are.
 
@@ -36,6 +40,7 @@ When a theorem and a definition give the same symbol two formulas, one of them i
 - A usage note. Definitions should obviously not be usage notes. A definition states what the term or symbol means in mathematics. It does not record how this paper happens to use it. Not: "An implied constant in \(O\) depends only on \(\ell\)." That sentence is about one estimate. It is not what \(O\) means. Big \(O\), the Bachmann--Landau symbol, means \(|f(t)| \le C\,|g(t)|\) for a constant real number \(C > 0\) independent of the variable \(t\). The definition states that name. A fact about one estimate stays next to that estimate.
 - An English word standing in for a fact. This is a maths paper not an english essay or email. Define the word in this section, or write the fact and do not use the word. "Emptiness" is not a term. "No such cycle exists" is the fact.
 - A proof, a derivation, or an existence claim.
+- A conclusion. A bound, a threshold, or "if this holds, then ..." is a theorem. It is not part of the definition.
 - A lemma, theorem, proposition, corollary, or section from later in the paper.
 - The numerical bounds. Those belong in the statements that prove them.
 - A standard symbol parked in a conventions paragraph. Define it by its mathematical meaning, in its own entry, before the first use.
