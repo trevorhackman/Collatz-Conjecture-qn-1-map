@@ -137,7 +137,6 @@
 \noindent
 For the $qn+1$ map, for each length at least $2$, only finitely many odd integers $q$ have a cycle of that length.
 The argument uses Ridout's theorem in the form that allows prime factors of the denominator outside a constant finite set, and it gives no bound on $q$.
-If $\lvert 2^{r/\ell} - p/d \rvert > c\, d^{-1.3247}$ for each root $2^{r/\ell}$, for every odd positive integer $x$ and every large denominator $d = x\cdot 2^j$ or $d = \ell x\cdot 2^j$, then the bound on $q$ depends only on the length.
 
 If a constant odd positive integer is the starting value of a cycle with two or three distinct odd numbers, then $q$ lies below an explicit bound depending only on that integer.
 For three odd numbers, once $q$ meets that bound, a lower bound and an upper bound cannot hold at the same time.
@@ -206,25 +205,20 @@ The proof of Theorem~2 is in Section~\ref{sec:ineffective}.
 
 \begin{named}{Outline of Theorem 3.}
 Fix a length $\ell \ge 2$ and an odd starting value $x$.
-Suppose that, for every integer $r$ with $1 \le r \le \ell-1$, $2^{r/\ell}$ has a restricted irrationality exponent below the golden ratio.
-Then any $q$ for which there is a cycle of this length with starting value $x$ lies below a bound computed from that exponent and from $x$.
-For length $2$ the restricted irrationality exponent is $1.465$, from Corollary~1.4 of Bauer and Bennett (2002).
-For length $3$ it is about $1.6149$, from Bauer and Bennett (2018).
+Suppose that length $\ell$ has a restricted irrationality exponent below the golden ratio.
+Then $q$ lies below a bound $Q(x, \ell)$ computed from $x$ and $\ell$.
 The precise statement is in Section~\ref{sec:ql}.
+The case $x = 1$ is Theorem~2 of the companion paper~\cite{hackman-i}.
+Theorem~1 of that paper is the case $\ell = 3$ and $x = 1$.
+For length $2$, Corollary~1.4 of Bauer and Bennett (2002) supplies the exponent $1.465$ for each given positive integer $s$, with the cutoff depending on $s$.
+For length $3$, Bauer and Bennett (2018) and Lemma~\ref{lem:fixed-odd} supply the exponent $\mu_3$ for each positive integer $s$, with the factor in front and the cutoff depending on $s$.
 \end{named}
 
-Proposition~\ref{prop:exponent} gives, for each length, a bound on $q$ that does not depend on a starting value.
-The hypothesis is the lower bound in that proposition, of the shape $c \cdot d^{-\mu}$ with $\mu$ at most $1.3247$, for every root $2^{r/\ell}$ and every odd positive integer in the denominator.
-
-For $x = 1$ and length $3$, Appendix~\ref{app:computations} gives $Q_3(1) < 2^{17990}$.
-Any such cycle has one candidate $q$ for each total number of factors of $2$ removed, so it is enough to check those totals below $53970$.
-The companion paper checks every such total up to $200{,}000$ and finds no cycle.
-That search includes the totals below $53970$, and Theorem~1 of~\cite{hackman-i} records that no such cycle exists.
+For $x = 1$ and length $3$, Theorem~1 of the companion paper records that no such cycle exists.
 Length $2$ with starting value $1$ is Proposition~A.1 of~\cite{hackman-i}: the only such $q$ is $5$.
 
 For a general $x$ the bound does not rule a cycle out.
 At $q = 181$ the cycles $27 \to 611 \to 27$ and $35 \to 99 \to 35$ both occur.
-Appendix~\ref{app:computations} records $181 < Q_2(27)$ and $181 < Q_2(35)$.
 
 Section~\ref{sec:length-2} takes up cycles of two odd numbers with no element held constant in advance.
 Every such cycle other than $1 \to 3 \to 1$, $27 \to 611 \to 27$ and $35 \to 99 \to 35$ has $q \ge 2^{1{,}071{,}999{,}971}$ and every odd number on it greater than $2^{17{,}631{,}663}$.
@@ -269,10 +263,10 @@ The integer $q$ equals $\lfloor 2^{h/\ell} \rfloor$, so $2^{h/\ell} = q + \delta
 The $\delta$ window is a lower bound and an upper bound on $\delta$.
 
 \topic{The restricted irrationality exponent.}
-Let $\theta$ be an irrational real number.
-A real number $\mu$ is a restricted irrationality exponent of $\theta$ when there exists an explicit constant real number $c > 0$ and there exists an explicit constant integer $j_0 \ge 0$ such that, for every integer $p$ and for every integer $j \ge j_0$,
+Fix an integer $\ell \ge 2$.
+A real number $\mu$ is a restricted irrationality exponent for length $\ell$ when, for each odd positive integer $x$, there is a positive real number $c(x)$ and there is a nonnegative integer $j_0(x)$ such that, for every integer $r$ with $1 \le r \le \ell - 1$, every integer $p$, and every integer $j \ge j_0(x)$,
 \[
-\left|\theta - \frac{p}{2^j}\right| > c \cdot 2^{-\mu j}.
+\left| 2^{r/\ell} - \frac{p}{\ell x \cdot 2^j} \right| > c(x) \cdot 2^{-\mu j}.
 \]
 
 \topic{The golden ratio.}
@@ -290,13 +284,6 @@ Let $f$ and $g$ be real-valued functions of a real variable $t$, with $g(t) \ne 
 Write $f(t) = O(g(t))$ when there exists a constant real number $C > 0$, independent of $t$, and there exists a constant real number $t_0$, such that $|f(t)| \le C\,|g(t)|$ for every $t \ge t_0$.
 The expression $O(g(t))$ stands for a real number of absolute value at most $C\,|g(t)|$.
 An equation $A = B + O(g(t))$ means $A - B = O(g(t))$.
-
-\topic{The plastic number.}
-The plastic number is the real root of $t^3 - t - 1 = 0$.
-The plastic number equals
-\[
-\sqrt[3]{\frac{9 + \sqrt{69}}{18}} + \sqrt[3]{\frac{9 - \sqrt{69}}{18}}.
-\]
 
 \topic{The constants $\mu_3$, $\gamma_3$, and $c_3(s')$.}
 Let $N = 16166467234$.
@@ -534,19 +521,19 @@ An effective bound would require an effective inequality of the same shape for e
 \section{The integer $Q_\ell(x)$}
 \label{sec:ql}
 
+The definition supplies, for each odd positive integer $x$, the positive real number $c(x)$ and the nonnegative integer $j_0(x)$ in the inequality at the denominators $\ell x \cdot 2^j$.
+
 \begin{named}{Theorem 3.}
 \markstmt{3}{thm:bound}
-Let $\ell \ge 2$ be an integer and let $x$ be an odd positive integer.
-Let $\mu$ be a constant real number with $1 < \mu < \varphi$.
-Let $c$ and $c_*$ be constant positive real numbers, and let $j_0$ be a positive integer.
-Suppose that for every $r \in \{1, \ldots, \ell-1\}$, every integer $p$, and every integer $j \ge j_0$,
-\[
-\Bigl| 2^{r/\ell} - \frac{p}{x\, 2^{j}} \Bigr| > c \cdot 2^{-\mu j}
-\]
-and
-\[
-\Bigl| 2^{r/\ell} - \frac{p}{\ell x\, 2^{j}} \Bigr| > c_* \cdot 2^{-\mu j}.
-\]
+Let $\ell \ge 2$ and let $x$ be an odd positive integer.
+Suppose that $0 < \mu < \varphi$ and that $\mu$ is a restricted irrationality exponent for length $\ell$.
+Then there is a number $Q(x, \ell)$, computed from $x$, $\ell$, $c(x)$ and $j_0(x)$, such that if $x$ is the starting value of a cycle of length $\ell$, then $q < Q(x, \ell)$.
+\end{named}
+
+\begin{proof}[Proof of Theorem~\ref{thm:bound}]
+Let $c$ be the positive real number $c(x)$, and let $j_0$ be the nonnegative integer $j_0(x)$.
+Since $p/(x \cdot 2^j) = (\ell p)/(\ell x \cdot 2^j)$, the same lower bound holds for the denominator $x \cdot 2^j$.
+Let $c_* = c$.
 Let $B$ be the positive real number $\max\bigl(\ell-1,\ 2(\ell-2) + 1/x\bigr)$.
 Let $\gamma$ be the positive real number $1 - \mu + 1/\mu$, and let $A$ and $Q_*$ be the positive real numbers
 \[
@@ -555,7 +542,7 @@ A = \frac{x}{2}\, 2^{1/\ell}
 \qquad
 Q_* = \Biggl( \frac{(\ell-1)/(\ell A) + \ell}{c_*\, 2^{1-\mu}} \Biggr)^{1/\gamma}.
 \]
-For each such $r$, let $d_r$ be the positive real number equal to the distance from $x\, 2^{r/\ell}$ to the nearest integer.
+For each integer $r$ with $1 \le r \le \ell - 1$, let $d_r$ be the positive real number equal to the distance from $x\, 2^{r/\ell}$ to the nearest integer.
 For each such $r$, each integer $j$ with $0 \le j < j_0$, and each odd positive integer $y < 3x \cdot 2^{j_0}$, let $\rho$ be the nonnegative real number
 \[
 \rho = \Biggl| \frac{y}{x\, 2^{j}} \cdot 2^{-r/\ell} - 1 \Biggr|.
@@ -566,12 +553,8 @@ If $\ell$ is composite, that maximum also includes the positive real number $Bx$
 Let $Q_e$ be the least positive integer such that every integer $q \ge Q_e$ satisfies $q \ge 4\ell$ and $e^{\ell/q} \le q^{1-1/\mu}$.
 If $\ell$ is prime, let $Q_A$ be the positive integer $1$.
 If $\ell$ is composite, let $Q_A$ be the least positive integer such that every integer $q \ge Q_A$ satisfies $q/(2B) > A\, q^{1/\mu}$.
-Let $Q_\ell(x;\, \mu, c, c_*, j_0)$ be the positive real number equal to the maximum of $2^{j_0}$, of $Q_0$, of $Q_*$, of $Q_e$, and of $Q_A$.
-If $x$ is the starting value of a cycle of length $\ell$, then $q < Q_\ell(x;\, \mu, c, c_*, j_0)$.
-\end{named}
-
-\begin{proof}[Proof of Theorem~\ref{thm:bound}]
-Let $x = x_0 \to x_1 \to \cdots \to x_{\ell-1} \to x$ be a cycle of length $\ell$, with each $x_i$ an odd positive integer.
+Let $Q(x, \ell)$ be the maximum of $2^{j_0}$, of $Q_0$, of $Q_*$, of $Q_e$, and of $Q_A$.
+Let $x \to x_1 \to \cdots \to x_{\ell-1} \to x$ be a cycle of length $\ell$ with starting value $x$, and with each $x_i$ an odd positive integer.
 Lemma~\ref{lem:any-window} gives $q = \lfloor 2^{h/\ell} \rfloor$ and $\ell \nmid h$.
 Write $2^{h/\ell} = q + \delta$ with $\delta$ the fractional part, so $0 < \delta < 1$.
 Let $m$ be the nonnegative integer and $r$ the integer with $0 < r < \ell$ and $h = \ell m + r$.
@@ -678,7 +661,7 @@ The window hypothesis, with denominator $\ell x \cdot 2^m$, gives
 \]
 Since $\gamma > 0$, these two bounds on $|\delta - 1/(\ell x)|$ conflict for every integer $q \ge Q_*$.
 The lower bound is strict, so the conflict includes $q = Q_*$.
-Thus $q < Q_*$, and in every case $q < Q_\ell(x;\, \mu, c, c_*, j_0)$.
+Thus $q < Q_*$, and in every case $q < Q(x, \ell)$.
 \end{proof}
 
 For $\ell = 3$ we have $B = 2 + 1/x$ and $Q_A = 1$.
@@ -688,142 +671,13 @@ The proof of Corollary~\ref{cor:q3} shows that this factor bounds both $|\rho|$ 
 For $\ell = 2$ we have $B = 1$ and $Q_A = 1$.
 Section~\ref{sec:q2} uses the larger factor $1+1/x$ in place of $B$, and records that the resulting maximum equals $Q_2(x)$.
 
-\begin{named}{Proposition 3.}
-\marklemma{3}{prop:exponent}
-Let $\ell \ge 2$ be an integer.
-Let $\mu$ be a constant real number with $1 < \mu \le 1.3247$.
-Let $c$ be an explicit constant real number with $c > 0$, and let $d_0$ be an explicit constant positive integer.
-Suppose that for every integer $r$ with $1 \le r \le \ell - 1$, every odd positive integer $x$, every nonnegative integer $j$, and every integer $p$, each positive integer $d \in \{x \cdot 2^j,\, \ell x \cdot 2^j\}$ with $d \ge d_0$ satisfies
-\[
-\Bigl| 2^{r/\ell} - \frac{p}{d} \Bigr| > c \cdot d^{-\mu}.
-\]
-Then there is a positive real number $Q$, computed from $\ell$, $\mu$, $c$ and $d_0$, such that every cycle of length $\ell$ has $q < Q$.
-\end{named}
-
-\begin{proof}
-Let $\gamma = 1 - \mu + 1/\mu$ and let $\alpha = \mu(\mu - 1)/\gamma$.
-Since $1.3247 < 3/2 < \varphi$, we have $\mu < \varphi$, so $\mu^2 - \mu - 1 < 0$ and $\gamma > 0$.
-For a real number $t > 1$ the derivative of $t^3 - t - 1$ is $3t^2 - 1 > 0$, so $t^3 - t - 1$ increases with $t$.
-At $t = 1.3247 = 13247/10000$,
-\[
-\Bigl(\frac{13247}{10000}\Bigr)^3 - \frac{13247}{10000} - 1 = -\frac{76579777}{10^{12}} < 0.
-\]
-Thus $\mu^3 - \mu - 1 < 0$.
-Since $\mu > 0$, this is the same inequality as $\mu^2(\mu - 1) < 1 + \mu - \mu^2$.
-Dividing by $\mu$ gives $\mu(\mu - 1) < (1 + \mu - \mu^2)/\mu$.
-The right side equals $\gamma$, so $\mu(\mu - 1) < \gamma$.
-Since $\gamma > 0$, we have $\alpha < 1$.
-Let $\beta = \mu(\mu - 1)$.
-For $t > 1$ the real number $t(t - 1)$ increases with $t$, so
-\[
-\beta \le \frac{13247}{10000} \cdot \frac{3247}{10000} = \frac{43013009}{100000000} < \frac12.
-\]
-
-Let $x$ be the starting value of a cycle of length $\ell$, and write $h = \ell m + r$ with $0 < r < \ell$, as in Lemma~\ref{lem:any-window}.
-Then $2^m \cdot 2^{r/\ell} = q + \delta$, so $\lvert 2^{r/\ell} - q/2^m \rvert = \delta/2^m$.
-If $2^m \ge d_0$, the hypothesis at the denominator $2^m$ gives $\delta/2^m > c \cdot 2^{-\mu m}$, so $\delta > c \cdot 2^{(1-\mu)m}$.
-Lemma~\ref{lem:any-window} gives $\delta \le e^{\ell/q}/x$.
-The proof of Lemma~\ref{lem:three-approx} records $e^{1/4} < 4/3$.
-If $q \ge 4\ell$ and $2^m \ge d_0$, then $e^{\ell/q} \le e^{1/4}$ and
-\[
-x < \frac{4}{3c} \cdot 2^{(\mu-1)m}.
-\]
-Also $q > 2^{m + r/\ell} - 1$.
-For $m \ge 1$ this is greater than $2^{m-1}$, so $\log_2 q > m - 1$.
-
-If $2^m < d_0$, then $q < 2 \cdot 2^m < 2d_0$.
-Let $Q_e$ be the least positive integer such that every integer $q \ge Q_e$ satisfies $q \ge 4\ell$ and $e^{\ell/q} \le q^{1 - 1/\mu}$, as in Theorem~\ref{thm:bound}.
-Let $B_+ = 2\ell - 3$.
-For $\ell = 2$ let $B_- = 1$, and for $\ell \ge 3$ let $B_- = \max(\ell - 1,\, 2(\ell - 2))$.
-In Theorem~\ref{thm:bound} the positive real number $B$ satisfies $B_- \le B \le B_+$.
-With the constant in that theorem equal to $c x^{-\mu}$, the factor $x$ cancels $x^{-\mu}$ under the exponent $1/\mu$, and
-\[
-A = \frac12 \cdot 2^{1/\ell}
-\Biggl( \frac{c}{2^{(\ell-1)/\ell}\, B} \Biggr)^{1/\mu}.
-\]
-Set
-\[
-A_+ = \frac12 \cdot 2^{1/\ell}
-\Biggl( \frac{c}{2^{(\ell-1)/\ell}\, B_-} \Biggr)^{1/\mu},
-\qquad
-A_- = \frac12 \cdot 2^{1/\ell}
-\Biggl( \frac{c}{2^{(\ell-1)/\ell}\, B_+} \Biggr)^{1/\mu}.
-\]
-Then $A_- \le A \le A_+$.
-If $\ell$ is prime, let $Q_A^\dagger = 1$.
-If $\ell$ is composite, let $Q_A^\dagger$ be the least positive integer such that every integer $q \ge Q_A^\dagger$ satisfies $q/(2B_+) > A_+ \, q^{1/\mu}$.
-If $q/(2B_+) > A_+ \, q^{1/\mu}$, then $q/(2B) > A \, q^{1/\mu}$.
-Thus the positive integer $Q_A$ in Theorem~\ref{thm:bound} is at most $Q_A^\dagger$.
-
-If $d_0 \le 1$, let $Q_1 = 1$.
-If $d_0 > 1$, then for each odd positive integer $z < d_0$ let $j_0(z)$ be the least integer $j \ge 1$ with $z \cdot 2^j \ge d_0$.
-Theorem~\ref{thm:bound}, with constants $c \, z^{-\mu}$ and $c \, (\ell z)^{-\mu}$ and with this $j_0(z)$, gives $q < Q_\ell(z;\, \mu,\, c z^{-\mu},\, c(\ell z)^{-\mu},\, j_0(z))$ whenever $z$ is the starting value of a cycle of length $\ell$.
-Let $Q_1$ be the maximum of those finitely many values.
-
-Now suppose $x \ge d_0$, $2^m \ge d_0$ and $q \ge \max(Q_e,\, Q_A^\dagger)$.
-Then $q \ge 4\ell$.
-For every integer $j \ge 1$ the denominators $x \cdot 2^j$ and $\ell x \cdot 2^j$ are at least $d_0$, so
-\[
-\Bigl| 2^{r/\ell} - \frac{p}{x \cdot 2^j} \Bigr| > c \, x^{-\mu} \cdot 2^{-\mu j}
-\]
-and
-\[
-\Bigl| 2^{r/\ell} - \frac{p}{\ell x \cdot 2^j} \Bigr| > c \, (\ell x)^{-\mu} \cdot 2^{-\mu j}.
-\]
-Theorem~\ref{thm:bound}, with these constants and with $j_0 = 1$, gives $q < Q_\ell(x;\, \mu,\, c x^{-\mu},\, c(\ell x)^{-\mu},\, 1)$.
-In that maximum, $2^{j_0} = 2$.
-Since $A \ge A_-$ and $c_* = c(\ell x)^{-\mu}$,
-\[
-Q_* \le \Biggl( \frac{K \, (\ell x)^{\mu}}{c \cdot 2^{1-\mu}} \Biggr)^{1/\gamma},
-\qquad
-K = \frac{\ell-1}{\ell A_-} + \ell.
-\]
-Let
-\[
-\Lambda = \frac1\gamma \log_2\Biggl( \frac{K \, \ell^{\mu}}{c \cdot 2^{1-\mu}} \Biggr) + \frac{\mu}{\gamma} \log_2\Biggl( \frac{4}{3c} \Biggr).
-\]
-From $x < (4/(3c)) \cdot 2^{(\mu-1)m}$ we have $\log_2 Q_* < \Lambda + \alpha m$.
-
-For $0 \le j < 1$ the only such integer is $j = 0$.
-The hypothesis at denominator $x$ gives, for the distance $d_r$ from $x \cdot 2^{r/\ell}$ to the nearest integer, $d_r > c \, x^{1-\mu}$.
-The value $B \cdot 2^{r/\ell} \cdot x / d_r$ in the maximum $Q_0$ is then less than $(2B_+/c) \, x^{\mu}$.
-For an odd positive integer $y$ and for $\rho = \lvert y x^{-1} 2^{-r/\ell} - 1 \rvert$, the same hypothesis gives $B/\rho < (2B_+/c) \, x^{\mu}$ whenever $\rho > 0$.
-If $\ell$ is composite, the value $Bx$ in that maximum satisfies $Bx \le B_+ x \le B_+ x^{\mu}$.
-Let $K_0 = \max\bigl(B_+,\, 2B_+/c\bigr)$.
-Thus $Q_0 \le K_0 x^{\mu}$, and
-\[
-\log_2(K_0 x^{\mu}) < \log_2 K_0 + \mu \log_2\Biggl( \frac{4}{3c} \Biggr) + \beta m.
-\]
-
-Let $m_0$ be the least integer $m \ge \max\bigl(1,\, \lceil \log_2 d_0 \rceil\bigr)$ such that
-\[
-\Lambda + \alpha m < m - 1
-\]
-and
-\[
-\log_2 K_0 + \mu \log_2\Biggl( \frac{4}{3c} \Biggr) + \beta m < m - 1.
-\]
-Such an integer exists because $\alpha < 1$ and $\beta < 1/2$.
-If $m \ge m_0$, both $\log_2 Q_*$ and $\log_2(K_0 x^{\mu})$ are less than $m - 1$, hence less than $\log_2 q$.
-Then $Q_* < q$ and $K_0 x^{\mu} < q$.
-Together with $q \ge Q_e$, $q \ge Q_A^\dagger$ and $q > 2$, this contradicts $q < Q_\ell(x;\, \mu,\, c x^{-\mu},\, c(\ell x)^{-\mu},\, 1)$.
-
-Therefore $m < m_0$, or $q < 2d_0$, or $q < Q_1$, or $q < \max(Q_e,\, Q_A^\dagger)$.
-In the first of these, $q < 2^{m+1} \le 2^{m_0}$.
-Let $Q$ be the maximum of $2d_0$, of $Q_1$, of $Q_e$, of $Q_A^\dagger$ and of $2^{m_0}$.
-Every cycle of length $\ell$ has $q < Q$.
-\end{proof}
-
-The positive root of $t^3 - t - 1 = 0$ is the plastic number, and the plastic number is greater than $1.3247$.
-For a constant real number $\mu$ below the plastic number we have $\mu^3 - \mu - 1 < 0$, and the same argument produces a bound on $q$.
-
 \section{Cube roots with a constant odd part}
 \label{sec:measure}
 
 Bauer and Bennett~\cite{bauer-bennett-2018} prove the inequality for $s = 1$ and for $s = 3$.
 The inequality used here is the one obtained in the proof of their Theorem~2.1 from their inequality~(5.3), Lemma~4.1 and Proposition~5.1, before they round $\mu_3$ to $1.62$.
 The companion paper records it for $s = 1$ and for $s = 3$.
-Lemma~\ref{lem:fixed-odd} gives the same exponent $\mu_3$ for every positive integer $s$. The factor from $s$ is carried by the constant $c_3(s')$ and by the integer $j_0(s)$.
+Lemma~\ref{lem:fixed-odd} gives the same exponent $\mu_3$ for every positive integer $s$. The factor from $s$ is carried by the positive real number $c_3(s')$ and by the integer $j_0(s)$.
 
 \begin{named}{Lemma 4 (constant odd part).}
 \marklemma{4}{lem:fixed-odd}
@@ -1048,7 +902,7 @@ That factor exceeds $1$ because $N > 2^{21}$.
 The resulting constant is $c_3(s')$.
 \end{proof}
 
-Per unit of $j$ the restricted irrationality exponent is $\mu_3 \approx 1.61487$, which lies below $\varphi$.
+Per unit of $j$ the exponent is $\mu_3 \approx 1.61487$, which lies below $\varphi$.
 
 \section{The integer $Q_3(x)$}
 \label{sec:q3}
@@ -1089,7 +943,7 @@ If $x$ is the starting value of a cycle of length $3$, then $q < Q_3(x)$.
 \end{named}
 
 \begin{proof}
-The statement of Theorem~2 of~\cite{hackman-i} does not apply: the cycle may have any starting value, and the odd part is $x$ or $3x$ rather than $1$ or $\ell$.
+The statement of Theorem~2 of~\cite{hackman-i} is the case $x = 1$.
 The comparison in its proof does apply, with that odd part.
 
 Consider a cycle of length $3$ with starting value $x$, written $x \to y \to z \to x$.
@@ -1291,7 +1145,6 @@ A cycle of length $2$ was selected because it's the smallest non-trivial length,
 
 For a constant starting value, Theorem~\ref{thm:bound} bounds $q$, and a computation can finish the search.
 The bound grows with the starting value, so the same search does not cover every starting value at once.
-Proposition~\ref{prop:exponent} shows that its lower bound, with exponent $1.3247$, gives a bound on $q$ for every starting value and every length at least $2$.
 Bauer and Bennett (2002)~\cite{bauer-bennett-2002} give the exponent $1.465$ for $\sqrt{2}$.
 
 The aim was not achieved, but this section records the properties of a cycle of length $2$, and large bounds that follow from those properties by a modest computation.
@@ -1484,7 +1337,7 @@ Any cycle of length $2$ other than $1 \to 3$, $35 \to 99$ and $27 \to 611$ has
 \[
 q \ge 2^{160{,}000}, \qquad D \ge 15, \qquad u \ge 3,
 \]
-every odd element at least $37$, and, writing $h = 2m + 1$,
+and, writing $h = 2m + 1$,
 \[
 m \ge 160{,}000, \qquad D > 2^{0.52 m + 1}, \qquad t \ge 83{,}203.
 \]
@@ -1503,14 +1356,6 @@ Lemma~\ref{lem:gap-7} gives $D \ne 7$.
 Lemma~\ref{lem:length-2} gives $D \equiv 7 \pmod{8}$ and $D > 0$, so $D \ge 15$.
 Lemma~\ref{lem:u-one} gives $u \ne 1$.
 Lemma~\ref{lem:length-2} gives that $u$ is a positive odd integer, so $u \ge 3$.
-
-Let $z$ be an odd element of the cycle with $z \le 35$.
-Theorem~\ref{thm:bound} gives $q < Q_2(z)$.
-Appendix~\ref{app:computations} records $Q_2(z) \le 2^{33}$ for every odd $z \le 35$.
-Then $q < 2^{33} < 2^{160{,}000}$, so the cycle is one of the three found by the search.
-Each of those has its odd elements in $\{1, 3, 27, 35, 99, 611\}$.
-An element $z \le 35$ on one of them is $1$, $3$, $27$ or $35$.
-Therefore every odd element of any other cycle is at least $37$.
 
 Corollary~1.6 of Bauer and Bennett (2002) gives
 \[
@@ -1865,7 +1710,6 @@ Each one leaves that uniform bound open, and leaves open the list of lengths at 
 Proposition~B.2 gives, for each fixed integer $V$, only finitely many cycles with $\ell/\gcd(h,\ell) \le V$.
 It gives no bound.
 A cycle with $\gcd(h,\ell) = 1$ has $\ell/\gcd(h,\ell) = \ell$, and the proposition does not bound those lengths.
-Proposition~\ref{prop:exponent} produces that bound from its hypothesis, a lower bound of the shape $c \cdot d^{-\mu}$ with exponent at most $1.3247$ for every root $2^{r/\ell}$.
 For length $2$, Section~\ref{sec:length-2} leaves the case $u \ge 3$, with $q \ge 2^{1{,}071{,}999{,}971}$ and every odd element greater than $2^{17{,}631{,}663}$.
 The heuristic of Section~\ref{sec:all-cycles} is not a proof, and the searches leave infinitely many pairs $(\ell, h)$ unchecked.
 \end{enumerate}
@@ -2472,7 +2316,6 @@ $25$ & $2$ through $16$ & none \\
 \end{center}
 
 \topic{The bounds $Q_3(x)$ and $Q_2(x)$.}
-For every odd $x \le 35$, the values of $Q_{3,0}(x)$ were computed with upper limit $11000$ on $j$.
 For every odd $x \le 35$, the odd parts $x$ and $3x$ have $s' \le 105$ and $v_3 \le 4$.
 Since $66 \cdot 105 < 2^{13}$ and $(5/4)^4 > 2$,
 \[
@@ -2482,111 +2325,12 @@ Since $66 \cdot 105 < 2^{13}$ and $(5/4)^4 > 2$,
 < 52,
 \]
 so $21 \cdot 52 + 5 = 1097 < 11000$ and $J_3(x) = 11000$.
-The gate $2^{11001}$ is then smaller than $Q_{3,*}(x)$ and does not change the maximum.
-The quantity $Q_{3,*}(x)$ is smallest at $x = 3$, where $\log_2 Q_{3,*}(3) = 17906.510814$, so $Q_{3,*}(x) > 2^{17906} > 2^{11001}$ for every odd positive integer $x$.
-
-\topic{Powers of two above $Q_{3,*}(x)$.}
-The integer $\lceil Q_{3,*}(x) \rceil$ is the sharper bound, and it has thousands of digits.
-The table uses the next power of $2$ above $Q_{3,*}(x)$, read off from the logarithm.
-For $x = 5$ we have $\log_2 Q_{3,*}(5) = 18213.724287504393$, so $\lceil Q_{3,*}(5) \rceil$ has $5483$ digits and begins $753951296\ldots$, while the table entry is $2^{18214}$.
-The same rounding, $2^{\lceil \log_2 \,\cdot\, \rceil}$, is used for $Q_{3,0}(x)$, $Q_{2,*}(x)$ and $Q_2(x)$.
-
-For every odd $x$ from $1$ to $35$, the entry $2^{\lceil \log_2 Q_{3,*}(x) \rceil}$ is:
-
-\begin{center}
-\begin{tabular}{rrrrrr}
-$x$ & & $x$ & & $x$ & \\
-$1$ & $2^{17990}$ & $13$ & $2^{18387}$ & $25$ & $2^{18514}$ \\
-$3$ & $2^{17907}$ & $15$ & $2^{18190}$ & $27$ & $2^{18304}$ \\
-$5$ & $2^{18214}$ & $17$ & $2^{18439}$ & $29$ & $2^{18543}$ \\
-$7$ & $2^{18273}$ & $19$ & $2^{18460}$ & $31$ & $2^{18556}$ \\
-$9$ & $2^{18094}$ & $21$ & $2^{18255}$ & $33$ & $2^{18344}$ \\
-$11$ & $2^{18356}$ & $23$ & $2^{18497}$ & $35$ & $2^{18580}$ \\
-\end{tabular}
-\end{center}
-
-Rows in which $3$ divides $x$ sit below their neighbors because $s' = x/\gcd(x, 3)$.
-The row $x = 3$ has $s' = 1$ and $c_3(x) = c_3(3)$.
-The value $c_3(3)$ is the place this table uses Lemma~\ref{lem:fixed-odd} past odd part $1$ or $3$.
-
-\topic{Powers of two above $Q_{3,0}(x)$.}
-For the same odd $x$, with the maximum taken over $0 \le j < 11000$, the entry $2^{\lceil \log_2 Q_{3,0}(x) \rceil}$ is:
-
-\begin{center}
-\begin{tabular}{rrrrrr}
-$x$ & & $x$ & & $x$ & \\
-$1$ & $2^{11003}$ & $13$ & $2^{11007}$ & $25$ & $2^{11009}$ \\
-$3$ & $2^{11002}$ & $15$ & $2^{11006}$ & $27$ & $2^{11006}$ \\
-$5$ & $2^{11006}$ & $17$ & $2^{11009}$ & $29$ & $2^{11012}$ \\
-$7$ & $2^{11006}$ & $19$ & $2^{11009}$ & $31$ & $2^{11008}$ \\
-$9$ & $2^{11006}$ & $21$ & $2^{11006}$ & $33$ & $2^{11005}$ \\
-$11$ & $2^{11005}$ & $23$ & $2^{11006}$ & $35$ & $2^{11008}$ \\
-\end{tabular}
-\end{center}
-
-In every row the exponent $j$ that attains the maximum lies in $\{10997, 10998, 10999\}$.
-For these eighteen values, $Q_{3,0}(x) < Q_{3,*}(x)$.
-That comparison is checked for odd $x \le 35$.
-It is not proved for every odd $x$.
-From $t^3 - 2^r$, if the distance from $s'\, 2^{j+r/3}$ to an integer is positive, that distance is greater than $1/(Q^2 \cdot 3(2^{2/3}+1)^2)$ once the integer is within $1$ of $s'\, 2^{j+r/3}$, with $Q = s' 2^j$.
-With $j \le 10999$ and $s' \le x$ this only yields $Q_{3,0}(x) < x^3\, 2^{33003}$.
-At $x = 1$ the two logarithms, of this upper estimate and of $Q_{3,*}(1)$, are $33003$ and $17989$.
-The estimate $x^3\, 2^{33003}$ stays above $Q_{3,*}(x)$ until $x$ is about $2^{67}$.
-Past that size, $Q_{3,*}(x)$ grows like $x^{1/\gamma_3}$ with $1/\gamma_3 \approx 229$, while $x^3\, 2^{33003}$ grows like $x^3$.
 
 \topic{The value $Q_3(1)$.}
-Here $s' = 1$, so $J_3(1) = 11000$.
-The maximum $Q_{3,0}(1)$ is less than $2^{11003}$, and $Q_{3,*}(1)$ is less than $2^{17990}$, so
-\[
-Q_3(1) = Q_{3,*}(1) < 2^{17990}.
-\]
-Each $h$ gives one candidate $q = \lfloor 2^{h/3} \rfloor$.
-The bound $q < 2^{17990}$ means it is enough to check $h < 53970$.
-The companion paper checks every $h \le 200{,}000$ and finds no cycle, so that search includes the range.
-Theorem~1 of~\cite{hackman-i} is this case.
-
-The proof of that theorem in the companion paper reaches the larger cutoff $q < 2^{22003}$.
+Theorem~1 of the companion paper is the case $x = 1$ and length $3$.
+The proof of that theorem reaches the cutoff $q < 2^{22003}$.
 There the symbol $x$ is the element after $1$.
 The argument asks for that element to clear $2^{11001}$, using a lower bound of the shape $\sqrt{q/2}$.
-The integer $Q_3(1)$ does not use that lower bound.
-Once $q > Q_{3,0}(1)$, an exponent below $11000$ is already impossible, and the conflict is $Q_{3,*}(1)$.
-
-\topic{Powers of two above $Q_{2,*}(x)$.}
-This integer is used in the proof and is at most $Q_2(x)$.
-As $x \to \infty$, $\log_2 Q_{2,*}(x)$ decreases to $\mu_2/\gamma_2 \approx 6.733$.
-The row $x = 11$ has logarithm $7.013$, so that one ceiling moves if the fourth digit of the exponent $1.465$ is lower.
-For odd $x$ from $1$ to $35$, the entry $2^{\lceil \log_2 Q_{2,*}(x) \rceil}$ is $2^{11}$ at $x = 1$, then $2^{8}$ for $x = 3, 5, 7, 9, 11$, and $2^{7}$ for every odd $x$ from $13$ to $35$.
-
-\topic{Values of $Q_2(x)$.}
-For these eighteen values the last failure of $|\sqrt{2} - p/(x\, 2^j)| > 2^{-1.465 j}$ lies at $j \le 21$, and a check through $j < 53620$ finds no later failure.
-The entry is $2^{\lceil \log_2 Q_2(x) \rceil}$.
-
-\begin{center}
-\begin{tabular}{rrrr}
-$x$ & $j_0(x)$ & winning $j$ & $Q_2(x)$ below \\
-$1$ & $9$ & $7$ & $2^{15}$ \\
-$3$ & $12$ & $11$ & $2^{18}$ \\
-$5$ & $22$ & $17$ & $2^{33}$ \\
-$7$ & $12$ & $10$ & $2^{18}$ \\
-$9$ & $12$ & $11$ & $2^{18}$ \\
-$11$ & $13$ & $12$ & $2^{19}$ \\
-$13$ & $14$ & $9$ & $2^{21}$ \\
-$15$ & $22$ & $17$ & $2^{32}$ \\
-$17$ & $15$ & $13$ & $2^{23}$ \\
-$19$ & $17$ & $14$ & $2^{25}$ \\
-$21$ & $17$ & $12$ & $2^{25}$ \\
-$23$ & $16$ & $14$ & $2^{23}$ \\
-$25$ & $22$ & $17$ & $2^{32}$ \\
-$27$ & $15$ & $14$ & $2^{22}$ \\
-$29$ & $17$ & $16$ & $2^{25}$ \\
-$31$ & $17$ & $16$ & $2^{25}$ \\
-$33$ & $15$ & $13$ & $2^{22}$ \\
-$35$ & $22$ & $17$ & $2^{32}$ \\
-\end{tabular}
-\end{center}
-
-The cycle $27 \to 611 \to 27$ has $q = 181 < 2^{22}$.
-The cycle $35 \to 99 \to 35$ has $q = 181 < 2^{32}$.
 
 \topic{Digits of $\sqrt{2}$.}
 Let $N = 1{,}072{,}000{,}000$ and let $I = \lfloor 2^N \sqrt{2} \rfloor$.
