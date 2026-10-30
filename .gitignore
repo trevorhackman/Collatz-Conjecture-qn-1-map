@@ -5,3 +5,6 @@
 *.toc
 *.synctex.gz
 out/texmf-var/
+
+# Local IntelliJ project state. Regenerated on import.
+.idea/
