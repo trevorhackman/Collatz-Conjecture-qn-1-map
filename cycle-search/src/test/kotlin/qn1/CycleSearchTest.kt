@@ -127,10 +127,12 @@ class CycleSearchTest {
 
     @Test
     fun powerWindowMatchesKnownH() {
-        assertEquals(5..5, hForQ(BigInteger.valueOf(5), 2))
-        assertEquals(14..15, hForQ(BigInteger.valueOf(5), 6))
-        assertTrue(hForQ(BigInteger.valueOf(7), 2).isEmpty())
-        assertTrue(hForQ(BigInteger.valueOf(15), 4).isEmpty())
+        assertTrue(hForQ(BigInteger.valueOf(5), 2, 201).isEmpty())
+        assertTrue(hForQ(BigInteger.valueOf(5), 3, 201).isEmpty())
+        assertTrue(hForQ(BigInteger.valueOf(5), 6, 201).isEmpty())
+        assertTrue(hForQ(BigInteger.valueOf(5), 88, 201).isEmpty())
+        assertTrue(hForQ(BigInteger.valueOf(7), 2, 201).isEmpty())
+        assertTrue(hForQ(BigInteger.valueOf(15), 4, 201).isEmpty())
     }
 
     @Test
@@ -141,7 +143,7 @@ class CycleSearchTest {
                 cycle(5, 7, 13, 33, 83),
                 cycle(5, 7, 17, 43, 27),
             ),
-            searchFixedQ(5, 4).toSet(),
+            searchFixedQ(5, 4, 100).toSet(),
         )
     }
 
@@ -152,47 +154,28 @@ class CycleSearchTest {
                 cycle(5, 7, 13, 33, 83),
                 cycle(5, 7, 17, 43, 27),
             ),
-            searchFixedQ(5, 4, minLength = 3).toSet(),
-        )
-    }
-
-    @Test
-    fun leastElementTraceFindsTheKnownCycles() {
-        assertEquals(setOf(cycle(5, 5, 1, 3)), traceAt(5, 2).toSet())
-        assertEquals(
-            setOf(
-                cycle(5, 7, 13, 33, 83),
-                cycle(5, 7, 17, 43, 27),
-            ),
-            traceAt(5, 3).toSet(),
-        )
-        assertEquals(
-            setOf(
-                cycle(181, 15, 27, 611),
-                cycle(181, 15, 35, 99),
-            ),
-            traceAt(181, 2).toSet(),
+            searchFixedQ(5, 4, 100, minLength = 3).toSet(),
         )
     }
 
     @Test
     fun q181Length16BoundRulesTheCycleOut() {
         val q = BigInteger.valueOf(181)
-        assertEquals(120..120, hForQ(q, 16))
+        assertTrue(hForQ(q, 16, 201).isEmpty())
         val adm = admissible(120, 16) ?: fail("missing h=120")
         assertEquals(q, adm.q)
         assertEquals(BigInteger.valueOf(44), maxLeastElement(16, 120, adm.q, adm.gap))
-        assertEquals(emptyList(), searchFixedQ(181, 16, minLength = 16))
+        assertEquals(emptyList(), searchFixedQ(181, 16, 100, minLength = 16))
     }
 
     @Test
     fun q1093Length21HasNoCycle() {
         val q = BigInteger.valueOf(1093)
-        assertEquals(212..212, hForQ(q, 21))
+        assertTrue(hForQ(q, 21, 201).isEmpty())
         val adm = admissible(212, 21) ?: fail("missing h=212")
         assertEquals(q, adm.q)
         assertEquals(BigInteger.ZERO, maxLeastElement(21, 212, adm.q, adm.gap))
-        assertEquals(emptyList(), searchFixedQ(1093, 21))
+        assertEquals(emptyList(), searchFixedQ(1093, 21, 100))
     }
 
     @Test
@@ -227,21 +210,21 @@ class CycleSearchTest {
     }
 
     @Test
-    fun q5Through20FindsTheThreeKnownCycles() {
+    fun q5Through50FindsTheThreeKnownCycles() {
         assertEquals(
             setOf(
                 cycle(5, 5, 1, 3),
                 cycle(5, 7, 13, 33, 83),
                 cycle(5, 7, 17, 43, 27),
             ),
-            searchFixedQ(5, 20).toSet(),
+            searchFixedQ(5, 50, 100).toSet(),
         )
     }
 
     @Test
     fun q5Length11WalkMatchesSplit() {
         val q = BigInteger.valueOf(5)
-        for (h in hForQ(q, 11)) {
+        for (h in hForQ(q, 11, 201)) {
             val adm = admissible(h, 11) ?: fail("missing h=$h")
             assertEquals(q, adm.q)
             val walk = walkVectors(11, h, adm.q, adm.gap)
@@ -250,17 +233,6 @@ class CycleSearchTest {
             fail("h=$h walk=${walk.size} split=${split.size} missed=${(walk - split).take(8)} extra=${(split - walk).take(8)}")
         }
     }
-}
-
-private fun traceAt(q: Int, length: Int): List<Cycle> {
-    val qBig = BigInteger.valueOf(q.toLong())
-    val found = mutableListOf<Cycle>()
-    for (h in hForQ(qBig, length)) {
-        val adm = admissible(h, length) ?: fail("missing h=$h")
-        assertEquals(qBig, adm.q)
-        found += traceByLeastElement(length, h, adm.q, adm.gap)
-    }
-    return found
 }
 
 private fun walkVectors(length: Int, h: Int, q: BigInteger, gap: BigInteger): Set<String> {

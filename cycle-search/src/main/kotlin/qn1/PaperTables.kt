@@ -22,46 +22,6 @@ internal val ANY_ROWS: List<LengthRow> = listOf(
     LengthRow(9, 320),
 )
 
-/** Fixed q. The first entry is q = 5 through length 20; the rest are the odd q from 7 through 25. */
-internal val FIXED_Q_ROWS: List<Pair<Int, Int>> = listOf(5 to 20) + (7..25 step 2).map { it to 16 }
-
-internal fun runTables(table: String, length: Int?, maxH: Int?, q: Int?, maxLength: Int?) {
-    when (table) {
-        "through1" -> for (row in selectedRows(THROUGH1_ROWS, length, maxH)) {
-            println(formatSweep("through 1", row, searchThroughOne(row.length, row.maxH)))
-        }
-        "any" -> for (row in selectedRows(ANY_ROWS, length, maxH)) {
-            println(formatSweep("any", row, searchLength(row.length, row.maxH)))
-        }
-        "q" -> runFixedQTable(q, maxLength)
-        else -> usage()
-    }
-}
-
-private fun selectedRows(rows: List<LengthRow>, length: Int?, maxH: Int?): List<LengthRow> {
-    if (length == null && maxH == null) return rows
-    if (length == null) usage()
-    val published = rows.firstOrNull { it.length == length }
-    val limit = maxH ?: published?.maxH ?: usage()
-    if (length < MIN_CYCLE_LENGTH || limit < 1) usage()
-    return listOf(LengthRow(length, limit))
-}
-
-private fun runFixedQTable(q: Int?, maxLength: Int?) {
-    val rows = if (q == null) {
-        if (maxLength != null) usage()
-        FIXED_Q_ROWS
-    } else {
-        val published = FIXED_Q_ROWS.firstOrNull { it.first == q }?.second
-        val limit = maxLength ?: published ?: usage()
-        listOf(q to limit)
-    }
-    for ((multiplier, longest) in rows) {
-        val cycles = searchFixedQ(multiplier, longest)
-        println("q=$multiplier lengths 2 through $longest: ${cycles.size} cycles")
-    }
-}
-
 internal fun formatSweep(kind: String, row: LengthRow, cycles: Collection<Cycle>): String {
     val ordered = cycles.sortedWith(compareBy({ it.q }, { it.h }, { it.elements.minOrNull() }))
     val head = "$kind L=${row.length} h<=${row.maxH}: ${ordered.size} cycles, q below 2^${row.qBelowExponent}"

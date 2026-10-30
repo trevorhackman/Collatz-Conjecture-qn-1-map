@@ -2,7 +2,6 @@ package qn1
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class BoundTablesTest {
     @Test
@@ -34,9 +33,6 @@ class BoundTablesTest {
             mapOf(2 to 160_000, 3 to 2_333, 4 to 1_375, 5 to 900, 6 to 233, 7 to 135, 8 to 58, 9 to 35),
             ANY_ROWS.associate { it.length to it.qBelowExponent },
         )
-        assertEquals(20, FIXED_Q_ROWS.first { it.first == 5 }.second)
-        assertEquals((7..25 step 2).toList(), FIXED_Q_ROWS.filter { it.first != 5 }.map { it.first })
-        assertTrue(FIXED_Q_ROWS.filter { it.first != 5 }.all { it.second == 16 })
     }
 
     @Test

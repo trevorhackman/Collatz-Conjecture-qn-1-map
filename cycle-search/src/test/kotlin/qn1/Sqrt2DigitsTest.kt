@@ -8,10 +8,9 @@ import kotlin.test.assertTrue
 class Sqrt2DigitsTest {
     @Test
     fun publishedPlaceCountMatchesTheCubeScan() {
-        assertEquals(DIGIT_PLACES, SQRT2_PLACES)
         assertEquals(1, SQRT2_M_MIN)
         assertEquals(1_073_741_822, maxSqrt2Places())
-        assertTrue(sqrt2PlacesFit(SQRT2_PLACES))
+        assertTrue(sqrt2PlacesFit(1_072_000_000))
     }
 
     @Test

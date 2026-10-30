@@ -4,10 +4,7 @@ import java.math.BigInteger
 import kotlin.system.exitProcess
 import kotlin.system.measureTimeMillis
 
-/** Binary places of √2. Same machine limit as [DIGIT_PLACES]. */
-internal const val SQRT2_PLACES = DIGIT_PLACES
-
-/** First m whose places are scanned. */
+/** First m whose places are scanned. The expansion starts at place 1. */
 internal const val SQRT2_M_MIN = 1
 
 /** Longest zero run in the fractional bits, and the first starts m of the runs that attain it. */

@@ -4,9 +4,6 @@ import java.math.BigInteger
 import kotlin.system.exitProcess
 import kotlin.system.measureTimeMillis
 
-/** Binary places of 2^{1/3} and 2^{2/3} in the computations appendix. */
-internal const val DIGIT_PLACES = 1_072_000_000
-
 /** Alternating block 0,1,0,1,… of this length is the one named in Paper I. */
 internal const val DIGIT_BLOCK = 48
 
@@ -45,17 +42,16 @@ internal data class DigitRoot(
     /** Last m whose next [ZeroRunHits.longest] + 1 places lie inside the expansion. */
     val zeroMUpper: Int get() = places - zeros.longest - 1
 
-    fun lines(): List<String> {
+    fun line(): String {
         val upper = places - 1
         val range = if (upper < DIGIT_M_MIN) {
             "no m >= $DIGIT_M_MIN"
         } else {
             "m from $DIGIT_M_MIN through $upper"
         }
-        return listOf(
-            "2^{$r/3}: ${runPhrase("alternating", runs.longest, runs.count, runs.first)} for $range",
-            "2^{$r/3}: ${runPhrase("zero", zeros.longest, zeros.count, zeros.first)} for $range",
-        )
+        val alternating = runPhrase("alternating", runs.longest, runs.count, runs.first)
+        val zero = runPhrase("zero", zeros.longest, zeros.count, zeros.first)
+        return "2^{$r/3}: $alternating, $zero, for $range"
     }
 }
 
@@ -73,7 +69,7 @@ internal fun runDigits(places: Int) {
     val ms = measureTimeMillis {
         for (r in 1..2) {
             val root = scanRootDigits(places, r) { System.err.println(it) }
-            for (text in root.lines()) println(text)
+            println(root.line())
         }
     }
     println("digit scan in ${ms / 1000.0}s")

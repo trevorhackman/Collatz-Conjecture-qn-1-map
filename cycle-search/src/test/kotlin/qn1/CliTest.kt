@@ -7,16 +7,17 @@ import kotlin.test.assertFailsWith
 class CliTest {
     @Test
     fun fixedQNamesTheMultiplierAndTheLongestCycle() {
-        val cli = parseCli(arrayOf("--q", "1093", "--max-length", "200"))
+        val cli = parseCli(arrayOf("--q", "1093", "--max-length", "200", "--checked-odds", "100"))
         assertEquals(SearchMode.FIXED_Q, cli.mode)
         assertEquals(1093, cli.q)
         assertEquals(2, cli.minLength)
         assertEquals(200, cli.maxLength)
+        assertEquals(100, cli.checkedOdds)
     }
 
     @Test
     fun fixedQStartsAtTheGivenLength() {
-        val cli = parseCli(arrayOf("--q", "1093", "--min-length", "201", "--max-length", "250"))
+        val cli = parseCli(arrayOf("--q", "1093", "--min-length", "201", "--max-length", "250", "--checked-odds", "40"))
         assertEquals(201, cli.minLength)
         assertEquals(250, cli.maxLength)
     }
@@ -24,7 +25,7 @@ class CliTest {
     @Test
     fun minLengthCannotPassMaxLength() {
         assertFailsWith<IllegalArgumentException> {
-            parseCli(arrayOf("--q", "1093", "--min-length", "30", "--max-length", "20"))
+            parseCli(arrayOf("--q", "1093", "--min-length", "30", "--max-length", "20", "--checked-odds", "10"))
         }
     }
 
@@ -39,43 +40,23 @@ class CliTest {
     }
 
     @Test
-    fun omittedOptionsTakeTheDefaults() {
-        val any = parseCli(emptyArray())
-        assertEquals(SearchMode.ANY, any.mode)
-        assertEquals(DEFAULT_LENGTH, any.length)
-        assertEquals(DEFAULT_MAX_H, any.maxH)
-
-        val throughOne = parseCli(arrayOf("--through-1"))
-        assertEquals(SearchMode.THROUGH_1, throughOne.mode)
-        assertEquals(THROUGH1_DEFAULT_LENGTH, throughOne.length)
-        assertEquals(THROUGH1_DEFAULT_MAX_H, throughOne.maxH)
-
-        val fixed = parseCli(arrayOf("--q", "9"))
-        assertEquals(SearchMode.FIXED_Q, fixed.mode)
-        assertEquals(9, fixed.q)
-        assertEquals(MIN_CYCLE_LENGTH, fixed.minLength)
-        assertEquals(Q_DEFAULT_MAX_LENGTH, fixed.maxLength)
-
-        val digits = parseCli(arrayOf("--digits", "cbrt2"))
-        assertEquals(SearchMode.DIGITS, digits.mode)
-        assertEquals("cbrt2", digits.digits)
-        assertEquals(DIGIT_PLACES, digits.places)
+    fun omittedBoundsAreRejected() {
+        assertFailsWith<IllegalArgumentException> { parseCli(emptyArray()) }
+        assertFailsWith<IllegalArgumentException> { parseCli(arrayOf("--through-1")) }
+        assertFailsWith<IllegalArgumentException> { parseCli(arrayOf("--q", "9")) }
+        assertFailsWith<IllegalArgumentException> { parseCli(arrayOf("--q", "9", "--max-length", "10")) }
+        assertFailsWith<IllegalArgumentException> { parseCli(arrayOf("--digits", "cbrt2")) }
 
         val sqrt2 = parseCli(arrayOf("--digits", "sqrt2", "--places", "1000"))
         assertEquals(SearchMode.DIGITS, sqrt2.mode)
         assertEquals("sqrt2", sqrt2.digits)
         assertEquals(1000, sqrt2.places)
-
-        val tables = parseCli(arrayOf("--tables", "through1"))
-        assertEquals(SearchMode.TABLES, tables.mode)
-        assertEquals("through1", tables.table)
-        assertEquals(null, tables.length)
     }
 
     @Test
     fun anEvenMultiplierIsRejected() {
         assertFailsWith<IllegalArgumentException> {
-            parseCli(arrayOf("--q", "4"))
+            parseCli(arrayOf("--q", "4", "--max-length", "10", "--checked-odds", "1"))
         }
     }
 
@@ -83,13 +64,6 @@ class CliTest {
     fun twoModesAreRejected() {
         assertFailsWith<IllegalArgumentException> {
             parseCli(arrayOf("--q", "5", "--through-1"))
-        }
-    }
-
-    @Test
-    fun maxHNeedsALengthOnATable() {
-        assertFailsWith<IllegalArgumentException> {
-            parseCli(arrayOf("--tables", "any", "--max-h", "100"))
         }
     }
 

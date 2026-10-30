@@ -9,11 +9,11 @@ import kotlin.test.assertTrue
 class DigitScanTest {
     @Test
     fun publishedPlaceCountIsTheAppendixScan() {
-        assertEquals(1_072_000_000, DIGIT_PLACES)
+        val places = 1_072_000_000
         assertEquals(48, DIGIT_BLOCK)
         assertEquals(1, DIGIT_M_MIN)
-        assertEquals(1_071_999_953, DIGIT_PLACES - DIGIT_BLOCK + 1)
-        assertTrue(digitsFit(DIGIT_PLACES))
+        assertEquals(places - DIGIT_BLOCK + 1, 1_071_999_953)
+        assertTrue(digitsFit(places))
     }
 
     @Test

@@ -7,28 +7,13 @@ import java.util.concurrent.atomic.AtomicInteger
 import kotlin.system.exitProcess
 import kotlin.system.measureTimeMillis
 
-/** All starting values, no arguments: most halvings. One length. */
-internal const val DEFAULT_MAX_H = 1500
-/** All starting values, no arguments: that length. */
-internal const val DEFAULT_LENGTH = 6
-
-/** Through 1, no arguments: most halvings. One length. */
-internal const val THROUGH1_DEFAULT_MAX_H = 66100
-/** Through 1, no arguments: that length. */
-internal const val THROUGH1_DEFAULT_LENGTH = 3
-
-/** Fixed q, no arguments: that odd multiplier. */
-internal const val Q_DEFAULT = 5
-/** Fixed q, no arguments: longest cycle. Lengths run from 2 through this one. */
-internal const val Q_DEFAULT_MAX_LENGTH = 20
-
-/** Length 1 is C(x)=x, so x(2^h-q)=1: only x=1 and q=2^h-1. */
+/** Length 1 is C(x)=x, so x(2^h-q)=1: only x=1 and q=2^h-1. The search starts at length 2. */
 internal const val MIN_CYCLE_LENGTH = 2
 
 /** Lengths through this one walk the counts. Longer lengths split the numerator. */
 private const val WALK_MAX_LENGTH = 3
 
-/** A walked half this deep is the fixed-q cost. The least-element bound is cheaper there. */
+/** A walked half this deep is not stored. The counts are walked from the start. */
 private const val DEEP_RIGHT_COUNT = 7
 
 private const val PARALLEL_PROGRESS_STRIDE = 25
@@ -48,15 +33,8 @@ private const val LEFT_STATE_BYTES = 96.0
 private const val TABLE_BUDGET_BYTES = 12.0 * 1024 * 1024 * 1024
 
 /**
- * Odd starts followed when the left partial sums do not fit in one long, or the packed table is past [PACKED_STATE_LIMIT].
- * The least element of a cycle is at most the numerator bound; above this many starts the trace is refused.
- */
-private val TRACE_LEAST_LIMIT: BigInteger = BigInteger.valueOf(1_000_000)
-
-/**
  * Packed left tables no larger than this stay on the split search.
- * A larger estimate, or a walked half of [DEEP_RIGHT_COUNT] sums, uses the least-element bound
- * when that bound is at most [TRACE_LEAST_LIMIT].
+ * A larger estimate, or a walked half of [DEEP_RIGHT_COUNT] sums, walks the counts from the start.
  */
 private const val PACKED_STATE_LIMIT = 50_000_000.0
 
@@ -72,28 +50,19 @@ private val MIN_ODD_Q: BigInteger = BigInteger.valueOf(3)
  *
  * Named options, as parsed by [parseCli].
  *
- * `--length` and `--max-h` search one length over every odd element.
+ * `--length` and `--max-h` are both required. They search one length over every odd element.
  * The representative starts at the least element, so each halving count satisfies
  * `2^{k_i} <= q U_{i-1} + 1` with `U_0 = 1` and `U_i = (q U_{i-1} + 1) / 2^{k_i}`.
- * Omitted values are [DEFAULT_LENGTH] and [DEFAULT_MAX_H].
  *
- * `--through-1` follows only the orbit of 1. There is no tuple enumeration, so `--max-h`
- * can sit far above an all-starting-values search. Omitted values are [THROUGH1_DEFAULT_LENGTH]
- * and [THROUGH1_DEFAULT_MAX_H].
+ * `--through-1` follows only the orbit of 1. `--length` and `--max-h` are both required.
+ * There is no tuple enumeration, so `--max-h` can sit far above an all-starting-values search.
  *
- * `--q`, `--min-length`, and `--max-length` fix the odd multiplier and the lengths to search.
- * The only values of `h` are those with this `q = floor(2^{h/L})`. When the left partial sums
- * do not fit in one long, or the packed table is past [PACKED_STATE_LIMIT], or the walked half
- * has [DEEP_RIGHT_COUNT] sums, and the least element is at most [TRACE_LEAST_LIMIT], every odd
- * start up to that bound is followed.
- * Omitted values are [Q_DEFAULT], [MIN_CYCLE_LENGTH], and [Q_DEFAULT_MAX_LENGTH].
+ * `--q`, `--max-length`, and `--checked-odds` are all required. `--min-length` starts at [MIN_CYCLE_LENGTH] when omitted.
+ * `--checked-odds` is how many leading odd positives are followed before the halving search.
+ * The halving counts of each admissible `h` are searched.
  *
- * `--tables through1`, `--tables any`, and `--tables q` rerun the Paper I computation tables.
- * `--length` or `--q` selects one published row. `--max-h` or `--max-length` overrides that row's limit.
- *
- * `--digits cbrt2` scans the first [DIGIT_PLACES] binary places of 2^{1/3} and of 2^{2/3}.
- * `--digits sqrt2` scans the first [SQRT2_PLACES] binary places of √2.
- * `--places` scans fewer. Both scans begin at m = 1.
+ * `--digits cbrt2` or `--digits sqrt2` requires `--places`.
+ * Both scans begin at m = 1.
  * The cube-root scan reports the longest alternating run and the longest zero run.
  * The square-root scan reports the longest zero run.
  */
@@ -105,8 +74,12 @@ fun main(args: Array<String>) {
         usage()
     }
     when (cli.mode) {
-        SearchMode.FIXED_Q -> searchFixedQ(cli.q!!, cli.maxLength!!, cli.minLength!!)
-        SearchMode.TABLES -> runTables(cli.table!!, cli.length, cli.maxH, cli.q, cli.maxLength)
+        SearchMode.FIXED_Q -> searchFixedQ(
+            cli.q!!,
+            cli.maxLength!!,
+            cli.checkedOdds!!,
+            cli.minLength!!,
+        )
         SearchMode.DIGITS -> when (cli.digits) {
             "cbrt2" -> runDigits(cli.places!!)
             "sqrt2" -> runSqrt2(cli.places!!)
@@ -134,10 +107,8 @@ private fun runLengthSearch(cli: Cli) {
 internal fun usage(): Nothing {
     System.err.println("usage: --length N --max-h N")
     System.err.println("       --through-1 --length N --max-h N")
-    System.err.println("       --q N [--min-length N] --max-length N")
-    System.err.println("       --tables through1|any [--length N] [--max-h N]")
-    System.err.println("       --tables q [--q N] [--max-length N]")
-    System.err.println("       --digits cbrt2|sqrt2 [--places N]")
+    System.err.println("       --q N --max-length N --checked-odds N [--min-length N]")
+    System.err.println("       --digits cbrt2|sqrt2 --places N")
     exitProcess(1)
 }
 
@@ -258,47 +229,122 @@ private fun storedHalfCount(length: Int, h: Int): Int {
 
 /**
  * Every cycle for one odd [q], of length [minLength] through [maxLength].
- * A length whose power window contains no integer h has no cycle.
+ * [checkedOdds] leading odd positives are followed first.
+ * Every other cycle has distinct elements at least `2 * checkedOdds + 1`, so its h lies under that product.
  */
-fun searchFixedQ(q: Int, maxLength: Int, minLength: Int = MIN_CYCLE_LENGTH): List<Cycle> {
+fun searchFixedQ(q: Int, maxLength: Int, checkedOdds: Int, minLength: Int = MIN_CYCLE_LENGTH): List<Cycle> {
     require(q >= MIN_ODD_Q.intValueExact() && q % 2 == 1)
+    require(checkedOdds >= 1)
     require(minLength >= MIN_CYCLE_LENGTH)
     require(maxLength >= minLength)
     val qBig = BigInteger.valueOf(q.toLong())
+    val smallest = checkedOdds * 2 + 1
     val found = mutableListOf<Cycle>()
+    var rowMs = 0L
+    val fromOdds = mutableListOf<Cycle>()
+    rowMs += measureTimeMillis {
+        fromOdds += cyclesThroughFirstOdds(qBig, checkedOdds, minLength, maxLength)
+    }
     for (length in minLength..maxLength) {
-        val hs = hForQ(qBig, length)
-        if (hs.isEmpty()) {
-            println("q=$q L=$length: no h")
-            continue
-        }
-        val batch = mutableListOf<Cycle>()
+        val hs = hForQ(qBig, length, smallest)
+        val batch = fromOdds.filter { it.elements.size == length }.toMutableList()
         val ms = measureTimeMillis {
             for (h in hs) {
                 val adm = admissible(h, length) ?: continue
                 if (adm.q != qBig) continue
-                batch += cyclesAt(length, h, adm.q, adm.gap)
+                for (cycle in cyclesAt(length, h, adm.q, adm.gap)) {
+                    if (cycle !in batch) batch += cycle
+                }
             }
         }
+        rowMs += ms
+        if (hs.isEmpty() && batch.isEmpty()) {
+            println("q=$q L=$length: no h")
+            continue
+        }
         batch.sortWith(compareBy({ it.h }, { it.elements.minOrNull() }))
-        val hText = if (hs.first == hs.last) "${hs.first}" else "${hs.first}..${hs.last}"
+        val hText = when {
+            hs.isEmpty() -> "checked odds"
+            hs.first == hs.last -> "${hs.first}"
+            else -> "${hs.first}..${hs.last}"
+        }
         println("q=$q L=$length h=$hText: ${batch.size} cycles in ${ms / 1000.0}s")
         for (cycle in batch) println("  $cycle")
         found += batch
     }
+    println("q=$q lengths $minLength through $maxLength: ${found.size} cycles in ${"%.3f".format(rowMs / 1000.0)}s")
     return found
 }
 
 /**
- * Integers `h` with `q^L < 2^h < (q+1)^L`.
- * Empty when that q is not `floor(2^{h/L})` for any h.
+ * Integers `h` with `q^L < 2^h` and `2^h` at most the product of `q + 1/x`
+ * over [length] odds beginning at [smallestOdd].
+ * Empty when this `q` is not `floor(2^{h/L})` for any such `h`.
  */
-internal fun hForQ(q: BigInteger, length: Int): IntRange {
+internal fun hForQ(q: BigInteger, length: Int, smallestOdd: Int): IntRange {
     val hMin = q.pow(length).bitLength()
     val upper = q.add(BigInteger.ONE).pow(length)
-    val hMax = if (upper.bitCount() == 1) upper.bitLength() - 2 else upper.bitLength() - 1
+    var hMax = if (upper.bitCount() == 1) upper.bitLength() - 2 else upper.bitLength() - 1
+    val capped = maxHForDistinctOdds(q, length, smallestOdd)
+    if (capped < hMax) hMax = capped
     if (hMin > hMax) return 1..0
     return hMin..hMax
+}
+
+/**
+ * Largest `h` with `2^h` at most the product of `q + 1/x` over the [length] odds from [smallest].
+ * Equality is the case where those odds are the elements, so that `h` stays in the search.
+ */
+internal fun maxHForDistinctOdds(q: BigInteger, length: Int, smallest: Int): Int {
+    var prodX = BigInteger.ONE
+    var prodTerm = BigInteger.ONE
+    var x = smallest
+    repeat(length) {
+        val odd = BigInteger.valueOf(x.toLong())
+        prodX = prodX.multiply(odd)
+        prodTerm = prodTerm.multiply(q.multiply(odd).add(BigInteger.ONE))
+        x += 2
+    }
+    val quotient = prodTerm.divide(prodX)
+    if (quotient.signum() <= 0) return 0
+    return quotient.bitLength() - 1
+}
+
+/** Cycles of length [minLength] through [maxLength] that contain one of the first [checkedOdds] odd positives. */
+private fun cyclesThroughFirstOdds(
+    q: BigInteger,
+    checkedOdds: Int,
+    minLength: Int,
+    maxLength: Int,
+): List<Cycle> {
+    val found = mutableListOf<Cycle>()
+    var start = 1
+    repeat(checkedOdds) {
+        val cycle = cycleFromOrbit(q, BigInteger.valueOf(start.toLong()), maxLength)
+        if (cycle != null && cycle.elements.size >= minLength && cycle !in found) found += cycle
+        start += 2
+    }
+    return found
+}
+
+/** The cycle through [start] when that orbit first returns within [limit] steps. */
+private fun cycleFromOrbit(q: BigInteger, start: BigInteger, limit: Int): Cycle? {
+    val length = cycleLengthThrough(q, start, limit) ?: return null
+    val orbit = trace(q, start, length) ?: return null
+    return canonical(q, orbit)
+}
+
+/** Steps until the orbit of [start] returns to [start], or null if it does not return within [limit] steps. */
+private fun cycleLengthThrough(q: BigInteger, start: BigInteger, limit: Int): Int? {
+    var a = start
+    for (step in 1..limit) {
+        val t = q.multiply(a).add(BigInteger.ONE)
+        val k = t.lowestSetBit
+        if (k <= 0) return null
+        a = t.shiftRight(k)
+        if (a == start) return step
+    }
+    return null
 }
 
 /**
@@ -377,67 +423,36 @@ internal fun admissible(h: Int, length: Int): Admissible? {
     return Admissible(q, twoH.subtract(qPow))
 }
 
-private fun cyclesAt(length: Int, h: Int, q: BigInteger, gap: BigInteger): List<Cycle> {
+private fun cyclesAt(
+    length: Int,
+    h: Int,
+    q: BigInteger,
+    gap: BigInteger,
+): List<Cycle> {
     // 2^h and q^L differ by 1 only for the Catalan pair, which has the other sign.
     if (gap <= BigInteger.ONE) return emptyList()
-    if (length > WALK_MAX_LENGTH) {
-        val packed = sumsPackIntoOneLong(length, h)
-        if (!packed) return traceByLeastElement(length, h, q, gap)
-        val stored = storedHalfCount(length, h)
-        val states = estimatedLeftStates(length, h, stored)
-        val right = length - 1 - stored
-        if (states > PACKED_STATE_LIMIT || right >= DEEP_RIGHT_COUNT) {
-            val least = maxLeastElement(length, h, q, gap)
-            if (least <= TRACE_LEAST_LIMIT) return followLeastElement(length, h, q, least)
-        }
-    }
     val found = mutableListOf<Cycle>()
     val accept = CycleRecorder(found, length, h, q, gap)
     if (length == 2) forEachLength2(h, q, gap, accept)
     else if (length == 3) forEachLength3(h, q, gap, accept)
-    else if (length <= WALK_MAX_LENGTH) forEachWalk(length, h, q, gap, accept)
-    else forEachSplit(length, h, q, gap, accept)
+    else if (distributionSplitFits(length, h)) forEachSplit(length, h, q, gap, accept)
+    else forEachWalk(length, h, q, gap, accept)
     return found
+}
+
+/** True when the stored half of the counts fits in one long and the walked half stays shallow. */
+private fun distributionSplitFits(length: Int, h: Int): Boolean {
+    if (!sumsPackIntoOneLong(length, h)) return false
+    val stored = storedHalfCount(length, h)
+    val states = estimatedLeftStates(length, h, stored)
+    val right = length - 1 - stored
+    return states <= PACKED_STATE_LIMIT && right < DEEP_RIGHT_COUNT
 }
 
 /** True when [SplitSearch] can store every left partial sum in one long. */
 private fun sumsPackIntoOneLong(length: Int, h: Int): Boolean {
     if (h > MAX_PACKED_H) return false
     return storedHalfCount(length, h) * bitsForSums(h) <= 64
-}
-
-/**
- * Every cycle of this length, `q`, and `h`.
- * The least element is at most [maxLeastElement], so following each odd start up to that bound finds the cycle.
- */
-internal fun traceByLeastElement(
-    length: Int,
-    h: Int,
-    q: BigInteger,
-    gap: BigInteger,
-): List<Cycle> {
-    val least = maxLeastElement(length, h, q, gap)
-    require(least <= TRACE_LEAST_LIMIT) {
-        "least element bound $least at length $length h=$h is above $TRACE_LEAST_LIMIT"
-    }
-    return followLeastElement(length, h, q, least)
-}
-
-/** Every cycle whose least element is at most [least]. A non-positive bound means there is no cycle. */
-private fun followLeastElement(length: Int, h: Int, q: BigInteger, least: BigInteger): List<Cycle> {
-    if (least.signum() <= 0) return emptyList()
-    val found = mutableListOf<Cycle>()
-    var x = BigInteger.ONE
-    val two = BigInteger.TWO
-    while (x <= least) {
-        val orbit = trace(q, x, length)
-        if (orbit != null && orbit.minOrNull() == x) {
-            val cycle = canonical(q, orbit)
-            if (cycle.h == h) found += cycle
-        }
-        x = x.add(two)
-    }
-    return found
 }
 
 /**

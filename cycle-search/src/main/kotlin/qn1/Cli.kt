@@ -4,16 +4,15 @@ internal enum class SearchMode {
     ANY,
     THROUGH_1,
     FIXED_Q,
-    TABLES,
     DIGITS,
 }
 
 /**
  * One invocation of the search.
  * [length] and [maxH] are set for [SearchMode.ANY] and [SearchMode.THROUGH_1].
- * [q], [minLength], and [maxLength] are set for [SearchMode.FIXED_Q].
+ * [q], [minLength], [maxLength], and [checkedOdds] are set for [SearchMode.FIXED_Q].
  * [places] and [digits] are set for [SearchMode.DIGITS].
- * [table] is set for [SearchMode.TABLES]. The other fields stay unset when the flag was omitted.
+ * The other fields stay unset when the flag was omitted.
  */
 internal data class Cli(
     val mode: SearchMode,
@@ -23,11 +22,13 @@ internal data class Cli(
     val minLength: Int? = null,
     val maxLength: Int? = null,
     val places: Int? = null,
-    val table: String? = null,
     val digits: String? = null,
+    val checkedOdds: Int? = null,
 )
 
-private val VALUE_FLAGS = setOf("q", "length", "max-h", "min-length", "max-length", "places", "tables", "digits")
+private val VALUE_FLAGS = setOf(
+    "q", "length", "max-h", "min-length", "max-length", "places", "digits", "checked-odds",
+)
 private val SWITCHES = setOf("through-1")
 private val DIGIT_ROOTS = setOf("cbrt2", "sqrt2")
 
@@ -69,11 +70,10 @@ private fun interpret(values: Map<String, String>, switches: Set<String>): Cli {
     val modes = buildList {
         if ("through-1" in switches) add(SearchMode.THROUGH_1)
         if ("digits" in values) add(SearchMode.DIGITS)
-        if ("tables" in values) add(SearchMode.TABLES)
-        if ("q" in values && "tables" !in values) add(SearchMode.FIXED_Q)
+        if ("q" in values) add(SearchMode.FIXED_Q)
     }
     if (modes.size > 1) {
-        throw IllegalArgumentException("choose one of --q, --through-1, --tables, --digits")
+        throw IllegalArgumentException("choose one of --q, --through-1, --digits")
     }
     val mode = modes.singleOrNull() ?: SearchMode.ANY
     val length = optionalInt(values, "length")
@@ -82,63 +82,43 @@ private fun interpret(values: Map<String, String>, switches: Set<String>): Cli {
     val minLength = optionalInt(values, "min-length")
     val maxLength = optionalInt(values, "max-length")
     val places = optionalInt(values, "places")
-    val table = values["tables"]
     val digits = values["digits"]
+    val checkedOdds = optionalInt(values, "checked-odds")
     when (mode) {
         SearchMode.ANY -> {
-            reject(values, switches, "q", "min-length", "max-length", "places", "tables", "through-1", "digits")
-            requireRange(length ?: DEFAULT_LENGTH, maxH ?: DEFAULT_MAX_H)
-            return Cli(mode, length = length ?: DEFAULT_LENGTH, maxH = maxH ?: DEFAULT_MAX_H)
+            reject(values, switches, "q", "min-length", "max-length", "places", "through-1", "digits", "checked-odds")
+            if (length == null || maxH == null) {
+                throw IllegalArgumentException("--length and --max-h are required")
+            }
+            requireRange(length, maxH)
+            return Cli(mode, length = length, maxH = maxH)
         }
         SearchMode.THROUGH_1 -> {
-            reject(values, switches, "q", "min-length", "max-length", "places", "tables", "digits")
-            requireRange(length ?: THROUGH1_DEFAULT_LENGTH, maxH ?: THROUGH1_DEFAULT_MAX_H)
-            return Cli(
-                mode,
-                length = length ?: THROUGH1_DEFAULT_LENGTH,
-                maxH = maxH ?: THROUGH1_DEFAULT_MAX_H,
-            )
+            reject(values, switches, "q", "min-length", "max-length", "places", "digits", "checked-odds")
+            if (length == null || maxH == null) {
+                throw IllegalArgumentException("--length and --max-h are required")
+            }
+            requireRange(length, maxH)
+            return Cli(mode, length = length, maxH = maxH)
         }
         SearchMode.FIXED_Q -> {
-            reject(values, switches, "length", "max-h", "places", "tables", "through-1", "digits")
-            val multiplier = q ?: Q_DEFAULT
+            reject(values, switches, "length", "max-h", "places", "through-1", "digits")
+            if (q == null) throw IllegalArgumentException("--q is required")
+            if (maxLength == null) throw IllegalArgumentException("--max-length is required")
+            if (checkedOdds == null) throw IllegalArgumentException("--checked-odds is required")
             val first = minLength ?: MIN_CYCLE_LENGTH
-            val longest = maxLength ?: Q_DEFAULT_MAX_LENGTH
-            requireOddQ(multiplier)
+            requireOddQ(q)
+            if (checkedOdds < 1) throw IllegalArgumentException("--checked-odds must be positive")
             if (first < MIN_CYCLE_LENGTH) throw IllegalArgumentException("--min-length must be at least $MIN_CYCLE_LENGTH")
-            if (longest < first) throw IllegalArgumentException("--max-length must be at least --min-length")
-            return Cli(mode, q = multiplier, minLength = first, maxLength = longest)
+            if (maxLength < first) throw IllegalArgumentException("--max-length must be at least --min-length")
+            return Cli(mode, q = q, minLength = first, maxLength = maxLength, checkedOdds = checkedOdds)
         }
         SearchMode.DIGITS -> {
-            reject(values, switches, "q", "length", "max-h", "min-length", "max-length", "tables", "through-1")
+            reject(values, switches, "q", "length", "max-h", "min-length", "max-length", "through-1", "checked-odds")
             if (digits !in DIGIT_ROOTS) throw IllegalArgumentException("--digits must be cbrt2 or sqrt2")
-            val count = places ?: DIGIT_PLACES
-            if (count < 1) throw IllegalArgumentException("--places must be positive")
-            return Cli(mode, places = count, digits = digits)
-        }
-        SearchMode.TABLES -> {
-            reject(values, switches, "min-length", "places", "through-1", "digits")
-            when (table) {
-                "through1", "any" -> {
-                    reject(values, switches, "q", "max-length")
-                    if (maxH != null && length == null) throw IllegalArgumentException("--max-h needs --length")
-                    if (length != null && length < MIN_CYCLE_LENGTH) {
-                        throw IllegalArgumentException("--length must be at least $MIN_CYCLE_LENGTH")
-                    }
-                    if (maxH != null && maxH < 1) throw IllegalArgumentException("--max-h must be positive")
-                    return Cli(mode, table = table, length = length, maxH = maxH)
-                }
-                "q" -> {
-                    reject(values, switches, "length", "max-h")
-                    if (maxLength != null && q == null) throw IllegalArgumentException("--max-length needs --q")
-                    if (q != null) requireOddQ(q)
-                    if (maxLength != null && maxLength < MIN_CYCLE_LENGTH) {
-                        throw IllegalArgumentException("--max-length must be at least $MIN_CYCLE_LENGTH")
-                    }
-                    return Cli(mode, table = table, q = q, maxLength = maxLength)
-                }
-                else -> throw IllegalArgumentException("--tables must be through1, any, or q")
-            }
+            if (places == null) throw IllegalArgumentException("--places is required")
+            if (places < 1) throw IllegalArgumentException("--places must be positive")
+            return Cli(mode, places = places, digits = digits)
         }
     }
 }
