@@ -132,6 +132,7 @@
 \begin{abstract}
 \noindent
 For the $qn+1$ map with $q$ an odd integer at least $3$, we prove that no cycle with exactly three distinct odd numbers has starting value $1$.
+For each length at least $2$, only finitely many odd $q$ have a cycle of that length, and the argument gives no bound on $q$.
 This settles the case of length $3$ in a conjecture of Santos (2020) that a cycle has starting value $1$ only when $q = 5$ or when $q$ is a Mersenne number.
 We found that for every such $q$ at least $2^{22001}$, a lower bound and an upper bound cannot hold at the same time.
 Bauer and Bennett (2018) give the exponent $\mu \approx 1.61487$, which lies just below the golden ratio, the threshold at which these bounds conflict.
@@ -148,7 +149,6 @@ Every smaller $q$ is ruled out by a direct computation.
 \label{sec:introduction}
 
 This paper studies cycles of the $qn+1$ map with starting value $1$.
-It is followed by the broader paper~\cite{hackman-ii}, which studies cycles of the same map for any starting value.
 
 Fix an odd integer $q \ge 3$.
 For an odd positive integer $n$, let $v$ be the largest integer such that $2^v$ divides $qn+1$.
@@ -191,8 +191,14 @@ Theorem~3 is ineffective: it rests on the $S$-unit form of Ridout's theorem in S
 (A finiteness result is called effective if its proof gives an explicit bound on any exception, so that a finite computation can find them all, and ineffective if it gives no such bound.)
 Theorem~1 is effective and is completed by computation.
 The proof of Theorem~3, in Section~\ref{sec:ineffective}, uses only the $S$-unit form of Ridout's theorem and Theorem~2.
-Cycles with any starting value are treated in the companion paper~\cite{hackman-ii}.
-For a cycle of length $2$ or $3$ with a constant odd starting value, that paper gives a bound on $q$ depending only on the element and the length (Theorem~3), and for Corollaries~12 to~14 the same bound is Corollary~14 of that paper.
+
+\begin{named}{Theorem 4.}
+For each $\ell \ge 2$, only finitely many odd $q$ have a cycle of $C$ of length $\ell$.
+\end{named}
+
+Theorem~4 is ineffective: it uses the general form of Ridout's theorem in Section~\ref{sec:ineffective}, and it gives no bound on $q$.
+The proof is in that section.
+Theorem~3 is the case of starting value $1$, and its proof uses only the $S$-unit form.
 
 \section{Definitions and notation}
 \label{sec:definitions}
@@ -1086,8 +1092,227 @@ Ridout's theorem then applies.
 For $\ell = 1$ that product has no factors and equals $1$, so the same identity becomes $2^h = q + 1$, and the three conclusions of Lemma~\ref{lem:power-window} fail.
 Here $2^{h/\ell} = 2^h$ is an integer, and Ridout's theorem does not apply.
 
-Cycles with any starting value are treated in the companion paper~\cite{hackman-ii}.
-The same finiteness, for a cycle with any starting value, is Theorem~2 of that paper.
+
+\begin{named}{Ridout's theorem (1958), general form.}
+Let $\alpha$ be an algebraic irrational, let $T$ be a finite set of primes, and let $\varepsilon > 0$.
+For a nonzero integer $n$ and a prime $p$, write $\lvert n \rvert_p = p^{-v_p(n)}$, where $v_p(n)$ is the largest integer $v$ such that $p^v$ divides $n$.
+Only finitely many rationals $P/Q$ in lowest terms satisfy
+\[
+Q \bigl| Q\alpha - P \bigr| \prod_{p \in T} \lvert Q \rvert_p < \max\bigl(\lvert P \rvert, Q\bigr)^{-\varepsilon}.
+\]
+\end{named}
+
+If every prime factor of $Q$ lies in $T$, then $\prod_{p \in T} \lvert Q \rvert_p = 1/Q$ and the left side equals $\lvert Q\alpha - P \rvert$.
+The general form allows prime factors of $Q$ outside $T$.
+Such a prime does not appear in the product, and it contributes its full size to the height $\max(\lvert P \rvert, Q)$.
+This form gives no bound on the exceptional fractions.
+Since $\alpha$ is irrational, the finitely many fractions that meet it for a constant $\alpha$ lie at a positive distance from $\alpha$, and these distances have a positive minimum.
+This is why Theorem~4, which uses this form, gives no bound on $q$.
+
+\begin{named}{Lemma 12 (the window for any cycle).}
+\markstmt{12}{lem:all-window}
+Let $\ell \ge 2$ and let $a = x_0$. Let $a \to x_1 \to \cdots \to x_{\ell-1} \to a$ be a cycle of length $\ell$, and let $\sigma = \sum_{i=0}^{\ell-1} 1/x_i$.
+Then
+\[
+2^h = \prod_{i=0}^{\ell-1}\left(q + \frac{1}{x_i}\right),
+\]
+so $q^\ell < 2^h < (q+1)^\ell$, and in particular $\ell \nmid h$ and $q = \lfloor 2^{h/\ell} \rfloor$.
+Writing $2^{h/\ell} = q + \delta$,
+\[
+e^{-\ell/q} \le \frac{\ell\,\delta}{\sigma} \le e^{\ell/q}.
+\]
+\end{named}
+
+\begin{proof}
+Multiplying $2^{k_i} x_i = q\, x_{i-1} + 1$ around the cycle gives the product.
+Each factor lies in $(q,\, q+1]$, with equality to $q+1$ only for an element equal to $1$.
+At most one element is $1$, and $\ell \ge 2$, so the product is strictly larger than $q^\ell$ and strictly smaller than $(q+1)^\ell$.
+A power of $2$ strictly between consecutive $\ell$-th powers is not an $\ell$-th power, so $\ell \nmid h$, and $q = \lfloor 2^{h/\ell} \rfloor$.
+In particular $0 < \delta < 1$.
+
+The binomial theorem gives
+\[
+\ell q^{\ell-1}\delta \le (q+\delta)^\ell - q^\ell \le \ell q^{\ell-1}\delta\Bigl(1 + \frac{\delta}{q}\Bigr)^{\ell-1}.
+\]
+Dividing the binomial expansion by $\ell q^{\ell-1}\delta$, the coefficient of $(\delta/q)^k$ is $\binom{\ell}{k+1}/\ell = \binom{\ell-1}{k}/(k+1) \le \binom{\ell-1}{k}$, and $\sum_{k \ge 0}\binom{\ell-1}{k}(\delta/q)^k = (1 + \delta/q)^{\ell-1}$.
+Since $\delta < 1$, this factor is at most $e^{(\ell-1)/q} \le e^{\ell/q}$.
+
+The same difference equals $\sum_{j \ge 1} e_j q^{\ell-j}$, where $e_j$ is the $j$-th elementary symmetric function of the reciprocals $1/x_i$.
+Thus $e_1 = \sigma$, and the right side is at least $q^{\ell-1}\sigma$.
+In the expansion of $\sigma^j$, each product of $j$ distinct reciprocals occurs $j!$ times, so $e_j \le \sigma^j/j!$.
+Hence the right side is at most
+\[
+\sum_{j \ge 1} \frac{\sigma^j}{j!}\, q^{\ell-j} = q^{\ell-1} \sum_{m \ge 0} \frac{\sigma^{m+1}}{(m+1)!\, q^m} \le q^{\ell-1}\sigma\, e^{\sigma/q},
+\]
+since $(m+1)! \ge m!$.
+Every element is at least $1$, so $\sigma \le \ell$ and $e^{\sigma/q} \le e^{\ell/q}$.
+Comparing the two sides gives $\ell\delta \le \sigma\, e^{\ell/q}$ and $\ell\delta\, e^{\ell/q} \ge \sigma$.
+\end{proof}
+
+\begin{named}{Lemma 13 (three approximations).}
+\markstmt{13}{lem:all-approx}
+In the setting of Lemma~\ref{lem:all-window}, write $h = \ell m + r$ with $0 < r < \ell$.
+Let $\theta_i = 2^{ir/\ell}$ for $1 \le i \le \ell-1$, let $\theta = \theta_1$, and let $y = \min(x_1, \ldots, x_{\ell-1})$.
+Suppose $q \ge 4\ell$.
+Then $2^m > q/2$, and:
+
+\begin{enumerate}
+\item $\lvert \theta - q/2^m \rvert = \delta/2^m$.
+\item For $1 \le i \le \ell-1$, the rational number $F_i = x_i/(a \cdot 2^{im - S_i})$ satisfies $\lvert \theta_i - F_i \rvert \le 2i\theta_i/(aq)$.
+\item The rational number $W = (\ell aq + 1)/(\ell a \cdot 2^m)$ satisfies $\lvert \theta - W \rvert \le 2(1/y + 2\ell/q)/q$.
+\end{enumerate}
+\end{named}
+
+\begin{proof}
+Since $2^m \theta = q + \delta$ and $\theta = 2^{r/\ell} < 2$, we have $2^m = (q+\delta)/\theta > q/2$, and part~1 follows.
+
+The relation $q\, x_{i-1} + 1 = 2^{k_i} x_i$ gives $x_i\, 2^{S_i} = a \prod_{u < i}(q + 1/x_u)$ by induction on $i$, so
+\[
+F_i = \frac{1}{2^{im}}\prod_{u < i}\Bigl(q + \frac{1}{x_u}\Bigr), \qquad \theta_i = \frac{(q+\delta)^i}{2^{im}}.
+\]
+Lemma~\ref{lem:all-window} gives $\delta \le (\sigma/\ell)\, e^{\ell/q}$.
+Every element is at least $a$, so $\sigma \le \ell/a$ and $\delta \le c/a$ with $c = e^{\ell/q} \le e^{1/4}$.
+Each factor $q + 1/x_u$ and the number $q+\delta$ therefore lie in $[q,\, q + c/a]$, and both numerators lie in $[q^i,\, (q + c/a)^i]$.
+Their difference is at most
+\[
+\Bigl(q + \frac{c}{a}\Bigr)^i - q^i = q^i\Bigl(\Bigl(1 + \frac{c}{aq}\Bigr)^i - 1\Bigr) \le \frac{ic}{a}\, q^{i-1}\, e^{ic/(aq)},
+\]
+where $e^z - 1 \le z\, e^z$.
+Dividing by $2^{im} = (q+\delta)^i/\theta_i \ge q^i/\theta_i$ gives $\lvert \theta_i - F_i \rvert \le (ic\theta_i/(aq))\, e^{ic/(aq)}$.
+Here $i \le \ell - 1$ and $aq \ge 4\ell$, so $ic/(aq) < c/4$.
+For $0 < z \le 1/3$ and $n \ge 2$, we have $n! \ge 2^{n-1}$, so $z^n/n! \le z^n/2^{n-1}$ and $\sum_{n \ge 2} z^n/2^{n-1} = z^2/(2-z)$.
+Thus $e^{1/4} < 1 + 1/4 + (1/16)/(7/4) = 9/7 < 4/3$ and $e^{1/3} < 1 + 1/3 + 1/15 = 7/5$.
+Since $c \le e^{1/4} < 4/3$, we have $c/4 < 1/3$ and $c\, e^{c/4} < (4/3) \cdot (7/5) = 28/15 < 2$.
+Thus $\lvert \theta_i - F_i \rvert \le 2i\theta_i/(aq)$.
+
+For part~3,
+\[
+\bigl\lvert \theta - W \bigr\rvert = \frac{1}{2^m}\Bigl\lvert \delta - \frac{1}{\ell a} \Bigr\rvert.
+\]
+Write $\delta - 1/(\ell a) = (\sigma - 1/a)/\ell + (\delta - \sigma/\ell)$.
+The other elements are at least $y$, so $0 \le \sigma - 1/a \le (\ell-1)/y$ and $(\sigma - 1/a)/\ell \le 1/y$.
+From the two bounds in Lemma~\ref{lem:all-window}, with $z = \ell/q$,
+\[
+\frac{\sigma}{\ell} - \delta \le \frac{\sigma}{\ell}\bigl(1 - e^{-z}\bigr), \qquad \delta - \frac{\sigma}{\ell} \le \frac{\sigma}{\ell}\bigl(e^z - 1\bigr).
+\]
+The inequality $1 - e^{-z} \le e^z - 1 \le z\, e^z$ and $\sigma \le \ell$ give $\lvert \delta - \sigma/\ell \rvert \le (\ell/q)\, e^{\ell/q}$.
+Since $q \ge 4\ell$, this is at most $(\ell/q)\, e^{1/4} < 2\ell/q$.
+Therefore $\lvert \delta - 1/(\ell a) \rvert \le 1/y + 2\ell/q$.
+Dividing by $2^m > q/2$ gives part~3.
+\end{proof}
+
+\begin{named}{Theorem 4.}
+\markstmt{4}{thm:all-finite}
+For each $\ell \ge 2$, only finitely many odd $q$ have a cycle of $C$ of length $\ell$.
+\end{named}
+
+\begin{proof}[Proof of Theorem~\ref{thm:all-finite}]
+Fix $\ell \ge 2$, and set $\varepsilon = 1/(10\ell)$.
+Let $T$ be the finite set consisting of $2$ and the prime factors of $\ell$, and let $\Theta$ be the set of real numbers $2^{t/\ell}$ with $1 \le t \le \ell(\ell-1)$ and $\ell \nmid t$.
+Each element of $\Theta$ is an algebraic irrational.
+Apply the general form of Ridout's theorem to each $\theta' \in \Theta$, with this $T$ and $\varepsilon$.
+Only finitely many fractions meet the inequality, and none equals $\theta'$, so there is an $\eta > 0$ such that every such fraction satisfies $\lvert \theta' - P/d \rvert \ge \eta$.
+The value of $\eta$ is not provided by Ridout's theorem.
+The odd $q < 4\ell$ are finite in number, so take an odd $q \ge 4\ell$ with a cycle of length $\ell$, in the notation of Lemmas~\ref{lem:all-window} and~\ref{lem:all-approx}.
+Then $\theta \in \Theta$.
+Each $\theta_i$ either lies in $\Theta$ or is a power of $2$.
+
+Consider the fraction $q/2^m$, which is in lowest terms.
+Its left side in the general form equals $2^m \cdot \delta \cdot 2^{-m} = \delta$, since $\lvert 2^m \rvert_p = 1$ for every odd prime $p$.
+Also $\max(q,\, 2^m) < q+1$, because $2^m = (q+\delta)/\theta < (q+1)/\theta < q+1$.
+If $\delta < (q+1)^{-\varepsilon}$, then $\delta < \max(q,\, 2^m)^{-\varepsilon}$, so Ridout's inequality applies and $\delta/2^m \ge \eta$.
+Combined with $2^m > q/2$ this yields $q < 2/\eta$.
+
+Now assume $\delta \ge (q+1)^{-\varepsilon}$.
+Lemma~\ref{lem:all-window} gives $\delta \le e^{\ell/q}/a \le e^{1/4}/a$, so $a < 2(q+1)^\varepsilon$.
+
+Suppose first that $y \le q^{1-2\varepsilon}$, and choose $i$ with $x_i = y$.
+If $\ell$ divides $ir$, then $\theta_i = 2^s$ for some integer $s \ge 1$.
+This power is not equal to $F_i$.
+Otherwise $x_i = a \cdot 2^{im - S_i + s}$; the right side is an odd positive integer only if the exponent of $2$ vanishes, which forces $x_i = a$, contradicting distinctness.
+Let $e = \max(im - S_i,\, 0)$.
+In lowest terms the denominator of $F_i$ divides $a \cdot 2^e$, so $\lvert \theta_i - F_i \rvert \ge 1/(a \cdot 2^e)$.
+Lemma~\ref{lem:all-approx} then gives $2^e \ge q/(2i\theta_i)$.
+If $e = 0$, then $q \le 2i\theta_i$.
+Here $i \le \ell-1$ and $\theta_i < 2^{\ell-1}$, so $q < (\ell-1)\, 2^\ell$.
+If $e \ge 1$, the same lemma and $q \ge 4\ell$ give $\lvert \theta_i - F_i \rvert \le 2(\ell-1)\theta_i/(4\ell) < \theta_i/2$, hence $F_i > \theta_i/2$.
+Therefore
+\[
+y = F_i \cdot a \cdot 2^e > \frac{\theta_i}{2} \cdot a \cdot \frac{q}{2i\theta_i} = \frac{aq}{4i} \ge \frac{q}{4(\ell-1)}.
+\]
+Once $q > \bigl(4(\ell-1)\bigr)^{5\ell}$, the right side exceeds $q^{1-2\varepsilon}$, because $1/(2\varepsilon) = 5\ell$.
+This contradicts $y \le q^{1-2\varepsilon}$.
+
+If instead $\ell$ does not divide $ir$, then $\theta_i \in \Theta$.
+Write $F_i = P/d$ in lowest terms.
+The odd part of $d$ divides $a$, so $d \cdot \lvert d \rvert_2 \le a$.
+Every factor $\lvert d \rvert_p$ is at most $1$ and $2 \in T$, so the left side of the general form is at most
+\[
+d^2 \cdot \lvert \theta_i - F_i \rvert \cdot \lvert d \rvert_2 \le \frac{2i\theta_i\, d}{q}.
+\]
+As above, $\lvert \theta_i - F_i \rvert < \theta_i/2$, so $F_i > \theta_i/2 > 1/2$ and $F_i < (3/2)\theta_i < 2^\ell$.
+If $im \ge S_i$, the fraction before reducing is $y/(a \cdot 2^{im-S_i})$, whose denominator equals $y/F_i < 2y$, and the numerator is $y$.
+If $im < S_i$, that denominator is $a$, so $d \le a \le y$, and the numerator is $F_i d < 2^\ell y$.
+In both cases $d < 2y$ and $\max(\lvert P \rvert,\, d) < 2^\ell y$.
+Also $2i\theta_i < (\ell-1)\, 2^\ell$, so the left side is less than $(\ell-1)\, 2^{\ell+1} y/q$.
+The right side is greater than $(2^\ell y)^{-\varepsilon}$.
+The comparison
+\[
+(\ell-1)\, 2^{\ell+1}\, y^{1+\varepsilon} < q \cdot 2^{-\ell\varepsilon}
+\]
+therefore implies Ridout's inequality.
+It holds for every admissible $y$ once
+\[
+q^{\varepsilon + 2\varepsilon^2} > (\ell-1)\, 2^{\ell + 1 + \ell\varepsilon},
+\]
+because $y^{1+\varepsilon} \le q^{(1-2\varepsilon)(1+\varepsilon)} = q^{1 - \varepsilon - 2\varepsilon^2}$.
+The right side depends only on $\ell$.
+For every larger $q$, Ridout's theorem gives $\lvert \theta_i - F_i \rvert \ge \eta$.
+Lemma~\ref{lem:all-approx} gives $2i\theta_i/(aq) \ge \eta$, and $2i\theta_i < (\ell-1)\, 2^\ell$ with $a \ge 1$, so $q < (\ell-1)\, 2^\ell/\eta$.
+
+Suppose instead that $y > q^{1-2\varepsilon}$.
+The numerator $N = \ell aq + 1$ is congruent to $1$ modulo $\ell a$, so $\gcd(N,\, \ell a) = 1$.
+Any common factor of $N$ and $\ell a \cdot 2^m$ is therefore a power of $2$.
+Let $v = v_2(N)$ and $e = \max(m - v,\, 0)$.
+In lowest terms, $W = P/d$ with $d = \ell a \cdot 2^e$ and $P \le N$.
+The product formula gives $\prod_p \lvert \ell \rvert_p = 1/\ell$, and every prime factor of $\ell$ lies in $T$, so $\prod_{p \in T} \lvert \ell \rvert_p = 1/\ell$.
+Since $\lvert a \rvert_p \le 1$,
+\[
+\prod_{p \in T} \lvert d \rvert_p \le \frac{2^{-e}}{\ell}.
+\]
+The left side of the general form is therefore at most
+\[
+d^2 \cdot \lvert \theta - W \rvert \cdot \frac{2^{-e}}{\ell} = \ell a^2\, 2^e \cdot \lvert \theta - W \rvert \le \ell a^2\, 2^m \cdot \lvert \theta - W \rvert.
+\]
+Lemma~\ref{lem:all-approx} and $2^m < q+1$ bound this by $2\ell a^2(1 + 1/q)(1/y + 2\ell/q)$.
+Insert $1/y < q^{-1+2\varepsilon}$ and $a < 2(q+1)^\varepsilon$.
+For $q \ge 4\ell$ we have $1 + 1/q < 2$, $1 + 2\ell\, q^{-2\varepsilon} \le 1 + 2\ell$, and $(q+1)^{2\varepsilon} < (2q)^{2\varepsilon}$, so the left side is less than
+\[
+16\ell(1+2\ell)\, 2^{2\varepsilon}\, q^{-1+4\varepsilon}.
+\]
+Since $P \le \ell aq + 1$ and $d \le \ell a \cdot 2^m < \ell a(q+1)$, the height satisfies $\max(\lvert P \rvert,\, d) < \ell a(q+1) + 1 < 4\ell(q+1)^{1+\varepsilon}$, so the right side is greater than $(4\ell)^{-\varepsilon}(q+1)^{-\varepsilon(1+\varepsilon)} > (4\ell)^{-\varepsilon}(2q)^{-\varepsilon(1+\varepsilon)}$.
+The quotient of these two bounds is
+\[
+16\ell(1+2\ell)\, 2^{2\varepsilon}(4\ell)^\varepsilon\, 2^{\varepsilon(1+\varepsilon)}\, q^{-1+5\varepsilon+\varepsilon^2}.
+\]
+The exponent equals $-1 + 5/(10\ell) + 1/(100\ell^2) \le -1 + 1/4 + 1/400 < -1/2$.
+The quotient tends to $0$ as $q \to \infty$, so Ridout's inequality holds for all $q$ above a bound depending only on $\ell$.
+Then $\lvert \theta - W \rvert \ge \eta$.
+Lemma~\ref{lem:all-approx} and $1/y \le 1$ give $\lvert \theta - W \rvert \le 2(1+2\ell)/q$, hence $q \le (2+4\ell)/\eta$.
+
+In every case $q$ is at most a number depending only on $\ell$ and $\eta$.
+\end{proof}
+
+The argument does not produce a bound on $q$, and it does not produce a bound depending on a constant odd start.
+Fix an integer $V \ge 2$.
+Each length $\ell$ with $2 \le \ell \le V$ contributes finitely many odd $q$, and for each such pair the inequalities $q^\ell < 2^h < (q+1)^\ell$ leave finitely many $h$ and finitely many compositions of $h$ into $\ell$ positive parts.
+Thus only finitely many cycles have length at most $V$.
+
+\emph{Theorem~4 fails for $\ell = 1$.}
+A Mersenne number $q$ gives the cycle $1 \to 1$, and the same identity becomes $2^h = q + 1$.
+The constant $\eta$ is not explicit, so neither is the bound on $q$.
+An effective bound would require an effective inequality of the same shape for every denominator whose odd part is at most a constant times $q^\varepsilon$.
+
 
 \section{Open problems}
 \label{sec:open}
@@ -1494,7 +1719,7 @@ If $k_3 \le k_4$ and $z < y$, then $z > q$; if $z > y$, then $z^2 > qy$.
 Lemma~C.4 bounds $y$ only when $k_2 \le k_3$, and $z$ only when $k_3 \le k_4$.
 It leaves open $k_3 < k_2$ with $y < x$, where $y$ could be small, and $k_4 < k_3$, where $z$ could be small.
 Those two lower bounds are the missing inputs for Proposition~D.4.
-Theorem~2 of the companion paper~\cite{hackman-ii} does not need them.
+Theorem~4 does not need them.
 
 \section{Work on a cycle of any length with starting value 1}
 \label{app:any}
@@ -1646,7 +1871,6 @@ This is an earlier and weaker result than Theorem~3. It is conditional on the hy
 For a cycle of length $\ell$ with starting value $1$ and $\ell \ge 2$, Lemma~\ref{lem:power-window} gives $q^\ell < 2^h < (q+1)^\ell$, so $\ell \nmid h$ and $q = \lfloor 2^{h/\ell}\rfloor$.
 Length $1$ is Proposition~A.1, and is not searched.
 A search of every $h \le H$ with $\ell \nmid h$ therefore excludes every such cycle with $q < 2^{\lfloor H/\ell \rfloor}$: it would have $2^h < (q+1)^\ell \le 2^{\ell \lfloor H/\ell \rfloor} \le 2^H$, so $h \le H$.
-Searches for a cycle with any starting value, and searches at a constant $q$, are in the companion paper~\cite{hackman-ii}.
 
 \topic{Cycles with starting value $1$.}
 For each $\ell$ and each $h \le H$ with $\ell \nmid h$, the candidate $q = \lfloor 2^{h/\ell}\rfloor$ is tested by applying $C$ to $1$, $\ell$ times.
@@ -1787,7 +2011,6 @@ Lower bounds on $x$ and $y$ (Lemmas~4 to~7, preceded by the weaker Proposition~B
 Residue-class arguments settled special cases (Propositions~B.5 and~B.6), and the effective inequality of Bauer and Bennett (2018) gave the lower bound on $k_1$ (Proposition~B.7) and most of the case analysis of Lemma~4 (Appendix~\ref{sec:earlier}). Playing the $\delta$ window against the near miss for $x$ then gave Theorem~1, once it was noticed that the unrounded exponent of Bauer and Bennett (2018) lies below the golden ratio.
 Lemma~\ref{lem:near-misses} extended this to Theorem~2, Corollaries~12 to~14, and Theorem~3.
 The digit scan (Appendix~\ref{app:computations}) was computational evidence found along the way.
-Cycles with any starting value are treated in the companion paper~\cite{hackman-ii}.
 The final verification found and corrected a dropped constant in a displayed formula of Bauer and Bennett (2018) and confirmed their Proposition~5.1 for every $n_1 \ge 497$.
 
 \begin{thebibliography}{99}
@@ -1811,9 +2034,6 @@ R.~E.~Crandall, On the ``$3x+1$'' problem, Math.\ Comp.\ 32 (1978), 1281--1292, 
 
 \bibitem{franco-pomerance}
 Z.~Franco and C.~Pomerance, On a conjecture of Crandall concerning the $qx+1$ problem, Math.\ Comp.\ 64 (1995), 1333--1336, \doilink{10.1090/S0025-5718-1995-1297468-4}.
-
-\bibitem{hackman-ii}
-T.~Hackman, II. Cycles beyond $1$ for the $qn+1$ map: finiteness for each length, and an explicit bound on $q$ for a constant odd element, companion paper.
 
 \bibitem{lucas}
 \'E.~Lucas, Th\'eorie des fonctions num\'eriques simplement p\'eriodiques, Amer.\ J.\ Math.\ 1 (1878), 184--240, 289--321.

@@ -123,20 +123,24 @@
   \label{#2}%
 }
 
-\title{II. Cycles beyond $1$ for the $qn+1$ map: finiteness for each length, and an explicit bound on $q$ for a constant odd element}
+\title{Notes on cycles beyond $1$ for the $qn+1$ map}
 \author{Trevor Hackman}
 \date{}
 
 \begin{document}
 \maketitle
 
+This file is a note in \texttt{notes/}.
+It is not the paper.
+The paper is \texttt{paper/cycles-through-1-qn1.tex}.
+
 \begin{abstract}
 % quotation indents every paragraph after the first and sets the paragraph skip to zero.
 \setlength{\parskip}{\baselineskip}%
 \setlength{\parindent}{0pt}%
 \noindent
-For the $qn+1$ map, for each length at least $2$, only finitely many odd integers $q$ have a cycle of that length.
-The argument uses Ridout's theorem in the form that allows prime factors of the denominator outside a constant finite set, and it gives no bound on $q$.
+For the $qn+1$ map, each length at least $2$ occurs for only finitely many odd $q$.
+That finiteness is Theorem~4 of the paper, and it gives no bound on $q$.
 
 If a constant odd positive integer is the starting value of a cycle with two or three distinct odd numbers, then $q$ lies below an explicit bound depending only on that integer.
 For three odd numbers, once $q$ meets that bound, a lower bound and an upper bound cannot hold at the same time.
@@ -144,7 +148,7 @@ Bauer and Bennett (2018) give the exponent $\mu \approx 1.6149$, which lies just
 Every smaller exponent is a finite check.
 For two odd numbers the same conflict uses their exponent $1.465$ for the square root of $2$ (2002).
 Evaluating their Theorem~1.5 at the exponent $1.617$, together with a search through $q < 2^{160{,}000}$ and a digit scan of $\sqrt{2}$, shows that every other cycle with two odd numbers has $q \ge 2^{1{,}071{,}999{,}971}$ and each odd element greater than $2^{17{,}631{,}663}$.
-When the constant integer is $1$ and the cycle has three odd numbers, the bound is $q < 2^{17990}$, and the search in the companion paper already rules out every such cycle.
+When the constant integer is $1$ and the cycle has three odd numbers, the bound is $q < 2^{17990}$, and the search in the paper already rules out every such cycle.
 \end{abstract}
 
 \begingroup
@@ -156,8 +160,8 @@ When the constant integer is $1$ and the cycle has three odd numbers, the bound 
 \section{Introduction}
 \label{sec:introduction}
 
-This paper studies cycles of the $qn+1$ map for any starting value.
-It is preceded by the narrower paper~\cite{hackman-i}, which studies cycles with starting value $1$.
+This note studies cycles of the $qn+1$ map for any starting value.
+The paper~\cite{hackman-i} studies cycles with starting value $1$.
 
 Fix an odd integer $q \ge 3$.
 For an odd positive integer $n$, let $v$ be the largest integer such that $2^v$ divides $qn+1$.
@@ -189,32 +193,27 @@ Crandall (1978) conjectured that for every odd integer $q > 3$, some positive in
 For $q > 3$ he expected an orbit whose odd terms tend to infinity.
 The cycles at $q = 5$ and $q = 181$ do not have odd terms that tend to infinity.
 Conjecture~1 does not assert that the odd terms of any orbit tend to infinity.
-The searches with starting value $1$ are in the companion paper~\cite{hackman-i}.
+The searches with starting value $1$ are in the paper~\cite{hackman-i}.
 A search over cycles with no element held constant, and a search at a constant $q$, are in Appendix~\ref{app:computations}.
 Section~\ref{sec:all-cycles} gives a heuristic for the expected number of cycles.
 
-\begin{named}{Theorem 2.}
-\markstmt{2}{thm:finite}
-For each $\ell \ge 2$, only finitely many odd $q$ have a cycle of $C$ of length $\ell$.
-\end{named}
-
-Theorem~2 is ineffective: it rests on the general form of Ridout's theorem~\cite{ridout} in Section~\ref{sec:ineffective}, which allows prime factors of the denominator outside a constant finite set, and gives no bound on $q$, and no bound depending on a constant starting value.
+Theorem~4 of the paper~\cite{hackman-i} states that for each $\ell \ge 2$, only finitely many odd $q$ have a cycle of $C$ of length $\ell$.
+The argument is ineffective: it uses the general form of Ridout's theorem, stated in Section~\ref{sec:ineffective}, and it gives no bound on $q$, and no bound depending on a constant starting value.
 (A finiteness result is called effective if its proof gives an explicit bound on any exception, so that a finite computation can find them all, and ineffective if it gives no such bound.)
-The case of starting value $1$ is Theorem~3 of the companion paper, and that proof uses only the $S$-unit form of Ridout's theorem.
-The proof of Theorem~2 is in Section~\ref{sec:ineffective}.
+The case of starting value $1$ is Theorem~3 of that paper, and that proof uses only the $S$-unit form of Ridout's theorem.
 
 \begin{named}{Outline of Theorem 3.}
 Fix a length $\ell \ge 2$ and an odd starting value $x$.
 Suppose that length $\ell$ has a restricted irrationality exponent below the golden ratio.
 Then $q$ lies below a bound $Q(x, \ell)$ computed from $x$ and $\ell$.
 The precise statement is in Section~\ref{sec:ql}.
-The case $x = 1$ is Theorem~2 of the companion paper~\cite{hackman-i}.
+The case $x = 1$ is Theorem~2 of the paper~\cite{hackman-i}.
 Theorem~1 of that paper is the case $\ell = 3$ and $x = 1$.
 For length $2$, Corollary~1.4 of Bauer and Bennett (2002) supplies the exponent $1.465$ for each given positive integer $s$, with the cutoff depending on $s$.
 For length $3$, Bauer and Bennett (2018) and Lemma~\ref{lem:fixed-odd} supply the exponent $\mu_3$ for each positive integer $s$, with the factor in front and the cutoff depending on $s$.
 \end{named}
 
-For $x = 1$ and length $3$, Theorem~1 of the companion paper records that no such cycle exists.
+For $x = 1$ and length $3$, Theorem~1 of the paper records that no such cycle exists.
 Length $2$ with starting value $1$ is Proposition~A.1 of~\cite{hackman-i}: the only such $q$ is $5$.
 
 For a general $x$ the bound does not rule a cycle out.
@@ -223,7 +222,7 @@ At $q = 181$ the cycles $27 \to 611 \to 27$ and $35 \to 99 \to 35$ both occur.
 Section~\ref{sec:length-2} takes up cycles of two odd numbers with no element held constant in advance.
 Every such cycle other than $1 \to 3 \to 1$, $27 \to 611 \to 27$ and $35 \to 99 \to 35$ has $q \ge 2^{1{,}071{,}999{,}971}$ and every odd number on it greater than $2^{17{,}631{,}663}$.
 
-Length $4$ with an odd total number of removed factors of $2$ remains open, as in the companion paper: the roots are $2^{1/4}$ and $2^{3/4}$, and a constant odd part does not supply an exponent below the golden ratio for them.
+Length $4$ with an odd total number of removed factors of $2$ remains open, as in the paper: the roots are $2^{1/4}$ and $2^{3/4}$, and a constant odd part does not supply an exponent below the golden ratio for them.
 Corollary~\ref{cor:longer} covers the longer classes whose roots are only $\sqrt{2}$, or only the cube roots of $2$.
 
 \section{Definitions and notation}
@@ -313,7 +312,7 @@ The general form allows prime factors of $Q$ outside $S$.
 Such a prime does not appear in the product, and it contributes its full size to the height $\max(\lvert P \rvert, Q)$.
 Neither form gives a bound on the exceptional fractions.
 Since $\alpha$ is irrational, the finitely many fractions that meet the general form for a constant $\alpha$ lie at a positive distance from $\alpha$, and these distances have a positive minimum.
-This is why Theorem~\ref{thm:finite}, which uses the general form in place of a restricted irrationality exponent, gives no bound on $q$.
+This is why Theorem~4 of the paper~\cite{hackman-i}, which uses the general form in place of a restricted irrationality exponent, gives no bound on $q$.
 
 \begin{named}{Lemma 1 (the window for any cycle).}
 \marklemma{1}{lem:any-window}
@@ -406,117 +405,6 @@ Since $q \ge 4\ell$, this is at most $(\ell/q)\, e^{1/4} < 2\ell/q$.
 Therefore $\lvert \delta - 1/(\ell a) \rvert \le 1/y + 2\ell/q$.
 Dividing by $2^m > q/2$ gives part~3.
 \end{proof}
-
-\begin{named}{Theorem 2.}
-For each $\ell \ge 2$, only finitely many odd $q$ have a cycle of $C$ of length $\ell$.
-\end{named}
-
-\begin{proof}[Proof of Theorem~\ref{thm:finite}]
-Fix $\ell \ge 2$, and set $\varepsilon = 1/(10\ell)$.
-Let $S$ consist of $2$ and the prime factors of $\ell$, and let $\Theta$ be the set of real numbers $2^{t/\ell}$ with $1 \le t \le \ell(\ell-1)$ and $\ell \nmid t$.
-Each element of $\Theta$ is an algebraic irrational.
-Apply the general form of Ridout's theorem to each $\theta' \in \Theta$, with this $S$ and $\varepsilon$.
-Only finitely many fractions meet the inequality, and none equals $\theta'$, so there is an $\eta > 0$ such that every such fraction satisfies $\lvert \theta' - P/d \rvert \ge \eta$.
-The value of $\eta$ is not provided by Ridout's theorem.
-The odd $q < 4\ell$ are finite in number, so take an odd $q \ge 4\ell$ with a cycle of length $\ell$, in the notation of Lemmas~\ref{lem:any-window} and~\ref{lem:three-approx}.
-Then $\theta \in \Theta$.
-Each $\theta_i$ either lies in $\Theta$ or is a power of $2$.
-
-Consider the fraction $q/2^m$, which is in lowest terms.
-Its left side in the general form equals $2^m \cdot \delta \cdot 2^{-m} = \delta$, since $\lvert 2^m \rvert_p = 1$ for every odd prime $p$.
-Also $\max(q,\, 2^m) < q+1$, because $2^m = (q+\delta)/\theta < (q+1)/\theta < q+1$.
-If $\delta < (q+1)^{-\varepsilon}$, then $\delta < \max(q,\, 2^m)^{-\varepsilon}$, so Ridout's inequality applies and $\delta/2^m \ge \eta$.
-Combined with $2^m > q/2$ this yields $q < 2/\eta$.
-
-Now assume $\delta \ge (q+1)^{-\varepsilon}$.
-Lemma~\ref{lem:any-window} gives $\delta \le e^{\ell/q}/a \le e^{1/4}/a$, so $a < 2(q+1)^\varepsilon$.
-
-Suppose first that $y \le q^{1-2\varepsilon}$, and choose $i$ with $x_i = y$.
-If $\ell$ divides $ir$, then $\theta_i = 2^s$ for some integer $s \ge 1$.
-This power is not equal to $F_i$.
-Otherwise $x_i = a \cdot 2^{im - S_i + s}$; the right side is an odd positive integer only if the exponent of $2$ vanishes, which forces $x_i = a$, contradicting distinctness.
-Let $e = \max(im - S_i,\, 0)$.
-In lowest terms the denominator of $F_i$ divides $a \cdot 2^e$, so $\lvert \theta_i - F_i \rvert \ge 1/(a \cdot 2^e)$.
-Lemma~\ref{lem:three-approx} then gives $2^e \ge q/(2i\theta_i)$.
-If $e = 0$, then $q \le 2i\theta_i$.
-Here $i \le \ell-1$ and $\theta_i < 2^{\ell-1}$, so $q < (\ell-1)\, 2^\ell$.
-If $e \ge 1$, the same lemma and $q \ge 4\ell$ give $\lvert \theta_i - F_i \rvert \le 2(\ell-1)\theta_i/(4\ell) < \theta_i/2$, hence $F_i > \theta_i/2$.
-Therefore
-\[
-y = F_i \cdot a \cdot 2^e > \frac{\theta_i}{2} \cdot a \cdot \frac{q}{2i\theta_i} = \frac{aq}{4i} \ge \frac{q}{4(\ell-1)}.
-\]
-Once $q > \bigl(4(\ell-1)\bigr)^{5\ell}$, the right side exceeds $q^{1-2\varepsilon}$, because $1/(2\varepsilon) = 5\ell$.
-This contradicts $y \le q^{1-2\varepsilon}$.
-
-If instead $\ell$ does not divide $ir$, then $\theta_i \in \Theta$.
-Write $F_i = P/d$ in lowest terms.
-The odd part of $d$ divides $a$, so $d \cdot \lvert d \rvert_2 \le a$.
-Every factor $\lvert d \rvert_p$ is at most $1$ and $2 \in S$, so the left side of the general form is at most
-\[
-d^2 \cdot \lvert \theta_i - F_i \rvert \cdot \lvert d \rvert_2 \le \frac{2i\theta_i\, d}{q}.
-\]
-As above, $\lvert \theta_i - F_i \rvert < \theta_i/2$, so $F_i > \theta_i/2 > 1/2$ and $F_i < (3/2)\theta_i < 2^\ell$.
-If $im \ge S_i$, the fraction before reducing is $y/(a \cdot 2^{im-S_i})$, whose denominator equals $y/F_i < 2y$, and the numerator is $y$.
-If $im < S_i$, that denominator is $a$, so $d \le a \le y$, and the numerator is $F_i d < 2^\ell y$.
-In both cases $d < 2y$ and $\max(\lvert P \rvert,\, d) < 2^\ell y$.
-Also $2i\theta_i < (\ell-1)\, 2^\ell$, so the left side is less than $(\ell-1)\, 2^{\ell+1} y/q$.
-The right side is greater than $(2^\ell y)^{-\varepsilon}$.
-The comparison
-\[
-(\ell-1)\, 2^{\ell+1}\, y^{1+\varepsilon} < q \cdot 2^{-\ell\varepsilon}
-\]
-therefore implies Ridout's inequality.
-It holds for every admissible $y$ once
-\[
-q^{\varepsilon + 2\varepsilon^2} > (\ell-1)\, 2^{\ell + 1 + \ell\varepsilon},
-\]
-because $y^{1+\varepsilon} \le q^{(1-2\varepsilon)(1+\varepsilon)} = q^{1 - \varepsilon - 2\varepsilon^2}$.
-The right side depends only on $\ell$.
-For every larger $q$, Ridout's theorem gives $\lvert \theta_i - F_i \rvert \ge \eta$.
-Lemma~\ref{lem:three-approx} gives $2i\theta_i/(aq) \ge \eta$, and $2i\theta_i < (\ell-1)\, 2^\ell$ with $a \ge 1$, so $q < (\ell-1)\, 2^\ell/\eta$.
-
-Suppose instead that $y > q^{1-2\varepsilon}$.
-The numerator $N = \ell aq + 1$ is congruent to $1$ modulo $\ell a$, so $\gcd(N,\, \ell a) = 1$.
-Any common factor of $N$ and $\ell a \cdot 2^m$ is therefore a power of $2$.
-Let $v = v_2(N)$ and $e = \max(m - v,\, 0)$.
-In lowest terms, $W = P/d$ with $d = \ell a \cdot 2^e$ and $P \le N$.
-The product formula gives $\prod_p \lvert \ell \rvert_p = 1/\ell$, and every prime factor of $\ell$ lies in $S$, so $\prod_{p \in S} \lvert \ell \rvert_p = 1/\ell$.
-Since $\lvert a \rvert_p \le 1$,
-\[
-\prod_{p \in S} \lvert d \rvert_p \le \frac{2^{-e}}{\ell}.
-\]
-The left side of the general form is therefore at most
-\[
-d^2 \cdot \lvert \theta - W \rvert \cdot \frac{2^{-e}}{\ell} = \ell a^2\, 2^e \cdot \lvert \theta - W \rvert \le \ell a^2\, 2^m \cdot \lvert \theta - W \rvert.
-\]
-Lemma~\ref{lem:three-approx} and $2^m < q+1$ bound this by $2\ell a^2(1 + 1/q)(1/y + 2\ell/q)$.
-Insert $1/y < q^{-1+2\varepsilon}$ and $a < 2(q+1)^\varepsilon$.
-For $q \ge 4\ell$ we have $1 + 1/q < 2$, $1 + 2\ell\, q^{-2\varepsilon} \le 1 + 2\ell$, and $(q+1)^{2\varepsilon} < (2q)^{2\varepsilon}$, so the left side is less than
-\[
-16\ell(1+2\ell)\, 2^{2\varepsilon}\, q^{-1+4\varepsilon}.
-\]
-Since $P \le \ell aq + 1$ and $d \le \ell a \cdot 2^m < \ell a(q+1)$, the height satisfies $\max(\lvert P \rvert,\, d) < \ell a(q+1) + 1 < 4\ell(q+1)^{1+\varepsilon}$, so the right side is greater than $(4\ell)^{-\varepsilon}(q+1)^{-\varepsilon(1+\varepsilon)} > (4\ell)^{-\varepsilon}(2q)^{-\varepsilon(1+\varepsilon)}$.
-The quotient of these two bounds is
-\[
-16\ell(1+2\ell)\, 2^{2\varepsilon}(4\ell)^\varepsilon\, 2^{\varepsilon(1+\varepsilon)}\, q^{-1+5\varepsilon+\varepsilon^2}.
-\]
-The exponent equals $-1 + 5/(10\ell) + 1/(100\ell^2) \le -1 + 1/4 + 1/400 < -1/2$.
-The quotient tends to $0$ as $q \to \infty$, so Ridout's inequality holds for all $q$ above a bound depending only on $\ell$.
-Then $\lvert \theta - W \rvert \ge \eta$.
-Lemma~\ref{lem:three-approx} and $1/y \le 1$ give $\lvert \theta - W \rvert \le 2(1+2\ell)/q$, hence $q \le (2+4\ell)/\eta$.
-
-In every case $q$ is at most a number depending only on $\ell$ and $\eta$.
-\end{proof}
-
-The argument does not produce a bound on $q$, and it does not produce a bound depending on a constant odd start.
-Fix an integer $V \ge 2$.
-Each length $\ell$ with $2 \le \ell \le V$ contributes finitely many odd $q$, and for each such pair the inequalities $q^\ell < 2^h < (q+1)^\ell$ leave finitely many $h$ and finitely many compositions of $h$ into $\ell$ positive parts.
-Thus only finitely many cycles have length at most $V$.
-
-\emph{Theorem~2 fails for $\ell = 1$.}
-A Mersenne number $q$ gives the cycle $1 \to 1$, and the same identity becomes $2^h = q + 1$.
-The constant $\eta$ is not explicit, so neither is the bound on $q$.
-An effective bound would require an effective inequality of the same shape for every denominator whose odd part is at most a constant times $q^\varepsilon$.
 
 \section{The integer $Q_\ell(x)$}
 \label{sec:ql}
@@ -676,7 +564,7 @@ Section~\ref{sec:q2} uses the larger factor $1+1/x$ in place of $B$, and records
 
 Bauer and Bennett~\cite{bauer-bennett-2018} prove the inequality for $s = 1$ and for $s = 3$.
 The inequality used here is the one obtained in the proof of their Theorem~2.1 from their inequality~(5.3), Lemma~4.1 and Proposition~5.1, before they round $\mu_3$ to $1.62$.
-The companion paper records it for $s = 1$ and for $s = 3$.
+The paper records it for $s = 1$ and for $s = 3$.
 Lemma~\ref{lem:fixed-odd} gives the same exponent $\mu_3$ for every positive integer $s$. The factor from $s$ is carried by the positive real number $c_3(s')$ and by the integer $j_0(s)$.
 
 \begin{named}{Lemma 4 (constant odd part).}
@@ -1139,7 +1027,7 @@ That conclusion does not change the formula for $Q_2(1)$.
 \label{sec:length-2}
 
 The aim of the research in this section was to prove that the only cycles of length $2$ are $1 \to 3$, $35 \to 99$, and $27 \to 611$.
-That is more ambitious than Theorem~1 of the companion paper, which only rules out a cycle of length $3$ with starting value $1$.
+That is more ambitious than Theorem~1 of the paper, which only rules out a cycle of length $3$ with starting value $1$.
 Here the starting value may be any odd positive integer.
 A cycle of length $2$ was selected because it's the smallest non-trivial length, making it look like the easiest problem of this kind.
 
@@ -1644,7 +1532,7 @@ The second uses Lemma~\ref{lem:fixed-odd}.
 Corollaries~12, 13 and~14 of~\cite{hackman-i} are the case $x_0 = 1$.
 Corollary~12 of that paper, and Theorem~1 of that paper for length $3$, conclude that no such $q$ exists.
 Corollary~\ref{cor:longer} gives a bound in terms of $x_0$.
-For $x_0 = 1$ the companion paper already carries out the search that rules out a length-$3$ cycle.
+For $x_0 = 1$ the paper already carries out the search that rules out a length-$3$ cycle.
 For a general $x_0$ the bound $Q(x_0, \ell)$ does not by itself rule the cycle out.
 Corollaries~13 and~14 of~\cite{hackman-i} keep the constants of those papers (for $\sqrt{2}$, the positive real number $c = 2^{-1.48 a}$ and the positive integer $j_0 = 9$; for the cube roots, $j_0 = 11000$).
 The integer $Q(x_0, \ell)$ still depends on $x_0$, so it gives no uniform bound on every cycle of that length and residue.
@@ -1668,32 +1556,59 @@ Counting cycles up to rotation, the expected number at this pair $(h,\ell)$ is t
 \[
 \frac{1}{\ell D}\binom{h-1}{\ell-1}.
 \]
-This is only a heuristic: $N$ is a sparse combination of powers of $2$ with coefficients powers of $q$, so the residue $N \bmod D$ can be constrained, and the remaining conditions only make a cycle rarer.
+This is only a heuristic.
+The numerator $N$ is a sum of terms $q^{\ell-1-j}\, 2^{S_j}$, so it need not meet every residue class modulo $D$.
+The conditions that the elements be odd and distinct, and that the halving counts be the valuations along the orbit, only make a cycle rarer.
 
-The estimate is large only when $D$ is small, that is when $q^\ell$ is extraordinarily close to a power of $2$.
-The known cycles are exactly those coincidences:
+Lemma~\ref{lem:any-window} gives $2^h = \prod_{i=0}^{\ell-1}\bigl(q + 1/x_i\bigr)$.
+If every element is at least $3$, then each factor is at most $q + 1/3$, so $2^h \le (q + 1/3)^\ell$.
+Since $2^{h/\ell} = q + \delta$, this is the condition $\delta \le 1/3$.
+If $\delta > 1/3$, some element equals $1$.
+The orbit of $1$ is a single sequence, and it contributes a cycle only when it returns to $1$ at this length.
+The binomial count does not apply to that pair.
+
+For $q = 3$ the orbit of $1$ is $1 \to 1$, of length $1$.
+Every cycle of length at least $2$ therefore has $\delta \le 1/3$.
+A pair with $q = 3$ and $\delta > 1/3$ has $2^{h/\ell}$ just below $4$ when $\ell$ is near $h/2$, and then $D$ is close to $2^h$ while $\binom{h-1}{\ell-1}$ is of the same order.
+Summing the estimate over those pairs increases the total by about $0.34$ when the range of $h$ is doubled, so the sum over all lengths does not converge.
+Restricting to pairs with $\delta \le 1/3$, the sum over every admissible pair does converge.
+It is about $1.72$ for $q = 3$, and about $4.66$ for every odd $q \ge 5$.
+
+The known cycles of length at least $2$ are the three at $q = 5$ and the two at $q = 181$.
+They come from
 \[
 5^2 = 2^5 - 7, \qquad 5^3 = 2^7 - 3, \qquad 181^2 = 2^{15} - 7.
 \]
-The corresponding expectations are $4/(2\cdot 7) \approx 0.29$, $15/(3\cdot 3) = 5/3$, and $14/(2\cdot 7) = 1$, against one, two, and two cycles found.
+For $h = 5$ and $\ell = 2$, $\delta = 2^{5/2} - 5 > 1/3$, so $1 \to 3$ is the orbit of $1$.
+The binomial estimate there is $4/(2\cdot 7) \approx 0.29$, and that pair is not part of the sum above.
+The other two pairs have $\delta \le 1/3$.
+Their estimates are $15/(3\cdot 3) = 5/3$ and $14/(2\cdot 7) = 1$, against two and two cycles found.
 The only consecutive perfect powers are $8$ and $9$, of the other sign, so $D \ge 3$ for $\ell \ge 2$, and $D = 3$ and $D = 7$ are as small as occur here.
 
-The next-smallest values of $D$ do not produce cycles.
+Of the convergent sum for odd $q \ge 5$, the amount $5/3 + 1 = 8/3$ sits in those two pairs.
+The remainder, about $2$, is spread over pairs on which $D$ divides no value of $N$, or on which the search in Appendix~\ref{app:computations} finds no cycle.
+For $q = 3$ the amount $1.72$ is of the same kind.
+The two largest terms are $3^3 = 2^5 - 5$, with estimate $2/5$, and $3^5 = 2^8 - 13$, with estimate $7/13$.
+
+For $q = 3$ and $h = 5$, the compositions of $5$ into three positive parts give
+\[
+N \equiv 4,\, 3,\, 1,\, 4,\, 2,\, 4 \pmod{5},
+\]
+so $D = 5$ divides no such $N$.
 For $q = 11$ and $h = 7$ we have $11^2 = 2^7 - 7$, the same $D$ as for $q = 5$ and $q = 181$, and the estimate is $6/(2\cdot 7) \approx 0.43$; but $11 + 2^{k_1} \not\equiv 0 \pmod{7}$ for every positive $k_1 < 7$, so $D$ never divides $N$.
 For $q = 45$ and $h = 11$, likewise $45^2 = 2^{11} - 23$ and $45 + 2^{k_1} \equiv 0 \pmod{23}$ forces $2^{k_1} \equiv 1 \pmod{23}$, hence $11 \mid k_1$, which is impossible for $0 < k_1 < 11$.
-For $q = 3$ and $h = 5$, $3^3 = 2^5 - 5$ and the estimate is $0.4$; the length-$3$ search in Appendix~\ref{app:computations} finds no cycle.
-For $q = 3$ and $h = 8$, $3^5 = 2^8 - 13$ and the estimate is $0.54$; the length-$5$ search there finds no cycle.
-For $q = 19$ and $h = 17$, $19^4 = 2^{17} - 751$, the fourth-power near miss recorded in the companion paper~\cite{hackman-i}, and the estimate is $0.19$; the length-$4$ search there finds no cycle.
+For $q = 3$ and $h = 8$, the length-$5$ search in Appendix~\ref{app:computations} finds no cycle.
+For $q = 19$ and $h = 17$, $19^4 = 2^{17} - 751$, the fourth-power near miss recorded in the paper~\cite{hackman-i}, and the estimate is $0.19$; the length-$4$ search there finds no cycle.
 
-Summing the same estimate over every admissible pair with $2 \le \ell \le 20$ and $h \le 200$ gives a total of about $7$ expected cycles, of which about $3$ sit in the three known slots and the remaining $4$ are spread over pairs that Appendix~\ref{app:computations} and the companion paper~\cite{hackman-i} have already emptied.
-For large $h$ a typical $D$ is of size $\ell \delta\, 2^{h(1-1/\ell)}$, with $\delta$ the fractional part of $2^{h/\ell}$, and $\binom{h-1}{\ell-1}/D$ decays exponentially in $h$.
+For each fixed length the ratio $\binom{h-1}{\ell-1}/D$ decays exponentially in $h$.
+The growth above comes from letting $\ell$ grow with $h$, through pairs with $\delta > 1/3$.
 Length $1$ is different: $D = 2^h - q = 1$ holds for every Mersenne number, and $N = 1$, so the division succeeds and produces $1 \to 1$.
 
 For a cycle at large $q$ there is a further obstruction.
 A random odd input has $E[v_2(qn+1)] = 2$, while a cycle needs mean $h/\ell \approx \log_2 q$.
 For $q = 5$ this is $2.32$, a mild excess, and three cycles exist.
 For $q = 181$ it is $7.5$, which occurs only because $D = 7$.
-For larger $q$ the same mean requires a still smaller relative gap, which is the Diophantine condition already used in Theorem~2 of the companion paper and Theorem~\ref{thm:finite}.
+For larger $q$ the same mean requires a still smaller relative gap, which is the Diophantine condition already used in Theorem~2 of the paper and in Theorem~4 of that paper.
 
 \section{Open problems}
 \label{sec:open}
@@ -1701,7 +1616,7 @@ For larger $q$ the same mean requires a still smaller relative gap, which is the
 \begin{enumerate}
 \item \textbf{All cycles.}
 Conjecture~\ref{conj:all} is open.
-Theorem~\ref{thm:finite} gives, for each $\ell \ge 2$, only finitely many $q$ with a cycle of length $\ell$, with no bound and no classification.
+Theorem~4 of the paper~\cite{hackman-i} gives, for each $\ell \ge 2$, only finitely many $q$ with a cycle of length $\ell$, with no bound and no classification.
 A bound in terms of a constant odd element, for lengths $2$ and $3$, is Theorem~\ref{thm:bound}, and for the classes in Corollary~\ref{cor:longer} it is that corollary.
 A uniform bound on $q$ remains open.
 Appendix~\ref{app:denominator} records the constraints on $D = 2^h - q^\ell$ for an arbitrary cycle.
@@ -2233,7 +2148,7 @@ Proposition~B.1 gives $\ell/\gcd(h,\ell) > 1/\log_2(1+1/q)$ whenever $q$ is a Me
 If $\gcd(h,\ell) = 1$, then $\ell/\gcd(h,\ell) = \ell$.
 The proposition does not bound those lengths.
 In particular it does not bound the length of a cycle at $q = 3$.
-At each fixed $q$, Theorem~\ref{thm:finite} still supplies finitely many cycles of each fixed length, and the argument above supplies finitely many cycles with $\ell/\gcd(h,\ell) \le V$.
+At each fixed $q$, Theorem~4 of the paper~\cite{hackman-i} supplies finitely many cycles of each fixed length, and the argument above supplies finitely many cycles with $\ell/\gcd(h,\ell) \le V$.
 
 \begin{named}{Proposition B.3.}
 Let $S$ be a finite set of primes containing $2$.
@@ -2293,25 +2208,22 @@ Lengths $4$ through $9$ find no cycle.
 
 \topic{A constant $q$.}
 Here $q$ is constant and the length varies.
-The only possible $h$ are the integers satisfying $q^\ell < 2^h < (q+1)^\ell$; if there is none, that length has no cycle.
-For $q = 5$, lengths $2$ through $20$ produce only $1 \to 3 \to 1$ and the two cycles of length $3$ above.
-For each odd $q$ from $7$ through $25$, lengths $2$ through $16$ produce no cycle.
-The cycles at $q = 181$ were found in the length-$2$ row above, at $h = 15$, not in this search.
+The product in Lemma~\ref{lem:any-window} gives $q^\ell < 2^h < (q+1)^\ell$.
+The first 100 odd positive integers are followed.
+A cycle that contains one of them is found on that orbit.
+Every other cycle has distinct elements at least $201$, so
+\[
+2^h \le \prod_{j=0}^{\ell-1}\Bigl(q + \frac{1}{201+2j}\Bigr).
+\]
+For $q = 5$, lengths $2$ through $100$ produce only $1 \to 3 \to 1$ and the two cycles of length $3$ above.
+For $q = 181$, lengths $2$ through $100$ produce $27 \to 611 \to 27$ and $35 \to 99 \to 35$.
+For every other odd $q$ from $7$ through $179$, lengths $2$ through $100$ produce no cycle.
 \begin{center}
 \begin{tabular}{ccc}
 \multicolumn{3}{c}{\textbf{Cycles at a constant $q$}} \\[0.4em]
 $q$ & lengths & cycles found \\
-$5$ & $2$ through $20$ & $1 \to 3 \to 1$;\ $13 \to 33 \to 83$;\ $17 \to 43 \to 27$ \\
-$7$ & $2$ through $16$ & none \\
-$9$ & $2$ through $16$ & none \\
-$11$ & $2$ through $16$ & none \\
-$13$ & $2$ through $16$ & none \\
-$15$ & $2$ through $16$ & none \\
-$17$ & $2$ through $16$ & none \\
-$19$ & $2$ through $16$ & none \\
-$21$ & $2$ through $16$ & none \\
-$23$ & $2$ through $16$ & none \\
-$25$ & $2$ through $16$ & none \\
+$5$ & $2$ through $100$ & $1 \to 3 \to 1$;\ $13 \to 33 \to 83$;\ $17 \to 43 \to 27$ \\
+$181$ & $2$ through $100$ & $27 \to 611$;\ $35 \to 99$ \\
 \end{tabular}
 \end{center}
 
@@ -2327,7 +2239,7 @@ Since $66 \cdot 105 < 2^{13}$ and $(5/4)^4 > 2$,
 so $21 \cdot 52 + 5 = 1097 < 11000$ and $J_3(x) = 11000$.
 
 \topic{The value $Q_3(1)$.}
-Theorem~1 of the companion paper is the case $x = 1$ and length $3$.
+Theorem~1 of the paper is the case $x = 1$ and length $3$.
 The proof of that theorem reaches the cutoff $q < 2^{22003}$.
 There the symbol $x$ is the element after $1$.
 The argument asks for that element to clear $2^{11001}$, using a lower bound of the shape $\sqrt{q/2}$.
@@ -2357,7 +2269,7 @@ R.~E.~Crandall, On the ``$3x+1$'' problem, Math.\ Comp.\ 32 (1978), 1281--1292, 
 J.~H.~Evertse, On equations in $S$-units and the Thue--Mahler equation, Invent.\ Math.\ 75 (1984), 561--584, \doilink{10.1007/BF01388644}.
 
 \bibitem{hackman-i}
-T.~Hackman, I. Cycles through 1 for the $qn+1$ map: no cycles of length $3$, and constraints on longer cycles, companion paper.
+T.~Hackman, I. Cycles through 1 for the $qn+1$ map: no cycles of length $3$, and constraints on longer cycles, paper.
 
 \bibitem{mihailescu}
 P.~Mihăilescu, Primary cyclotomic units and a proof of Catalan's conjecture, J.~Reine Angew.~Math.~572 (2004), 167--195, \doilink{10.1515/crll.2004.048}.
