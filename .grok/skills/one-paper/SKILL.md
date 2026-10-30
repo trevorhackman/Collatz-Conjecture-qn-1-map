@@ -1,21 +1,20 @@
 ---
 name: one-paper
 description: >
-  Work in one paper only. Paper I is cycles-through-1-qn1.tex. Paper II is
-  fixed-start-qn1.tex. A file in notes/ is not a paper. When the task names
-  one paper, one of those files, a note, or a theorem in one of them, do not
-  open the other paper. Paper I comes first. Use when editing either paper, a file in notes/,
-  when the user says Paper I or Paper II, or when a proof starts borrowing
-  symbols, bounds, or case splits from the other paper, or when the same
-  symbol is defined differently in the two papers. Also /one-paper.
+  Work in the one paper. The paper is paper/cycles-through-1-qn1.tex. A file in
+  notes/ is not a paper. notes/fixed-start-qn1.tex and notes/divergence-qn1.tex
+  are notes. When the task names the paper, do not open a note. When the task
+  names a note, do not open the paper. Use when editing the paper or a file in
+  notes/, or when a proof starts borrowing symbols, bounds, or case splits from
+  a note. Also /one-paper.
 ---
 
 # One paper
 
-Paper I is `cycles-through-1-qn1.tex`. Paper II is `fixed-start-qn1.tex`. Paper I comes first.
+The paper is `paper/cycles-through-1-qn1.tex`, with its PDF `paper/cycles-through-1-qn1.pdf`.
 
-A task on one paper uses that file only. Do not open the other file to copy a bound or a case split. A proof produces its bound from the hypotheses of the statement it is proving.
+`notes/fixed-start-qn1.tex` and `notes/divergence-qn1.tex` are notes. A note is not a paper.
 
-Companion papers share a definition. The same symbol has one definition, and that definition is the same text in both papers. A second formula in the other paper is a second definition. When a definition is written or changed, open the other paper and make the two entries the same. Do not change what either theorem concludes in order to do that.
+A task on the paper uses that file only. Do not open a note to copy a bound or a case split. A proof produces its bound from the hypotheses of the statement it is proving.
 
-A file in `notes/` is not a paper. The two papers stay the two `.tex` files at the repository root. A task on a note uses that note. It leaves both papers, the README contents list, and `out/` as they are. The note may cite a paper. A paper does not cite a note. A PDF of a note, when compiled, goes under `notes/`.
+A task on a note uses that note. It leaves the paper as it is. The note may cite the paper. The paper does not cite a note. A PDF of a note, when compiled, goes under `notes/`.

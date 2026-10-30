@@ -1,7 +1,7 @@
-# LaTeX scratch next to the .tex. Built copies under out/ are tracked.
-# The LuaTeX font cache is not: it is rebuilt from the fonts on this machine.
+# LaTeX scratch. The kept files are the .tex and the .pdf.
 *.aux
 *.log
 *.out
+*.toc
 *.synctex.gz
 out/texmf-var/

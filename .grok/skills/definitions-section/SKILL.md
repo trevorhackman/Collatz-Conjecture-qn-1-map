@@ -12,8 +12,7 @@ description: >
   section does not define, such as empty or emptiness, or when a new symbol
   has no type, such as an explicit constant \(c\), or when the same symbol is
   used for a second formula, or when a definition is followed by a
-  consequence, such as a bound or a threshold, or when the same symbol has
-  a different definition in the companion paper. Set the type of every
+  consequence, such as a bound or a threshold. Set the type of every
   new symbol. Constant takes a type: a constant real number, a constant
   integer, or a constant rational. Also
   /definitions-section.
@@ -21,7 +20,7 @@ description: >
 
 # Definitions section
 
-Each entry defines one term a reader needs before the proofs. Write it so someone who stops at this section can use the term. Every later use of that term is this definition. A theorem, a remark, or the companion paper does not get a second version. The same symbol has this same definition in both papers.
+Each entry defines one term a reader needs before the proofs. Write it so someone who stops at this section can use the term. Every later use of that term is this definition. A theorem or a remark does not get a second version.
 
 A definition is one definition. The term means that entry. The symbol in the entry means that entry. Later text uses that meaning, or it does not use the symbol for another formula. Do not add a factor, a denominator, a quantifier, or a hypothesis and keep the symbol.
 

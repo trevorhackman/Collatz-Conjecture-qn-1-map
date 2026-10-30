@@ -48,4 +48,4 @@ The year is the year in the bibliography. A preprint still has one. Santos's pre
 
 A statement proved here is Theorem 1, Lemma 3, Corollary 4. No author and no year.
 
-The other paper in the pair is the companion paper, with `\cite{hackman-i}` or `\cite{hackman-ii}`. It has no publication year.
+A note in `notes/` may cite the paper. The paper does not cite a note.
